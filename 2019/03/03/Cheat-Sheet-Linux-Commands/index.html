@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="A collection of hopefully useful Linux Commands for pen testers, this is not a complete list but a collection of commonly used commands + syntax as a sort of “cheatsheet”, this content will be constan">
+<meta name="keywords" content="Hacking,Penetration,转载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cheat Sheet Linux Commands">
+<meta property="og:url" content="http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="A collection of hopefully useful Linux Commands for pen testers, this is not a complete list but a collection of commonly used commands + syntax as a sort of “cheatsheet”, this content will be constan">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-03T03:01:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cheat Sheet Linux Commands">
+<meta name="twitter:description" content="A collection of hopefully useful Linux Commands for pen testers, this is not a complete list but a collection of commonly used commands + syntax as a sort of “cheatsheet”, this content will be constan">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Cheat Sheet Linux Commands</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-Nmap/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-LFI/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&text=Cheat Sheet Linux Commands"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&title=Cheat Sheet Linux Commands"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&is_video=false&description=Cheat Sheet Linux Commands"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet Linux Commands&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&title=Cheat Sheet Linux Commands"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&title=Cheat Sheet Linux Commands"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&title=Cheat Sheet Linux Commands"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&title=Cheat Sheet Linux Commands"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&name=Cheat Sheet Linux Commands&description=&lt;p&gt;A collection of hopefully useful Linux Commands for pen testers, this is not a complete list but a collection of commonly used commands + syntax as a sort of “cheatsheet”, this content will be constantly updated as I discover new awesomeness.&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-Penetration-Testing-Commands"><span class="toc-number">1.</span> <span class="toc-text">Linux Penetration Testing Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-Network-Commands"><span class="toc-number">1.1.</span> <span class="toc-text">Linux Network Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#System-Information-Commands"><span class="toc-number">1.2.</span> <span class="toc-text">System Information Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Redhat-CentOS-RPM-Based-Distros"><span class="toc-number">1.2.1.</span> <span class="toc-text">Redhat / CentOS / RPM Based Distros</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#YUM-Commands"><span class="toc-number">1.2.2.</span> <span class="toc-text">YUM Commands</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Debian-Ubuntu-deb-Based-Distros"><span class="toc-number">1.2.3.</span> <span class="toc-text">Debian / Ubuntu / .deb Based Distros</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-User-Management"><span class="toc-number">1.3.</span> <span class="toc-text">Linux User Management</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-Decompression-Commands"><span class="toc-number">1.4.</span> <span class="toc-text">Linux Decompression Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-Compression-Commands"><span class="toc-number">1.5.</span> <span class="toc-text">Linux Compression Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-File-Commands"><span class="toc-number">1.6.</span> <span class="toc-text">Linux File Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Samba-Commands"><span class="toc-number">1.7.</span> <span class="toc-text">Samba Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Breaking-Out-of-Limited-Shells"><span class="toc-number">1.8.</span> <span class="toc-text">Breaking Out of Limited Shells</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Misc-Commands"><span class="toc-number">1.9.</span> <span class="toc-text">Misc Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-File-System-Permissions"><span class="toc-number">1.10.</span> <span class="toc-text">Linux File System Permissions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-File-System"><span class="toc-number">1.11.</span> <span class="toc-text">Linux File System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-Interesting-Files-Dir’s"><span class="toc-number">1.12.</span> <span class="toc-text">Linux Interesting Files / Dir’s</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Cheat Sheet Linux Commands
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-03T03:01:19.000Z" itemprop="datePublished">2019-03-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全技术/">安全技术</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Hacking/">Hacking</a>, <a class="tag-link" href="/tags/Penetration/">Penetration</a>, <a class="tag-link" href="/tags/转载/">转载</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>A collection of hopefully useful Linux Commands for pen testers, this is not a complete list but a collection of commonly used commands + syntax as a sort of “cheatsheet”, this content will be constantly updated as I discover new awesomeness.</p>
+<a id="more"></a>
+<h2 id="Linux-Penetration-Testing-Commands"><a href="#Linux-Penetration-Testing-Commands" class="headerlink" title="Linux Penetration Testing Commands"></a>Linux Penetration Testing Commands</h2><p>The commands listed below are designed for local enumeration, typical commands a penetration tester would use during post exploitation or when performing command injection etc. See our pen test cheat sheet for an in depth list of <a href="/blog/penetration-testing-tools-cheat-sheet/">pen testing tool commands</a> and example usage.</p>
+<h3 id="Linux-Network-Commands"><a href="#Linux-Network-Commands" class="headerlink" title="Linux Network Commands"></a>Linux Network Commands</h3><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>netstat -tulpn</code></td>
+<td>Show Linux network ports with process ID’s (PIDs)</td>
+</tr>
+<tr>
+<td><code>watch ss -stplu</code></td>
+<td>Watch TCP, UDP open ports in real time with socket summary.</td>
+</tr>
+<tr>
+<td><code>lsof -i</code></td>
+<td>Show established connections.</td>
+</tr>
+<tr>
+<td><code>macchanger -m MACADDR INTR</code></td>
+<td>Change MAC address on KALI Linux.</td>
+</tr>
+<tr>
+<td><code>ifconfig eth0 192.168.2.1/24</code></td>
+<td>Set IP address in Linux.</td>
+</tr>
+<tr>
+<td><code>ifconfig eth0:1 192.168.2.3/24</code></td>
+<td>Add IP address to existing network interface in Linux.</td>
+</tr>
+<tr>
+<td><code>ifconfig eth0 hw ether MACADDR</code></td>
+<td>Change MAC address in Linux using ifconfig.</td>
+</tr>
+<tr>
+<td><code>ifconfig eth0 mtu 1500</code></td>
+<td>Change MTU size Linux using ifconfig, change 1500 to your desired MTU.</td>
+</tr>
+<tr>
+<td><code>dig -x 192.168.1.1</code></td>
+<td>Dig reverse lookup on an IP address.</td>
+</tr>
+<tr>
+<td><code>host 192.168.1.1</code></td>
+<td>Reverse lookup on an IP address, in case dig is not installed.</td>
+</tr>
+<tr>
+<td><code>dig @192.168.2.2 domain.com -t AXFR</code></td>
+<td>Perform a DNS zone transfer using dig.</td>
+</tr>
+<tr>
+<td><code>host -l domain.com nameserver</code></td>
+<td>Perform a DNS zone transfer using host.</td>
+</tr>
+<tr>
+<td><code>nbtstat -A x.x.x.x</code></td>
+<td>Get hostname for IP address.</td>
+</tr>
+<tr>
+<td><code>ip addr add 192.168.2.22/24 dev eth0</code></td>
+<td>Adds a hidden IP address to Linux, does not show up when performing an ifconfig.</td>
+</tr>
+<tr>
+<td><code>tcpkill -9 host google.com</code></td>
+<td>Blocks access to google.com from the host machine.</td>
+</tr>
+<tr>
+<td><code>echo &quot;1&quot; &gt; /proc/sys/net/ipv4/ip_forward</code></td>
+<td>Enables IP forwarding, turns Linux box into a router - handy for routing traffic through a box.</td>
+</tr>
+<tr>
+<td><code>echo &quot;8.8.8.8&quot; &gt; /etc/resolv.conf</code></td>
+<td>Use Google DNS.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="System-Information-Commands"><a href="#System-Information-Commands" class="headerlink" title="System Information Commands"></a>System Information Commands</h3><p>Useful for local enumeration.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>whoami</code></td>
+<td>Shows currently logged in user on Linux.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>Shows currently logged in user and groups for the user.</td>
+</tr>
+<tr>
+<td><code>last</code></td>
+<td>Shows last logged in users.</td>
+</tr>
+<tr>
+<td><code>mount</code></td>
+<td>Show mounted drives.</td>
+</tr>
+<tr>
+<td><code>df -h</code></td>
+<td>Shows disk usage in human readable output.</td>
+</tr>
+<tr>
+<td>`echo “user:passwd”</td>
+<td>chpasswd`</td>
+<td>Reset password in one line.</td>
+</tr>
+<tr>
+<td><code>getent passwd</code></td>
+<td>List users on Linux.</td>
+</tr>
+<tr>
+<td><code>strings /usr/local/bin/blah</code></td>
+<td>Shows contents of none text files, e.g. whats in a binary.</td>
+</tr>
+<tr>
+<td><code>uname -ar</code></td>
+<td>Shows running kernel version.</td>
+</tr>
+<tr>
+<td><code>PATH=$PATH:/my/new-path</code></td>
+<td>Add a new PATH, handy for local FS manipulation.</td>
+</tr>
+<tr>
+<td><code>history</code></td>
+<td>Show bash history, commands the user has entered previously.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Redhat-CentOS-RPM-Based-Distros"><a href="#Redhat-CentOS-RPM-Based-Distros" class="headerlink" title="Redhat / CentOS / RPM Based Distros"></a>Redhat / CentOS / RPM Based Distros</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cat /etc/redhat-release</code></td>
+<td>Shows Redhat / CentOS version number.</td>
+</tr>
+<tr>
+<td><code>rpm -qa</code></td>
+<td>List all installed RPM’s on an RPM based Linux distro.</td>
+</tr>
+<tr>
+<td><code>rpm -q --changelog openvpn</code></td>
+<td>Check installed RPM is patched against CVE, grep the output for CVE.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="YUM-Commands"><a href="#YUM-Commands" class="headerlink" title="YUM Commands"></a>YUM Commands</h4><p>Package manager used by RPM based systems, you can pull some usefull information about installed packages and or install additional tools.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>yum update</code></td>
+<td>Update all RPM packages with YUM, also shows whats out of date.</td>
+</tr>
+<tr>
+<td><code>yum update httpd</code></td>
+<td>Update individual packages, in this example HTTPD (Apache).</td>
+</tr>
+<tr>
+<td><code>yum install package</code></td>
+<td>Install a package using YUM.</td>
+</tr>
+<tr>
+<td><code>yum --exclude=package kernel* update</code></td>
+<td>Exclude a package from being updates with YUM.</td>
+</tr>
+<tr>
+<td><code>yum remove package</code></td>
+<td>Remove package with YUM.</td>
+</tr>
+<tr>
+<td><code>yum erase package</code></td>
+<td>Remove package with YUM.</td>
+</tr>
+<tr>
+<td><code>yum list package</code></td>
+<td>Lists info about yum package.</td>
+</tr>
+<tr>
+<td><code>yum provides httpd</code></td>
+<td>What a packages does, e.g Apache HTTPD Server.</td>
+</tr>
+<tr>
+<td><code>yum info httpd</code></td>
+<td>Shows package info, architecture, version etc.</td>
+</tr>
+<tr>
+<td><code>yum localinstall blah.rpm</code></td>
+<td>Use YUM to install local RPM, settles deps from repo.</td>
+</tr>
+<tr>
+<td><code>yum deplist package</code></td>
+<td>Shows deps for a package.</td>
+</tr>
+<tr>
+<td>`yum list installed</td>
+<td>more`</td>
+<td>List all installed packages.</td>
+</tr>
+<tr>
+<td>`yum grouplist</td>
+<td>more`</td>
+<td>Show all YUM groups.</td>
+</tr>
+<tr>
+<td><code>yum groupinstall &#39;Development Tools&#39;</code></td>
+<td>Install YUM group.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Debian-Ubuntu-deb-Based-Distros"><a href="#Debian-Ubuntu-deb-Based-Distros" class="headerlink" title="Debian / Ubuntu / .deb Based Distros"></a>Debian / Ubuntu / .deb Based Distros</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cat /etc/debian_version</code></td>
+<td>Shows Debian version number.</td>
+</tr>
+<tr>
+<td><code>cat /etc/*-release</code></td>
+<td>Shows Ubuntu version number.</td>
+</tr>
+<tr>
+<td><code>dpkg -l</code></td>
+<td>List all installed packages on Debian / .deb based Linux distro.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Linux-User-Management"><a href="#Linux-User-Management" class="headerlink" title="Linux User Management"></a>Linux User Management</h3><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>useradd new-user</code></td>
+<td>Creates a new Linux user.</td>
+</tr>
+<tr>
+<td><code>passwd username</code></td>
+<td>Reset Linux user password, enter just <code>passwd</code>if you are root.</td>
+</tr>
+<tr>
+<td><code>deluser username</code></td>
+<td>Remove a Linux user.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Linux-Decompression-Commands"><a href="#Linux-Decompression-Commands" class="headerlink" title="Linux Decompression Commands"></a>Linux Decompression Commands</h3><p>How to extract various archives (tar, zip, gzip, bzip2 etc) on Linux and some other tricks for searching inside of archives etc.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>unzip archive.zip</code></td>
+<td>Extracts zip file on Linux.</td>
+</tr>
+<tr>
+<td><code>zipgrep *.txt archive.zip</code></td>
+<td>Search inside a .zip archive.</td>
+</tr>
+<tr>
+<td><code>tar xf archive.tar</code></td>
+<td>Extract tar file Linux.</td>
+</tr>
+<tr>
+<td><code>tar xvzf archive.tar.gz</code></td>
+<td>Extract a tar.gz file Linux.</td>
+</tr>
+<tr>
+<td><code>tar xjf archive.tar.bz2</code></td>
+<td>Extract a tar.bz2 file Linux.</td>
+</tr>
+<tr>
+<td>`tar ztvf file.tar.gz</td>
+<td>grep blah`</td>
+<td>Search inside a tar.gz file.</td>
+</tr>
+<tr>
+<td><code>gzip -d archive.gz</code></td>
+<td>Extract a gzip file Linux.</td>
+</tr>
+<tr>
+<td><code>zcat archive.gz</code></td>
+<td>Read a gz file Linux without decompressing.</td>
+</tr>
+<tr>
+<td><code>zless archive.gz</code></td>
+<td>Same function as the <code>less</code>command for .gz archives.</td>
+</tr>
+<tr>
+<td><code>zgrep &#39;blah&#39; /var/log/maillog*.gz</code></td>
+<td>Search inside .gz archives on Linux, search inside of compressed log files.</td>
+</tr>
+<tr>
+<td><code>vim file.txt.gz</code></td>
+<td>Use vim to read .txt.gz files (my personal favorite).</td>
+</tr>
+<tr>
+<td><code>upx -9 -o output.exe input.exe</code></td>
+<td>UPX compress .exe file Linux.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Linux-Compression-Commands"><a href="#Linux-Compression-Commands" class="headerlink" title="Linux Compression Commands"></a>Linux Compression Commands</h3><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zip -r file.zip /dir/*</code></td>
+<td>Creates a .zip file on Linux.</td>
+</tr>
+<tr>
+<td><code>tar cf archive.tar files</code></td>
+<td>Creates a tar file on Linux.</td>
+</tr>
+<tr>
+<td><code>tar czf archive.tar.gz files</code></td>
+<td>Creates a tar.gz file on Linux.</td>
+</tr>
+<tr>
+<td><code>tar cjf archive.tar.bz2 files</code></td>
+<td>Creates a tar.bz2 file on Linux.</td>
+</tr>
+<tr>
+<td><code>gzip file</code></td>
+<td>Creates a file.gz file on Linux.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Linux-File-Commands"><a href="#Linux-File-Commands" class="headerlink" title="Linux File Commands"></a>Linux File Commands</h3><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>df -h blah</code></td>
+<td>Display size of file / dir Linux.</td>
+</tr>
+<tr>
+<td><code>diff file1 file2</code></td>
+<td>Compare / Show differences between two files on Linux.</td>
+</tr>
+<tr>
+<td><code>md5sum file</code></td>
+<td>Generate MD5SUM Linux.</td>
+</tr>
+<tr>
+<td><code>md5sum -c blah.iso.md5</code></td>
+<td>Check file against MD5SUM on Linux, assuming both file and .md5 are in the same dir.</td>
+</tr>
+<tr>
+<td><code>file blah</code></td>
+<td>Find out the type of file on Linux, also displays if file is 32 or 64 bit.</td>
+</tr>
+<tr>
+<td><code>dos2unix</code></td>
+<td>Convert Windows line endings to Unix / Linux.</td>
+</tr>
+<tr>
+<td><code>base64 &lt; input-file &gt; output-file</code></td>
+<td>Base64 encodes input file and outputs a Base64 encoded file called output-file.</td>
+</tr>
+<tr>
+<td><code>base64 -d &lt; input-file &gt; output-file</code></td>
+<td>Base64 decodes input file and outputs a Base64 decoded file called output-file.</td>
+</tr>
+<tr>
+<td><code>touch -r ref-file new-file</code></td>
+<td>Creates a new file using the timestamp data from the reference file, drop the -r to simply create a file.</td>
+</tr>
+<tr>
+<td><code>rm -rf</code></td>
+<td>Remove files and directories without prompting for confirmation.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Samba-Commands"><a href="#Samba-Commands" class="headerlink" title="Samba Commands"></a>Samba Commands</h3><p>Connect to a Samba share from Linux.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ smbmount //server/share /mnt/win -o user=username,password=password1</div><div class="line">$ smbclient -U user \\\\server\\share</div><div class="line">$ mount -t cifs -o username=user,password=password //x.x.x.x/share /mnt/share</div></pre></td></tr></table></figure>
+<h3 id="Breaking-Out-of-Limited-Shells"><a href="#Breaking-Out-of-Limited-Shells" class="headerlink" title="Breaking Out of Limited Shells"></a>Breaking Out of Limited Shells</h3><p>Credit to G0tmi1k for these (or wherever he stole them from!).</p>
+<p>The Python trick:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python -c <span class="string">'import pty;pty.spawn("/bin/bash")'</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> os.system(<span class="string">'/bin/bash'</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/bin/sh -i</div></pre></td></tr></table></figure>
+<h3 id="Misc-Commands"><a href="#Misc-Commands" class="headerlink" title="Misc Commands"></a>Misc Commands</h3><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>init 6</code></td>
+<td>Reboot Linux from the command line.</td>
+</tr>
+<tr>
+<td><code>gcc -o output.c input.c</code></td>
+<td>Compile C code.</td>
+</tr>
+<tr>
+<td><code>gcc -m32 -o output.c input.c</code></td>
+<td>Cross compile C code, compile 32 bit binary on 64 bit Linux.</td>
+</tr>
+<tr>
+<td><code>unset HISTORYFILE</code></td>
+<td>Disable bash history logging.</td>
+</tr>
+<tr>
+<td><code>rdesktop X.X.X.X</code></td>
+<td>Connect to RDP server from Linux.</td>
+</tr>
+<tr>
+<td><code>kill -9 $$</code></td>
+<td>Kill current session.</td>
+</tr>
+<tr>
+<td><code>chown user:group blah</code></td>
+<td>Change owner of file or dir.</td>
+</tr>
+<tr>
+<td><code>chown -R user:group blah</code></td>
+<td>Change owner of file or dir and all underlying files / dirs - recersive chown.</td>
+</tr>
+<tr>
+<td><code>chmod 600 file</code></td>
+<td>Change file / dir permissions, see <a href="#linux-file-system-permissions">Linux File System Permissons</a> for details.</td>
+</tr>
+</tbody>
+</table>
+<p>Clear bash history:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh [email protected] | cat /dev/null &gt; ~/.bash_history</div></pre></td></tr></table></figure>
+<h3 id="Linux-File-System-Permissions"><a href="#Linux-File-System-Permissions" class="headerlink" title="Linux File System Permissions"></a>Linux File System Permissions</h3><table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>777</code></td>
+<td><code>rwxrwxrwx</code>No restriction, global WRX any user can do anything.</td>
+</tr>
+<tr>
+<td><code>755</code></td>
+<td><code>rwxr-xr-x</code>Owner has full access, others can read and execute the file.</td>
+</tr>
+<tr>
+<td><code>700</code></td>
+<td><code>rwx------</code>Owner has full access, no one else has access.</td>
+</tr>
+<tr>
+<td><code>666</code></td>
+<td><code>rw-rw-rw-</code>All users can read and write but not execute.</td>
+</tr>
+<tr>
+<td><code>644</code></td>
+<td><code>rw-r--r--</code>Owner can read and write, everyone else can read.</td>
+</tr>
+<tr>
+<td><code>600</code></td>
+<td><code>rw-------</code>Owner can read and write, everyone else has no access.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Linux-File-System"><a href="#Linux-File-System" class="headerlink" title="Linux File System"></a>Linux File System</h3><table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/</code></td>
+<td>/ also know as “slash” or the root.</td>
+</tr>
+<tr>
+<td><code>/bin</code></td>
+<td>Common programs, shared by the system, the system administrator and the users.</td>
+</tr>
+<tr>
+<td><code>/boot</code></td>
+<td>Boot files, boot loader (grub), kernels, vmlinuz</td>
+</tr>
+<tr>
+<td><code>/dev</code></td>
+<td>Contains references to system devices, files with special properties.</td>
+</tr>
+<tr>
+<td><code>/etc</code></td>
+<td>Important system config files.</td>
+</tr>
+<tr>
+<td><code>/home</code></td>
+<td>Home directories for system users.</td>
+</tr>
+<tr>
+<td><code>/lib</code></td>
+<td>Library files, includes files for all kinds of programs needed by the system and the users.</td>
+</tr>
+<tr>
+<td><code>/lost+found</code></td>
+<td>Files that were saved during failures are here.</td>
+</tr>
+<tr>
+<td><code>/mnt</code></td>
+<td>Standard mount point for external file systems.</td>
+</tr>
+<tr>
+<td><code>/media</code></td>
+<td>Mount point for external file systems (on some distros).</td>
+</tr>
+<tr>
+<td><code>/net</code></td>
+<td>Standard mount point for entire remote file systems - nfs.</td>
+</tr>
+<tr>
+<td><code>/opt</code></td>
+<td>Typically contains extra and third party software.</td>
+</tr>
+<tr>
+<td><code>/proc</code></td>
+<td>A virtual file system containing information about system resources.</td>
+</tr>
+<tr>
+<td><code>/root</code></td>
+<td>root users home dir.</td>
+</tr>
+<tr>
+<td><code>/sbin</code></td>
+<td>Programs for use by the system and the system administrator.</td>
+</tr>
+<tr>
+<td><code>/tmp</code></td>
+<td>Temporary space for use by the system, cleaned upon reboot.</td>
+</tr>
+<tr>
+<td><code>/usr</code></td>
+<td>Programs, libraries, documentation etc. for all user-related programs.</td>
+</tr>
+<tr>
+<td><code>/var</code></td>
+<td>Storage for all variable files and temporary files created by users, such as log files, mail queue, print spooler. Web servers, Databases etc.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Linux-Interesting-Files-Dir’s"><a href="#Linux-Interesting-Files-Dir’s" class="headerlink" title="Linux Interesting Files / Dir’s"></a>Linux Interesting Files / Dir’s</h3><p>Places that are worth a look if you are attempting to privilege escalate / perform post exploitation.</p>
+<table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/etc/passwd</code></td>
+<td>Contains local Linux users.</td>
+</tr>
+<tr>
+<td><code>/etc/shadow</code></td>
+<td>Contains local account password hashes.</td>
+</tr>
+<tr>
+<td><code>/etc/group</code></td>
+<td>Contains local account groups.</td>
+</tr>
+<tr>
+<td><code>/etc/init.d/</code></td>
+<td>Contains service init script - worth a look to see whats installed.</td>
+</tr>
+<tr>
+<td><code>/etc/hostname</code></td>
+<td>System hostname.</td>
+</tr>
+<tr>
+<td><code>/etc/network/interfaces</code></td>
+<td>Network interfaces.</td>
+</tr>
+<tr>
+<td><code>/etc/resolv.conf</code></td>
+<td>System DNS servers.</td>
+</tr>
+<tr>
+<td><code>/etc/profile</code></td>
+<td>System environment variables.</td>
+</tr>
+<tr>
+<td><code>~/.ssh/</code></td>
+<td>SSH keys.</td>
+</tr>
+<tr>
+<td><code>~/.bash_history</code></td>
+<td>Users bash history log.</td>
+</tr>
+<tr>
+<td><code>/var/log/</code></td>
+<td>Linux system log files are typically stored here.</td>
+</tr>
+<tr>
+<td><code>/var/adm/</code></td>
+<td>UNIX system log files are typically stored here.</td>
+</tr>
+<tr>
+<td><code>/var/log/apache2/access.log</code> <code>/var/log/httpd/access.log</code></td>
+<td>Apache access log file typical path.</td>
+</tr>
+<tr>
+<td><code>/etc/fstab</code></td>
+<td>File system mounts.</td>
+</tr>
+</tbody>
+</table>
+<p>原文链接：<a href="http://highon.coffee/" target="_blank" rel="external">HighOn.Coffee</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-Penetration-Testing-Commands"><span class="toc-number">1.</span> <span class="toc-text">Linux Penetration Testing Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-Network-Commands"><span class="toc-number">1.1.</span> <span class="toc-text">Linux Network Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#System-Information-Commands"><span class="toc-number">1.2.</span> <span class="toc-text">System Information Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Redhat-CentOS-RPM-Based-Distros"><span class="toc-number">1.2.1.</span> <span class="toc-text">Redhat / CentOS / RPM Based Distros</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#YUM-Commands"><span class="toc-number">1.2.2.</span> <span class="toc-text">YUM Commands</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Debian-Ubuntu-deb-Based-Distros"><span class="toc-number">1.2.3.</span> <span class="toc-text">Debian / Ubuntu / .deb Based Distros</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-User-Management"><span class="toc-number">1.3.</span> <span class="toc-text">Linux User Management</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-Decompression-Commands"><span class="toc-number">1.4.</span> <span class="toc-text">Linux Decompression Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-Compression-Commands"><span class="toc-number">1.5.</span> <span class="toc-text">Linux Compression Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-File-Commands"><span class="toc-number">1.6.</span> <span class="toc-text">Linux File Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Samba-Commands"><span class="toc-number">1.7.</span> <span class="toc-text">Samba Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Breaking-Out-of-Limited-Shells"><span class="toc-number">1.8.</span> <span class="toc-text">Breaking Out of Limited Shells</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Misc-Commands"><span class="toc-number">1.9.</span> <span class="toc-text">Misc Commands</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-File-System-Permissions"><span class="toc-number">1.10.</span> <span class="toc-text">Linux File System Permissions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-File-System"><span class="toc-number">1.11.</span> <span class="toc-text">Linux File System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-Interesting-Files-Dir’s"><span class="toc-number">1.12.</span> <span class="toc-text">Linux Interesting Files / Dir’s</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&text=Cheat Sheet Linux Commands"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&title=Cheat Sheet Linux Commands"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&is_video=false&description=Cheat Sheet Linux Commands"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet Linux Commands&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&title=Cheat Sheet Linux Commands"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&title=Cheat Sheet Linux Commands"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&title=Cheat Sheet Linux Commands"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&title=Cheat Sheet Linux Commands"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Linux-Commands/&name=Cheat Sheet Linux Commands&description=&lt;p&gt;A collection of hopefully useful Linux Commands for pen testers, this is not a complete list but a collection of commonly used commands + syntax as a sort of “cheatsheet”, this content will be constantly updated as I discover new awesomeness.&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

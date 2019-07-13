@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP ext/session HTTP响应拆分漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。
+<br />
+
+<br />
+
+									PHP5对请求回应数据的输出上存在漏洞，远程攻击者可能利用此漏洞执行跨站脚本攻击。
+<br />
+
+<br />
+
+									从PHP5开始会在Set-Cookie HTTP首部中向用户发送回用户所提供的会话ID。由于没有对这个会话ID执行有效性检查，因此攻击者可以使用特制的会话ID向响应体中注入特制的HTTP首部，导致HTTP响应拆分和跨站脚本（XSS）攻击。
+<br />
+
+<br />
+
+									&lt;*来源：Stefan Esser （s.esser@ematters.de）
+<br />
+
+<br />
+
+									   链接：http://marc.theaimsgroup.com/?l=bugtraq&amp;m=113709506705802&amp;w=2
+<br />
+
+									 *&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									PHP
+<br />
+
+									 ---
+<br />
+
+									 目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.hardened-php.net/downloads.13.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2006-01-13</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-02-04</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-0207" target="_blank">CVE-2006-0207</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/16220" target="_blank">16220</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=8404" target="_blank">8404</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200601-146
+&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20060207&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2006-0181&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

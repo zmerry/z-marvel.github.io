@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标URL存在错误信息注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本漏洞属于Web应用安全中的常见漏洞，属于OWASP TOP 10 （2007）中的注入类漏洞。
+<br />
+
+<br />
+
+									很多WEB应用中都存在错误信息注入漏洞。错误信息注入是一种攻击者利用代码缺陷进行攻击的方式，可在任何能够影响数据库查询的应用程序参数中利用。例如url本身的参数、post数据或cookie值。
+<br />
+
+<br />
+
+									正常的错误信息注入攻击很大程度上取决于攻击者使用从错误消息所获得信息。但是，即使没有显示错误消息应用程序仍可能受错误信息注入的影响。
+<br />
+
+<br />
+
+									总体上讲，错误信息注入是对web应用而不是对web服务器或操作系统本身的攻击。正如其名称所示，错误信息注入是对查询添加非预期SQL命令从而以数据库管理员或开发人员非预期的方式操控数据库的行为。如果成功的话，就可以获得、修改、注入或删除有漏洞web应用所使用数据库服务器的数据。在某些环境下，可利用错误信息注入完全控制系统。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									由于错误类型的注入，会触发对方数据库服务器报错，而这种错误是我们自己定义的，例如：
+<br />
+
+<br />
+
+									http://sites/index.php?a=1
+<br />
+
+<br />
+
+									经过我们精心的构造后
+<br />
+
+<br />
+
+									http://sites/index.php?a=1&#39;+AND+(SELECT+2700+FROM(SELECT+COUNT(*),CONCAT(&#39;GxfJ5mw6&#39;,(SELECT+(CASE+WHEN+(2700=2700)+THEN+1+ELSE+0+END)),&#39;GxfJ5mw6&#39;,FLOOR(RAND(0)*2))x+FROM+INFORMATION_SCHEMA.CHARACTER_SETS+GROUP+BY+x)a)+AND+&#39;GxfJ5mw6&#39;=&#39;GxfJ5mw6
+<br />
+
+<br />
+
+									页面就会返回一个我们自定义的错误：Duplicate entry &#39;GxfJ5mw61GxfJ5mw61&#39; for key &#39;group_key&#39;，就此我们可以十分确定的认为，a参数是一个弱点参数，而且能执行数据库命令。
+<br />
+
+<br />
+
+									解决办法：
+<br />
+
+									1.对参数进行特殊字符过滤，例如单引号，双引号，括号；
+<br />
+
+									2.对关键字进行过滤，例如 update，delete，select，insert 等数据库函数；
+<br />
+
+									3.关闭数据库低权限用户可执行的存储过程；
+<br />
+
+									4.关闭错误提示。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-07-31</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

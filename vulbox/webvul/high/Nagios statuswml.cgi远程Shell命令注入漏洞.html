@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Nagios statuswml.cgi远程Shell命令注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Nagios是一款免费开放源代码的主机和服务监视软件，可使用在多种Linux和Unix操作系统下。
+<br />
+
+<br />
+
+									Nagios没有正确地过滤传送给statuswml.cgi的ping参数，远程攻击者可以通过tools -&gt; ping和tools-&gt; Traceroute WAP/WML页面注入并执行任意shell命令。例如，Ping主机名/地址173.45.235.65;echo $PATH会返回ping命令的输出并执行和返回echo $PATH命令的输出。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Nagios
+<br />
+
+									------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-3.1.1.tar.gz<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>8</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-06-22</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-06-26</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/35464" target="_blank">35464</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=13492" target="_blank">13492</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Phpcms 2008 space.api.php SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									漏洞描述:
+<br />
+
+									Phpcms 是国内领先的网站内容管理系统，同时也是一个开源的PHP开发框架。
+<br />
+
+<br />
+
+									在文件api/space.api.php中：
+<br />
+
+									$arr_content = $content-&gt;listinfo(&quot;userid=&#39;$userid&#39;&quot;, $order, 1, 10);  //第7行
+<br />
+
+									Listinfo函数在文件include/admin/ content.class.php中：
+<br />
+
+									function listinfo($where = &#39;&#39;, $order = &#39;`listorder` DESC,`contentid` DESC&#39;, $page = 1, $pagesize = 50)    //第169行
+<br />
+
+										{
+<br />
+
+											if($where) $where = &quot; WHERE $where $this-&gt;userid_sql&quot;;
+<br />
+
+											if($order) $order = &quot; ORDER BY $order&quot;;
+<br />
+
+									……
+<br />
+
+									$result = $this-&gt;db-&gt;query(&quot;SELECT * FROM `$this-&gt;table` $where $order $limit&quot;);  //第179行
+<br />
+
+									变量$order没有初始化放入sql语句，导致注入漏洞的产生。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+									PHPCMS
+<br />
+
+									----------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+									http://www.phpcms.cn<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>9</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-10-17</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-02-24</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

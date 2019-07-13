@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">WordPress wp-login.php页面重置管理口令漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									WordPress是一款免费的论坛Blog系统。
+<br />
+
+<br />
+
+									如果用户遗忘了口令并申请重置，首先要通过/wp-login.php?action=lostpassword表单提交邮件地址或用户名，然后Wordpress会发送类似于以下的确认邮件：
+<br />
+
+<br />
+
+									&quot;
+<br />
+
+									Someone has asked to reset the password for the following site and username.
+<br />
+
+									http://DOMAIN_NAME.TLD/wordpress
+<br />
+
+									Username: admin
+<br />
+
+									To reset your password visit the following address, otherwise just ignore this email and nothing will happen
+<br />
+
+<br />
+
+									http://DOMAIN_NAME.TLD/wordpress/wp-login.php?action=rp&amp;key=o7naCKN3OoeU2KJMMsag
+<br />
+
+									&quot;
+<br />
+
+<br />
+
+									用户点击链接后Wordpress会重置管理口令并通过另一封邮件发送新的凭据。
+<br />
+
+<br />
+
+									整个过程如下：
+<br />
+
+<br />
+
+									wp-login.php:
+<br />
+
+									...[snip]....
+<br />
+
+<br />
+
+									186行：
+<br />
+
+<br />
+
+									function reset_password($key) {
+<br />
+
+									    global $wpdb;
+<br />
+
+<br />
+
+									    $key = preg_replace(&#39;/[^a-z0-9]/i&#39;, &#39;&#39;, $key);
+<br />
+
+<br />
+
+									    if ( empty( $key ) )
+<br />
+
+									        return new WP_Error(&#39;invalid_key&#39;, __(&#39;Invalid key&#39;));
+<br />
+
+<br />
+
+									    $user = $wpdb-&gt;get_row($wpdb-&gt;prepare(&quot;SELECT * FROM $wpdb-&gt;users WHERE user_activation_key = %s&quot;, $key));
+<br />
+
+									    if ( empty( $user ) )
+<br />
+
+									        return new WP_Error(&#39;invalid_key&#39;, __(&#39;Invalid key&#39;));
+<br />
+
+									...[snip]....
+<br />
+
+<br />
+
+									276行：
+<br />
+
+<br />
+
+									$action = isset($_REQUEST[&#39;action&#39;]) ? $_REQUEST[&#39;action&#39;] : &#39;login&#39;;
+<br />
+
+									$errors = new WP_Error();
+<br />
+
+<br />
+
+									if ( isset($_GET[&#39;key&#39;]) )
+<br />
+
+									    $action = &#39;resetpass&#39;;
+<br />
+
+<br />
+
+									// validate action so as to default to the login screen
+<br />
+
+									if ( !in_array($action, array(&#39;logout&#39;, &#39;lostpassword&#39;, &#39;retrievepassword&#39;, &#39;resetpass&#39;, &#39;rp&#39;, &#39;register&#39;, &#39;login&#39;)) &amp;&amp; false === has_filter(&#39;login_form_&#39; . $action) )
+<br />
+
+									    $action = &#39;login&#39;;
+<br />
+
+									...[snip]....
+<br />
+
+<br />
+
+									370行：
+<br />
+
+<br />
+
+									break;
+<br />
+
+<br />
+
+									case &#39;resetpass&#39; :
+<br />
+
+									case &#39;rp&#39; :
+<br />
+
+									    $errors = reset_password($_GET[&#39;key&#39;]);
+<br />
+
+<br />
+
+									    if ( ! is_wp_error($errors) ) {
+<br />
+
+									        wp_redirect(&#39;wp-login.php?checkemail=newpass&#39;);
+<br />
+
+									        exit();
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    wp_redirect(&#39;wp-login.php?action=lostpassword&amp;error=invalidkey&#39;);
+<br />
+
+									    exit();
+<br />
+
+<br />
+
+									break;
+<br />
+
+									...[snip ]...
+<br />
+
+<br />
+
+									如果用户向$key变量提交了数组，就可以滥用口令重置功能绕过第一步，重置管理口令。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									WordPress
+<br />
+
+									---------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://core.trac.wordpress.org/changeset/11798<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-08-10</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-08-30</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-2762" target="_blank">CVE-2009-2762</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/36014" target="_blank">36014</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=13709" target="_blank">13709</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200908-174&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20092762&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-13709&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

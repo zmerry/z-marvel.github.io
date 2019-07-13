@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP ZendEngine变量释放远程拒绝服务漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									此次扫描根据版本信息判断漏洞存在，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP没有对嵌套数组的深度强制任何过滤检查。由于变量注册是以迭代的方式执行的，因此PHP会接受任何深度，直到达到memory_limit。PHP数组的释放是以递归的方式执行的，因此在耗尽了栈极限的时候就会崩溃。<br />
+
+									<br />
+
+									攻击者可以利用上述问题以可控的方式导致PHP崩溃。假设以下PHP代码：<br />
+
+									<br />
+
+									  if (!checkUserPWD($user, $pass)) {<br />
+
+									    $errmsg = &quot;There is problem ...&quot;;<br />
+
+									    displayError($errmsg);<br />
+
+									    notifyAdminOfCrackAttempt();     <br />
+
+									  } else {<br />
+
+									    // do all the fun<br />
+
+									  }<br />
+
+									<br />
+
+									在暴力猜测其他用户的口令时攻击者可能不希望通过发送大量通知邮件通知管理员，但假设目标已经激活了register globals，攻击者提供名为errmsg的深层嵌套数组遍历。然后用户名和口令检查失败，覆盖变量，导致释放用户提供的数组，这样PHP就会崩溃，攻击者可以在暴力猜测口令时不发送通知邮件。在日志文件中会有崩溃记录，但管理员无法看到起因。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2007-03-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2007-03-04</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-4670" target="_blank">CVE-2007-4670</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-1285" target="_blank">CVE-2007-1285</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/22764" target="_blank">22764</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=9995" target="_blank">9995</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200709-019&nbsp;&nbsp;
+
+									CNNVD-200703-217&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20074670&nbsp;&nbsp;
+
+									CNCVE-20071285&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-09995&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

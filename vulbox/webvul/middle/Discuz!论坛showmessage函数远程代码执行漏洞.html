@@ -1,0 +1,421 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Discuz!论坛showmessage函数远程代码执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Discuz!是一款华人地区非常流行的Web论坛程序。
+<br />
+
+<br />
+
+									Discuz!的showmessage函数中eval中执行的参数未初始化，可以任意提交，从而可以执行任意PHP命令。
+<br />
+
+<br />
+
+									以下是有漏洞代码段：
+<br />
+
+<br />
+
+									function showmessage($message, $url_forward = &#39;&#39;, $extra = &#39;&#39;, $forwardtype = 0) {
+<br />
+
+									    extract($GLOBALS, EXTR_SKIP);//危险的用法，未初始化的变量可以直接带进函数，导致了问题的产生
+<br />
+
+									    global $hookscriptmessage, $extrahead, $discuz_uid, $discuz_action, $debuginfo, $seccode, $seccodestatus, $fid, $tid, $charset, $show_message, $inajax, $_DCACHE, $advlist;
+<br />
+
+									    define(&#39;CACHE_FORBIDDEN&#39;, TRUE);
+<br />
+
+									    $hookscriptmessage = $show_message = $message;$messagehandle = 0;
+<br />
+
+									    $msgforward = unserialize($_DCACHE[&#39;settings&#39;][&#39;msgforward&#39;]);
+<br />
+
+									    $refreshtime = intval($msgforward[&#39;refreshtime&#39;]);
+<br />
+
+									    $refreshtime = empty($forwardtype) ? $refreshtime : ($refreshtime ? $refreshtime : 3);
+<br />
+
+									    $msgforward[&#39;refreshtime&#39;] = $refreshtime * 1000;
+<br />
+
+									    $url_forward = empty($url_forward) ? &#39;&#39; : (empty($_DCOOKIE[&#39;sid&#39;]) &amp;&amp; $transsidstatus ? transsid($url_forward) : $url_forward);
+<br />
+
+									    $seccodecheck = $seccodestatus &amp; 2;
+<br />
+
+									    if($_DCACHE[&#39;settings&#39;][&#39;funcsiteid&#39;] &amp;&amp; $_DCACHE[&#39;settings&#39;][&#39;funckey&#39;] &amp;&amp; $funcstatinfo &amp;&amp; !IS_ROBOT) {
+<br />
+
+									        $statlogfile = DISCUZ_ROOT.&#39;./forumdata/funcstat.log&#39;;
+<br />
+
+									        if($fp = @fopen($statlogfile, &#39;a&#39;)) {
+<br />
+
+									            @flock($fp, 2);
+<br />
+
+									            if(is_array($funcstatinfo)) {
+<br />
+
+									                $funcstatinfo = array_unique($funcstatinfo);
+<br />
+
+									                foreach($funcstatinfo as $funcinfo) {
+<br />
+
+									                    fwrite($fp, funcstat_query($funcinfo, $message).&quot;\n&quot;);
+<br />
+
+									                }
+<br />
+
+									            } else {
+<br />
+
+									                fwrite($fp, funcstat_query($funcstatinfo, $message).&quot;\n&quot;);
+<br />
+
+									            }
+<br />
+
+									            fclose($fp);
+<br />
+
+									            $funcstatinfo = $GLOBALS[&#39;funcstatinfo&#39;] = &#39;&#39;;
+<br />
+
+									        }
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    if(!defined(&#39;STAT_DISABLED&#39;) &amp;&amp; STAT_ID &gt; 0 &amp;&amp; !IS_ROBOT) {
+<br />
+
+									        write_statlog($message);
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    if($url_forward &amp;&amp; (!empty($quickforward) || empty($inajax) &amp;&amp; $msgforward[&#39;quick&#39;] &amp;&amp; $msgforward[&#39;messages&#39;] &amp;&amp; @in_array($message, $msgforward[&#39;messages&#39;]))) {
+<br />
+
+									        updatesession();
+<br />
+
+									        dheader(&quot;location: &quot;.str_replace(&#39;&amp;amp;&#39;, &#39;&amp;&#39;, $url_forward));
+<br />
+
+									    }
+<br />
+
+									    if(!empty($infloat)) {
+<br />
+
+									        if($extra) {
+<br />
+
+									            $messagehandle = $extra;
+<br />
+
+									        }
+<br />
+
+									        $extra = &#39;&#39;;
+<br />
+
+									    }
+<br />
+
+									    if(in_array($extra, array(&#39;HALTED&#39;, &#39;NOPERM&#39;))) {
+<br />
+
+									        $discuz_action = 254;
+<br />
+
+									    } else {
+<br />
+
+									        $discuz_action = 255;
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    include language(&#39;messages&#39;);
+<br />
+
+<br />
+
+									    $vars = explode(&#39;:&#39;, $message);//只要含:就可以了
+<br />
+
+									    if(count($vars) == 2 &amp;&amp; isset($scriptlang[$vars[0]][$vars[1]])) {//两个数字即可，用:分割
+<br />
+
+									        eval(&quot;\$show_message = \\&quot;&quot;.str_replace(&#39;&quot;&#39;, &#39;\\&quot;&#39;, $scriptlang[$vars[0]][$vars[1]]).&quot;\\&quot;;&quot;);//$scriptlang未初始化，可以自定义
+<br />
+
+									    } elseif(isset($language[$message])) {
+<br />
+
+									        $pre = $inajax ? &#39;ajax_&#39; : &#39;&#39;;
+<br />
+
+									        eval(&quot;\$show_message = \\&quot;&quot;.(isset($language[$pre.$message]) ? $language[$pre.$message] : $language[$message]).&quot;\\&quot;;&quot;);
+<br />
+
+									        unset($pre);
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    ......
+<br />
+
+									}
+<br />
+
+<br />
+
+									Discuz!的全局机制导致可以任意提交未初始化的参数：
+<br />
+
+<br />
+
+									foreach(array(&#39;_COOKIE&#39;, &#39;_POST&#39;, &#39;_GET&#39;) as $_request) {
+<br />
+
+									    foreach($$_request as $_key =&gt; $_value) {
+<br />
+
+									        $_key{0} != &#39;_&#39; &amp;&amp; $$_key = daddslashes($_value);
+<br />
+
+									    }
+<br />
+
+									}
+<br />
+
+<br />
+
+									misc.php有个可以自定义message的点也是未初始化的：
+<br />
+
+<br />
+
+									elseif($action == &#39;imme_binding&#39; &amp;&amp; $discuz_uid) {
+<br />
+
+<br />
+
+									    if(isemail($id)) {
+<br />
+
+									        $msn = $db-&gt;result_first(&quot;SELECT msn FROM {$tablepre}memberfields WHERE uid=&#39;$discuz_uid&#39;&quot;);
+<br />
+
+									        $msn = explode(&quot;\t&quot;, $msn);
+<br />
+
+									        $id = dhtmlspecialchars(substr($id, 0, strpos($id, &#39;@&#39;)));
+<br />
+
+									        $msn = &quot;$msn[0]\t$id&quot;;
+<br />
+
+									        $db-&gt;query(&quot;UPDATE {$tablepre}memberfields SET msn=&#39;$msn&#39; WHERE uid=&#39;$discuz_uid&#39;&quot;);
+<br />
+
+									        showmessage(&#39;msn_binding_succeed&#39;, &#39;memcp.php&#39;);
+<br />
+
+									    } else {
+<br />
+
+									        if($result == &#39;Declined&#39;) {
+<br />
+
+									            dheader(&quot;Location: memcp.php&quot;);
+<br />
+
+									        } else {
+<br />
+
+									            showmessage($response[&#39;result&#39;]);//$response没有初始化，可以自定义
+<br />
+
+<br />
+
+									        }
+<br />
+
+									    }
+<br />
+
+<br />
+
+									   }
+<br />
+
+<br />
+
+									showmessage函数中$vars = explode(&#39;:&#39;, $message);，然后message可以控制，参数是两个自定义的数组。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Discuz!
+<br />
+
+									-------
+<br />
+
+<br />
+
+									http://www.discuz.net/thread-1537673-1-1.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-01-07</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-01-07</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14300" target="_blank">14300</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

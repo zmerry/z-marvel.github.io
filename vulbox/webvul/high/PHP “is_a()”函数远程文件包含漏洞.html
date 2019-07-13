@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP “is_a()”函数远程文件包含漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是流行的脚本语言环境。<br />
+
+									 <br />
+
+									PHP的&quot;is_a()&quot;函数在实现上存在安全漏洞，远程攻击者可利用此漏洞控制使用受影响函数的PHP应用程序和下层系统。<br />
+
+									 <br />
+
+									此漏洞源于&quot;is_a()&quot;函数在接收字符串为首个参数时的更改，可导致意外调用 &quot;__autoload()&quot;函数。在基于PHP之前操作的某些应用程序以及没有正确验证&quot;__autoload()&quot;函数中的输入时，此更改会打开触发意外攻击，导致执行任意PHP代码。<br />
+
+									 <br />
+
+									&lt;*来源：Cipriano Groenendal<br />
+
+									   <br />
+
+									   链接：http://www.byte.nl/blog/2011/09/23/security-bug-in-is_a-function-in-php-5-3-7-5-3-8/<br />
+
+									 *&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									 <br />
+
+									PHP<br />
+
+									 ---<br />
+
+									 目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：<br />
+
+									 <br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>7</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-11-03</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-12-20</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-3379" target="_blank">CVE-2011-3379</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/49754" target="_blank">49754</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=17806" target="_blank">17806</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201111-128&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20113379&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.5&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2011-5825&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

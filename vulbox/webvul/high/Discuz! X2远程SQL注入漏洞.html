@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Discuz! X2远程SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Discuz论坛软件系统亦称电子公告板（BBS）系统，它伴随社区BBS的流行而成为互联网最重要的应用之一，也逐渐成为网站核心竞争力的标志性体现。
+<br />
+
+<br />
+
+									Discuz! X2在处理请求数据时存在SQL注入漏洞，远程攻击者可利用此漏洞非授权操作数据库。
+<br />
+
+<br />
+
+									漏洞存在于如下代码中：
+<br />
+
+									if(!defined(&#39;IN_DISCUZ&#39;)) {
+<br />
+
+									exit(&#39;Access Denied&#39;);
+<br />
+
+									}
+<br />
+
+									define(&#39;NOROBOT&#39;, TRUE);
+<br />
+
+									@list($_G[&#39;gp_aid&#39;], $_G[&#39;gp_k&#39;], $_G[&#39;gp_t&#39;], $_G[&#39;gp_uid&#39;], $_G[&#39;gp_tableid&#39;]) = explode(&#39;|&#39;, base64_decode($_G[&#39;gp_aid&#39;]));
+<br />
+
+<br />
+
+									if(!empty($_G[&#39;gp_findpost&#39;]) &amp;&amp; ($attach = DB::fetch_first(&quot;SELECT pid, tid FROM &quot;.DB::table(&#39;forum_attachment&#39;).&quot; WHERE aid=&#39;$_G[gp_aid]&#39;&quot;))) {
+<br />
+
+									dheader(&#39;location: forum.php?mod=redirect&amp;goto=findpost&amp;pid=&#39;.$attach[&#39;pid&#39;].&#39;&amp;ptid=&#39;.$attach[&#39;tid&#39;]);
+<br />
+
+									}
+<br />
+
+									变量aid在base64_decode操作后直接进入SQL查询，导致SQL注入问题。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Discuz!
+<br />
+
+									-------
+<br />
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://www.discuz.net/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-06-28</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-06-30</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=17154" target="_blank">17154</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

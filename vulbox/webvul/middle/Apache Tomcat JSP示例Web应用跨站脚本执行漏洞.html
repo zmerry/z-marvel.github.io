@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Apache Tomcat JSP示例Web应用跨站脚本执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									根据版本扫描该漏洞，可能出现误报。<br />
+
+									<br />
+
+									Apache Tomcat是一个流行的开放源码的JSP应用服务器程序。<br />
+
+									<br />
+
+									Apache Tomcat的某些示例脚本实现上存在输入验证漏洞，远程攻击者可能利用此漏洞在用户浏览器环境下执行恶意代码。<br />
+
+									<br />
+
+									Apache Tomcat的示例Web应用程序中的某些JSP文件没有转义某些用户输入，允许远程攻击者通过包含有“;”字符的特制URI请求执行跨站脚本攻击，向用户浏览器会话注入并执行任意Web脚本或HTML代码。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									Apache Tomat<br />
+
+									------------<br />
+
+									[1]目前厂商已经发布升级版本修复此安全问题，建议升级apache tomcat 至4.1.37或之后版本：<br />
+
+									http://tomcat.apache.org/security-4.html<br />
+
+									[2]目前厂商已经发布升级版本修复此安全问题，建议升级apache tomcat 至5.5.25, 5.0.SVN或之后版本：<br />
+
+									http://tomcat.apache.org/security-5.html<br />
+
+									[3]目前厂商已经发布升级版本修复此安全问题，建议升级apache tomcat 至6.0.14或之后版本：<br />
+
+									http://tomcat.apache.org/security-6.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2007-06-14</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-01-08</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-2449" target="_blank">CVE-2007-2449</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/24476" target="_blank">24476</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=10500" target="_blank">10500</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200706-247&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20072449&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									4.3&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-10500&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

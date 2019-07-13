@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标主机运行着存在漏洞的nginx</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。<br />
+
+									<br />
+
+									nginx是多平台的HTTP服务器和邮件代理服务器。<br />
+
+									<br />
+
+									nginx可以被配置为以CGI的方式支持PHP的运行，nginx在处理PHP脚本文件路径的解析时存在问题。如果网站允许上传文件，而且上传文件路径可得到，远程攻击者可以利用此漏洞上传包含恶意代码的文件并得到执行，实现以Web进程权限执行任意命令。<br />
+
+									<br />
+
+									问题出现在nginx传递访问的URL和后续的脚本路径提取过程中，攻击者可以上传允许上传的文件类型，文件中包含恶意代码，得到上传文件通过Web可访问的URL后，在其后添加任意php后缀的文件名进行访问，存在漏洞的处理过程会把上传的文件作为CGI脚本执行。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：<br />
+
+									<br />
+
+									用户可以采用下面的临时解决方案来避免漏洞的威胁：<br />
+
+									<br />
+
+									* 修改运行配置<br />
+
+									  <br />
+
+									  修改配置文件PHP的配置文件php.ini，把默认的如下行：<br />
+
+									  cgi.fix_pathinfo=1<br />
+
+									<br />
+
+									    修改为：<br />
+
+									    cgi.fix_pathinfo=0<br />
+
+									    <br />
+
+									    重启nginx服务器。<br />
+
+									<br />
+
+									厂商补丁：<br />
+
+									 <br />
+
+									Igor Sysoev<br />
+
+									 -----------<br />
+
+									 目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://nginx.org/download/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>2</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-05-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-05-21</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15077" target="_blank">15077</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

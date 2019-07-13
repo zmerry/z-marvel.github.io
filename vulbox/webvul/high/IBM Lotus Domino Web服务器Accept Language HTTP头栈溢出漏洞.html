@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">IBM Lotus Domino Web服务器Accept Language HTTP头栈溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Lotus Domino是集电子邮件、文档数据库、快速应用开发技术以及Web技术为一体的电子邮件与群集平台。
+<br />
+
+<br />
+
+									Lotus Domino Web服务器中负责处理HTTP头的代码存在栈溢出漏洞，Accept Language字段是直接从请求的HTTP头中获得的，然后使用strcpy函数拷贝到了固定长度的栈缓冲区中，因此远程攻击者可以通过包含有GET方式的HTTP 1.1请求覆盖栈缓冲区，导致执行任意指令。
+<br />
+
+<br />
+
+									&lt;*来源：M. Ruks
+<br />
+
+<br />
+
+									  链接：http://secunia.com/advisories/30310/
+<br />
+
+									        http://www-1.ibm.com/support/docview.wss?uid=swg21303057
+<br />
+
+									        http://www.mwrinfosecurity.com/publications/mwri_ibm-lotus-domino-accept-language-stack-overflow_2008-05-20.pdf
+<br />
+
+									        http://secunia.com/advisories/30332/
+<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									IBM
+<br />
+
+									---
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.ers.ibm.com/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2008-05-22</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-11-06</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-2240" target="_blank">CVE-2008-2240</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/29310" target="_blank">29310</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=11911" target="_blank">11911</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200805-295&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20082240&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									10.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-11911&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

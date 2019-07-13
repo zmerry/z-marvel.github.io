@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">多家厂商XML DTD参数实体SOAP服务远程拒绝服务攻击漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									XML DTD(XML的文档类型定义)是近几年来XML技术领域所使用的最广泛的一种模式。<br />
+
+									<br />
+
+									多个不同SOAP服务器在处理部分类型的SOAP请求时存在问题，远程攻击者可以利用这个漏洞对WEB服务进行拒绝服务攻击。<br />
+
+									<br />
+
+									当处理包含引用DTD参数实体的SOAP请求时存在问题，攻击者提交使用恶意构建的DTD数据的SOAP请求，在部分情况下，解析器会在一大段时间后返回内存错误，部分情况下会长时间使CPU利用率达到100，造成拒绝服务。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									IBM<br />
+
+									---<br />
+
+									IBM已经发布了WebSphere AppServer版本5的补丁：<br />
+
+									<br />
+
+									IBM Websphere Application Server 5.0:<br />
+
+									<br />
+
+									IBM APAR PQ70921_Fix.jar<br />
+
+									ftp://ftp.software.ibm.com/software/websphere/appserv/support/fixes/PQ70921/<br />
+
+									<br />
+
+									Microsoft<br />
+
+									---------<br />
+
+									Microsoft已经发布了知识库文章826231，用户可以根据如下信息进行修正：<br />
+
+									<br />
+
+									http://support.microsoft.com/default.aspx?kbid=826231<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2003-12-17</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-12-03</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/9204" target="_blank">9204</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=5791" target="_blank">5791</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

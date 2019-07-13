@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP import_request_variables()函数任意变量覆盖漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									此次扫描根据版本信息判断漏洞存在，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的import_request_variables()函数实现上存在漏洞，远程攻击者可能利用此漏洞控制服务器。<br />
+
+									<br />
+
+									远程攻击者可以利用PHP的import_request_variables()函数覆盖$_*和$*变量（任意php变量），导致执行任意代码。有漏洞代码位于以下文件中：<br />
+
+									<br />
+
+									./ext/standard/basic_functions.c:PHP_FUNCTION(import_request_variables)<br />
+
+									./Zend/zend_hash.c:ZEND_API void<br />
+
+									zend_hash_apply_with_arguments(HashTable *ht, apply_func_args_t<br />
+
+									apply_func, int num_args, ...)<br />
+
+									<br />
+
+									有漏洞的代码段如下：<br />
+
+									<br />
+
+									PHP_FUNCTION(import_request_variables) {<br />
+
+									[..]<br />
+
+									if (prefix_len == 0) {<br />
+
+									php_error_docref(NULL TSRMLS_CC, E_NOTICE, &quot;No prefix specified -<br />
+
+									possible security hazard&quot;);<br />
+
+									}<br />
+
+									[..]<br />
+
+									for (p = types; p &amp;&amp; *p; p++) {<br />
+
+									  switch (*p) {<br />
+
+									   case &#39;g&#39;: case &#39;G&#39;:<br />
+
+									zend_hash_apply_with_arguments(Z_ARRVAL_P(PG(http_globals)[TRACK_VARS_GET]),<br />
+
+									(apply_func_args_t) copy_request_variable, 2, prefix, prefix_len);break;<br />
+
+									   case &#39;p&#39;: case &#39;P&#39;:<br />
+
+									zend_hash_apply_with_arguments(Z_ARRVAL_P(PG(http_globals)[TRACK_VARS_POST]),<br />
+
+									(apply_func_args_t) copy_request_variable, 2, prefix, prefix_len);<br />
+
+									zend_hash_apply_with_arguments(Z_ARRVAL_P(PG(http_globals)[TRACK_VARS_FILES]),<br />
+
+									(apply_func_args_t) copy_request_variable, 2, prefix, prefix_len);<br />
+
+									break;<br />
+
+									   case &#39;c&#39;: case &#39;C&#39;:<br />
+
+									zend_hash_apply_with_arguments(Z_ARRVAL_P(PG(http_globals)[TRACK_VARS_COOKIE]),<br />
+
+									(apply_func_args_t) copy_request_variable, 2, prefix, prefix_len);break;<br />
+
+									  }<br />
+
+									}<br />
+
+									[..]<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2007-03-10</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2007-03-09</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-1396" target="_blank">CVE-2007-1396</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/22886" target="_blank">22886</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=10032" target="_blank">10032</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200703-300&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20071396&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.8&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-10032&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

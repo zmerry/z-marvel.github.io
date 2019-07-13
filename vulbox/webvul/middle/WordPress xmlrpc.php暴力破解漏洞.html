@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">WordPress xmlrpc.php暴力破解漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									WordPress是一种使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设自己的博客。
+<br />
+
+<br />
+
+									WordPress中有一个可以通过xmlrpc.php文件接入的XML-RPC API，可以通过wp.getUsersBlogs方法且提供需要检索的用户名、密码来检索对应用户的博客。如果检索不到用户的博客，WordPress则会在xml中返回“Retrieve the blogs of the users”。而且，通过XMLRPC API中的wp.getUsersBlogs方法进行的检索，即使检索不到用户，也不会被WordPress安装的安全插件记录，所以不会触发用户名、密码输错N次被锁定的情况。因此，攻击者可以通过该方法提交用户名和密码，从而进行暴力破解。
+<br />
+
+<br />
+
+									由于该插件仅检测xmlrpc.php文件是否存在，可能会出现误报，需要人工进行进一步核实。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									安装或者升级Login Security Solutin插件，或者关闭XML-RPC API接口并删除xmlrpc.php文件。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2014-07-22</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2015-03-04</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

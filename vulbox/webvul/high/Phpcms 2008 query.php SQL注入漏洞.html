@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Phpcms 2008 query.php SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									在文件ask/query.php中：
+<br />
+
+									case &#39;edit_answer&#39;:   //第39行
+<br />
+
+										if($dosubmit)
+<br />
+
+										{
+<br />
+
+											if(strlen($answertext) &gt; 10000) showmessage(&#39;回答字数不能超过10000个字符&#39;);
+<br />
+
+											$posts[&#39;message&#39;] = $M[&#39;use_editor&#39;] ? $answertext : strip_tags($answertext);
+<br />
+
+											$answer-&gt;edit($pid, $posts, $_userid);
+<br />
+
+									$answer-&gt;edit在文件ask\include\answer.class.php中：
+<br />
+
+									function edit($id, $posts, $userid)   //第109行
+<br />
+
+										{
+<br />
+
+											$id = intval($id);
+<br />
+
+											$userid = intval($userid);
+<br />
+
+											if(!$id || !is_array($posts)) return false;
+<br />
+
+											if($userid) $sql = &quot; AND userid=$userid&quot;;
+<br />
+
+											return $this-&gt;db-&gt;update($this-&gt;table_posts, $posts, &quot;pid=$id $sql&quot;);
+<br />
+
+										}
+<br />
+
+									db-&gt;update在文件include/ db_mysql.class.php中，代码：
+<br />
+
+									function update($tablename, $array, $where = &#39;&#39;)   //第83行
+<br />
+
+										{
+<br />
+
+											if($where)
+<br />
+
+											{
+<br />
+
+												$sql = &#39;&#39;;
+<br />
+
+												foreach($array as $k=&gt;$v)
+<br />
+
+												{
+<br />
+
+													$sql .= &quot;, `$k`=&#39;$v&#39;&quot;;
+<br />
+
+												}
+<br />
+
+												$sql = substr($sql, 1);
+<br />
+
+												$sql = &quot;UPDATE `$tablename` SET $sql WHERE $where&quot;;
+<br />
+
+									数组变量$posts没有初始化，导致注入漏洞的产生。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+									PHPCMS
+<br />
+
+									----------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+									http://www.phpcms.cn<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>9</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-10-17</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-02-24</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP array_user_key_compare函数内存破坏漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									此次扫描根据版本信息判断漏洞存在，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的内部函数array_user_key_compare()实现上存在内存破坏漏洞，本地攻击者可能利用此漏洞提升自己权限。<br />
+
+									<br />
+
+									当PHP的uksort()函数调用内部的array_user_key_compare()执行用户域密钥比较时，会从Hashbucket a和b获取ZVAL key1和key2。这些ZVAL会被传送给用户域函数，之后调用zval_dtor()释放。<br />
+
+									<br />
+
+									static int array_user_key_compare(const void *a, const void *b TSRMLS_DC)<br />
+
+									{<br />
+
+									    ...<br />
+
+									    zval key1, key2;<br />
+
+									    zval *args[2];<br />
+
+									    ...<br />
+
+									    args[0] = &amp;key1;<br />
+
+									    args[1] = &amp;key2;<br />
+
+									    ...<br />
+
+									    status = call_user_function(EG(function_table), NULL, *BG(user_compare_func_name), &amp;retval, 2, args TSRMLS_CC);<br />
+
+									<br />
+
+									    zval_dtor(&amp;key1);<br />
+
+									    zval_dtor(&amp;key2);<br />
+
+									    ...<br />
+
+									}<br />
+
+									<br />
+
+									但用户域函数可能创建到所提供密钥的引用，如果使用zval_dtor()释放了这些密钥后的变量，引用就可能指向已经释放的内存，导致各种内存破坏问题。成功利用这个漏洞的攻击者可以本地执行任意指令。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2007-03-16</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2007-03-30</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-1484" target="_blank">CVE-2007-1484</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/22990" target="_blank">22990</a>
+
+									<a href="http://www.securityfocus.com/bid/25159" target="_blank">25159</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=10076" target="_blank">10076</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200703-405&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20071484&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									4.6&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-10076&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

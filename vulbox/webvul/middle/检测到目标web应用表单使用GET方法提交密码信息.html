@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标web应用表单使用GET方法提交密码信息</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Web应用表单可以使用GET方法或者POST方法提交表单中的数据。当使用GET方式提交时，所提交的数据可直接通过URL查看到。若web应用表单中存在密码数据且使用GET方式提交时，攻击者将可通过URL或者Referer获取到用户的密码数据，导致用户信息泄露。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									使用POST方法提交web应用表单中的数据，即修改web应用表单中的method属性值为“post”。
+<br />
+
+<br />
+
+									示例：
+<br />
+
+<br />
+
+									若使用GET方式提交密码数据的form表单为：
+<br />
+
+<br />
+
+									&lt;form id=&quot;1&quot; name=&quot;login&quot; method=&quot;get&quot; action=&quot;login.php&quot;&gt;
+<br />
+
+									    &lt;p&gt;Username: &lt;input type=&quot;text&quot; name=&quot;username&quot; /&gt;&lt;/p&gt;
+<br />
+
+									    &lt;p&gt;Password: &lt;input type=&quot;password&quot; name=&quot;password&quot; /&gt;&lt;/p&gt;
+<br />
+
+									    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+<br />
+
+									&lt;/form&gt;
+<br />
+
+<br />
+
+									则将form表单中的method属性值由“get”修改为“post”即可。修改后的内容为：
+<br />
+
+<br />
+
+									&lt;form id=&quot;1&quot; name=&quot;login&quot; method=&quot;post&quot; action=&quot;login.php&quot;&gt;
+<br />
+
+									    &lt;p&gt;Username: &lt;input type=&quot;text&quot; name=&quot;username&quot; /&gt;&lt;/p&gt;
+<br />
+
+									    &lt;p&gt;Password: &lt;input type=&quot;password&quot; name=&quot;password&quot; /&gt;&lt;/p&gt;
+<br />
+
+									    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+<br />
+
+									&lt;/form&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2014-11-14</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									0.0(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

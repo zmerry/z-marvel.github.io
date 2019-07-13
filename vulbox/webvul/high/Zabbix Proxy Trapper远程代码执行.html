@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Zabbix Proxy Trapper远程代码执行</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									zabbix是一个基于WEB界面的提供分布式系统监视以及网络监视功能的企业级的开源解决方案。
+<br />
+
+									zabbix能监视各种网络参数，保证服务器系统的安全运营；并提供灵活的通知机制以让系统管理员快速定位/解决存在的各种问题。
+<br />
+
+									zabbix由2部分构成，zabbix server与可选组件zabbix agent。
+<br />
+
+									zabbix server可以通过SNMP，zabbix agent，ping，端口监视等方法提供对远程服务器/网络状态的监视，数据收集等功能，它可以运行在Linux，Solaris，HP-UX，AIX，Free BSD，Open BSD，OS X等平台上。
+<br />
+
+<br />
+
+									Zabbix的Trapper功能是一个提供给Zabbix Proxy和Zabbix Server的网络服务，通过TCP端口10050进行通信，类似一种api服务，其中有”discovery data”和”command”这两个请求,攻击者通过discovery data发送恶意数据到zabbix trapper，在通过command请求执行我们的恶意数据，从而到底远程代码执行漏洞。
+<br />
+
+<br />
+
+									漏洞影响版本：
+<br />
+
+									Zabbix 2.4.7 – 2.4.8r1<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									1、在Zabbix Server上增加ACL规则，限制10050端口允许通信的IP来源；
+<br />
+
+									2、删除zabbix server上默认的脚本，对应的功能Administration-&gt; Scripts-&gt; Checkmarks；
+<br />
+
+									3、在插入zabbix数据库Zabbix.interface表中的ip字段时，验证所有的ip地址。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>8</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2017-04-28</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2017-06-04</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-2824" target="_blank">CVE-2017-2824</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

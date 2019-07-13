@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP trim()/ltrim()/rtrim()函数中断信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的trim()、ltrim()、rtrim()函数中存在信息泄露漏洞：<br />
+
+									<br />
+
+									static void php_do_trim(INTERNAL_FUNCTION_PARAMETERS, int mode)<br />
+
+									{<br />
+
+									    char *str;<br />
+
+									    char *what = NULL;<br />
+
+									    int str_len, what_len = 0;<br />
+
+									    <br />
+
+									    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;s|s&quot;, &amp;str, &amp;str_len, &amp;what, &amp;what_len) == FAILURE) {<br />
+
+									        return;<br />
+
+									    }<br />
+
+									    <br />
+
+									    php_trim(str, str_len, what, what_len, return_value, mode TSRMLS_CC);<br />
+
+									}<br />
+
+									<br />
+
+									zend_parse_parameters()函数最多将2个字符串参数检索到了本地变量，放松了这些变量与原始ZVAL之间的联系。问题是在原始 ZVAL被中断修改的情况下，字符串指针会指向已释放的或重用的内存。这种情况下的中断攻击也比较容易，因为 zend_parse_parameters()支持对象的__toString()方式。攻击者只需以strtok()第二个参数的形式传送对象，由于 call time pass by reference功能，之后攻击者可以从__toString()方式杀死第一个字符串参数，并重用于哈希表。这会导致php_trim()作用于哈希表的内存而不是字符串的内存，允许攻击者泄露重要的内部内存偏移。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+									<br />
+
+									如果您能承受该风险，您可以继续使用该服务，并时刻关注官方网站，获取升级补丁和升级包，及时更新；<br />
+
+									如果您不能承受该风险，请关闭该服务，或在防火墙中关闭服务端口。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-06-07</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-06-23</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-2190" target="_blank">CVE-2010-2190</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15231" target="_blank">15231</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201006-072&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20102190&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-1200&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

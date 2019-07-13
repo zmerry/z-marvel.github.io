@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP parse_str()函数中断内存破坏漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的parse_str()函数中存在内存破坏漏洞：<br />
+
+									<br />
+
+									PHP_FUNCTION(parse_str)<br />
+
+									{<br />
+
+									    char *arg;<br />
+
+									    zval *arrayArg = NULL;<br />
+
+									    char *res = NULL;<br />
+
+									    int arglen;<br />
+
+									<br />
+
+									    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;s|z&quot;, &amp;arg, &amp;arglen, &amp;arrayArg) == FAILURE) {<br />
+
+									        return;<br />
+
+									    }<br />
+
+									<br />
+
+									    res = estrndup(arg, arglen);<br />
+
+									<br />
+
+									    if (arrayArg == NULL) {<br />
+
+									        zval tmp;<br />
+
+									<br />
+
+									        if (!EG(active_symbol_table)) {<br />
+
+									            zend_rebuild_symbol_table(TSRMLS_C);<br />
+
+									        }<br />
+
+									        Z_ARRVAL(tmp) = EG(active_symbol_table);<br />
+
+									        sapi_module.treat_data(PARSE_STRING, res, &amp;tmp TSRMLS_CC);<br />
+
+									    } else  {<br />
+
+									        /* Clear out the array that was passed in. */<br />
+
+									        zval_dtor(arrayArg);<br />
+
+									        array_init(arrayArg);<br />
+
+									        <br />
+
+									        sapi_module.treat_data(PARSE_STRING, res, arrayArg TSRMLS_CC);<br />
+
+									    }<br />
+
+									}<br />
+
+									<br />
+
+									通过引用函数传送了可选的第二个参数，这意味着可通过用户空间中断进行修改。通过深层嵌套的数组就可以触发中断：<br />
+
+									<br />
+
+									if(++nest_level &gt; PG(max_input_nesting_level)) {<br />
+
+									    HashTable *ht;<br />
+
+									    /* too many levels of nesting */<br />
+
+									<br />
+
+									    if (track_vars_array) {<br />
+
+									        ht = Z_ARRVAL_P(track_vars_array);<br />
+
+									        zend_hash_del(ht, var, var_len + 1);<br />
+
+									    } else if (PG(register_globals)) {<br />
+
+									        ht = EG(active_symbol_table);<br />
+
+									        zend_hash_del(ht, var, var_len + 1);<br />
+
+									    }<br />
+
+									<br />
+
+									    zval_dtor(val);<br />
+
+									<br />
+
+									    /* do not output the error message to the screen,<br />
+
+									     this helps us to to avoid &quot;information disclosure&quot; */<br />
+
+									    if (!PG(display_errors)) {<br />
+
+									        php_error_docref(NULL TSRMLS_CC, E_WARNING, &quot;Input variable nesting level exceeded ld. To increase the limit change max_input_nesting_level in php.ini.&quot;, PG(max_input_nesting_level));<br />
+
+									    }<br />
+
+									    efree(var_orig);<br />
+
+									    return;<br />
+
+									}<br />
+
+									<br />
+
+									将ArrayArg更改为字符串或int，就可以触发内存破坏，导致执行任意代码。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+									<br />
+
+									如果您能承受该风险，您可以继续使用该服务，并时刻关注官方网站，获取升级补丁和升级包，及时更新；<br />
+
+									如果您不能承受该风险，请关闭该服务，或在防火墙中关闭服务端口。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-06-07</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-07-08</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-2191" target="_blank">CVE-2010-2191</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15309" target="_blank">15309</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201006-073&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20102191&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.4&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-1206&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

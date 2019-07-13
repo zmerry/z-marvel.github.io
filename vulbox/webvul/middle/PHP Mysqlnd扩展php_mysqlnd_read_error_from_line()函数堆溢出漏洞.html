@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP Mysqlnd扩展php_mysqlnd_read_error_from_line()函数堆溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP所使用的Mysqlnd扩展用于处理与mysql服务器的通讯和实现mysql协议。该扩展的php_mysqlnd_read_error_from_line()函数中存在堆溢出漏洞：<br />
+
+									<br />
+
+									if (buf_len &gt; 2) {<br />
+
+									    *error_no = uint2korr(p);<br />
+
+									    p+= 2;<br />
+
+									    /* sqlstate is following */<br />
+
+									    if (*p == &#39;#&#39;) {<br />
+
+									        memcpy(sqlstate, ++p, MYSQLND_SQLSTATE_LENGTH);<br />
+
+									        p+= MYSQLND_SQLSTATE_LENGTH;<br />
+
+									    }<br />
+
+									    error_msg_len = buf_len - (p - buf);<br />
+
+									    error_msg_len = MIN(error_msg_len, error_buf_len - 1);<br />
+
+									    memcpy(error, p, error_msg_len);<br />
+
+									} else {<br />
+
+									    *error_no = CR_UNKNOWN_ERROR;<br />
+
+									    memcpy(sqlstate, unknown_sqlstate, MYSQLND_SQLSTATE_LENGTH);<br />
+
+									}<br />
+
+									<br />
+
+									上述代码确保buf_len大于2，但没有考虑SQLSTATE，因此对于buf_len &gt; 2且buf_len &lt; 2 + MYSQLND_SQLSTATE_LENGTH + 1可能出现堆溢出。在这种情况下error_msg_len为负数，导致4G数据的memcpy()操作。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									目前厂商已经发布了更新SVN信息以修复此安全问题，获取链接： <br />
+
+									http://svn.php.net/viewvc?view=revision&amp;revision=298703：<br />
+
+									<br />
+
+									厂商补丁：<br />
+
+									PHP<br />
+
+									---<br />
+
+									目前厂商已经发布升级版本修复此安全问题，建议升级PHP产品至5.3.2版本或之后版本，请到厂商的官方页面下载升级版本：<br />
+
+									http://cn2.php.net/downloads.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-08-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-06-04</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-3063" target="_blank">CVE-2010-3063</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/40461" target="_blank">40461</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15158" target="_blank">15158</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201008-230&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20103063&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

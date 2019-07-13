@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHPWind wap_mod.php模块字符转换修改管理员密码漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHPWind是一款国内比较流行的基于PHP的Web论坛程序。
+<br />
+
+<br />
+
+									PHPWind过分相信从数据库中取出的变量，从而可能可以更改一些数据处理流程，导致任意修改其他用户的密码，包括管理员。
+<br />
+
+<br />
+
+									问题代码在wap_mod.php中：
+<br />
+
+<br />
+
+									    &lt;code&gt;
+<br />
+
+									function wap_login($username,$password){
+<br />
+
+									    global $db,$timestamp,$onlineip,$db_ckpath,$db_ckdomain,$db_bbsurl;
+<br />
+
+<br />
+
+									    $men=$db-&gt;get_one(&quot;SELECT m.uid,m.password,m.groupid,m.yz,md.onlineip FROM pw_members m LEFT JOIN pw_memberdata md ON md.uid=m.uid WHERE username=&#39;$username&#39;&quot;);
+<br />
+
+									    if($men){
+<br />
+
+									        $e_login=explode(&quot;|&quot;,$men[&#39;onlineip&#39;]);
+<br />
+
+									        if($e_login[0]!=$onlineip.&#39; *&#39; || ($timestamp-$e_login[1])&gt;600 || $e_login[2]&gt;1 ){
+<br />
+
+									            $men_uid=$men[&#39;uid&#39;];
+<br />
+
+									            $men_pwd=$men[&#39;password&#39;];
+<br />
+
+									            $check_pwd=$password;
+<br />
+
+									            if($men[&#39;yz&#39;] &gt; 2){
+<br />
+
+									                wap_msg(&#39;c&#39;);
+<br />
+
+									            }
+<br />
+
+									            if(strlen($men_pwd)==16){
+<br />
+
+									                $check_pwd=substr($password,8,16);/*支持 16 位 md5截取密码*/
+<br />
+
+									            }
+<br />
+
+									            if($men_pwd==$check_pwd){
+<br />
+
+									                if(strlen($men_pwd)==16){
+<br />
+
+									                    $db-&gt;update(&quot;UPDATE pw_members SET password=&#39;$password&#39; WHERE uid=&#39;$men_uid&#39;&quot;);
+<br />
+
+									                }
+<br />
+
+									                $L_groupid=(int)$men[&#39;groupid&#39;];
+<br />
+
+									                Cookie(&quot;ck_info&quot;,$db_ckpath.&quot;\t&quot;.$db_ckdomain);
+<br />
+
+									            }else{
+<br />
+
+									                global $L_T;
+<br />
+
+									                $L_T=$e_login[2];
+<br />
+
+									                $L_T ? $L_T--:$L_T=5;
+<br />
+
+									                $F_login=&quot;$onlineip *|$timestamp|$L_T&quot;;
+<br />
+
+									                $db-&gt;update(&quot;UPDATE pw_memberdata SET onlineip=&#39;$F_login&#39; WHERE uid=&#39;$men_uid&#39;&quot;);
+<br />
+
+									                wap_msg(&#39;login_pwd_error&#39;);
+<br />
+
+									            }
+<br />
+
+									        }else{
+<br />
+
+									            global $L_T;
+<br />
+
+									            $L_T=600-($timestamp-$e_login[1]);
+<br />
+
+									            wap_msg(&#39;login_forbid&#39;);
+<br />
+
+									        }
+<br />
+
+									    } else {
+<br />
+
+									        global $errorname;
+<br />
+
+									        $errorname=$username;
+<br />
+
+									        wap_msg(&#39;user_not_exists&#39;);
+<br />
+
+									    }
+<br />
+
+									    Cookie(&quot;winduser&quot;,StrCode($men_uid.&quot;\t&quot;.PwdCode($password)));
+<br />
+
+									    Cookie(&#39;lastvisit&#39;,&#39;&#39;,0);
+<br />
+
+									    wap_msg(&#39;wap_login&#39;,&#39;index.php&#39;);
+<br />
+
+									}    
+<br />
+
+									    &lt;/code&gt;
+<br />
+
+<br />
+
+									攻击者无需注册账户，只要精心构造username即可利用此漏洞。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									PHPWind
+<br />
+
+									-------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.phpwind.net/read-htm-tid-643202.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>1</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2008-08-15</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-08-14</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=12286" target="_blank">12286</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标Redis数据库未授权访问</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Redis是一个NoSQL的数据库(NoSQl泛指非关系型的数据库,常用的mysql是关系型数据库)，数据通过键/值对存储在内存中。默认配置中，在服务运行的时候，会开放一个没有验证的TCP/6379端口,用来进行远程连接数据库。
+<br />
+
+									由于Redis默认是运行在TCP的6379端口上的，而且默认安装没有设置用户访问认证，也没有访问IP限制，这样导致确定端口开放后，对Redis服务直接匿名访问,可对数据库进行匿名操作，信息泄露，执行命令等操作，造成严重问题。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									在Redus的配置文件中进行如下修改：
+<br />
+
+									配置port，修改端口号。
+<br />
+
+									配置bind选项，限定可以连接Redis服务器的IP。
+<br />
+
+									配置requirepass选项，设置密码。
+<br />
+
+									配置rename-command CONFIG &quot;&quot;，禁用一些命令。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2014-12-16</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2014-12-16</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

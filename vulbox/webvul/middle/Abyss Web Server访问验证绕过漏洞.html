@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Abyss Web Server访问验证绕过漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Abyss Web Server是一宽免费的小型的WEB服务程序。<br />
+
+									<br />
+
+									Abyss Web Server在对密码保护目录访问处理存在问题，远程攻击者可以利用这个漏洞绕过限制，未验证访问服务器资源。<br />
+
+									<br />
+
+									此问题只存在在linux系统，而当保护的文件夹在FAT32系统上，这个条件不是很常见，但由于Abyss配置方便，使用Linux提供共享一个FAT32目录也经常存在。当管理员在Linux上运行Abyss Web服务器，并使用密码对FAT32目录进行防护时，攻击者可以简单的提交点或者HTTP编码的点(2e)来绕过验证，另外字符空格(&#39; &#39;, 20)和&#39;:&#39; (3a)同样会引起此问题。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									Aprelium Technologies<br />
+
+									---------------------<br />
+
+									目前厂商已经在最新版本的软件中修复了这个安全问题，请到厂商的主页下载：<br />
+
+									<br />
+
+									Aprelium Technologies Upgrade Abyss Web Server 1.2<br />
+
+									http://www.aprelium.com/abyssws/download.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2003-12-12</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-12-03</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/9171" target="_blank">9171</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=5771" target="_blank">5771</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Systemd is now the default in RHEL / CentOS 7, the following post is a cheatsheet for systemd commands, useful for local system enumeration. Systemd is becoming the default on most distrosSystemd is">
+<meta name="keywords" content="原创,Linux,等保">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cheat Sheet RHEL&#x2F;CentOS 7">
+<meta property="og:url" content="http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="Systemd is now the default in RHEL / CentOS 7, the following post is a cheatsheet for systemd commands, useful for local system enumeration. Systemd is becoming the default on most distrosSystemd is">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-03T04:04:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cheat Sheet RHEL&#x2F;CentOS 7">
+<meta name="twitter:description" content="Systemd is now the default in RHEL / CentOS 7, the following post is a cheatsheet for systemd commands, useful for local system enumeration. Systemd is becoming the default on most distrosSystemd is">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Cheat Sheet RHEL/CentOS 7</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-VI/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-Reverse-Shell/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&text=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&title=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&is_video=false&description=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet RHEL/CentOS 7&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&title=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&title=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&title=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&title=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&name=Cheat Sheet RHEL/CentOS 7&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#Systemd-is-becoming-the-default-on-most-distros"><span class="toc-number">1.</span> <span class="toc-text">Systemd is becoming the default on most distros</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Systemd-Service-Commands"><span class="toc-number"></span> <span class="toc-text">Systemd Service Commands</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Systemd-Information-Commands"><span class="toc-number"></span> <span class="toc-text">Systemd Information Commands</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Changing-System-State"><span class="toc-number"></span> <span class="toc-text">Changing System State</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Cheat Sheet RHEL/CentOS 7
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-03T04:04:50.000Z" itemprop="datePublished">2019-03-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/操作系统/">操作系统</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Linux/">Linux</a>, <a class="tag-link" href="/tags/原创/">原创</a>, <a class="tag-link" href="/tags/等保/">等保</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <a id="more"></a>
+<p>Systemd is now the default in RHEL / CentOS 7, the following post is a cheat<br>sheet for systemd commands, useful for local system enumeration.</p>
+<h5 id="Systemd-is-becoming-the-default-on-most-distros"><a href="#Systemd-is-becoming-the-default-on-most-distros" class="headerlink" title="Systemd is becoming the default on most distros"></a>Systemd is becoming the default on most distros</h5><p>Systemd is becoming the default in many distros, <b>RHEL, CentOS, Ubuntu 15</b><br>and it offers a single command to manage your system, instead of switching<br>between <code>chkconfig</code> or running init scripts.</p>
+<h2 id="Systemd-Service-Commands"><a href="#Systemd-Service-Commands" class="headerlink" title="Systemd Service Commands"></a>Systemd Service Commands</h2><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>systemctl stop service-name</code></td>
+<td>systemd stop running service</td>
+</tr>
+<tr>
+<td><code>systemctl start service-name</code></td>
+<td>systemctl start service</td>
+</tr>
+<tr>
+<td><code>systemctl restart service-name</code></td>
+<td>systemd restart running service</td>
+</tr>
+<tr>
+<td><code>systemctl reload service-name</code></td>
+<td>reloads all config files for service</td>
+</tr>
+<tr>
+<td><code>systemctl status service-name</code></td>
+<td>systemctl show if service is running</td>
+</tr>
+<tr>
+<td><code>systemctl enable service-name</code></td>
+<td>systemctl start service at boot</td>
+</tr>
+<tr>
+<td><code>systemctrl disable service-name</code></td>
+<td>systemctl - disable service at boot</td>
+</tr>
+<tr>
+<td><code>systemctl show service-name</code></td>
+<td>show systemctl service info</td>
+</tr>
+<tr>
+<td><code>systemctl -H target command service-name</code></td>
+<td>run systemctl commands remotely</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Systemd-Information-Commands"><a href="#Systemd-Information-Commands" class="headerlink" title="Systemd Information Commands"></a>Systemd Information Commands</h2><p>Systemd commands that show useful system information.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>systemctl list-dependencies</code></td>
+<td>show and units dependencies</td>
+</tr>
+<tr>
+<td><code>systemctl list-sockets</code></td>
+<td>systemd list sockets and activities</td>
+</tr>
+<tr>
+<td><code>systemctl list-jobs</code></td>
+<td>view active systemd jobs</td>
+</tr>
+<tr>
+<td><code>systemctl list-unit-files</code></td>
+<td>systemctl list unit files and their states</td>
+</tr>
+<tr>
+<td><code>systemctl list-units</code></td>
+<td>systemctl list default target (like run level)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Changing-System-State"><a href="#Changing-System-State" class="headerlink" title="Changing System State"></a>Changing System State</h2><p>systemd reboot, shutdown, default target etc</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>systemctl reboot</code></td>
+<td>systemctl reboot the system</td>
+</tr>
+<tr>
+<td><code>systemctl poweroff</code></td>
+<td>systemctl shutdown (power off the system)</td>
+</tr>
+<tr>
+<td><code>systemctl emergency</code></td>
+<td>Put in emergency mode</td>
+</tr>
+<tr>
+<td><code>systemctl default</code></td>
+<td>systemctl default mode</td>
+</tr>
+</tbody>
+</table>
+<p>##Systemctl Viewing Log Messages</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>journalctl</code></td>
+<td>show all collected log messages</td>
+</tr>
+<tr>
+<td><code>journalctl -u sshd.service</code></td>
+<td>see sshd service messages</td>
+</tr>
+<tr>
+<td><code>journelctl -f</code></td>
+<td>follow messages as they appear</td>
+</tr>
+<tr>
+<td><code>journelctl -k</code></td>
+<td>show kernel messages only</td>
+</tr>
+</tbody>
+</table>
+<p>原文链接：<a href="http://highon.coffee/" target="_blank" rel="external">HighOn.Coffee</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#Systemd-is-becoming-the-default-on-most-distros"><span class="toc-number">1.</span> <span class="toc-text">Systemd is becoming the default on most distros</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Systemd-Service-Commands"><span class="toc-number"></span> <span class="toc-text">Systemd Service Commands</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Systemd-Information-Commands"><span class="toc-number"></span> <span class="toc-text">Systemd Information Commands</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Changing-System-State"><span class="toc-number"></span> <span class="toc-text">Changing System State</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&text=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&title=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&is_video=false&description=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet RHEL/CentOS 7&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&title=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&title=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&title=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&title=Cheat Sheet RHEL/CentOS 7"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/&name=Cheat Sheet RHEL/CentOS 7&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

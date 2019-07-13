@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">IBM WebSphere应用服务器拒绝服务及绕过安全限制漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									版本扫描可能发生漏报<br />
+
+									<br />
+
+									IBM Websphere应用服务器以Java和Servlet引擎为基础，支持多种HTTP服务，可帮助用户完成从开发、发布到维护交互式的动态网站的所有工作。<br />
+
+									 <br />
+
+									 IBM WebSphere应用服务器的HTTP Transport组件中的HTTP_Request_Parser方式没有正确地验证用户所提交的HTTP请求。如果远程攻击者在请求中包含有超长的HTTP Host头的话，就可能导致拒绝服务（0C4控制器异常结束和应用程序挂起）。<br />
+
+									 <br />
+
+									 如果将Certificate Store Collections配置为使用证书撤销列表（CRL）的话，WebSphere应用服务器的Web Services Security组件就没有对PKIXBuilderParameters对象调用setRevocationEnabled方式，导致Java安全方式无法检查X.509证书的撤销状态。远程攻击者可以通过发送带有已撤销证书的SOAP消息绕过预期的访问限制。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									IBM <br />
+
+									---------  <br />
+
+									目前 ibm 已经发布 websphere 最新版本, 请到厂商的官方页面下载最新版本或联系IBM公司提供升级解决方案:  <br />
+
+									链接：http://www-03.ibm.com/software/products/en/was-overview<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>7</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2008-10-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2008-10-29</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-4678" target="_blank">CVE-2008-4678</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-4679" target="_blank">CVE-2008-4679</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/31839" target="_blank">31839</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=12536" target="_blank">12536</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200810-379&nbsp;&nbsp;
+
+									CNNVD-200810-380&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20084678&nbsp;&nbsp;
+
+									CNCVE-20084679&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.8&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-12536&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

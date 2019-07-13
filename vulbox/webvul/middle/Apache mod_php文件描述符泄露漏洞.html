@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Apache mod_php文件描述符泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Apache Web Server是一款开放源代码的HTTP服务程序。<br />
+
+									<br />
+
+									Apache Web在使用mod_php模块时执行外部程序处理不正确，远程攻击者利用这个漏洞重用httpd守护进程的描述符，控制TCP 80端口。<br />
+
+									<br />
+
+									当mod_php启动外部应用程序时，它会继承打开监听的httpd套接口，通过fork(), dup() close() 和accept()调用的帮助，外部程序可以使自己变成为监听的httpd服务程序。意味着利用这个漏洞攻击者可以绑定恶意的服务程序来代替Apache httpd服务程序。<br />
+
+									<br />
+
+									要注意的是要利用这个漏洞必须在&#39;safe_mode&#39; PHP选项关闭的情况下才能触发。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时处理办法:<br />
+
+									<br />
+
+									如果您不能立刻安装补丁或者升级，NSFOCUS建议您采取以下措施以降低威胁：<br />
+
+									<br />
+
+									* 编辑php.ini文件，启用&#39;safe_mode&#39;选项。<br />
+
+									<br />
+
+									厂商解决方案:<br />
+
+									<br />
+
+									Apache Group<br />
+
+									------------<br />
+
+									Georage Guninski提供如下第三方补丁：<br />
+
+									<br />
+
+									*** src/main/http_main.c.old    Sun Oct 20 14:13:47 2002<br />
+
+									--- src/main/http_main.c        Sun Oct 20 14:44:18 2002<br />
+
+									*************** static int make_sock(pool *p, const stru<br />
+
+									*** 3784,3792 ****<br />
+
+									--- 3784,3795 ----<br />
+
+									         GETPRIVMODE();<br />
+
+									   #endif<br />
+
+									<br />
+
+									+ if (fcntl(s,F_SETFD,FD_CLOEXEC)== -1) ap_log_error(APLOG_MARK, APLOG_CRIT, <br />
+
+									 server_conf, &quot;make_sock: could not do F_SETFD&quot;);<br />
+
+									       if (bind(s, (struct sockaddr *) server, sizeof(struct sockaddr_in)) == -1) {<br />
+
+									         ap_log_error(APLOG_MARK, APLOG_CRIT, server_conf,<br />
+
+									              &quot;make_sock: could not bind to s&quot;, addr);<br />
+
+									+ // by georgi<br />
+
+									+<br />
+
+									   #ifdef MPE<br />
+
+									         if (ntohs(server-&gt;sin_port) &lt; 1024)<br />
+
+									             GETUSERMODE();<br />
+
+									<br />
+
+									建议升级Apache产品至最新版本，请到厂商的主页下载：<br />
+
+									http://httpd.apache.org/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2002-11-12</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-12-03</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/6117" target="_blank">6117</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=3790" target="_blank">3790</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

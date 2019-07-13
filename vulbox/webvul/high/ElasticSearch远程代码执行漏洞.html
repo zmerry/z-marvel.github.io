@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">ElasticSearch远程代码执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									ElasticSearch（简称 ES） 是一个基于 Lucene 构建的开源，分布式，RESTful 搜索引擎。 设计用于云计算中，能够达到搜索实时、稳定、可靠和快速，并且安装使用方便。 支持通过 HTTP 请求，使用 JSON 进行数据索引。
+<br />
+
+									由于ElasticSearch某人开启了动态脚本执行功能，导致任意用户可以通过构造特制的提交，执行任意Java代码。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									官方尚未公开发布此漏洞的1.2最新版本。
+<br />
+
+									绿盟科技建议此漏洞修复方案：
+<br />
+
+									在配置文件elasticsearch.yml里设置script.disable_dynamic: true
+<br />
+
+									Elasticsearch官方
+<br />
+
+									-------
+<br />
+
+									http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html#_disabling_dynamic_scripts<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2014-05-21</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2014-05-21</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CVE-2014-3120&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

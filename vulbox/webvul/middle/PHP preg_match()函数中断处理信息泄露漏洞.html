@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP preg_match()函数中断处理信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的preg_match()函数中存在信息泄露漏洞：<br />
+
+									<br />
+
+									static void php_do_pcre_match(INTERNAL_FUNCTION_PARAMETERS, int global) /* {{{ */<br />
+
+									{<br />
+
+									    ...<br />
+
+									<br />
+
+									    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, ((global) ? &quot;ssz|ll&quot; : &quot;ss|zll&quot;), &amp;regex, &amp;regex_len,<br />
+
+									                              &amp;subject, &amp;subject_len, &amp;subpats, &amp;flags, &amp;start_offset) == FAILURE) {<br />
+
+									        RETURN_FALSE;<br />
+
+									    }<br />
+
+									    <br />
+
+									    /* Compile regex or get it from cache. */<br />
+
+									    if ((pce = pcre_get_compiled_regex_cache(regex, regex_len TSRMLS_CC)) == NULL) {<br />
+
+									        RETURN_FALSE;<br />
+
+									    }<br />
+
+									<br />
+
+									    php_pcre_match_impl(pce, subject, subject_len, return_value, subpats,<br />
+
+									        global, ZEND_NUM_ARGS() &gt;= 4, flags, start_offset TSRMLS_CC);<br />
+
+									}<br />
+
+									/* }}} */<br />
+
+									<br />
+
+									/* {{{ php_pcre_match_impl() */<br />
+
+									PHPAPI void php_pcre_match_impl(pcre_cache_entry *pce, char *subject, int subject_len, zval *return_value,<br />
+
+									    zval *subpats, int global, int use_flags, long flags, long start_offset TSRMLS_DC)<br />
+
+									{<br />
+
+									    ...<br />
+
+									<br />
+
+									    /* Overwrite the passed-in value for subpatterns with an empty array. */<br />
+
+									    if (subpats != NULL) {<br />
+
+									        zval_dtor(subpats);<br />
+
+									        array_init(subpats);<br />
+
+									    }<br />
+
+									<br />
+
+									    subpats_order = global ? PREG_PATTERN_ORDER : 0;<br />
+
+									<br />
+
+									    if (use_flags) {<br />
+
+									        offset_capture = flags &amp; PREG_OFFSET_CAPTURE;<br />
+
+									<br />
+
+									第三个函数用于捕获匹配，在函数内部销毁并用数组替换。这意味着如果是对象的情况，就会调用对象的destructor。因此对象的 __destruct()方式可以对第二个函数参数发动中断攻击，允许泄露哈希表内存的内容以获得重要的内存偏移。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+									<br />
+
+									如果您能承受该风险，您可以继续使用该服务，并时刻关注官方网站，获取升级补丁和升级包，及时更新；<br />
+
+									如果您不能承受该风险，请关闭该服务，或在防火墙中关闭服务端口。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-06-07</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-07-08</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-2191" target="_blank">CVE-2010-2191</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15308" target="_blank">15308</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201006-073&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20102191&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.4&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-1206&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

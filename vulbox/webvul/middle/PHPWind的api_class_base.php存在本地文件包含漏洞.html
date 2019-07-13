@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHPWind的api/class_base.php存在本地文件包含漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHPWind是一款国内比较流行的基于PHP的Web论坛程序。
+<br />
+
+<br />
+
+									PHPWind的api/class_base.php、apps/share/index.php、apps/groups/index.php页面的多个本地和远程文件包含漏洞导致执行任意PHP代码。
+<br />
+
+<br />
+
+									1. api/class_base.php文件中callback函数没有正确地过滤$mode变量，导致任意包含本地文件，从而可以执行任意PHP命令。
+<br />
+
+<br />
+
+									在api/class_base.php文件中：
+<br />
+
+<br />
+
+									    function callback($mode, $method, $params) {
+<br />
+
+									        if (!isset($this-&gt;classdb[$mode])) {
+<br />
+
+									            if (!file_exists(R_P.&#39;api/class_&#39; . $mode . &#39;.php&#39;)) {
+<br />
+
+									                return new ErrorMsg(API_MODE_NOT_EXISTS, &quot;Class($mode) Not Exists&quot;);
+<br />
+
+									            }
+<br />
+
+									            require_once(R_P.&#39;api/class_&#39; . $mode . &#39;.php&#39;); //这里
+<br />
+
+									            $this-&gt;classdb[$mode] = new $mode($this);
+<br />
+
+									        }
+<br />
+
+									        if (!method_exists($this-&gt;classdb[$mode], $method)) {
+<br />
+
+									            return new ErrorMsg(API_METHOD_NOT_EXISTS, &quot;Method($method of $mode) Not Exists&quot;);
+<br />
+
+									        }
+<br />
+
+									        !is_array($params) &amp;&amp; $params = array();
+<br />
+
+									        return @call_user_func_array(array(&amp;$this-&gt;classdb[$mode], $method), $params);
+<br />
+
+									    }
+<br />
+
+<br />
+
+									继续跟具体变量传递的过程，上面的函数在run()里有调用：
+<br />
+
+<br />
+
+									    function run($request) {
+<br />
+
+									        $request = $this-&gt;strips($request); 
+<br />
+
+									        if (isset($request[&#39;type&#39;]) &amp;&amp; $request[&#39;type&#39;] == &#39;uc&#39;) {
+<br />
+
+									            $this-&gt;type        = &#39;uc&#39;;
+<br />
+
+									            $this-&gt;apikey    = $GLOBALS[&#39;uc_key&#39;];//注意这个变量也是该漏洞的关键
+<br />
+
+									        } else {
+<br />
+
+									            $this-&gt;type        = &#39;app&#39;;
+<br />
+
+									            $this-&gt;apikey    = $GLOBALS[&#39;db_siteownerid&#39;];
+<br />
+
+									            $this-&gt;siteappkey = $GLOBALS[&#39;db_siteappkey&#39;];
+<br />
+
+									        }
+<br />
+
+									        /***
+<br />
+
+									        if ($this-&gt;type == &#39;app&#39; &amp;&amp; !$GLOBALS[&#39;o_appifopen&#39;]) {
+<br />
+
+									            return new ErrorMsg(API_CLOSED, &#39;App Closed&#39;);
+<br />
+
+									        }
+<br />
+
+									        ***/
+<br />
+
+									        ksort($request);
+<br />
+
+									        reset($request);
+<br />
+
+									        $arg = &#39;&#39;;
+<br />
+
+									        foreach ($request as $key =&gt; $value) {
+<br />
+
+									            if ($value &amp;&amp; $key != &#39;sig&#39;) {
+<br />
+
+									                $arg .= &quot;$key=$value&amp;&quot;;
+<br />
+
+									            }
+<br />
+
+									        }
+<br />
+
+									        if (md5($arg . $this-&gt;apikey) != $request[&#39;sig&#39;]) { //注意这个判断,需要绕过它.上面的代码可以看的出来$this-&gt;apikey    = $GLOBALS[&#39;uc_key&#39;],和$request[&#39;sig&#39;]我们
+<br />
+
+									                                                            //都可以控制,那么很容易绕过它
+<br />
+
+									            return new ErrorMsg(API_SIGN_ERROR, &#39;Error Sign&#39;);
+<br />
+
+									        }
+<br />
+
+									        $mode    = $request[&#39;mode&#39;]; //取$mode 没有过滤直接进入下面的callback()
+<br />
+
+									        $method    = $request[&#39;method&#39;];
+<br />
+
+									        $params = isset($request[&#39;params&#39;]) ? unserialize($request[&#39;params&#39;]) : array();
+<br />
+
+									        if (isset($params[&#39;appthreads&#39;])) {
+<br />
+
+									            if (PHP_VERSION &lt; 5.2) {
+<br />
+
+									                require_once(R_P.&#39;api/class_json.php&#39;);
+<br />
+
+									                $json = new Services_JSON(true);
+<br />
+
+									                $params[&#39;appthreads&#39;] = $json-&gt;decode(@gzuncompress($params[&#39;appthreads&#39;]));
+<br />
+
+									            } else {
+<br />
+
+									                $params[&#39;appthreads&#39;] = json_decode(@gzuncompress($params[&#39;appthreads&#39;]),true);
+<br />
+
+									            }
+<br />
+
+									        }
+<br />
+
+									        if ($params &amp;&amp; isset($request[&#39;charset&#39;])) {
+<br />
+
+									            $params = pwConvert($params, $this-&gt;charset, $request[&#39;charset&#39;]);
+<br />
+
+									        }
+<br />
+
+									        return $this-&gt;callback($mode, $method, $params); //调用callback ()
+<br />
+
+									    }
+<br />
+
+<br />
+
+									继续看run()函数的调用，在pw_api.php文件中：
+<br />
+
+<br />
+
+									$api = new api_client();
+<br />
+
+									$response = $api-&gt;run($_POST + $_GET);//直接run了$_POST , $_GET提交的变量.
+<br />
+
+<br />
+
+									上面的分析是逆向分析了整个漏洞变量提交的过程，这个漏洞还包含一次编码与解码的问题：require_once(R_P.&#39;api/class_&#39; . $mode . &#39;.php&#39;);。这个需要绕过魔术引号才可以包含文件。注意看run()的第一句：
+<br />
+
+<br />
+
+									$request = $this-&gt;strips($request); 
+<br />
+
+<br />
+
+									strips()的代码：
+<br />
+
+<br />
+
+									    function strips($param) {
+<br />
+
+									        if (is_array($param)) {
+<br />
+
+									            foreach ($param as $key =&gt; $value) {
+<br />
+
+									                $param[$key] = $this-&gt;strips($value);
+<br />
+
+									            }
+<br />
+
+									        } else {
+<br />
+
+									            $param = stripslashes($param); //变量直接使用了stripslashes,那么我们可以直接绕过魔术引号了 :)
+<br />
+
+									        }
+<br />
+
+									        return $param;
+<br />
+
+									    }<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									PHPWind
+<br />
+
+									-------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.phpwind.net/read-htm-tid-914851.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-01-11</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-03-30</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14317" target="_blank">14317</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

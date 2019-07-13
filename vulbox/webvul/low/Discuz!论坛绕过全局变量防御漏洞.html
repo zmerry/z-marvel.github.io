@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Discuz!论坛绕过全局变量防御漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Discuz!是一款华人地区非常流行的Web论坛程序。
+<br />
+
+<br />
+
+									由于php5.3.x版本php.ini的设置中request_order默认值为GP，导致Discuz! 6.x/7.x中可以绕过全局变量防御。
+<br />
+
+<br />
+
+									在include/global.func.php代码中：
+<br />
+
+<br />
+
+									function daddslashes($string, $force = 0) {
+<br />
+
+									    !defined(&#39;MAGIC_QUOTES_GPC&#39;) &amp;&amp; define(&#39;MAGIC_QUOTES_GPC&#39;, get_magic_quotes_gpc());
+<br />
+
+									    if(!MAGIC_QUOTES_GPC || $force) {
+<br />
+
+									        if(is_array($string)) {
+<br />
+
+									            foreach($string as $key =&gt; $val) {
+<br />
+
+									                $string[$key] = daddslashes($val, $force);
+<br />
+
+									            }
+<br />
+
+									        } else {
+<br />
+
+									            $string = addslashes($string);
+<br />
+
+									        }
+<br />
+
+									    }
+<br />
+
+									    return $string;
+<br />
+
+									}
+<br />
+
+<br />
+
+									include/common.inc.php中：
+<br />
+
+<br />
+
+									foreach(array(&#39;_COOKIE&#39;, &#39;_POST&#39;, &#39;_GET&#39;) as $_request) {
+<br />
+
+									    foreach($$_request as $_key =&gt; $_value) {
+<br />
+
+									        $_key{0} != &#39;_&#39; &amp;&amp; $$_key = daddslashes($_value);
+<br />
+
+									    }
+<br />
+
+									}
+<br />
+
+<br />
+
+									在register_globals=on时通过提交GLOBALS变量就可以绕过上面的代码。为了防范这种情况，Discuz!中有如下代码:
+<br />
+
+<br />
+
+									if (isset($_REQUEST[&#39;GLOBALS&#39;]) OR isset($_FILES[&#39;GLOBALS&#39;])) {
+<br />
+
+									    exit(&#39;Request tainting attempted.&#39;);
+<br />
+
+									}
+<br />
+
+<br />
+
+									$_REQUEST这个超全局变量的值受php.ini中request_order的影响，在最新的php5.3.x系列中，request_order默认值为GP，也就是说默认配置下$_REQUEST只包含$_GET和$_POST而不包括$_COOKIE。通过 COOKIE就可以提交GLOBALS变量。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：
+<br />
+
+<br />
+
+									* 更改php 5.3.x里的php.ini设置，设置request_order为GPC。
+<br />
+
+<br />
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Discuz!
+<br />
+
+									-------
+<br />
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://www.discuz.net/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-05-21</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-07-20</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15079" target="_blank">15079</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="上周四接手部门文印中心安全工作，恰逢“wannaCry”病毒肆虐全球，到现场给客户电脑打微软”永恒之蓝”补丁，">
+<meta property="og:type" content="website">
+<meta property="og:title" content="蛋疼的Windows7 SP1升级（尴尬连连看）">
+<meta property="og:url" content="http://www.okoksec.com/security/蛋疼的Windows7-SP1升级（尴尬连连看）.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="上周四接手部门文印中心安全工作，恰逢“wannaCry”病毒肆虐全球，到现场给客户电脑打微软”永恒之蓝”补丁，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-05-20T22:30:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="蛋疼的Windows7 SP1升级（尴尬连连看）">
+<meta name="twitter:description" content="上周四接手部门文印中心安全工作，恰逢“wannaCry”病毒肆虐全球，到现场给客户电脑打微软”永恒之蓝”补丁，">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>蛋疼的Windows7 SP1升级（尴尬连连看）</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+    <div class="content index py4">
+        
+          <header id="header">
+  <a href="/">
+  
+    
+      <div id="logo" style="background-image: url(/images/logo.png);"></div>
+    
+  
+    <div id="title">
+      <h1>ZMarvel</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fas fa-bars fa-2x"></i></a>
+      </li>
+       
+        <li><a href="/">首页</a></li>
+       
+        <li><a href="/about/">关于</a></li>
+       
+        <li><a href="/archives/">归档</a></li>
+       
+        <li><a href="/tags/">标签</a></li>
+       
+        <li><a href="/categories/">分类</a></li>
+       
+        <li><a href="/project/">项目</a></li>
+       
+        <li><a href="/search/">搜索</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <p>上周四接手部门文印中心安全工作，恰逢“wannaCry”病毒肆虐全球，到现场给客户电脑打微软”永恒之蓝”补丁，</p>
+<a id="more"></a>
+<p>5月12日晚间，恰逢周五晚上，勒索病毒“wannaCry”席卷全球，全球150多个国家纷纷中招。造成了极大影响，尤其是英国，很多医院系统受到影响（据说受此次事件的影响，正考虑使用Ubuntu系统：哈哈哈），不得不恢复纸笔工作，效率极大的降低，造成了极大的影响。国内部份高校，政府部门，医院，ATM等都受到了波及，对于我们安全从业人士来说这次攻击并不高级，甚至是可以预见的，因为一个月之前微软已经发布了，针对：EternalBlue，永恒之蓝的修复补丁，该漏洞是ShadowBroker组织窃取的方程式组织（据说是美国NSA下属的黑客组织）私藏的漏洞之一，之所以会造成如此大的影响，是因为普遍的弱安全意识，一些组织还在使用微软已经不提供更新的xp和2003操作系统。<br>针对这次事件，微软最终还提供了了xp系统和2003的修复补丁。并强烈谴责了NSA私藏漏洞，嘎嘎嘎</p>
+<p>对于这次事件，刚接手的项目，已经第一时间联系运维在防火墙上阻断了445端口的访问（配置了一条any to  any的445端口阻断），并着手打补丁。</p>
+<p>周四接收另外一个项目的打补丁工作，是一个SM项目，SM项目禁网络禁U盘很难感染的，结果遇到了一兜子蛋疼啊：<br>由于操作系统是Windows7，没有安装service pack 1（SP1）包，所以需要先安装SP1包，才可以安装“永恒之蓝”补丁。结果终端居然装了360，补丁打到最后一点的一个操作被360阻止了，拦截原因是“修改文档和图片”，当时一下子想到“WannaCRY”加密文件，不就是修改文档和图片啊，结果犹豫了一下，直接被360阻止了（360默认是阻止的），安装就终止了（现在想想微软真的是大傻逼的啊，安装失败也不给点提示T_T），由于看到进度条已经几乎走完了，就直接点了重启（现在想想真是JB啊，SP1安装的时候，已经勾选安装完自动重启的，结果没有自动重启，说明肯定没有安装完啊，结果傻逼的手动点了重启，日了狗了TT），</p>
+<p>结果重启之后一大堆更新，更新到快完成的时候：致命错误C0000022。日了狗了。卡住不动了 TTTTTTTTTT<br>没办法强制重启呗，还是卡住，<br>进安全模式，卡在加载CLASSPNP.SYS。fuck<br>F8：每个选项都试了一下，还是不行。fuck<br>没招了<br>涉密系统又不能使用U盘，不能使用U盘上的PE系统TT<br>没办法，问客户找系统安装光盘吧，居然没有修复选项TT<br>就一直在想有没有什么办法可以跳过更新的？能不能删除更新的启动项？把想法和客户说了一下，客户觉得可行，于是去找了一个PE盘，和一个带修复选项的系统安装盘（当时在忙其他的不知道客户还找了一个带修复的系统安装盘），于是客户就自己在哪里折腾了，进PE，看了一下日期，新鲜的（文件日期当天的）全删了）。于是重启系统，呃呃呃，还是更新，没更新几个就卡住了，应该是因为删除了文件。fuck~<br>结果客户拿出了带修复项选项的系统安装盘，当时就想：哥有带修复选项的系统早点用这个啊，干嘛要用PE系统啊（这个是没办法的办法呀）。<br>结果修复了很久，没有修复成功，当时就有一种感觉，不应该删文件的！<br>后边在系统修复里找到了系统还原，以为成功了，结果还原到最后文件丢失……靠靠靠，刚才把还原点文件删了。。。。Noooooooo</p>
+<p>没办法，修复是没法修复了，后边回家继续找删除文件的办法，结果真的找到了：<br>可以通过删除Windows/winsys/目录下面的pending.xml文件和reboot.xml文件，就可以跳过更新，直接进入系统了。<br>终于成功了<del>~</del>~~<br>fuckfuckfuck<br>糗事百科啊……尴尬</p>
+<h3 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h3><p>1.打补丁之前一定要测试补丁，并且一定的要做系统的备份，首选ghost备份。</p>
+<p>2.遇到Windows系统蓝屏或者卡主，首先想到使用带修复选项的系统安装盘（一些系统只带有安装，没有修复选项，修复选项一般在安装界面选择语言和键盘等的下一步）可以执行修复，或者系统还原。</p>
+<p>3.一般第一步基本可以修复大部分的电脑，如果第一步还是不行，可以选择，开机不停的敲击 “F8” ，进入安全模式，卸载之前安装的软件后，重启即可完成修复。（Windows7和2008 R2进入安全模式会卡在加载CLASSPNP.SYS的界面，网上说的是系统的BUG，反正我是遇到过两次了，一次交行SM项目的2008 R2，一次文印中心的Windows7，真是蛋疼啊）。</p>
+<p>4.如果以上办法都不行（像我这次自己挖的坑），如果是系统更新卡住的，可以利用PE系统，到系统目录c:/Windows/winsxs下找到 pending.xml文件 和reboot.xml文件，删除后重启。（如果没有找到pending.xml文件，可以通过搜索winsxs目录下的文件 搜pending.xml 或者找  .xml 文件，也可能是xxxxx.pending.xml）</p>
+<p>PS：蛋疼</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

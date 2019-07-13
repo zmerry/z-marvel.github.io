@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP session_regenerate_id函数双重释放内存破坏漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									此次扫描根据版本信息判断漏洞存在，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的session_regenerate_id()函数实现上存在漏洞，本地攻击者可能利用此漏洞在机器上执行任意指令。<br />
+
+									<br />
+
+									session_regenerate_id()函数用于释放旧的会话标识符，然后立即分配会话标识符生成器所生成的新值。 <br />
+
+									<br />
+
+									PHP_FUNCTION(session_regenerate_id)<br />
+
+									{<br />
+
+									    ...<br />
+
+									        if (PS(id)) {<br />
+
+									            ...<br />
+
+									            efree(PS(id));<br />
+
+									        }<br />
+
+									<br />
+
+									        PS(id) = PS(mod)-&gt;s_create_sid(&amp;PS(mod_data), NULL TSRMLS_CC);<br />
+
+									<br />
+
+									        PS(send_cookie) = 1;<br />
+
+									        php_session_reset_id(TSRMLS_C);<br />
+
+									<br />
+
+									        RETURN_TRUE;<br />
+
+									    }<br />
+
+									    RETURN_FALSE;<br />
+
+									}<br />
+
+									<br />
+
+									但是这种分配并不是原子操作，可能会被内存限制破坏中断。此外，生成器还可以触发PHP错误，导致中断，具体取决于PHP配置。<br />
+
+									<br />
+
+									PHPAPI char *php_session_create_id(PS_CREATE_SID_ARGS)<br />
+
+									{<br />
+
+									    ...<br />
+
+									    switch (PS(hash_func)) {<br />
+
+									    ...<br />
+
+									    default:<br />
+
+									        php_error_docref(NULL TSRMLS_CC, E_ERROR, &quot;Invalid session hash function&quot;);<br />
+
+									        efree(buf);<br />
+
+									        return NULL;<br />
+
+									    }<br />
+
+									    ...<br />
+
+									    if (PS(hash_bits_per_character) &lt; 4<br />
+
+									            || PS(hash_bits_per_character) &gt; 6) {<br />
+
+									        PS(hash_bits_per_character) = 4;<br />
+
+									<br />
+
+									        php_error_docref(NULL TSRMLS_CC, E_WARNING, &quot;The ini setting hash_bits_per_character...&quot;);<br />
+
+									    }<br />
+
+									    ...<br />
+
+									<br />
+
+									本地攻击者可以通过注册恶意的用户空间错误处理器来利用这个漏洞。在调用这个处理器时，会将哈希表分配到相同空间中做为之前的会话标识符，然后恶意的错误处理器可以通过调用session_id()函数触发再一次释放之前的会话标识符，并向同一空间中分配包含有伪造哈希表的字符串做为哈希表。当用户错误处理器结束时会破坏覆盖的哈希表并调用攻击者所提供的代码。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2007-03-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2007-03-30</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-1521" target="_blank">CVE-2007-1521</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/22968" target="_blank">22968</a>
+
+									<a href="http://www.securityfocus.com/bid/25159" target="_blank">25159</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=10057" target="_blank">10057</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200703-489&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20071521&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.8&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-10057&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

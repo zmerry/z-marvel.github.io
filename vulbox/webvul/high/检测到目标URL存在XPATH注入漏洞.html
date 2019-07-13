@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标URL存在XPATH注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									XPath注入攻击利用两种技术，即XPath扫描和 XPath查询布尔化。通过该攻击，攻击者可以控制用来进行XPath查询的XML数据库。这种攻击可以有效地对付使用XPath查询（和XML数据库） 来执行身份验证、查找或者其它操作。XPath注入攻击同SQL注入攻击类似，但和SQL注入攻击相比较，XPath在以下方面具有优势。
+<br />
+
+									    （1） 广泛性。XPath注入攻击利用的是XPath语法，由于XPath是一种标准语言，因此只要是利用XPath语法的Web 应用程序如果未对输入的XPath查询做严格的处理都会存在XPath注入漏洞，所以可能在所有的XPath实现中都包含有该弱点，这和SQL注入攻击有 很大区别。在SQL注入攻击过程中根据数据库支持的SQL语言不同，注入攻击的实现可能不同。
+<br />
+
+									    （2） 危害性大。XPath语言几乎可以引用XML文档的所有部分，而这样的引用一般没有访问控制限制。但在SQL注入攻击中，一个“用户”的权限可能被限制到 某一特定的表、列或者查询，而XPath注入攻击可以保证得到完整的XML文档，即完整的数据库。只要Web服务应用具有基本的安全漏洞，即可构造针对 XPath应用的自动攻击。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									目前专门的XPath攻击防御技术还不是太多，但是SQL注入攻击防御技术可以加以改进，应用到XPath注入攻击防御。具体技术总结如下：
+<br />
+
+									    （1）数据提交到服务器上端，在服务端正式处理这批数据之前，对提交数据的合法性进行验证。
+<br />
+
+									    （2）检查提交的数据是否包含特殊字符，对特殊字符进行编码转换或替换、删除敏感字符或字符串。
+<br />
+
+									    （3）对于系统出现的错误信息，以IE错误编码信息替换，屏蔽系统本身的出错信息。
+<br />
+
+									    （4）参数化XPath查询，将需要构建的XPath查询表达式，以变量的形式表示，变量不是可以执行的脚本。如下代码可以通过创建保存查询的外部文件使查询参数化：
+<br />
+
+									    declare variable $loginID as xs：string external；
+<br />
+
+									    declare variable $password as xs：string external；
+<br />
+
+									    //users/user[@loginID=$loginID and @password= $password]
+<br />
+
+									    （5）通过MD5、SSL等加密算法，对于数据敏感信息和在数据传输过程中加密，即使某些非法用户通过非法手法获取数据包，看到的也是加密后的信息。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-03-09</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.5(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

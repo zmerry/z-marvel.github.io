@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Phpcms v9 poster_click SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHPCMS V9版于2010年推出，是应用较为广泛的建站工具。第三方数据显示，目前使用PHPCMS V9搭建的网站数量多达数十万个，包括联合国儿童基金会等机构网站，以及大批企业网站均使用PHPCMS V9搭建和维护。
+<br />
+
+<br />
+
+									所有使用PHPCMSV9搭建的网站均存在SQL注入漏洞，可能使黑客利用漏洞篡改网页、窃取数据库，甚至控制服务器。SQL注入漏洞存在于PHPCMS V9版本（包括GBK和UTF8版）的poster_click函数，攻击者可以控制HTTP_REFERER（header的一部分），将REFERER值直接带入数据库，而且不受magic_quotes_gpc()控制，这导致SQL注入漏洞的产生。利用漏洞，攻击者可以构造SQL语句对DEMO网站的MySQL数据库进行查询，并能够实施“拖库”，甚至将数据库所在服务器变为傀儡主机。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									PHPCMS
+<br />
+
+									------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://download.phpcms.cn/v9/9.0/patch/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2012-12-19</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2014-03-26</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="sdkmanagerThe sdkmanager is a command line tool that allows you to view, install, update, and uninstall packages for the Android SDK. If you’re using Android Studio, then you do not need to use this t">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sdkManager命令行">
+<meta property="og:url" content="http://www.okoksec.com/2017/04/14/sdkManager命令行/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="sdkmanagerThe sdkmanager is a command line tool that allows you to view, install, update, and uninstall packages for the Android SDK. If you’re using Android Studio, then you do not need to use this t">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-04-14T07:28:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sdkManager命令行">
+<meta name="twitter:description" content="sdkmanagerThe sdkmanager is a command line tool that allows you to view, install, update, and uninstall packages for the Android SDK. If you’re using Android Studio, then you do not need to use this t">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>sdkManager命令行</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/04/14/2017网络空间安全资料/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/04/13/Linux常用命令/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2017/04/14/sdkManager命令行/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&text=sdkManager命令行"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&title=sdkManager命令行"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&is_video=false&description=sdkManager命令行"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=sdkManager命令行&body=Check out this article: http://www.okoksec.com/2017/04/14/sdkManager命令行/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&title=sdkManager命令行"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&title=sdkManager命令行"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&title=sdkManager命令行"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&title=sdkManager命令行"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&name=sdkManager命令行&description=&lt;h4 id=&quot;sdkmanager&quot;&gt;&lt;a href=&quot;#sdkmanager&quot; class=&quot;headerlink&quot; title=&quot;sdkmanager&quot;&gt;&lt;/a&gt;sdkmanager&lt;/h4&gt;&lt;p&gt;The sdkmanager is a command line tool that allows you to view, install, update, and uninstall packages for the Android SDK. If you’re using Android Studio, then you do not need to use this tool and you can instead manage your SDK packages from the IDE.&lt;/p&gt;
+&lt;p&gt;The sdkmanager tool is provided in the Android SDK Tools package (25.2.3 and higher) and is located in android_sdk/tools/bin/.&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#sdkmanager"><span class="toc-number">1.</span> <span class="toc-text">sdkmanager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Usage"><span class="toc-number">2.</span> <span class="toc-text">Usage</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Update-all-installed-packages"><span class="toc-number">3.</span> <span class="toc-text">Update all installed packages</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Options"><span class="toc-number">4.</span> <span class="toc-text">Options</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        sdkManager命令行
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-04-14T07:28:09.000Z" itemprop="datePublished">2017-04-14</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全工具/">安全工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h4 id="sdkmanager"><a href="#sdkmanager" class="headerlink" title="sdkmanager"></a>sdkmanager</h4><p>The sdkmanager is a command line tool that allows you to view, install, update, and uninstall packages for the Android SDK. If you’re using Android Studio, then you do not need to use this tool and you can instead manage your SDK packages from the IDE.</p>
+<p>The sdkmanager tool is provided in the Android SDK Tools package (25.2.3 and higher) and is located in android_sdk/tools/bin/.</p>
+<a id="more"></a>
+<h4 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h4><p>You can use the sdkmanager to perform the following tasks.<br>List installed and available packages<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sdkmanager --list [options]</div></pre></td></tr></table></figure></p>
+<p>Install packages</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sdkmanager packages [options]</div></pre></td></tr></table></figure>
+<p>The packages argument is an SDK-style path as shown with the –list command, wrapped in quotes (for example, “build-tools;25.0.2” or “platforms;android-25”). You can pass multiple package paths, separated with a space, but they must each be wrapped in their own set of quotes.</p>
+<p>For example, to get adb and fastboot, install the latest platform tools:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sdkmanager <span class="string">"platforms;android-25"</span></div></pre></td></tr></table></figure>
+<p>Alternatively, you can pass a text file that specifies all packages:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sdkmanager --package_file=package_file [options]</div></pre></td></tr></table></figure>
+<p>The package_file argument is the location of a text file in which each line is an SDK-style path of a package to install (without quotes).</p>
+<p>To uninstall, simply add the –uninstall flag:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sdkmanager --uninstall packages [options]</div><div class="line">sdkmanager --uninstall --package_file=package_file [options]</div></pre></td></tr></table></figure>
+<h4 id="Update-all-installed-packages"><a href="#Update-all-installed-packages" class="headerlink" title="Update all installed packages"></a>Update all installed packages</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sdkmanager --update [options]</div></pre></td></tr></table></figure>
+<h4 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h4><p>The following table lists the available options for the above commands.<br>Option     Description</p>
+<table>
+<thead>
+<tr>
+<th>--sdk_root=path</th>
+<th>Use the specified SDK path instead of the SDK containing this tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--channel=channel_id</td>
+<td>Include packages in channels up to channel_id. Available channels are:0 (Stable), 1 (Beta), 2 (Dev), and 3 (Canary).</td>
+</tr>
+<tr>
+<td>–include_obsolete</td>
+<td>Include obsolete packages in the package listing or package updates. For use with –list and –update only.</td>
+</tr>
+<tr>
+<td>–no_https</td>
+<td>Force all connections to use HTTP rather than HTTPS.</td>
+</tr>
+<tr>
+<td>–verbose</td>
+<td>Verbose output mode. Errors, warnings and informational messages are printed.</td>
+</tr>
+<tr>
+<td>–proxy={http</td>
+<td>socks}     Connect via a proxy of the given type: either http for high level protocols such as HTTP or FTP, or socks for a SOCKS (V4 or V5) proxy.</td>
+</tr>
+<tr>
+<td>–proxy_host={IP_address</td>
+<td>DNS_address}     IP or DNS address of the proxy to use.</td>
+</tr>
+<tr>
+<td>–proxy_port=port_number</td>
+<td>Proxy port number to connect to.</td>
+</tr>
+</tbody>
+</table>
+<p>Note: If you want to install packages for an operating system different than the current machine, specify the REPO_OS_OVERRIDE environment variable to either “windows”, “macosx”, or “linux”.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#sdkmanager"><span class="toc-number">1.</span> <span class="toc-text">sdkmanager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Usage"><span class="toc-number">2.</span> <span class="toc-text">Usage</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Update-all-installed-packages"><span class="toc-number">3.</span> <span class="toc-text">Update all installed packages</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Options"><span class="toc-number">4.</span> <span class="toc-text">Options</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2017/04/14/sdkManager命令行/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&text=sdkManager命令行"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&title=sdkManager命令行"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&is_video=false&description=sdkManager命令行"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=sdkManager命令行&body=Check out this article: http://www.okoksec.com/2017/04/14/sdkManager命令行/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&title=sdkManager命令行"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&title=sdkManager命令行"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&title=sdkManager命令行"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&title=sdkManager命令行"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2017/04/14/sdkManager命令行/&name=sdkManager命令行&description=&lt;h4 id=&quot;sdkmanager&quot;&gt;&lt;a href=&quot;#sdkmanager&quot; class=&quot;headerlink&quot; title=&quot;sdkmanager&quot;&gt;&lt;/a&gt;sdkmanager&lt;/h4&gt;&lt;p&gt;The sdkmanager is a command line tool that allows you to view, install, update, and uninstall packages for the Android SDK. If you’re using Android Studio, then you do not need to use this tool and you can instead manage your SDK packages from the IDE.&lt;/p&gt;
+&lt;p&gt;The sdkmanager tool is provided in the Android SDK Tools package (25.2.3 and higher) and is located in android_sdk/tools/bin/.&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

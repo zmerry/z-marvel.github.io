@@ -1,0 +1,714 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Apache Web Server MIME Boundary远程信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Apache是一款流行的开放源代码httpd服务程序。<br />
+
+									<br />
+
+									Apache Web服务程序在生成MIME消息边界(message boundaries)时存在问题，远程攻击者可以利用这个漏洞获得服务器敏感信息。<br />
+
+									<br />
+
+									Apache的把系统敏感信息用在生成的MIME消息边界中，因此攻击者可以在返回信息中获得这些敏感信息，可以进一步对系统进行攻击。OpenBSD提供了补丁使用BASE64编码的随机号来生成MIME边界。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时处理办法:<br />
+
+									<br />
+
+									如果您不能立刻安装补丁或者升级，NSFOCUS建议您采取以下措施以降低威胁：<br />
+
+									<br />
+
+									* 使用OpenBSD发布的安全补丁：<br />
+
+									<br />
+
+									ftp://ftp.openbsd.org/pub/OpenBSD/patches/3.2/common/008_httpd.patch<br />
+
+									<br />
+
+									Apply by doing:<br />
+
+										cd /usr/src<br />
+
+										patch -p0 &lt; 008_httpd.patch<br />
+
+									<br />
+
+									And then rebuild and install httpd and it&#39;s modules:<br />
+
+										cd usr.sbin/httpd<br />
+
+										make -f Makefile.bsd-wrapper obj<br />
+
+										make -f Makefile.bsd-wrapper depend<br />
+
+										make -f Makefile.bsd-wrapper<br />
+
+										make -f Makefile.bsd-wrapper install<br />
+
+									<br />
+
+									If httpd had been started, you might want to run<br />
+
+										apachectl stop<br />
+
+										apachectl start<br />
+
+									afterwards.<br />
+
+									<br />
+
+									Index: usr.sbin/httpd/src/main/http_main.c<br />
+
+									===================================================================<br />
+
+									RCS file: /cvs/src/usr.sbin/httpd/src/main/http_main.c,v<br />
+
+									retrieving revision 1.25.2.1<br />
+
+									retrieving revision 1.25.2.2<br />
+
+									diff -u -p -r1.25.2.1 -r1.25.2.2<br />
+
+									--- usr.sbin/httpd/src/main/http_main.c	8 Nov 2002 00:04:04 -0000	1.25.2.1<br />
+
+									+++ usr.sbin/httpd/src/main/http_main.c	24 Feb 2003 02:09:38 -0000	1.25.2.2<br />
+
+									@@ -1,4 +1,4 @@<br />
+
+									-/* $OpenBSD: http_main.c,v 1.25.2.1 2002/11/08 00:04:04 jason Exp $ */<br />
+
+									+/* $OpenBSD: http_main.c,v 1.25.2.2 2003/02/24 02:09:38 margarida Exp $ */<br />
+
+									 <br />
+
+									 /* ====================================================================<br />
+
+									  * The Apache Software License, Version 1.1<br />
+
+									@@ -5176,6 +5176,7 @@ static void standalone_main(int argc, ch<br />
+
+									 	}<br />
+
+									 	ap_set_version();	/* create our server_version string */<br />
+
+									 	ap_init_modules(pconf, server_conf);<br />
+
+									+	ap_init_etag(pconf);<br />
+
+									 	version_locked++;	/* no more changes to server_version */<br />
+
+									 <br />
+
+									 	if(!is_graceful &amp;&amp; !is_chrooted)<br />
+
+									Index: usr.sbin/httpd/src/main/http_protocol.c<br />
+
+									===================================================================<br />
+
+									RCS file: /cvs/src/usr.sbin/httpd/src/main/http_protocol.c,v<br />
+
+									retrieving revision 1.13<br />
+
+									retrieving revision 1.13.2.1<br />
+
+									diff -u -p -r1.13 -r1.13.2.1<br />
+
+									--- usr.sbin/httpd/src/main/http_protocol.c	19 Jul 2002 21:31:16 -0000	1.13<br />
+
+									+++ usr.sbin/httpd/src/main/http_protocol.c	24 Feb 2003 02:09:39 -0000	1.13.2.1<br />
+
+									@@ -1,3 +1,4 @@<br />
+
+									+/*	$OpenBSD: http_protocol.c,v 1.13.2.1 2003/02/24 02:09:39 margarida Exp $ */<br />
+
+									 /* ====================================================================<br />
+
+									  * The Apache Software License, Version 1.1<br />
+
+									  *<br />
+
+									@@ -76,6 +77,7 @@<br />
+
+									 #include &quot;util_date.h&quot;          /* For parseHTTPdate and BAD_DATE */<br />
+
+									 #include &lt;stdarg.h&gt;<br />
+
+									 #include &quot;http_conf_globals.h&quot;<br />
+
+									+#include &quot;ap_sha1.h&quot;<br />
+
+									 <br />
+
+									 #define SET_BYTES_SENT(r) \<br />
+
+									   do { if (r-&gt;sent_bodyct) \<br />
+
+									@@ -276,7 +278,10 @@ static int byterange_boundary(request_re<br />
+
+									 API_EXPORT(int) ap_set_byterange(request_rec *r)<br />
+
+									 {<br />
+
+									     const char *range, *if_range, *match;<br />
+
+									+    char *bbuf, *b;<br />
+
+									+    u_int32_t rbuf[12]; /* 48 bytes yields 64 base64 chars */<br />
+
+									     long length, start, end, one_start = 0, one_end = 0;<br />
+
+									+    size_t u;<br />
+
+									     int ranges, empty;<br />
+
+									     <br />
+
+									     if (!r-&gt;clength || r-&gt;assbackwards)<br />
+
+									@@ -322,8 +327,20 @@ API_EXPORT(int) ap_set_byterange(request<br />
+
+									      * caller will perform if we return 1.<br />
+
+									      */<br />
+
+									     r-&gt;range = range;<br />
+
+									-    r-&gt;boundary = ap_psprintf(r-&gt;pool, &quot;lxlx&quot;,<br />
+
+									-			      r-&gt;request_time, (long) getpid());<br />
+
+									+    for (u = 0; u &lt; sizeof(rbuf)/sizeof(rbuf[0]); u++)<br />
+
+									+        rbuf[u] = htonl(arc4random());<br />
+
+									+<br />
+
+									+    bbuf = ap_palloc(r-&gt;pool, ap_base64encode_len(sizeof(rbuf)));<br />
+
+									+    ap_base64encode(bbuf, (const unsigned char *)rbuf, sizeof(rbuf));<br />
+
+									+    for (b = bbuf; *b != &#39;\0&#39;; b++) {<br />
+
+									+        if (((b - bbuf) + 1)  7 == 0)<br />
+
+									+            *b = &#39;-&#39;;<br />
+
+									+        else if (!isalnum(*b))<br />
+
+									+            *b = &#39;a&#39;;<br />
+
+									+    }<br />
+
+									+<br />
+
+									+    r-&gt;boundary = bbuf;<br />
+
+									+<br />
+
+									     length = 0;<br />
+
+									     ranges = 0;<br />
+
+									     empty = 1;<br />
+
+									@@ -646,7 +663,7 @@ API_EXPORT(int) ap_meets_conditions(requ<br />
+
+									  * could be modified again in as short an interval.  We rationalize the<br />
+
+									  * modification time we&#39;re given to keep it from being in the future.<br />
+
+									  */<br />
+
+									-API_EXPORT(char *) ap_make_etag(request_rec *r, int force_weak)<br />
+
+									+API_EXPORT(char *) ap_make_etag_orig(request_rec *r, int force_weak)<br />
+
+									 {<br />
+
+									     char *etag;<br />
+
+									     char *weak;<br />
+
+									@@ -3106,4 +3123,164 @@ API_EXPORT(void) ap_send_error_response(<br />
+
+									     ap_kill_timeout(r);<br />
+
+									     ap_finalize_request_protocol(r);<br />
+
+									     ap_rflush(r);<br />
+
+									+}<br />
+
+									+<br />
+
+									+/*<br />
+
+									+ * The shared hash context, copies of which are used by all children for<br />
+
+									+ * etag generation.  ap_init_etag() must be called once before all the<br />
+
+									+ * children are created.  We use a secret hash initialization value<br />
+
+									+ * so that people can&#39;t brute-force inode numbers.<br />
+
+									+ */<br />
+
+									+static AP_SHA1_CTX baseCtx;<br />
+
+									+<br />
+
+									+int ap_create_etag_state(pool *pconf)<br />
+
+									+{<br />
+
+									+    u_int32_t rnd;<br />
+
+									+    unsigned int u;<br />
+
+									+    int fd;<br />
+
+									+    const char* filename;<br />
+
+									+<br />
+
+									+    filename = ap_server_root_relative(pconf, &quot;logs/etag-state&quot;);<br />
+
+									+    ap_server_strip_chroot(filename, 0);<br />
+
+									+<br />
+
+									+    if ((fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC|O_NOFOLLOW, 0640)) ==<br />
+
+									+      -1) {<br />
+
+									+        ap_log_error(APLOG_MARK, APLOG_CRIT, NULL,<br />
+
+									+          &quot;could not create s&quot;, filename);<br />
+
+									+        exit(-1);<br />
+
+									+    }<br />
+
+									+<br />
+
+									+    if (fchown(fd, -1, ap_group_id) == -1) {<br />
+
+									+        ap_log_error(APLOG_MARK, APLOG_CRIT, NULL,<br />
+
+									+          &quot;could not chown s&quot;, filename);<br />
+
+									+        exit(-1);<br />
+
+									+    }<br />
+
+									+<br />
+
+									+    /* generate random bytes and write them */<br />
+
+									+    for (u = 0; u &lt; 4; u++) {<br />
+
+									+        rnd = arc4random();<br />
+
+									+        if (write(fd, &amp;rnd, sizeof(rnd)) == -1) {<br />
+
+									+            ap_log_error(APLOG_MARK, APLOG_CRIT, NULL,<br />
+
+									+              &quot;could not write to s&quot;, filename);<br />
+
+									+            exit(-1);<br />
+
+									+        }<br />
+
+									+    }<br />
+
+									+<br />
+
+									+    close (fd);<br />
+
+									+}<br />
+
+									+<br />
+
+									+API_EXPORT(void) ap_init_etag(pool *pconf)<br />
+
+									+{<br />
+
+									+    if (ap_read_etag_state(pconf) == -1) {<br />
+
+									+        ap_create_etag_state(pconf);<br />
+
+									+        if (ap_read_etag_state(pconf) == -1) {<br />
+
+									+            ap_log_error(APLOG_MARK, APLOG_CRIT, NULL,<br />
+
+									+              &quot;could not initialize etag state&quot;);<br />
+
+									+            exit(-1);<br />
+
+									+        }<br />
+
+									+    }			<br />
+
+									+}<br />
+
+									+<br />
+
+									+int ap_read_etag_state(pool *pconf)<br />
+
+									+{<br />
+
+									+    struct stat st;<br />
+
+									+    u_int32_t rnd;<br />
+
+									+    unsigned int u;<br />
+
+									+    int fd;<br />
+
+									+    const char* filename;<br />
+
+									+<br />
+
+									+    ap_SHA1Init(&amp;baseCtx);<br />
+
+									+<br />
+
+									+    filename = ap_server_root_relative(pconf, &quot;logs/etag-state&quot;);<br />
+
+									+    ap_log_error(APLOG_MARK, APLOG_NOERRNO|APLOG_NOTICE, NULL,<br />
+
+									+      &quot;Initializing etag from s&quot;, filename);<br />
+
+									+<br />
+
+									+    ap_server_strip_chroot(filename, 0);<br />
+
+									+<br />
+
+									+    if ((fd = open(filename, O_RDONLY|O_NOFOLLOW, 0640)) == -1)<br />
+
+									+	return (-1);<br />
+
+									+<br />
+
+									+    fchmod(fd, S_IRUSR|S_IWUSR|S_IRGRP);<br />
+
+									+    fchown(fd, -1, ap_group_id);<br />
+
+									+<br />
+
+									+    if (fstat(fd, &amp;st) == -1) {<br />
+
+									+        ap_log_error(APLOG_MARK, APLOG_CRIT, NULL,<br />
+
+									+          &quot;could not fstat s&quot;, filename);<br />
+
+									+        exit(-1);<br />
+
+									+    }<br />
+
+									+<br />
+
+									+    if (st.st_size != sizeof(rnd)*4) {<br />
+
+									+	return (-1);<br />
+
+									+    }<br />
+
+									+<br />
+
+									+    /* read 4 random 32-bit uints from file and update the hash context */<br />
+
+									+    for (u = 0; u &lt; 4; u++) {<br />
+
+									+        if (read(fd, &amp;rnd, sizeof(rnd)) &lt; sizeof(rnd))<br />
+
+									+            return (-1);<br />
+
+									+<br />
+
+									+        ap_SHA1Update_binary(&amp;baseCtx, (const unsigned char *)&amp;rnd,<br />
+
+									+          sizeof(rnd));<br />
+
+									+    }<br />
+
+									+<br />
+
+									+    if (close(fd) == -1) {<br />
+
+									+        ap_log_error(APLOG_MARK, APLOG_CRIT, NULL,<br />
+
+									+          &quot;could not properly close s&quot;, filename);<br />
+
+									+        exit(-1);<br />
+
+									+    }<br />
+
+									+}<br />
+
+									+<br />
+
+									+API_EXPORT(char *) ap_make_etag(request_rec *r, int force_weak)<br />
+
+									+{<br />
+
+									+    AP_SHA1_CTX hashCtx;<br />
+
+									+    core_dir_config *cfg;<br />
+
+									+    etag_components_t etag_bits;<br />
+
+									+    int weak;<br />
+
+									+    unsigned char md[SHA_DIGESTSIZE];<br />
+
+									+    unsigned int i;<br />
+
+									+    <br />
+
+									+    memcpy(&amp;hashCtx, &amp;baseCtx, sizeof(hashCtx));<br />
+
+									+    <br />
+
+									+    cfg = (core_dir_config *)ap_get_module_config(r-&gt;per_dir_config,<br />
+
+									+      &amp;core_module);<br />
+
+									+    etag_bits = (cfg-&gt;etag_bits &amp; (~ cfg-&gt;etag_remove)) | cfg-&gt;etag_add;<br />
+
+									+    if (etag_bits == ETAG_UNSET)<br />
+
+									+        etag_bits = ETAG_BACKWARD;<br />
+
+									+    <br />
+
+									+    weak = ((r-&gt;request_time - r-&gt;mtime &lt;= 1) || force_weak);<br />
+
+									+    <br />
+
+									+    if (r-&gt;finfo.st_mode != 0) {<br />
+
+									+        if (etag_bits &amp; ETAG_NONE) {<br />
+
+									+            ap_table_setn(r-&gt;notes, &quot;no-etag&quot;, &quot;omit&quot;);<br />
+
+									+            return &quot;&quot;;<br />
+
+									+        }<br />
+
+									+        if (etag_bits &amp; ETAG_INODE) {<br />
+
+									+            ap_SHA1Update_binary(&amp;hashCtx,<br />
+
+									+              (const unsigned char *)&amp;r-&gt;finfo.st_dev,<br />
+
+									+              sizeof(r-&gt;finfo.st_dev));<br />
+
+									+            ap_SHA1Update_binary(&amp;hashCtx,<br />
+
+									+              (const unsigned char *)&amp;r-&gt;finfo.st_ino,<br />
+
+									+              sizeof(r-&gt;finfo.st_ino));<br />
+
+									+        }<br />
+
+									+        if (etag_bits &amp; ETAG_SIZE)<br />
+
+									+            ap_SHA1Update_binary(&amp;hashCtx,<br />
+
+									+              (const unsigned char *)&amp;r-&gt;finfo.st_size,<br />
+
+									+              sizeof(r-&gt;finfo.st_size));<br />
+
+									+        if (etag_bits &amp; ETAG_MTIME)<br />
+
+									+            ap_SHA1Update_binary(&amp;hashCtx,<br />
+
+									+              (const unsigned char *)&amp;r-&gt;mtime,<br />
+
+									+              sizeof(r-&gt;mtime));<br />
+
+									+    }<br />
+
+									+    else {<br />
+
+									+        weak = 1;<br />
+
+									+        ap_SHA1Update_binary(&amp;hashCtx, (const unsigned char *)&amp;r-&gt;mtime,<br />
+
+									+          sizeof(r-&gt;mtime));<br />
+
+									+    }<br />
+
+									+    ap_SHA1Final(md, &amp;hashCtx);<br />
+
+									+    return ap_psprintf(r-&gt;pool, &quot;s\\&quot;&quot;<br />
+
+									+      &quot;02x02x02x02x02x02x02x02x02x02x&quot;<br />
+
+									+        &quot;02x02x02x02x02x02x02x02x02x02x&quot;<br />
+
+									+        &quot;\\&quot;&quot;, weak ? &quot;W/&quot; : &quot;&quot;,<br />
+
+									+      md[0], md[1], md[2], md[3], md[4], md[5], md[6], md[7],<br />
+
+									+      md[8], md[9], md[10], md[11], md[12], md[13], md[14], md[15],<br />
+
+									+      md[16], md[17], md[18], md[19]);<br />
+
+									 }<br />
+
+									<br />
+
+									厂商解决方案:<br />
+
+									<br />
+
+									Apache<br />
+
+									------<br />
+
+									建议升级Apache产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.apache.org/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2003-03-04</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-12-03</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/6943" target="_blank">6943</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=4469" target="_blank">4469</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

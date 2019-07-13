@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">nginx &#39;ngx_http_close_connection()&#39;远程整数溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									nginx是HTTP及反向代理服务器，同时也用作邮件代理服务器，由Igor Sysoev编写。<br />
+
+									<br />
+
+									nginx在实现上存在远程整数溢出漏洞，当 r-&gt;count 小于0或大于255时，Nginx<br />
+
+									ngx_http_close_connection函数会存在整数溢出错误，远程攻击者通过恶意http请求利用此漏洞，可以在应用上下文中执行任意代码。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时处理办法:<br />
+
+									<br />
+
+									如果您不能立刻安装补丁或者升级，NSFOCUS建议您采取以下措施以降低威胁：<br />
+
+									<br />
+
+									* 验证r-&gt;count输入。<br />
+
+									<br />
+
+									厂商解决方案:<br />
+
+									<br />
+
+									Igor Sysoev<br />
+
+									-----------<br />
+
+									建议升级nginx产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://nginx.org/en/download.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2013-04-26</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-11-22</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/59496" target="_blank">59496</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

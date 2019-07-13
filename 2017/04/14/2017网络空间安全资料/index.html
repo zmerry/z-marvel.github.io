@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="2017网络空间安全资料大全【2017.1.22更新】 历经数月收集、悉心整理，小编特此双手奉上2017网络渗透资料大全单，囊括渗透测试资源、Shell 脚本资源、Linux 资源、Shellcode 开发、社工资源、工具、书籍、漏洞库、国内SRC、安全课程、信息安全会议、安全杂志等分类，包含视频资料、网络课程及收纳工具。">
+<meta name="keywords" content="Tools,Hacking,Penetration,转载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2017网络空间安全资料">
+<meta property="og:url" content="http://www.okoksec.com/2017/04/14/2017网络空间安全资料/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="2017网络空间安全资料大全【2017.1.22更新】 历经数月收集、悉心整理，小编特此双手奉上2017网络渗透资料大全单，囊括渗透测试资源、Shell 脚本资源、Linux 资源、Shellcode 开发、社工资源、工具、书籍、漏洞库、国内SRC、安全课程、信息安全会议、安全杂志等分类，包含视频资料、网络课程及收纳工具。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-04-14T14:10:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2017网络空间安全资料">
+<meta name="twitter:description" content="2017网络空间安全资料大全【2017.1.22更新】 历经数月收集、悉心整理，小编特此双手奉上2017网络渗透资料大全单，囊括渗透测试资源、Shell 脚本资源、Linux 资源、Shellcode 开发、社工资源、工具、书籍、漏洞库、国内SRC、安全课程、信息安全会议、安全杂志等分类，包含视频资料、网络课程及收纳工具。">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>2017网络空间安全资料</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/04/28/Scanners-Box开源扫描器仓库/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/04/14/sdkManager命令行/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&text=2017网络空间安全资料"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&title=2017网络空间安全资料"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&is_video=false&description=2017网络空间安全资料"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2017网络空间安全资料&body=Check out this article: http://www.okoksec.com/2017/04/14/2017网络空间安全资料/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&title=2017网络空间安全资料"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&title=2017网络空间安全资料"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&title=2017网络空间安全资料"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&title=2017网络空间安全资料"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&name=2017网络空间安全资料&description=&lt;p&gt;2017网络空间安全资料大全【2017.1.22更新】&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;历经数月收集、悉心整理，小编特此双手奉上2017网络渗透资料大全单，囊括渗透测试资源、Shell 脚本资源、Linux 资源、Shellcode 开发、社工资源、工具、书籍、漏洞库、国内SRC、安全课程、信息安全会议、安全杂志等分类，包含视频资料、网络课程及收纳工具。
+&lt;/code&gt;&lt;/pre&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#一、资源篇"><span class="toc-number">1.</span> <span class="toc-text">一、资源篇</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二、工具篇"><span class="toc-number">2.</span> <span class="toc-text">二、工具篇</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#三、书籍类"><span class="toc-number">3.</span> <span class="toc-text">三、书籍类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#五、国际会议篇"><span class="toc-number">4.</span> <span class="toc-text">五、国际会议篇</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#六、国内会议篇"><span class="toc-number">5.</span> <span class="toc-text">六、国内会议篇</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        2017网络空间安全资料
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-04-14T14:10:05.000Z" itemprop="datePublished">2017-04-14</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全技术/">安全技术</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Hacking/">Hacking</a>, <a class="tag-link" href="/tags/Penetration/">Penetration</a>, <a class="tag-link" href="/tags/Tools/">Tools</a>, <a class="tag-link" href="/tags/转载/">转载</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>2017网络空间安全资料大全【2017.1.22更新】</p>
+<pre><code>历经数月收集、悉心整理，小编特此双手奉上2017网络渗透资料大全单，囊括渗透测试资源、Shell 脚本资源、Linux 资源、Shellcode 开发、社工资源、工具、书籍、漏洞库、国内SRC、安全课程、信息安全会议、安全杂志等分类，包含视频资料、网络课程及收纳工具。
+</code></pre><a id="more"></a>
+<h4 id="一、资源篇"><a href="#一、资源篇" class="headerlink" title="一、资源篇"></a>一、资源篇</h4><p>1、渗透测试资源</p>
+<p>A•Metasploit Unleashed——免费的metasploit教程</p>
+<p>►►传送门<a href="https://www.offensive-security.com/metasploit-unleashed/" target="_blank" rel="external">https://www.offensive-security.com/metasploit-unleashed/</a><br>B•PTES——渗透测试执行标准</p>
+<p>►►传送门<a href="http://www.pentest-standard.org/index.php/Main_Page" target="_blank" rel="external">http://www.pentest-standard.org/index.php/Main_Page</a><br>C•OWASP——开放式Web应用程序安全项目</p>
+<p>►►传送门<a href="https://www.owasp.org/index.php/Main_Page" target="_blank" rel="external">https://www.owasp.org/index.php/Main_Page</a><br>D•OSSTMM——开源安全测试方法手册</p>
+<p>►►传送门<a href="http://www.isecom.org/research/osstmm.html" target="_blank" rel="external">http://www.isecom.org/research/osstmm.html</a><br>2、Shell 脚本资源</p>
+<p>A•LSST——linux shell脚本教程</p>
+<p>►►传送门<a href="http://www.freeos.com/guides/lsst/" target="_blank" rel="external">http://www.freeos.com/guides/lsst/</a><br>3、Linux 资源</p>
+<p>A•Kernelnewbies——一个出色的Linux内核资源的社区</p>
+<p>►►传送门<a href="https://kernelnewbies.org/" target="_blank" rel="external">https://kernelnewbies.org/</a><br>4、Shellcode 开发</p>
+<p>A•Shellcode Tutorials——如何编写shellcode的教程</p>
+<p>►►传送门<a href="http://www.projectshellcode.com/" target="_blank" rel="external">http://www.projectshellcode.com/</a><br>B•Shellcode examples——Shellcodes 的库</p>
+<p>►►传送门<a href="http://shell-storm.org/shellcode/" target="_blank" rel="external">http://shell-storm.org/shellcode/</a><br>C•Exploit Writing Tutorials——如何开发exploits的教程</p>
+<p>►►传送门<a href="https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/" target="_blank" rel="external">https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/</a><br>D•shellsploit——ShellCode生成器</p>
+<p>►►传送门<a href="https://github.com/b3mb4m/shellsploit-framework" target="_blank" rel="external">https://github.com/b3mb4m/shellsploit-framework</a><br>E•Voltron——可扩展的黑客调试工具</p>
+<p>►►传送门<a href="https://github.com/snare/voltron" target="_blank" rel="external">https://github.com/snare/voltron</a><br>5、社工资源</p>
+<p>A•Social Engineering Framework——一些社工的资源</p>
+<p>►►传送门<a href="http://www.social-engineer.org/framework/general-discussion/" target="_blank" rel="external">http://www.social-engineer.org/framework/general-discussion/</a><br>6、其他</p>
+<p>A•SecTools——网络安全工具前125</p>
+<p>►►传送门<a href="http://sectools.org/" target="_blank" rel="external">http://sectools.org/</a><br>B•C/C++ Programming——开源工具的主要语言之一</p>
+<p>►►传送门<a href="https://github.com/fffaraz/awesome-cpp" target="_blank" rel="external">https://github.com/fffaraz/awesome-cpp</a><br>C•.NET Programming——一个开发框架</p>
+<p>►►传送门<a href="https://github.com/quozd/awesome-dotnet" target="_blank" rel="external">https://github.com/quozd/awesome-dotnet</a><br>D•Shell Scripting——命令行集成工具包</p>
+<p>►►传送门<a href="https://github.com/alebcay/awesome-shell" target="_blank" rel="external">https://github.com/alebcay/awesome-shell</a><br>E•Ruby Programming by @dreikanter——编写exp的实用语言</p>
+<p>►►传送门<a href="https://github.com/dreikanter/ruby-bookmarks" target="_blank" rel="external">https://github.com/dreikanter/ruby-bookmarks</a><br>F•Ruby Programming by @markets——同上</p>
+<p>►►传送门<a href="https://github.com/markets/awesome-ruby" target="_blank" rel="external">https://github.com/markets/awesome-ruby</a><br>G•Ruby Programming by @Sdogruyol——同上</p>
+<p>►►传送门<a href="https://github.com/Sdogruyol/awesome-ruby" target="_blank" rel="external">https://github.com/Sdogruyol/awesome-ruby</a><br>H•JavaScript Programming——浏览器开发脚本</p>
+<p>►►传送门<a href="https://github.com/sorrycc/awesome-javascript" target="_blank" rel="external">https://github.com/sorrycc/awesome-javascript</a><br>I•Node.js Programming by @sindresorhus——命令行的js</p>
+<p>►►传送门<a href="https://github.com/sindresorhus/awesome-nodejs" target="_blank" rel="external">https://github.com/sindresorhus/awesome-nodejs</a><br>J•Node.js Programming by @vndmtrx——同上</p>
+<p>►►传送门<a href="https://github.com/vndmtrx/awesome-nodejs" target="_blank" rel="external">https://github.com/vndmtrx/awesome-nodejs</a><br>K•Python tools for penetration testers——很多渗透工具都是用python写的</p>
+<p>►►传送门<a href="http://www.dirk-loss.de/python-tools.htm" target="_blank" rel="external">http://www.dirk-loss.de/python-tools.htm</a><br>L•Python Programming by @svaksha——通用python项目</p>
+<p>►►传送门<a href="https://github.com/svaksha/pythonidae" target="_blank" rel="external">https://github.com/svaksha/pythonidae</a><br>M•Python Programming by @vinta——同上</p>
+<p>►►传送门<a href="https://github.com/vinta/awesome-python" target="_blank" rel="external">https://github.com/vinta/awesome-python</a><br>N•Andorid Security——安卓安全资源聚合</p>
+<p>►►传送门<a href="https://github.com/ashishb/android-security-awesome" target="_blank" rel="external">https://github.com/ashishb/android-security-awesome</a></p>
+<h4 id="二、工具篇"><a href="#二、工具篇" class="headerlink" title="二、工具篇"></a>二、工具篇</h4><p>1、渗透测试系统版本</p>
+<p>A•Kali——一个Linux发行版，用来做数字取证和渗透测试</p>
+<p>►►传送门<a href="https://www.kali.org/" target="_blank" rel="external">https://www.kali.org/</a><br>B•NST——网络安全工具包发行版</p>
+<p>►►传送门<a href="http://networksecuritytoolkit.org/nst/index.html" target="_blank" rel="external">http://networksecuritytoolkit.org/nst/index.html</a><br>C•Pentoo——着眼于安全的基于Gentoo的 LiveCD</p>
+<p>►►传送门<a href="http://www.pentoo.ch/" target="_blank" rel="external">http://www.pentoo.ch/</a><br>D•BackBox——基于Ubuntu的发行版，用于渗透测试及安全评估渗透测试基础工具</p>
+<p>►►传送门<a href="https://backbox.org/" target="_blank" rel="external">https://backbox.org/</a><br>E•Metasploit——应用最广的渗透测试软件</p>
+<p>►►传送门<a href="https://www.metasploit.com/" target="_blank" rel="external">https://www.metasploit.com/</a><br>F•ArchStrike——Arch Linux安全专业人员和狂热者的知识库</p>
+<p>►►传送门<a href="https://archstrike.org/" target="_blank" rel="external">https://archstrike.org/</a><br>G•Parrot——类似于kali的一款渗透测试操作系统</p>
+<p>►►传送门<a href="https://www.parrotsec.org/" target="_blank" rel="external">https://www.parrotsec.org/</a><br>2、漏洞扫描器</p>
+<p>A•Netsparker——Web应用安全扫描器</p>
+<p>►►传送门<a href="https://www.netsparker.com/" target="_blank" rel="external">https://www.netsparker.com/</a><br>B•Nexpose——漏洞管理&amp;风险控制软件</p>
+<p>►►传送门<a href="https://www.rapid7.com/products/nexpose/" target="_blank" rel="external">https://www.rapid7.com/products/nexpose/</a><br>C•Nessus——漏洞，配置，和合规检测</p>
+<p>►►传送门<a href="http://www.tenable.com/products/nessus-vulnerability-scanner" target="_blank" rel="external">http://www.tenable.com/products/nessus-vulnerability-scanner</a><br>D•Nikto——Web应用的漏洞扫描</p>
+<p>►►传送门<a href="https://cirt.net/nikto2" target="_blank" rel="external">https://cirt.net/nikto2</a><br>E•OpenVAS——开源漏洞扫描器</p>
+<p>►►传送门<a href="http://www.openvas.org/" target="_blank" rel="external">http://www.openvas.org/</a><br>F•OWASP Zed Attack Proxy——web应用的渗透测试工具</p>
+<p>►►传送门<a href="https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project" target="_blank" rel="external">https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project</a><br>G•w3af——Web应用工具和审计框架</p>
+<p>►►传送门<a href="https://github.com/andresriancho/w3af" target="_blank" rel="external">https://github.com/andresriancho/w3af</a><br>H•Wapiti——Web应用漏洞</p>
+<p>►►传送门<a href="http://wapiti.sourceforge.net/" target="_blank" rel="external">http://wapiti.sourceforge.net/</a><br>I•WebReaver——苹果系统下的Web应用漏洞扫描器</p>
+<p>►►传送门<a href="http://www.webreaver.com/" target="_blank" rel="external">http://www.webreaver.com/</a><br>J•DVCS Ripper——SVN/GIT/HG/BZR等版本控制系统扫描器</p>
+<p>►►传送门<a href="https://github.com/kost/dvcs-ripper" target="_blank" rel="external">https://github.com/kost/dvcs-ripper</a><br>K•arachni——Web应用安全扫描框架</p>
+<p>►►传送门<a href="https://github.com/Arachni/arachni" target="_blank" rel="external">https://github.com/Arachni/arachni</a><br>L•SQLmap——SQLmap是一款用来检测与利用SQL注入漏洞的免费开源工具，有一个非常棒的特性，即对检测与利用的自动化处理（数据库指纹、访问底层文件系统、执行命令）</p>
+<p>►►传送门<a href="http://sqlmap.org/" target="_blank" rel="external">http://sqlmap.org/</a><br>M•SQLiScanner——一款基于SQLMAP和Charles的被动SQL注入漏洞扫描工具</p>
+<p>►►传送门<a href="https://github.com/0xbug/SQLiScanner" target="_blank" rel="external">https://github.com/0xbug/SQLiScanner</a><br>N•DSSS——99行代码实现的sql注入漏洞扫描器</p>
+<p>►►传送门<a href="https://github.com/stamparm/DSSS" target="_blank" rel="external">https://github.com/stamparm/DSSS</a><br>O•Feigong—针对各种情况自由变化的MySQL注入脚本</p>
+<p>►►传送门<a href="https://github.com/LoRexxar/Feigong" target="_blank" rel="external">https://github.com/LoRexxar/Feigong</a><br>3、网络工具</p>
+<p>A•nmap——免费的安全扫描器，用于网络勘测和安全审计</p>
+<p>►►传送门<a href="https://nmap.org/" target="_blank" rel="external">https://nmap.org/</a><br>B•tcpdump/libpcap——一种常见的命令行数据包分析工具</p>
+<p>►►传送门<a href="http://www.tcpdump.org/" target="_blank" rel="external">http://www.tcpdump.org/</a><br>C•Wireshark——一个Unix和Windows系统的传输协议分析工具</p>
+<p>►►传送门<a href="https://www.wireshark.org/" target="_blank" rel="external">https://www.wireshark.org/</a><br>D•Network Tools——信息收集: ping, lookup, whois, 等等</p>
+<p>►►传送门<a href="http://network-tools.com/" target="_blank" rel="external">http://network-tools.com/</a><br>E•netsniff-ng——网络嗅探利器</p>
+<p>►►传送门<a href="https://github.com/netsniff-ng/netsniff-ng" target="_blank" rel="external">https://github.com/netsniff-ng/netsniff-ng</a><br>F•Intercepter-NG——多功能网络工具包</p>
+<p>►►传送门<a href="http://intercept.nerf.ru/" target="_blank" rel="external">http://intercept.nerf.ru/</a><br>G•Burp——抓包工具，针对Web应用执行安全检测</p>
+<p>►►传送门<a href="https://portswigger.net/burp/" target="_blank" rel="external">https://portswigger.net/burp/</a><br>H•pig——Linux数据包制作工具</p>
+<p>►►传送门<a href="https://github.com/rafael-santiago/pig" target="_blank" rel="external">https://github.com/rafael-santiago/pig</a><br>I•SPARTA——网络基础设施渗透测试工具</p>
+<p>►►传送门<a href="http://sparta.secforce.com/" target="_blank" rel="external">http://sparta.secforce.com/</a><br>J•dnschef——一个高度可配置的DNS代理</p>
+<p>►►传送门↓<a href="http://thesprawl.org/projects/dnschef/" target="_blank" rel="external">http://thesprawl.org/projects/dnschef/</a><br>K•DNSDumpster——在线DNS侦查和搜索工具</p>
+<p>►►传送门<a href="https://dnsdumpster.com/" target="_blank" rel="external">https://dnsdumpster.com/</a><br>L•dnsenum——一款非常强大的 域名信息收集工具</p>
+<p>►►传送门<a href="https://github.com/fwaeytens/dnsenum/" target="_blank" rel="external">https://github.com/fwaeytens/dnsenum/</a><br>M•dnsmap——一款搜集信息的工具，它和Dnsenum一样是用户获得子域名的强有力的工具</p>
+<p>►►传送门<a href="https://github.com/makefu/dnsmap/" target="_blank" rel="external">https://github.com/makefu/dnsmap/</a><br>N•dnsrecon——DNS枚举脚本</p>
+<p>►►传送门<a href="https://github.com/darkoperator/dnsrecon/" target="_blank" rel="external">https://github.com/darkoperator/dnsrecon/</a><br>O•dnstracer——向指定域名服务器发送非递归域名请求</p>
+<p>►►传送门<a href="http://www.mavetju.org/unix/dnstracer.php" target="_blank" rel="external">http://www.mavetju.org/unix/dnstracer.php</a><br>P•passivedns-client——为查询被动DNS供应商提供了一个知识库和查询工具</p>
+<p>►►传送门<a href="https://github.com/chrislee35/passivedns-client" target="_blank" rel="external">https://github.com/chrislee35/passivedns-client</a><br>Q•passivedns——一个记录所有的DNS服务中使用被动DNS回复的网络嗅探器</p>
+<p>►►传送门<a href="https://github.com/gamelinux/passivedns" target="_blank" rel="external">https://github.com/gamelinux/passivedns</a><br>R•Mass Scan——Masscan号称是最快的互联网端口扫描器,最快可以在5分钟内扫遍互联网</p>
+<p>►►传送门<a href="https://github.com/robertdavidgraham/masscan" target="_blank" rel="external">https://github.com/robertdavidgraham/masscan</a><br>S•Zarp——Zarp是一个本地网络攻击测试集成工具，可以帮助渗透测试人员很好的进行工作。多种嗅探工具、DoS攻击压力测试工具集成在Zarp中</p>
+<p>►►传送门<a href="https://github.com/hatRiot/zarp" target="_blank" rel="external">https://github.com/hatRiot/zarp</a><br>T•mitmproxy——mitmproxy是一个支持SSL的HTTP中间人代理工具,它允许你检查HTTP和HTTPS流量并支持直接改写请求</p>
+<p>►►传送门<a href="https://github.com/mitmproxy/mitmproxy" target="_blank" rel="external">https://github.com/mitmproxy/mitmproxy</a><br>U•Mallory——HTTP/HTTPS proxy over SSH</p>
+<p>►►传送门<a href="https://github.com/justmao945/mallory" target="_blank" rel="external">https://github.com/justmao945/mallory</a><br>V•Netzob——Netzob 是一个开源的通讯协议的反向工程、流量生成和 fuzzing 工具。可通过主动和被动方式推断消息格式和协议状态机</p>
+<p>►►传送门<a href="https://github.com/netzob/netzob" target="_blank" rel="external">https://github.com/netzob/netzob</a><br>W•DET——DET是一个概念界定，描述能同时使用单独或多个通道执行数据渗透</p>
+<p>►►传送门<a href="https://github.com/sensepost/DET" target="_blank" rel="external">https://github.com/sensepost/DET</a><br>X•pwnat——不需要任何帮助就在两个nat后面的电脑之间建立连接的程序</p>
+<p>►►传送门<a href="https://github.com/samyk/pwnat" target="_blank" rel="external">https://github.com/samyk/pwnat</a><br>Y•dsniff——用来嗅探和侦听网络会话</p>
+<p>►►传送门<a href="https://www.monkey.org/~dugsong/dsniff/" target="_blank" rel="external">https://www.monkey.org/~dugsong/dsniff/</a><br>Z•tgcd——一个简单的Unix网络实用工具，用来扩展越过防火墙基于TCP/IP协议的网络服务可达性</p>
+<p>►►传送门<a href="http://tgcd.sourceforge.net/" target="_blank" rel="external">http://tgcd.sourceforge.net/</a><br>A•smbmap——一个方便的SMB枚举工具<br>►►传送门<a href="https://github.com/ShawnDEvans/smbmap" target="_blank" rel="external">https://github.com/ShawnDEvans/smbmap</a><br>B•scapy——Scapy是一个可以让用户发送、侦听和解析并伪装网络报文的Python程序</p>
+<p>►►传送门<a href="https://github.com/secdev/scapy" target="_blank" rel="external">https://github.com/secdev/scapy</a><br>C•Dshell——网络攻击取证分析框架</p>
+<p>►►传送门<a href="https://github.com/USArmyResearchLab/Dshell" target="_blank" rel="external">https://github.com/USArmyResearchLab/Dshell</a><br>D•Debookee (MAC OS X)——这是一个Mac平台的网络数据抓包及分析工具</p>
+<p>►►传送门<a href="http://www.iwaxx.com/debookee/" target="_blank" rel="external">http://www.iwaxx.com/debookee/</a><br>E•Dripcap——数据包分析器</p>
+<p>►►传送门<a href="https://github.com/dripcap/dripcap" target="_blank" rel="external">https://github.com/dripcap/dripcap</a><br>4、xss扫描器</p>
+<p>A•BruteXSS——跨站脚本版的Bruteforcer（密码暴力破解工具）</p>
+<p>►►传送门<a href="https://github.com/shawarkhanethicalhacker/BruteXSS" target="_blank" rel="external">https://github.com/shawarkhanethicalhacker/BruteXSS</a><br>B•XSSTracer——一个检查跨站的python小脚本</p>
+<p>►►传送门<a href="https://github.com/1N3/XSSTracer" target="_blank" rel="external">https://github.com/1N3/XSSTracer</a><br>C•fuzzXssPHP——PHP版本的反射型xss扫描</p>
+<p>►►传送门<a href="https://github.com/0x584A/fuzzXssPHP" target="_blank" rel="external">https://github.com/0x584A/fuzzXssPHP</a><br>D•xss_scan——批量扫描xss的python脚本</p>
+<p>►►传送门<a href="https://github.com/chuhades/xss_scan" target="_blank" rel="external">https://github.com/chuhades/xss_scan</a><br>5、企业网络自检</p>
+<p>A•LNScan——详细的内部网络信息扫描器</p>
+<p>►►传送门<a href="https://github.com/sowish/LNScan" target="_blank" rel="external">https://github.com/sowish/LNScan</a><br>B•xunfeng——网络资产识别引擎，漏洞检测引擎</p>
+<p>►►传送门<a href="https://github.com/ysrc/xunfeng" target="_blank" rel="external">https://github.com/ysrc/xunfeng</a><br>C•LocalNetworkScanner——javascript实现的本地网络扫描器</p>
+<p>►►传送门<a href="https://github.com/SkyLined/LocalNetworkScanner" target="_blank" rel="external">https://github.com/SkyLined/LocalNetworkScanner</a><br>D•theHarvester——企业被搜索引擎收录敏感资产信息监控脚本：员工邮箱、子域名、Hosts</p>
+<p>►►传送门<a href="https://github.com/laramies/theHarvester" target="_blank" rel="external">https://github.com/laramies/theHarvester</a><br>E•Multisearch-v2——bing、google、360、zoomeye等搜索引擎聚合搜索，可用于发现企业被搜索引擎收录的敏感资产信息</p>
+<p>►►传送门<a href="https://github.com/x0day/Multisearch-v2" target="_blank" rel="external">https://github.com/x0day/Multisearch-v2</a><br>6、webshell检测</p>
+<p>A•Find_webshell——php后门检测，脚本较简单，因此存在误报高和效率低下的问题</p>
+<p>►►传送门<a href="http://github.com/We5ter/Scanners-Box/tree/master/Find_webshell" target="_blank" rel="external">http://github.com/We5ter/Scanners-Box/tree/master/Find_webshell</a><br>B•BackdoorMan——BackdoorMan的主要目的就是为了帮助网站管理员和开发者检测网站文件中隐藏的恶意脚本</p>
+<p>►►传送门<a href="https://github.com/yassineaddi/BackdoorMan" target="_blank" rel="external">https://github.com/yassineaddi/BackdoorMan</a><br>7、内网渗透</p>
+<p>A•VulScritp——企业内网渗透脚本，包括banner扫描、端口扫描；phpmyadmin、jenkins等通用漏洞利用等</p>
+<p>►►传送门<a href="https://github.com/0xwindows/VulScritp" target="_blank" rel="external">https://github.com/0xwindows/VulScritp</a><br>B•D-Pentest-Script——LoginTester，GPP、wmiexec</p>
+<p>►►传送门<a href="https://github.com/Twi1ight/AD-Pentest-Script" target="_blank" rel="external">https://github.com/Twi1ight/AD-Pentest-Script</a><br>8、中间件扫描、指纹识别类</p>
+<p>A•wyportmap——目标端口扫描+系统服务指纹识别</p>
+<p>►►传送门<a href="https://github.com/ring04h/wyportmap" target="_blank" rel="external">https://github.com/ring04h/wyportmap</a><br>B•weakfilescan—动态多线程敏感信息泄露检测工具<br>►►传送门<a href="https://github.com/ring04h/weakfilescan" target="_blank" rel="external">https://github.com/ring04h/weakfilescan</a><br>C•wafw00f——WAF产品指纹识别<br>►►传送门<a href="https://github.com/EnableSecurity/wafw00f" target="_blank" rel="external">https://github.com/EnableSecurity/wafw00f</a><br>D•sslscan——ssl类型识别<br>►►传送门<a href="https://github.com/rbsec/sslscan" target="_blank" rel="external">https://github.com/rbsec/sslscan</a><br>E•whatweb——web指纹识别</p>
+<p>►►传送门<a href="https://github.com/urbanadventurer/whatweb" target="_blank" rel="external">https://github.com/urbanadventurer/whatweb</a><br>F•FingerPrint——Web应用指纹识别</p>
+<p>►►传送门<a href="https://github.com/tanjiti/FingerPrint" target="_blank" rel="external">https://github.com/tanjiti/FingerPrint</a><br>G•Scan-T——网络爬虫式指纹识别</p>
+<p>►►传送门<a href="https://github.com/nanshihui/Scan-T" target="_blank" rel="external">https://github.com/nanshihui/Scan-T</a><br>H•Nscan——类似 Masscan and Zmap的快速扫描器</p>
+<p>►►传送门<a href="https://github.com/OffensivePython/Nscan" target="_blank" rel="external">https://github.com/OffensivePython/Nscan</a><br>I•F-NAScan——网络资产信息扫描, ICMP存活探测,端口扫描，端口指纹服务识别</p>
+<p>►►传送门<a href="https://github.com/ywolf/F-NAScan" target="_blank" rel="external">https://github.com/ywolf/F-NAScan</a><br>J•F-MiddlewareScan——中间件扫描</p>
+<p>►►传送门<a href="https://github.com/ywolf/F-MiddlewareScan" target="_blank" rel="external">https://github.com/ywolf/F-MiddlewareScan</a><br>K•dirsearch——Web路径扫描</p>
+<p>►►传送门<a href="https://github.com/maurosoria/dirsearch" target="_blank" rel="external">https://github.com/maurosoria/dirsearch</a><br>L•bannerscan——C段Banner与路径扫描<br>►►传送门<a href="https://github.com/x0day/bannerscan" target="_blank" rel="external">https://github.com/x0day/bannerscan</a><br>M•RASscan——端口服务扫描</p>
+<p>►►传送门<a href="https://github.com/RASSec/RASscan" target="_blank" rel="external">https://github.com/RASSec/RASscan</a><br>N•bypass_waf——waf自动暴破</p>
+<p>►►传送门<a href="https://github.com/3xp10it/bypass_waf" target="_blank" rel="external">https://github.com/3xp10it/bypass_waf</a><br>O•xcdn.py——获取cdn背后的真实ip</p>
+<p>►►传送门<a href="https://github.com/3xp10it/mytools/blob/master/xcdn.py" target="_blank" rel="external">https://github.com/3xp10it/mytools/blob/master/xcdn.py</a><br>P•BingC——基于Bing搜索引擎的C段/旁站查询，多线程，支持API</p>
+<p>►►传送门<a href="https://github.com/Xyntax/BingC" target="_blank" rel="external">https://github.com/Xyntax/BingC</a><br>Q•DirBrute——多线程WEB目录爆破工具</p>
+<p>►►传送门<a href="https://github.com/Xyntax/DirBrute" target="_blank" rel="external">https://github.com/Xyntax/DirBrute</a><br>R•httpscan——一个爬虫式的网段Web主机发现小工具</p>
+<p>►►传送门<a href="https://github.com/zer0h/httpscan" target="_blank" rel="external">https://github.com/zer0h/httpscan</a><br>9、专用扫描器</p>
+<p>A•Jenkins——Jenkins漏洞探测、用户抓取爆破</p>
+<p>►►传送门<a href="https://github.com/blackye/Jenkins" target="_blank" rel="external">https://github.com/blackye/Jenkins</a><br>B•dzscan——discuz扫描<br>►►传送门thub.com/code-scan/dzscan<br>C•CMS-Exploit-Framework——CMS攻击框架<br>►►传送门<a href="https://github.com/chuhades/CMS-Exploit-Framework" target="_blank" rel="external">https://github.com/chuhades/CMS-Exploit-Framework</a><br>D•IIS_shortname_Scanner——IIS shortname Scanner</p>
+<p>►►传送门<a href="https://github.com/lijiejie/IIS_shortname_Scanner" target="_blank" rel="external">https://github.com/lijiejie/IIS_shortname_Scanner</a><br>E•FlashScanner.pl——flashxss扫描</p>
+<p>►►传送门<a href="http://github.com/we5ter/scanners-box/tree/master/flashscanner.pl" target="_blank" rel="external">http://github.com/we5ter/scanners-box/tree/master/flashscanner.pl</a><br>F•SSTIF——一个Fuzzing服务器端模板注入漏洞的半自动化工具</p>
+<p>►►传送门<a href="https://github.com/coffeehb/SSTIF" target="_blank" rel="external">https://github.com/coffeehb/SSTIF</a><br>10、SSL 分析工具</p>
+<p>A•SSLyze——SSL 配置扫描器</p>
+<p>►►传送门<a href="https://github.com/nabla-c0d3/sslyze" target="_blank" rel="external">https://github.com/nabla-c0d3/sslyze</a><br>B•sslstrip——一个经典的中间人攻击工具</p>
+<p>►►传送门<a href="https://moxie.org/software/sslstrip/" target="_blank" rel="external">https://moxie.org/software/sslstrip/</a><br>C•sslstrip2——SSLStrip version to defeat HSTS</p>
+<p>►►传送门<a href="https://github.com/LeonardoNve/sslstrip2" target="_blank" rel="external">https://github.com/LeonardoNve/sslstrip2</a><br>D•tls_prober——一个实现指纹的SSL/TLS服务器工具</p>
+<p>►►传送门<a href="https://github.com/WestpointLtd/tls_prober" target="_blank" rel="external">https://github.com/WestpointLtd/tls_prober</a><br>11、无线网络工具</p>
+<p>A•Aircrack-ng——一个与802.11标准的无线网络分析有关的安全软件，主要功能有：网络侦测，数据包嗅探，WEP和WPA/WPA2-PSK破解</p>
+<p>►►传送门<a href="http://www.aircrack-ng.org/" target="_blank" rel="external">http://www.aircrack-ng.org/</a><br>B•Kismet——Kisme是一款工作在 802.11 协议第二层的无线网络检测、嗅探、干扰工具。可以工作在支持raw监控模式的所有无线网卡上</p>
+<p>►►传送门<a href="https://kismetwireless.net/" target="_blank" rel="external">https://kismetwireless.net/</a><br>C•Reaver——WIFI暴力破解工具</p>
+<p>►►传送门<a href="http://code.google.com/archive/p/reaver-wps" target="_blank" rel="external">http://code.google.com/archive/p/reaver-wps</a><br>D•Wifite——自动化的无线网络攻击工具</p>
+<p>►►传送门<a href="https://github.com/derv82/wifite" target="_blank" rel="external">https://github.com/derv82/wifite</a><br>E•wifiphisher——伪装自己成为AP再劫持用户原有无线网络，进而使用钓鱼方法活动对方路由器密码、信用卡密码等</p>
+<p>►►传送门<a href="https://github.com/sophron/wifiphisher" target="_blank" rel="external">https://github.com/sophron/wifiphisher</a><br>12、子域名枚举工具</p>
+<p>A•subDomainsBrute——经典的子域名爆破枚举脚本</p>
+<p>►►传送门<a href="https://github.com/lijiejie/subDomainsBrute" target="_blank" rel="external">https://github.com/lijiejie/subDomainsBrute</a><br>B•wydomain——子域名字典穷举</p>
+<p>►►传送门<a href="https://github.com/ring04h/wydomain" target="_blank" rel="external">https://github.com/ring04h/wydomain</a><br>C•dnsmaper——子域名枚举与地图标记</p>
+<p>►►传送门<a href="https://github.com/le4f/dnsmaper" target="_blank" rel="external">https://github.com/le4f/dnsmaper</a><br>D•orangescan——在线子域名信息收集工具</p>
+<p>►►传送门<a href="https://github.com/0xbug/" target="_blank" rel="external">https://github.com/0xbug/</a><br>E•subbrute——根据DNS记录查询子域名<br>►►传送门<a href="https://github.com/TheRook/subbrute" target="_blank" rel="external">https://github.com/TheRook/subbrute</a><br>F•GoogleSSLdomainFinder——基于谷歌SSL透明证书的子域名查询脚本</p>
+<p>►►传送门<a href="https://github.com/We5ter/GSDF" target="_blank" rel="external">https://github.com/We5ter/GSDF</a><br>G•cloudflare_enum——使用CloudFlare进行子域名枚举的脚本</p>
+<p>►►传送门<a href="https://github.com/mandatoryprogrammer/cloudflare_enum" target="_blank" rel="external">https://github.com/mandatoryprogrammer/cloudflare_enum</a><br>H•domain-scan——域扫描器</p>
+<p>►►传送门<a href="https://github.com/18F/domain-scan" target="_blank" rel="external">https://github.com/18F/domain-scan</a><br>13、弱口令或信息泄漏扫描类</p>
+<p>A•htpwdScan——一个简单的HTTP暴力破解、撞库攻击脚本</p>
+<p>►►传送门<a href="https://github.com/lijiejie/htpwdScan" target="_blank" rel="external">https://github.com/lijiejie/htpwdScan</a><br>B•BBScan——一个迷你的信息泄漏批量扫描脚本</p>
+<p>►►传送门↓<br><a href="https://github.com/lijiejie/BBScan" target="_blank" rel="external">https://github.com/lijiejie/BBScan</a><br>C•GitHack——.git文件夹泄漏利用工具</p>
+<p>►►传送门<a href="https://github.com/lijiejie/GitHack" target="_blank" rel="external">https://github.com/lijiejie/GitHack</a><br>D•fenghuangscanner_v3——端口及弱口令检测</p>
+<p>►►传送门<a href="https://github.com/wilson9x1/fenghuangscanner_v3" target="_blank" rel="external">https://github.com/wilson9x1/fenghuangscanner_v3</a><br>E•F-Scrack——对各类服务进行弱口令检测的脚本</p>
+<p>►►传送门<a href="https://github.com/ysrc/F-Scrack" target="_blank" rel="external">https://github.com/ysrc/F-Scrack</a><br>14、Hex 编辑器</p>
+<p>A•HexEdit.js——基于浏览器的hex编辑器</p>
+<p>►►传送门<a href="https://hexed.it/" target="_blank" rel="external">https://hexed.it/</a><br>B•Hexinator (commercial)——世界上最出色的hex编辑器</p>
+<p>►►传送门<a href="https://hexinator.com/" target="_blank" rel="external">https://hexinator.com/</a><br>15、解密工具</p>
+<p>A•John the Ripper——快速破解密码</p>
+<p>►►传送门<a href="http://www.openwall.com/john/" target="_blank" rel="external">http://www.openwall.com/john/</a><br>B•Online MD5 cracker——在线MD5破解</p>
+<p>►►传送门<a href="http://www.md5crack.com/" target="_blank" rel="external">http://www.md5crack.com/</a><br>C•Hashcat——比较快的hash破解工具</p>
+<p>►►传送门<a href="http://hashcat.net/hashcat/" target="_blank" rel="external">http://hashcat.net/hashcat/</a><br>16、Windows 程序</p>
+<p>A•Sysinternals Suite——Sysinternals故障诊断小工具</p>
+<p>►►传送门<a href="https://technet.microsoft.com/en-us/sysinternals/bb842062" target="_blank" rel="external">https://technet.microsoft.com/en-us/sysinternals/bb842062</a><br>B•Windows Credentials Editor——集成了列举、添加、更改、删除身份验证的功能的安全工具</p>
+<p>►►传送门<a href="http://www.ampliasecurity.com/research/windows-credentials-editor/" target="_blank" rel="external">http://www.ampliasecurity.com/research/windows-credentials-editor/</a><br>C•mimikatz—— Mimikatz是一款能够从Windows中获取内存,并且获取明文密码和NTLM哈希值的神器</p>
+<p>►►传送门<a href="http://blog.gentilkiwi.com/mimikatz" target="_blank" rel="external">http://blog.gentilkiwi.com/mimikatz</a><br>D•PowerSploit——PowerSploit是一些powershell 脚本，包括Inject-Dll(注入dll到指定进程)、Inject-Shellcode（注入shellcode到执行进程）、Encrypt- Script（文本或脚本加密）、Get-GPPPassword（通过groups.xml获取明文密码）、Invoke- ReverseDnsLookup（扫描 DNS PTR记录）</p>
+<p>►►传送门<a href="https://github.com/PowerShellMafia/PowerSploit" target="_blank" rel="external">https://github.com/PowerShellMafia/PowerSploit</a><br>E•Windows Exploit Suggester——windows下的提权工具，该工具可以将目标系统的补丁安装情况与微软的漏洞数据库进行对比，进而检测出目标系统中潜在的未修复漏洞。同时此工具还会告知用户针对于此漏洞是否有公开的exp和可用的Metasploit模块</p>
+<p>►►传送门<a href="https://github.com/GDSSecurity/Windows-Exploit-Suggester" target="_blank" rel="external">https://github.com/GDSSecurity/Windows-Exploit-Suggester</a><br>F•Responder——Responder是一款强大并且简单易用的内网渗透神器</p>
+<p>►►传送门<a href="https://github.com/SpiderLabs/Responder" target="_blank" rel="external">https://github.com/SpiderLabs/Responder</a><br>G•Empire——一款Post Exploitation相关工具</p>
+<p>►►传送门<a href="https://github.com/adaptivethreat/Empire" target="_blank" rel="external">https://github.com/adaptivethreat/Empire</a><br>H•Fibratus——一个可以捕捉大部分的Windows内核活动的工具</p>
+<p>►►传送门<a href="https://github.com/rabbitstack/fibratus" target="_blank" rel="external">https://github.com/rabbitstack/fibratus</a><br>17、DDoS 工具</p>
+<p>A•LOIC——Windows下的一款开源网络压力测试工具</p>
+<p>►►传送门<a href="https://github.com/NewEraCracker/LOIC/" target="_blank" rel="external">https://github.com/NewEraCracker/LOIC/</a><br>B•JS LOIC——JavaScript版本的LOIC</p>
+<p>►►传送门<a href="http://metacortexsecurity.com/tools/anon/LOIC/LOICv1.html" target="_blank" rel="external">http://metacortexsecurity.com/tools/anon/LOIC/LOICv1.html</a><br>C•T50——更快的网络压测工具</p>
+<p>►►传送门<a href="https://sourceforge.net/projects/t50/" target="_blank" rel="external">https://sourceforge.net/projects/t50/</a><br>18、渗透时可使用的docker容器</p>
+<p>A•docker pull kalilinux/kali-linux-docker official Kali Linux</p>
+<p>►►传送门<a href="https://hub.docker.com/r/kalilinux/kali-linux-docker/" target="_blank" rel="external">https://hub.docker.com/r/kalilinux/kali-linux-docker/</a><br>B•docker pull owasp/zap2docker-stable - official OWASP ZAP</p>
+<p>►►传送门<a href="https://github.com/zaproxy/zaproxy" target="_blank" rel="external">https://github.com/zaproxy/zaproxy</a><br>C•docker pull wpscanteam/wpscan - official WPScan</p>
+<p>►►传送门↓<br><a href="https://hub.docker.com/r/wpscanteam/wpscan/" target="_blank" rel="external">https://hub.docker.com/r/wpscanteam/wpscan/</a><br>D•docker pull pandrew/metasploit - docker-metasploit</p>
+<p>►►传送门<a href="https://hub.docker.com/r/pandrew/metasploit/" target="_blank" rel="external">https://hub.docker.com/r/pandrew/metasploit/</a><br>E•docker pull citizenstig/dvwa - Damn Vulnerable Web Application (DVWA)</p>
+<p>►►传送门<a href="https://hub.docker.com/r/citizenstig/dvwa/" target="_blank" rel="external">https://hub.docker.com/r/citizenstig/dvwa/</a><br>F•docker pull wpscanteam/vulnerablewordpress - Vulnerable WordPress Installation</p>
+<p>►►传送门<a href="https://hub.docker.com/r/wpscanteam/vulnerablewordpress/" target="_blank" rel="external">https://hub.docker.com/r/wpscanteam/vulnerablewordpress/</a><br>G•docker pull hmlio/vaas-cve-2014-6271 - Vulnerability as a service: Shellshock</p>
+<p>►►传送门<a href="https://hub.docker.com/r/hmlio/vaas-cve-2014-6271/" target="_blank" rel="external">https://hub.docker.com/r/hmlio/vaas-cve-2014-6271/</a><br>H•docker pull hmlio/vaas-cve-2014-0160 - Vulnerability as a service: Heartbleed</p>
+<p>►►传送门<a href="https://hub.docker.com/r/hmlio/vaas-cve-2014-0160/" target="_blank" rel="external">https://hub.docker.com/r/hmlio/vaas-cve-2014-0160/</a><br>I•docker pull opendns/security-ninjas - Security Ninjas</p>
+<p>►►传送门<a href="https://hub.docker.com/r/opendns/security-ninjas/" target="_blank" rel="external">https://hub.docker.com/r/opendns/security-ninjas/</a><br>J•docker pull diogomonica/docker-bench-security - Docker Bench for Security</p>
+<p>►►传送门<a href="https://hub.docker.com/r/diogomonica/docker-bench-security/" target="_blank" rel="external">https://hub.docker.com/r/diogomonica/docker-bench-security/</a><br>K•docker pull ismisepaul/securityshepherd - OWASP Security Shepherd</p>
+<p>►►传送门<a href="https://hub.docker.com/r/ismisepaul/securityshepherd/" target="_blank" rel="external">https://hub.docker.com/r/ismisepaul/securityshepherd/</a><br>L•docker pull danmx/docker-owasp-webgoat - OWASP WebGoat Project docker image</p>
+<p>►►传送门<a href="https://hub.docker.com/r/danmx/docker-owasp-webgoat/" target="_blank" rel="external">https://hub.docker.com/r/danmx/docker-owasp-webgoat/</a><br>M•docker-compose build &amp;&amp; docker-compose up - OWASP NodeGoat</p>
+<p>►►传送门<a href="https://github.com/owasp/nodegoat#option-3---run-nodegoat-on-docker" target="_blank" rel="external">https://github.com/owasp/nodegoat#option-3---run-nodegoat-on-docker</a><br>N•docker pull citizenstig/nowasp - OWASP Mutillidae II Web Pen-Test Practice Application</p>
+<p>►►传送门<a href="https://hub.docker.com/r/citizenstig/nowasp/" target="_blank" rel="external">https://hub.docker.com/r/citizenstig/nowasp/</a><br>O•docker pull bkimminich/juice-shop - OWASP Juice Shop</p>
+<p>►►传送门<a href="https://github.com/bkimminich/juice-shop#docker-container--" target="_blank" rel="external">https://github.com/bkimminich/juice-shop#docker-container--</a><br>19、社工工具</p>
+<p>A•SET——来自TrustedSec的社工工具箱</p>
+<p>►►传送门<a href="https://github.com/trustedsec/social-engineer-toolkit" target="_blank" rel="external">https://github.com/trustedsec/social-engineer-toolkit</a><br>20、藏匿工具</p>
+<p>A•Tor——使onion routing藏形匿迹的免费软件</p>
+<p>►►传送门<a href="http://www.torproject.org/" target="_blank" rel="external">http://www.torproject.org/</a><br>B•I2P——开源匿名网络工具</p>
+<p>►►传送门<a href="http://geti2p.net/" target="_blank" rel="external">http://geti2p.net/</a><br>C•Nipe——重定向所有从机器到Tor网络的流量</p>
+<p>►►传送门<a href="https://github.com/GouveaHeitor/nipe" target="_blank" rel="external">https://github.com/GouveaHeitor/nipe</a><br>21、逆向工具</p>
+<p>A•IDA Pro——Windows、Linux 、Mac OS X反汇编和调试器</p>
+<p>►►传送门<a href="http://www.hex-rays.com/products/ida/" target="_blank" rel="external">http://www.hex-rays.com/products/ida/</a><br>B•WDK/WinDbg——Windows下的内核态调试工具</p>
+<p>►►传送门<a href="https://developer.microsoft.com/en-us/windows/hardware/windows-driver-kit" target="_blank" rel="external">https://developer.microsoft.com/en-us/windows/hardware/windows-driver-kit</a><br>C•OllyDbg——x86调试器，主要做二进制代码分析</p>
+<p>►►传送门<a href="http://www.ollydbg.de/" target="_blank" rel="external">http://www.ollydbg.de/</a><br>D•Radare2——radare2是个开源的多平台的基于命令行的逆向工具</p>
+<p>►►传送门<a href="http://rada.re/r/index.html" target="_blank" rel="external">http://rada.re/r/index.html</a><br>E•x64_dbg——windows下x64/x32 的调试工具</p>
+<p>►►传送门<a href="http://x64dbg.com/" target="_blank" rel="external">http://x64dbg.com/</a><br>F•Immunity Debugger——一个强力的能够加快编写利用安全漏洞代码、分析恶意软件和二进制文件逆向工程等过程速度的工具</p>
+<p>►►传送门<a href="http://debugger.immunityinc.com/" target="_blank" rel="external">http://debugger.immunityinc.com/</a><br>G•Evan’s Debugger——Linux版本的OllyDbg</p>
+<p>►►传送门<a href="http://www.codef00.com/projects#debugger" target="_blank" rel="external">http://www.codef00.com/projects#debugger</a><br>H•Medusa disassembler——一个开源的交互式反汇编工具</p>
+<p>►►传送门<a href="https://github.com/wisk/medusa" target="_blank" rel="external">https://github.com/wisk/medusa</a><br>I•plasma——x86/ARM/MIPS交换式反汇编工具，它可以生成与彩色语法代码缩进伪代码</p>
+<p>►►传送门<a href="https://github.com/plasma-disassembler/plasma" target="_blank" rel="external">https://github.com/plasma-disassembler/plasma</a><br>J•peda——Python的工具，它可以辅助黑客编写EXP，运行在Unix/linux系统上</p>
+<p>►►传送门<a href="https://github.com/longld/peda" target="_blank" rel="external">https://github.com/longld/peda</a><br>K•dnSpy——dnSpy是一款开源的基于ILSpy发展而来的.net程序集的编辑,反编译,调试神器</p>
+<p>►►传送门<a href="https://github.com/0xd4d/dnSpy" target="_blank" rel="external">https://github.com/0xd4d/dnSpy</a><br>22、CTF Tools</p>
+<p>A•Pwntools——pwntools是一个ctf框架和漏洞利用开发库,用Python开发,主要为了让使用者简单快速的编写exploit</p>
+<p>►►传送门<a href="https://github.com/Gallopsled/pwntools" target="_blank" rel="external">https://github.com/Gallopsled/pwntools</a><br>23、信息收集</p>
+<p>A•Maltego——比起其它的情报收集工具，Maltego显得格外不同并且功能强大，因为它不仅可以自动收集到所需信息，而且可以将收集的信息可视化，用一种格外美观的方式将结果呈现给使用者</p>
+<p>►►传送门<a href="https://www.paterva.com/web7/" target="_blank" rel="external">https://www.paterva.com/web7/</a><br>B•theHarvester——theHarvester是一款信息收集工具，它可以从不同的公开源中(例如：搜索引擎和PGP key服务器)收集e -mail账户信息，用户名称和主机名/子域名等。theHarvester目的是帮助渗透测试人员在早期阶段尽可能的收集一些信息。这个工具十分简单但非常有效</p>
+<p>►►传送门<a href="https://github.com/laramies/theHarvester" target="_blank" rel="external">https://github.com/laramies/theHarvester</a><br>C•creepy——Creepy是一款可以从社交网络平台和图像服务主机上收集用户地理网址相关信息的应用程序</p>
+<p>►►传送门<a href="https://github.com/ilektrojohn/creepy" target="_blank" rel="external">https://github.com/ilektrojohn/creepy</a><br>D•metagoofil——Metagoofil是一款利用Google收集信息的工具，支持WORD、PPT、EXCEL、PDF</p>
+<p>►►传送门<a href="https://github.com/laramies/metagoofil" target="_blank" rel="external">https://github.com/laramies/metagoofil</a><br>E•Google Hacking Database——一个使用google侦查的资料库</p>
+<p>►►传送门<a href="https://www.exploit-db.com/google-hacking-database/" target="_blank" rel="external">https://www.exploit-db.com/google-hacking-database/</a><br>F•Censys——Censys是一款用以搜索联网设备信息的新型搜索引擎，安全专家可以使用它来评估他们实现方案的安全性，而黑客则可以使用它作为前期侦查攻击目标、收集目标信息的强大利器</p>
+<p>►►传送门<a href="https://www.censys.io/" target="_blank" rel="external">https://www.censys.io/</a><br>G•Shodan——这个引擎能搜索、定位到一切与网络服务器相连的设备。Shodan的工作原理是对各类设备的端口产生的系统旗标信息（banners）进行审计而产生搜索结果，所以当你使用它的时候，需要懂一点系统旗标信息的知识</p>
+<p>►►传送门<a href="https://www.shodan.io/" target="_blank" rel="external">https://www.shodan.io/</a><br>H•recon-ng——Recon-ng框架是一个强大的工具，使用它可以自动的收集信息和网络侦查</p>
+<p>►►传送门<a href="https://bitbucket.org/LaNMaSteR53/recon-ng" target="_blank" rel="external">https://bitbucket.org/LaNMaSteR53/recon-ng</a><br>I•github-dorks——扫描github repos/organizations潜在敏感信息的命令行工具</p>
+<p>►►传送门<a href="https://github.com/techgaun/github-dorks" target="_blank" rel="external">https://github.com/techgaun/github-dorks</a><br>J•vcsmap——一个基于插件的，扫描公共版本控制系统敏感信息的工具</p>
+<p>►►传送门<a href="https://github.com/melvinsh/vcsmap" target="_blank" rel="external">https://github.com/melvinsh/vcsmap</a><br>K•Spiderfoot——一个开源的智能自动化工具。它的目标是自动化过程收集情报的一个给定的目标,这可能是一个IP地址,域名,主机名或网络子网</p>
+<p>►►传送门<a href="http://www.spiderfoot.net/" target="_blank" rel="external">http://www.spiderfoot.net/</a></p>
+<h4 id="三、书籍类"><a href="#三、书籍类" class="headerlink" title="三、书籍类"></a>三、书籍类</h4><p>1、渗透测试书籍</p>
+<p>A•The Art of Exploitation by Jon Erickson, 2008</p>
+<p>►►传送门<a href="http://www.nostarch.com/hacking2.htm。" target="_blank" rel="external">http://www.nostarch.com/hacking2.htm。</a><br>B•Metasploit: The Penetration Tester’s Guide by David Kennedy and others, 2011</p>
+<p>►►传送门<a href="http://www.nostarch.com/metasploito。" target="_blank" rel="external">http://www.nostarch.com/metasploito。</a><br>C•Penetration Testing: A Hands-On Introduction to Hacking by Georgia Weidman, 2014</p>
+<p>►►传送门<a href="http://www.nostarch.com/pentesting。" target="_blank" rel="external">http://www.nostarch.com/pentesting。</a><br>D•Rtfm: Red Team Field Manual by Ben Clark, 2014</p>
+<p>►►传送门<a href="https://www.amazon.com/Rtfm-Red-Team-Field-Manual/dp/1494295504/" target="_blank" rel="external">https://www.amazon.com/Rtfm-Red-Team-Field-Manual/dp/1494295504/</a><br>E•The Hacker Playbook by Peter Kim, 2014</p>
+<p>►►传送门<a href="https://www.amazon.com/The-Hacker-Playbook-Practical-Penetration/dp/1494932636/" target="_blank" rel="external">https://www.amazon.com/The-Hacker-Playbook-Practical-Penetration/dp/1494932636/</a><br>F•The Basics of Hacking and Penetration Testing by Patrick Engebretson, 2013</p>
+<p>►►传送门<a href="https://www.elsevier.com/books/the-basics-of-hacking-and-penetration-testing/engebretson/978-1-59749-655-1" target="_blank" rel="external">https://www.elsevier.com/books/the-basics-of-hacking-and-penetration-testing/engebretson/978-1-59749-655-1</a><br>G•Professional Penetration Testing by Thomas Wilhelm, 2013</p>
+<p>►►传送门<a href="https://www.elsevier.com/books/professional-penetration-testing/wilhelm/978-1-59749-993-4" target="_blank" rel="external">https://www.elsevier.com/books/professional-penetration-testing/wilhelm/978-1-59749-993-4</a><br>H•Advanced Penetration Testing for Highly-Secured Environments by Lee Allen,2012</p>
+<p>►►传送门<a href="https://www.packtpub.com/networking-and-servers/advanced-penetration-testing-highly-secured-environments-ultimate-security-gu" target="_blank" rel="external">https://www.packtpub.com/networking-and-servers/advanced-penetration-testing-highly-secured-environments-ultimate-security-gu</a><br>I•Violent Python by TJ O’Connor, 2012</p>
+<p>►►传送门<a href="https://www.elsevier.com/books/violent-python/unknown/978-1-59749-957-6" target="_blank" rel="external">https://www.elsevier.com/books/violent-python/unknown/978-1-59749-957-6</a><br>J•Fuzzing: Brute Force Vulnerability Discovery by Michael Sutton, Adam Greene, Pedram Amini, 2007</p>
+<p>►►传送门<a href="http://www.fuzzing.org/" target="_blank" rel="external">http://www.fuzzing.org/</a><br>2、黑客手册系列</p>
+<p>A•The Shellcoders Handbook by Chris Anley and others, 2007</p>
+<p>►►传送门<a href="http://as.wiley.com/WileyCDA/WileyTitle/productCd-047008023X.html" target="_blank" rel="external">http://as.wiley.com/WileyCDA/WileyTitle/productCd-047008023X.html</a><br>B•The Web Application Hackers Handbook by D. Stuttard, M. Pinto, 2011</p>
+<p>►►传送门<a href="http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118026470.html" target="_blank" rel="external">http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118026470.html</a><br>C•iOS Hackers Handbook by Charlie Miller and others, 2012</p>
+<p>►►传送门<a href="http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118204123.html" target="_blank" rel="external">http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118204123.html</a><br>D•Android Hackers Handbook by Joshua J. Drake and others, 2014</p>
+<p>►►传送门<a href="http://www.wiley.com/WileyCDA/WileyTitle/productCd-111860864X.html" target="_blank" rel="external">http://www.wiley.com/WileyCDA/WileyTitle/productCd-111860864X.html</a><br>E•The Browser Hackers Handbook by Wade Alcorn and others, 2014</p>
+<p>►►传送门<a href="http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118662091.html" target="_blank" rel="external">http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118662091.html</a><br>3、网络分析书籍</p>
+<p>A•Nmap Network Scanning by Gordon Fyodor Lyon, 2009</p>
+<p>►►传送门<a href="https://nmap.org/book/" target="_blank" rel="external">https://nmap.org/book/</a><br>B•Practical Packet Analysis by Chris Sanders, 2011</p>
+<p>►►传送门<a href="http://www.nostarch.com/pecket2.htm。" target="_blank" rel="external">http://www.nostarch.com/pecket2.htm。</a><br>C•Wireshark Network Analysis by by Laura Chappell, Gerald Combs, 2012</p>
+<p>►►传送门<a href="http://www.wiresharkbook.com/" target="_blank" rel="external">http://www.wiresharkbook.com/</a><br>4、逆向工程书籍</p>
+<p>A•Reverse Engineering for Beginners by Dennis Yurichev (free!)</p>
+<p>►►传送门<a href="https://beginners.re/" target="_blank" rel="external">https://beginners.re/</a><br>B•The IDA Pro Book by Chris Eagle, 2011</p>
+<p>►►传送门<a href="http://www.nostarch.com/idapro2.htm。" target="_blank" rel="external">http://www.nostarch.com/idapro2.htm。</a><br>C•Practical Reverse Engineering by Bruce Dang and others, 2014</p>
+<p>►►传送门<a href="http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118787315.html" target="_blank" rel="external">http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118787315.html</a><br>5、恶意程序分析书籍</p>
+<p>A•Practical Malware Analysis by Michael Sikorski, Andrew Honig, 2012</p>
+<p>►►传送门↓<br><a href="http://www.nostarch.com/malware。" target="_blank" rel="external">http://www.nostarch.com/malware。</a><br>B•The Art of Memory Forensics by Michael Hale Ligh and others, 2014</p>
+<p>►►传送门↓<br><a href="http://as.wiley.com/WileyCDA/WileyTitle/productCd-1118825098.html" target="_blank" rel="external">http://as.wiley.com/WileyCDA/WileyTitle/productCd-1118825098.html</a><br>6、Windows书籍</p>
+<p>A•Windows Internals by Mark Russinovich, David Solomon, Alex Ionescu</p>
+<p>►►传送门↓<br><a href="https://technet.microsoft.com/en-us/sysinternals/bb963901.aspx" target="_blank" rel="external">https://technet.microsoft.com/en-us/sysinternals/bb963901.aspx</a><br>7、社会工程学书籍</p>
+<p>A•The Art of Deception by Kevin D. Mitnick, William L. Simon, 2002</p>
+<p>►►传送门↓<br><a href="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471237124.html" target="_blank" rel="external">http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471237124.html</a><br>B•The Art of Intrusion by Kevin D. Mitnick, William L. Simon, 2005</p>
+<p>►►传送门↓<br><a href="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0764569597.html" target="_blank" rel="external">http://www.wiley.com/WileyCDA/WileyTitle/productCd-0764569597.html</a><br>C•Ghost in the Wires by Kevin D. Mitnick, William L. Simon, 2011</p>
+<p>►►传送门↓<br><a href="http://www.hachettebookgroup.com/titles/kevin-mitnick/ghost-in-the-wires/9780316134477/" target="_blank" rel="external">http://www.hachettebookgroup.com/titles/kevin-mitnick/ghost-in-the-wires/9780316134477/</a><br>D•No Tech Hacking by Johnny Long, Jack Wiles, 2008</p>
+<p>►►传送门↓<br><a href="https://www.elsevier.com/books/no-tech-hacking/mitnick/978-1-59749-215-7" target="_blank" rel="external">https://www.elsevier.com/books/no-tech-hacking/mitnick/978-1-59749-215-7</a><br>E•Social Engineering: The Art of Human Hacking by Christopher Hadnagy, 2010</p>
+<p>►►传送门↓<br><a href="http://as.wiley.com/WileyCDA/WileyTitle/productCd-0470639539.html" target="_blank" rel="external">http://as.wiley.com/WileyCDA/WileyTitle/productCd-0470639539.html</a><br>F•Unmasking the Social Engineer: The Human Element of Security by Christopher Hadnagy, 2014</p>
+<p>►►传送门↓<br><a href="http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118608577.html" target="_blank" rel="external">http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118608577.html</a><br>8、安全杂志</p>
+<p>A•2600: The Hacker Quarterly——美国的一本关于计算机技术的地下杂志</p>
+<p>►►传送门↓<br><a href="https://www.2600.com/Magazine/DigitalEditions" target="_blank" rel="external">https://www.2600.com/Magazine/DigitalEditions</a><br>B•Hakin9——A安全每周更新的在线杂志</p>
+<p>►►传送门↓<br><a href="https://hakin9.org/" target="_blank" rel="external">https://hakin9.org/</a></p>
+<p>####　四、漏洞库篇<br>1、漏洞库</p>
+<p>A•NVD——美国国家漏洞库</p>
+<p>►►传送门<a href="http://nvd.nist.gov/" target="_blank" rel="external">http://nvd.nist.gov/</a><br>B•CERT——美国国家应急响应中心</p>
+<p>►►传送门<a href="https://www.us-cert.gov/" target="_blank" rel="external">https://www.us-cert.gov/</a><br>C•OSVDB——开源漏洞库</p>
+<p>►►传送门<a href="http://osvdb.org" target="_blank" rel="external">http://osvdb.org</a><br>D•Bugtraq——赛门铁克</p>
+<p>►►传送门<a href="http://www.securityfocus.com/" target="_blank" rel="external">http://www.securityfocus.com/</a><br>E•Exploit-DB——exp的库</p>
+<p>►►传送门<a href="https://www.exploit-db.com/" target="_blank" rel="external">https://www.exploit-db.com/</a><br>E•Fulldisclosure——Fulldisclosure邮件列表</p>
+<p>►►传送门<a href="http://seclists.org/fulldisclosure/" target="_blank" rel="external">http://seclists.org/fulldisclosure/</a><br>F•MS Bulletin——微软安全公告</p>
+<p>►►传送门<a href="https://technet.microsoft.com/en-us/security/bulletins" target="_blank" rel="external">https://technet.microsoft.com/en-us/security/bulletins</a><br>G•MS Advisory——微软安全报告</p>
+<p>►►传送门<a href="https://technet.microsoft.com/en-us/security/advisories" target="_blank" rel="external">https://technet.microsoft.com/en-us/security/advisories</a><br>H•Inj3ct0r——Inj3ct0r Exp的库</p>
+<p>►►传送门<a href="http://www.1337day.com/" target="_blank" rel="external">http://www.1337day.com/</a><br>I•Packet Storm——Packet Storm全球安全资源</p>
+<p>►►传送门<a href="https://packetstormsecurity.com/" target="_blank" rel="external">https://packetstormsecurity.com/</a><br>J•SecuriTeam——Securiteam 漏洞库</p>
+<p>►►传送门<a href="http://www.securiteam.com/" target="_blank" rel="external">http://www.securiteam.com/</a><br>K•CXSecurity——CSSecurity Bugtraq列表</p>
+<p>►►传送门<a href="http://cxsecurity.com/" target="_blank" rel="external">http://cxsecurity.com/</a><br>L•Vulnerability Laboratory——漏洞研究实验室</p>
+<p>►►传送门<a href="https://www.vulnerability-lab.com/" target="_blank" rel="external">https://www.vulnerability-lab.com/</a><br>M•ZDI——0day库</p>
+<p>►►传送门<a href="http://www.zerodayinitiative.com/" target="_blank" rel="external">http://www.zerodayinitiative.com/</a><br>N•Vulners——软件漏洞库</p>
+<p>►►传送门<a href="https://vulners.com/" target="_blank" rel="external">https://vulners.com/</a><br>O•cnnvd——中国国家信息安全漏洞库</p>
+<p>►►传送门<a href="http://www.cnnvd.org.cn/" target="_blank" rel="external">http://www.cnnvd.org.cn/</a><br>P•cnvd——中国信息安全漏洞共享平台</p>
+<p>►►传送门<a href="http://www.cnvd.org.cn/" target="_blank" rel="external">http://www.cnvd.org.cn/</a><br>Q•SCAP——安全内容自动化协议中文社区</p>
+<p>►►传送门<a href="http://www.scap.org.cn/" target="_blank" rel="external">http://www.scap.org.cn/</a><br>R•Sebug——洞悉漏洞平台</p>
+<p>►►传送门<a href="https://www.boonex.com/sebug" target="_blank" rel="external">https://www.boonex.com/sebug</a><br>S•Butian——补天漏洞平台</p>
+<p>►►传送门<a href="http://butian.360.cn/" target="_blank" rel="external">http://butian.360.cn/</a><br>T•0BUG——零BUG漏洞平台</p>
+<p>►►传送门<a href="http://www.0bug.org/" target="_blank" rel="external">http://www.0bug.org/</a><br>2、国内SRC</p>
+<p>A•BSRC——百度安全应急响应中心</p>
+<p>►►传送门<a href="http://sec.baidu.com/views/main/index.html#home" target="_blank" rel="external">http://sec.baidu.com/views/main/index.html#home</a><br>B•AFSRC——蚂蚁金服安全应急响应中心</p>
+<p>►►传送门<a href="https://security.alipay.com/sc/afsrc/home.htm" target="_blank" rel="external">https://security.alipay.com/sc/afsrc/home.htm</a><br>C•TSRC——腾讯安全应急响应中心</p>
+<p>►►传送门<a href="https://security.tencent.com/" target="_blank" rel="external">https://security.tencent.com/</a><br>D•JSRC——京东安全应急响应中心</p>
+<p>►►传送门<a href="http://security.jd.com/" target="_blank" rel="external">http://security.jd.com/</a><br>E•PINGANSRC——平安集团安全应急响应中心</p>
+<p>►►传送门<a href="http://security.pingan.com/" target="_blank" rel="external">http://security.pingan.com/</a><br>F•360SRC——360安全应急响应中心</p>
+<p>►►传送门<a href="http://security.360.cn/" target="_blank" rel="external">http://security.360.cn/</a><br>G•LSRC——联想安全应急响应中心</p>
+<p>►►传送门<a href="http://lsrc.lenovo.com/index.htm" target="_blank" rel="external">http://lsrc.lenovo.com/index.htm</a><br>H•SGSRC——搜狗安全应急响应中心</p>
+<p>►►传送门<a href="http://sec.sogou.com/" target="_blank" rel="external">http://sec.sogou.com/</a><br>I•QSRC——去哪儿安全应急响应中心</p>
+<p>►►传送门<a href="http://security.qunar.com/" target="_blank" rel="external">http://security.qunar.com/</a><br>J•ASRC——阿里安全应急响应中心</p>
+<p>►►传送门<a href="http://security.taobao.com/" target="_blank" rel="external">http://security.taobao.com/</a><br>K•SNSRC——苏宁安全应急响应中心</p>
+<p>►►传送门<a href="https://security.suning.com/ssrc-web/index.jsp" target="_blank" rel="external">https://security.suning.com/ssrc-web/index.jsp</a><br>L•NSRC——网易安全应急响应中心</p>
+<p>►►传送门<a href="http://anquan.163.com/" target="_blank" rel="external">http://anquan.163.com/</a><br>M•CSRC——携程安全应急响应中心</p>
+<p>►►传送门<a href="https://sec.ctrip.com/" target="_blank" rel="external">https://sec.ctrip.com/</a><br>N•1SRC——1号店安全应急响应中心</p>
+<p>►►传送门<a href="http://security.yhd.com/" target="_blank" rel="external">http://security.yhd.com/</a><br>O•TNSRC——途牛安全应急响应中心</p>
+<p>►►传送门<a href="http://security.yhd.com/" target="_blank" rel="external">http://security.yhd.com/</a><br>P•KSRC——金山安全应急响应中心</p>
+<p>►►传送门<a href="http://sec.kingsoft.com/" target="_blank" rel="external">http://sec.kingsoft.com/</a><br>Q•MISRC——小米安全应急响应中心</p>
+<p>►►传送门<a href="https://sec.xiaomi.com/" target="_blank" rel="external">https://sec.xiaomi.com/</a><br>R•VSRC——唯品会安全应急响应中心</p>
+<p>►►传送门<a href="https://sec.vip.com/" target="_blank" rel="external">https://sec.vip.com/</a><br>S•YSRC——同程安全应急响应中心</p>
+<p>►►传送门<a href="https://sec.ly.com/" target="_blank" rel="external">https://sec.ly.com/</a><br>T•71SRC——爱奇艺安全应急响应中心</p>
+<p>►►传送门<a href="https://security.iqiyi.com/" target="_blank" rel="external">https://security.iqiyi.com/</a><br>U•DSRC——滴滴出行安全应急响应中心</p>
+<p>►►传送门<a href="http://sec.didichuxing.com/" target="_blank" rel="external">http://sec.didichuxing.com/</a><br>V•ESRC——饿了么安全应急响应中心</p>
+<p>►►传送门<a href="https://security.ele.me/" target="_blank" rel="external">https://security.ele.me/</a><br>W•YYSRC——欢聚时代安全应急响应中心</p>
+<p>►►传送门<a href="http://security.yy.com/" target="_blank" rel="external">http://security.yy.com/</a><br>X•YISRC——宜人贷安全应急响应中心</p>
+<p>►►传送门<a href="https://security.yirendai.com/" target="_blank" rel="external">https://security.yirendai.com/</a><br>Y•PPDSRC——拍拍贷安全应急响应中心</p>
+<p>►►传送门<a href="http://sec.ppdai.com/indexmain" target="_blank" rel="external">http://sec.ppdai.com/indexmain</a><br>Z•CPSRC——酷派安全应急响应中心</p>
+<p>►►传送门<a href="http://security.coolpad.com/" target="_blank" rel="external">http://security.coolpad.com/</a><br>A•ZSRC——猪八戒安全应急响应中心</p>
+<p>►►传送门<a href="https://sec.zbj.com/" target="_blank" rel="external">https://sec.zbj.com/</a><br>B•YSSRC——萤石安全应急响应中心</p>
+<p>►►传送门<a href="http://ysrc.ys7.com/" target="_blank" rel="external">http://ysrc.ys7.com/</a><br>C•FSRC——焦点安全应急响应中心</p>
+<p>►►传送门<a href="http://security.focuschina.com/" target="_blank" rel="external">http://security.focuschina.com/</a><br>D•DRSRC——点融网安全应急响应中心</p>
+<p>►►传送门<a href="https://security.dianrong.com/" target="_blank" rel="external">https://security.dianrong.com/</a><br>E•WSRC——微博安全应急响应中心</p>
+<p>►►传送门<a href="http://wsrc.weibo.com/" target="_blank" rel="external">http://wsrc.weibo.com/</a><br>F•JJSRC——竞技世界安全应急响应中心</p>
+<p>►►传送门<a href="https://security.jj.cn/" target="_blank" rel="external">https://security.jj.cn/</a><br>G•MSRC——魅族安全应急响应中心</p>
+<p>►►传送门<a href="http://sec.meizu.com/" target="_blank" rel="external">http://sec.meizu.com/</a><br>H•SDSRC——安全狗安全应急响应中心</p>
+<p>►►传送门<a href="http://security.safedog.cn/index.html" target="_blank" rel="external">http://security.safedog.cn/index.html</a><br>I•SFSRC——深信服安全应急响应中心</p>
+<p>►►传送门<a href="http://security.safedog.cn/index.html" target="_blank" rel="external">http://security.safedog.cn/index.html</a><br>J•XLSRC——迅雷安全应急响应中心</p>
+<p>►►传送门<a href="http://safe.xunlei.com/" target="_blank" rel="external">http://safe.xunlei.com/</a><br>K•FYSRC——富友安全应急响应中心</p>
+<p>►►传送门<a href="https://fsrc.fuiou.com/home/index.html" target="_blank" rel="external">https://fsrc.fuiou.com/home/index.html</a><br>L•MLSRC——美丽联合集团安全应急响应中心</p>
+<p>►►传送门<a href="http://security.mogujie.com/#/" target="_blank" rel="external">http://security.mogujie.com/#/</a><br>M•SINASRC——新浪安全应急响应中心</p>
+<p>►►传送门<a href="http://sec.sina.com.cn/?retcode=6102" target="_blank" rel="external">http://sec.sina.com.cn/?retcode=6102</a><br>N•263SRC——263安全应急响应中心</p>
+<p>►►传送门<a href="http://www.263.net/263/helpcenter/security/" target="_blank" rel="external">http://www.263.net/263/helpcenter/security/</a><br>O•HCSRC——恒昌安全应急响应中心</p>
+<p>►►传送门<a href="http://src.credithc.com/" target="_blank" rel="external">http://src.credithc.com/</a><br>P•KBSRC——快播安全应急响应中心</p>
+<p>►►传送门<a href="http://security.kuaibo.com/" target="_blank" rel="external">http://security.kuaibo.com/</a><br>Q•QMSRC——千米安全应急响应中心</p>
+<p>►►传送门<a href="http://security.qianmi.com/" target="_blank" rel="external">http://security.qianmi.com/</a><br>R•TJSRC——途家安全应急响应中心</p>
+<p>►►传送门<a href="http://security.tujia.com/" target="_blank" rel="external">http://security.tujia.com/</a><br>S•CODEAGES——阔知安全应急响应中心</p>
+<p>►►传送门<a href="http://www.qiqiuyu.com/article/884" target="_blank" rel="external">http://www.qiqiuyu.com/article/884</a><br>3、安全课程</p>
+<p>A•Offensive Security Training——BackTrack/Kali开发者的培训</p>
+<p>►►传送门<a href="https://www.offensive-security.com/information-security-training/" target="_blank" rel="external">https://www.offensive-security.com/information-security-training/</a><br>B•SANS Security Training——计算机安全培训和认证</p>
+<p>►►传送门<a href="http://www.sans.org/" target="_blank" rel="external">http://www.sans.org/</a><br>C•Open Security Training——计算机安全课程培训资料</p>
+<p>►►传送门<a href="http://opensecuritytraining.info/" target="_blank" rel="external">http://opensecuritytraining.info/</a><br>D•CTF Field Guide——下一次CTF比赛必学</p>
+<p>►►传送门<a href="https://trailofbits.github.io/ctf/" target="_blank" rel="external">https://trailofbits.github.io/ctf/</a></p>
+<h4 id="五、国际会议篇"><a href="#五、国际会议篇" class="headerlink" title="五、国际会议篇"></a>五、国际会议篇</h4><p>A•DEF CON——一年一度的在拉斯维加斯举行的黑客会议</p>
+<p>►►传送门<a href="http://www.defcon.org/" target="_blank" rel="external">http://www.defcon.org/</a><br>B•Black Hat——一年一度的在拉斯维加斯举行的安全会议</p>
+<p>►►传送门<a href="http://www.blackhat.com/" target="_blank" rel="external">http://www.blackhat.com/</a><br>C•BSides——核心是一个将讨论、展示纳入议程</p>
+<p>►►传送门<a href="http://www.securitybsides.com/w/page/12194156/FrontPage" target="_blank" rel="external">http://www.securitybsides.com/w/page/12194156/FrontPage</a><br>D•CCC——德国每年一次的黑客会议</p>
+<p>►►传送门<a href="https://events.ccc.de/congress/" target="_blank" rel="external">https://events.ccc.de/congress/</a><br>E•DerbyCon——每年一度的黑客会议，根据地在Louisville</p>
+<p>►►传送门<a href="http://www.derbycon.com/" target="_blank" rel="external">http://www.derbycon.com/</a><br>F•PhreakNIC——一年一度，美国Tennessee州中部</p>
+<p>►►传送门<a href="http://phreaknic.info/" target="_blank" rel="external">http://phreaknic.info/</a><br>G•ShmooCon——一年一度美国西部的黑客会议</p>
+<p>►►传送门<a href="http://shmoocon.org/" target="_blank" rel="external">http://shmoocon.org/</a><br>H•CarolinaCon——北加利福尼亚，一年一度</p>
+<p>►►传送门<a href="http://www.carolinacon.org/" target="_blank" rel="external">http://www.carolinacon.org/</a><br>I•HOPE——黑客杂志2600主办的一系列会议</p>
+<p>►►传送门<a href="https://hope.net/" target="_blank" rel="external">https://hope.net/</a><br>J•SummerCon——夏天举办的最古老的黑客大会</p>
+<p>►►传送门<a href="http://www.summercon.org/" target="_blank" rel="external">http://www.summercon.org/</a><br>K•Hack.lu——卢森堡一年一度</p>
+<p>►►传送门<a href="https://2016.hack.lu/" target="_blank" rel="external">https://2016.hack.lu/</a><br>L•HITB——在马里西亚和荷兰</p>
+<p>►►传送门<a href="https://conference.hitb.org/" target="_blank" rel="external">https://conference.hitb.org/</a><br>M•Troopers——德国海德堡，一年一度</p>
+<p>►►传送门<a href="https://www.troopers.de/troopers17/" target="_blank" rel="external">https://www.troopers.de/troopers17/</a><br>N•Hack3rCon——一年一度的美国黑客大会</p>
+<p>►►传送门<a href="http://hack3rcon.org/" target="_blank" rel="external">http://hack3rcon.org/</a><br>O•ThotCon——芝加哥一年一度的美国黑客大会</p>
+<p>►►传送门<a href="http://www.thotcon.org/" target="_blank" rel="external">http://www.thotcon.org/</a><br>P•LayerOne——每年春天洛杉矶的黑客大会</p>
+<p>►►传送门<a href="http://www.layerone.org/" target="_blank" rel="external">http://www.layerone.org/</a><br>Q•DeepSec——奥地利维也纳的安全会议</p>
+<p>►►传送门<a href="http://deepsec.net/" target="_blank" rel="external">http://deepsec.net/</a><br>R•SkyDogCon——纳什维尔的安全会议</p>
+<p>►►传送门<a href="http://www.skydogcon.com/" target="_blank" rel="external">http://www.skydogcon.com/</a><br>S•CanSecWest——世界上最先进的应用数字安全会议</p>
+<p>►►传送门<a href="https://cansecwest.com/" target="_blank" rel="external">https://cansecwest.com/</a><br>T•Pacsec——世界级IT安全盛会</p>
+<p>►►传送门<a href="http://www.pacsec.com.au/" target="_blank" rel="external">http://www.pacsec.com.au/</a><br>U•POC——韩国历史最悠久的黑客大会</p>
+<p>►►传送门<a href="https://en.wikipedia.org/wiki/POC" target="_blank" rel="external">https://en.wikipedia.org/wiki/POC</a><br>V•RSA美国大会——以更广泛的会议日程、更多的学习机会、与crowdsourced会议为特点</p>
+<p>►►传送门<a href="http://www.rsaconference.com/events/us16" target="_blank" rel="external">http://www.rsaconference.com/events/us16</a><br>W•InfoSecWorld——是最为人所熟知的信息安全大会</p>
+<p>►►传送门<a href="http://infosecworld.misti.com/" target="_blank" rel="external">http://infosecworld.misti.com/</a><br>X•SANS——针对全球范围内信息安全领域专家的培训盛宴</p>
+<p>►►传送门<a href="https://www.sans.org/event/sans-2016" target="_blank" rel="external">https://www.sans.org/event/sans-2016</a><br>Y•Infosecurity Europe——信息安全欧洲是欧洲地区首屈一指的信息安全会议</p>
+<p>►►传送门<a href="http://www.infosecurityeurope.com/" target="_blank" rel="external">http://www.infosecurityeurope.com/</a><br>Z•CSO50 Conference——CSO杂志主办的年度信息安全颁奖大会</p>
+<p>►►传送门<a href="http://www.csoconference.com/" target="_blank" rel="external">http://www.csoconference.com/</a><br>A•Cyber Threat Intelligence Summit——活动聚焦于企业如何打造有效的网络威胁智能分析能力</p>
+<p>►►传送门<a href="https://www.sans.org/event/cyber-threat-intelligence-summit-2016" target="_blank" rel="external">https://www.sans.org/event/cyber-threat-intelligence-summit-2016</a><br>B•Securi-Tay V——Abertay大学道德黑客协会举办</p>
+<p>►►传送门<a href="https://securi-tay.co.uk/" target="_blank" rel="external">https://securi-tay.co.uk/</a><br>C•SyScan360——国际前瞻信息安全会议，呈现亚洲信息安全需求的演讲课题</p>
+<p>►►传送门<a href="https://www.mwrinfosecurity.com/events/syscan-360/" target="_blank" rel="external">https://www.mwrinfosecurity.com/events/syscan-360/</a><br>D•女性与网络安全——团结网络安全领域中的学术、研究行业的女性</p>
+<p>►►传送门<a href="https://www.csc.tntech.edu/wicys/" target="_blank" rel="external">https://www.csc.tntech.edu/wicys/</a><br>E•IAPP全球隐私峰会——是全球最大、最广泛的信息隐私社区与资源地</p>
+<p>►►传送门<a href="https://iapp.org/conference/global-privacy-summit-2016/" target="_blank" rel="external">https://iapp.org/conference/global-privacy-summit-2016/</a><br>F•Ignite——以交互教育性突出的课程能够让你以最新的知识为武装</p>
+<p>►►传送门<a href="https://ignite.paloaltonetworks.com/" target="_blank" rel="external">https://ignite.paloaltonetworks.com/</a><br>G•亚特兰大安全会议——以扩大传统IT安全认知的范围为主要目的</p>
+<p>►►传送门<a href="https://atlseccon.com/" target="_blank" rel="external">https://atlseccon.com/</a><br>H•Infiltrate——一个深刻、技术含量高，聚焦攻击性安全防护主题的盛会</p>
+<p>►►传送门<a href="http://infiltratecon.com/venue.html" target="_blank" rel="external">http://infiltratecon.com/venue.html</a><br>I•InfoSec Southwest——西南会场聚焦于黑客技术与其他广泛的信息安全议题</p>
+<p>►►传送门<a href="http://2016.infosecsouthwest.com/" target="_blank" rel="external">http://2016.infosecsouthwest.com/</a><br>J•SANS Pen Test Austin 2016——为参会者提供了发现漏洞、理解风险、优化资源以缓解现实的潜在威胁方面的学习机会</p>
+<p>►►传送门<a href="https://www.sans.org/event/pentest2016" target="_blank" rel="external">https://www.sans.org/event/pentest2016</a><br>K•AFCEA——网络防御运营研讨会</p>
+<p>►►传送门<a href="http://events.afcea.org/AFCEACyberOps16/Public/Enter.aspx" target="_blank" rel="external">http://events.afcea.org/AFCEACyberOps16/Public/Enter.aspx</a><br>L•安全运营中心峰会训练营——SOC峰会训练营本次集聚行业专家与同僚一起，直面网络安全挑战</p>
+<p>►►传送门<a href="http://www.sans.org/event/security-operations-center-summit-2015" target="_blank" rel="external">http://www.sans.org/event/security-operations-center-summit-2015</a><br>M•SANS Security West 2016——包含25种课程、26名导师与5大专业领域</p>
+<p>►►传送门<a href="https://www.sans.org/event/sans-security-west-2016" target="_blank" rel="external">https://www.sans.org/event/sans-security-west-2016</a><br>N•THOTCON 0x7——一个小规模、非盈利、非商业化的黑客大会</p>
+<p>►►传送门<a href="http://thotcon.org/" target="_blank" rel="external">http://thotcon.org/</a><br>O•HACKMIAMI——以信息安全领域与数位地下领袖汇聚一堂而闻名</p>
+<p>►►传送门<a href="https://www.hackmiami.com/" target="_blank" rel="external">https://www.hackmiami.com/</a><br>P•安全360峰会——以信息风险管理与安全行业为主题的高端启发性会议</p>
+<p>►►传送门<a href="https://secure360.org/" target="_blank" rel="external">https://secure360.org/</a><br>Q•IEEE安全与隐私研讨会——专注于安全&amp;隐私，提供令人印象深刻的讨论会</p>
+<p>►►传送门<a href="http://www.ieee-security.org/TC/SP2016/" target="_blank" rel="external">http://www.ieee-security.org/TC/SP2016/</a><br>R•CircleCityCon——与行业同僚沟通、学习，感受与众不同的信息安全活动</p>
+<p>►►传送门<a href="https://circlecitycon.com/" target="_blank" rel="external">https://circlecitycon.com/</a><br>S•SANSFIRE 2016——体验到亲身参与、全身心投入的安全培训课程</p>
+<p>►►传送门<a href="https://www.sans.org/event/sansfire-2016" target="_blank" rel="external">https://www.sans.org/event/sansfire-2016</a><br>T•FIRST Conference——第28届年度First大会将在韩国首尔举办</p>
+<p>►►传送门<a href="https://www.first.org/conference/2016" target="_blank" rel="external">https://www.first.org/conference/2016</a><br>U•Gartner——安全与风险管理峰会</p>
+<p>►►传送门<a href="http://www.gartner.com/events/na/security" target="_blank" rel="external">http://www.gartner.com/events/na/security</a><br>V•25th USENIX Security Symposium——首次作为科技会员组织提供研究资料、各种系统管理员、安全及系统层面的入口</p>
+<p>►►传送门<a href="https://www.usenix.org/conference/usenixsecurity16" target="_blank" rel="external">https://www.usenix.org/conference/usenixsecurity16</a><br>W•HP Protect 2016——在“如何像坏人那样思考”层面最具参与价值的大会</p>
+<p>►►传送门<a href="http://h41382.www4.hpe.com/hpe_protect/" target="_blank" rel="external">http://h41382.www4.hpe.com/hpe_protect/</a><br>X•44CON London ——在2日展览之后提供3日培训课程的IT技术安全会议</p>
+<p>►►传送门<a href="https://44con.com/" target="_blank" rel="external">https://44con.com/</a><br>Y•DerbyCon 6.0——5天的活动包括培训课程与主题大会</p>
+<p>►►传送门<a href="https://www.derbycon.com/" target="_blank" rel="external">https://www.derbycon.com/</a><br>Z•AppSec United States——OWASP全国会议</p>
+<p>►►传送门<a href="https://2016.appsecusa.org/" target="_blank" rel="external">https://2016.appsecusa.org/</a><br>A•27th ISF Annual World Congress——面向专业从业者国际领先的信息安全大会</p>
+<p>►►传送门ps://www.securityforum.org/events/world-congress/isfannualworldcongress2017/<br>B•BruCON——于比利时举办的年度安全及黑客大会</p>
+<p>►►传送门<a href="http://2016.brucon.org/index.php/Main_Page" target="_blank" rel="external">http://2016.brucon.org/index.php/Main_Page</a><br>C•ISSA International Conference——西南地区最卓越的活动之一</p>
+<p>►►传送门<a href="https://www.issa.org/?issaconf_home" target="_blank" rel="external">https://www.issa.org/?issaconf_home</a><br>D•DeepSec——颇具深度的信息安全大会</p>
+<p>►►传送门<a href="https://deepsec.net/" target="_blank" rel="external">https://deepsec.net/</a><br>E•BSides Event Series——以传播超越传统认知跨越时间空间的对话为目标</p>
+<p>►►传送门<a href="http://www.securitybsides.com/w/page/12194156/FrontPage" target="_blank" rel="external">http://www.securitybsides.com/w/page/12194156/FrontPage</a><br>F•T.E.N. &amp; ISE R  Programs——计划将关键发展与潜在客户建立排他性的联系</p>
+<p>►►传送门<a href="http://www.ten-inc.com/ise/default.asp" target="_blank" rel="external">http://www.ten-inc.com/ise/default.asp</a><br>G•ISSA CISO Executive Forum Series——为保证活动的独占安全性，会员采用邀请制，并需要通过</p>
+<p>►►传送门<a href="https://www.issa.org/?page=CISOhome" target="_blank" rel="external">https://www.issa.org/?page=CISOhome</a><br>H•(ISC)2 Secure Event Series——提供范围广泛而品质上佳、充满教育性的活动</p>
+<p>►►传送门<a href="https://www.isc2.org/events/default.aspx" target="_blank" rel="external">https://www.isc2.org/events/default.aspx</a><br>I•secureCISO——为全球CISO和IT领袖提供充实有教育意义的活动</p>
+<p>►►传送门<a href="http://info.ciosynergy.com/secure/" target="_blank" rel="external">http://info.ciosynergy.com/secure/</a><br>J•CISO Executive Summit Series——仅邀请高管社区中的首席信息安全官参加</p>
+<p>►►传送门<a href="http://www.evanta.com/" target="_blank" rel="external">http://www.evanta.com/</a><br>K•SecureWorld——通过行业活动连接、沟通并推动着向网络安全领域的的领袖的交流</p>
+<p>►►传送门<a href="https://www.secureworldexpo.com/" target="_blank" rel="external">https://www.secureworldexpo.com/</a><br>L•IANS Information Security Forums——是一家技术研究公司聚焦于信息安全、合规经营与IT风险管理</p>
+<p>►►传送门<a href="https://www.iansresearch.com/events.aspx" target="_blank" rel="external">https://www.iansresearch.com/events.aspx</a><br>M•SC Congress——在顶尖风险专家与网络安全领袖那里获取更多有建设性的观点</p>
+<p>►►传送门<a href="http://www.sccongress.com/" target="_blank" rel="external">http://www.sccongress.com/</a><br>N•Cyber Security Summit——网络安全峰会连接各高管与领先的网络解决方案提供商</p>
+<p>►►传送门<a href="http://cybersummitusa.com/" target="_blank" rel="external">http://cybersummitusa.com/</a><br>O•Data Connectors——在富有教育意义的环境中发掘企业新近的最佳实践、产品及服务</p>
+<p>►►传送门<a href="http://www.dataconnectors.com/upcoming-events-and-agendas" target="_blank" rel="external">http://www.dataconnectors.com/upcoming-events-and-agendas</a></p>
+<h4 id="六、国内会议篇"><a href="#六、国内会议篇" class="headerlink" title="六、国内会议篇"></a>六、国内会议篇</h4><p>1、国内会议</p>
+<p>A•Hitcon——台湾骇客年会，让骇客们有机会与大家分享最新与最深入的技术<br>B•0con——0CON信息安全创新创业峰会<br>C•阿里安全峰会——以“聚力•赋能”为主题的阿里安全峰会，云集了国内信息安全领域最强阵容<br>D•ISC——中国互联网安全大会，是亚洲地区信息安全领域最大规模、最专业的年度会议<br>E•KCON——KCon 是由知道创宇出品的追求干货有趣的黑客大会<br>F•XCon——XCon安全焦点信息安全技术峰会是国内最知名、最权威、举办规模最大的信息安全会议之一<br>G•CSS——中国互联网安全领袖峰会(Cyber Security Summit，简称CSS)是全球首个聚焦互联网产业领域安全生态圈建设平台<br>H•Xdef——全国网络与信息安全防护峰会（XDef安全峰会）<br>I•FreeBuf——2017 FreeBuf互联网安全创新大会(FIT 2017)<br>2、专题峰会</p>
+<p>J•中国汽车网络信息安全峰会——为整互联网公司,移动数据提供商, 汽车保险公司以及汽车网络安全专家等产业链主要群体搭建探讨产业政策趋势<br>K•第二届MOSEC大会(移动安全)——由盘古团队和POC主办的MOSEC移动安全技术峰会<br>L•2016唯品会互联网电商安全峰会——“电商安全的闭环——电商安全体系建设的血与泪”为主题<br>3、白帽大会</p>
+<p>M•ASRC白帽大会——阿里SRC举办的年度白帽子颁奖典礼<br>N•乌云白帽大会——由漏洞平台乌云网举办的乌云白帽大会</p>
+<p>O• 京东安全峰会——2013年京东正式成立JSRC（京东安全应急响应中心）<br>P•TSRC白帽大会——腾讯SRC举办的白帽子颁奖典礼<br>4、国内CTF</p>
+<p>Q•吾爱破解——由吾爱破解论坛、360核心安全业务线主办的CTF比赛<br>R•XPwn——未来安全探索盛会，由XCon组委会主办，北京华永兴安科学技术有限公司承办的智能生活产品安全问题研究探索大会<br>S•X-NUCA——X-NUCA是面向全国高校学生的网络安全技能竞赛<br>T•HackPwn——HackPwn2016安全极客狂欢节是全球关注智能生活安全的黑客嘉年华<br>U•XDCTF——西电网络攻防大赛（XDCTF）是由西安电子科技大学主办的网络安全赛事<br>5、国际CTF</p>
+<p>V•Pwn2Own——全世界最著名、奖金最丰厚的黑客大赛<br>W•WCTF——世界黑客大师赛(Belluminar Beijing)是360Vulcan Team同PoC Security共同主办的国际CTF赛事<br>X•Defcon CTF——是标志性的世界最高等级CTF夺旗赛<br>Y•GeekPwn——是全球首个关注智能生活的安全极客（黑客）赛事平台<br>Z•PwnFest——PwnFest 2016，360安全联队全球首破VMWare<br>A•XCTF——XCTF联赛全称XCTF国际网络安全技术对抗联赛</p>
+<pre><code>易霖博信息安全攻防实验室：本站部分内容来自互联网，版权归原作者所有,如不慎侵害到您的相关权益，请留言告知，我们将尽快处理，谢谢！（Part of the information in our website is from the internet.If by any chance it violates your rights,we will delete it upon notification as soon as possible.Thank you for cooperation.
+</code></pre>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#一、资源篇"><span class="toc-number">1.</span> <span class="toc-text">一、资源篇</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二、工具篇"><span class="toc-number">2.</span> <span class="toc-text">二、工具篇</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#三、书籍类"><span class="toc-number">3.</span> <span class="toc-text">三、书籍类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#五、国际会议篇"><span class="toc-number">4.</span> <span class="toc-text">五、国际会议篇</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#六、国内会议篇"><span class="toc-number">5.</span> <span class="toc-text">六、国内会议篇</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&text=2017网络空间安全资料"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&title=2017网络空间安全资料"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&is_video=false&description=2017网络空间安全资料"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2017网络空间安全资料&body=Check out this article: http://www.okoksec.com/2017/04/14/2017网络空间安全资料/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&title=2017网络空间安全资料"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&title=2017网络空间安全资料"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&title=2017网络空间安全资料"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&title=2017网络空间安全资料"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2017/04/14/2017网络空间安全资料/&name=2017网络空间安全资料&description=&lt;p&gt;2017网络空间安全资料大全【2017.1.22更新】&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;历经数月收集、悉心整理，小编特此双手奉上2017网络渗透资料大全单，囊括渗透测试资源、Shell 脚本资源、Linux 资源、Shellcode 开发、社工资源、工具、书籍、漏洞库、国内SRC、安全课程、信息安全会议、安全杂志等分类，包含视频资料、网络课程及收纳工具。
+&lt;/code&gt;&lt;/pre&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

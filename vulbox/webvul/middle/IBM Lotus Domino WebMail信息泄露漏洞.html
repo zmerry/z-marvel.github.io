@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">IBM Lotus Domino WebMail信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									IBM Lotus Domino WebMail是IBM消息传递解决方案组件，提供基本的基于浏览器的Lotus Domino电子邮件访问。
+<br />
+
+<br />
+
+									Lotus Domino处理储存用户口令的过程存在问题，可能造成信息用户口令信息泄露。
+<br />
+
+<br />
+
+									默认下Lotus Domino的主目录数据库names.nsf是所有用户都可读的，因此，所有用户都可以浏览人员项。在非特权用户浏览人员项时，“Internet Password”字段是空的，表示用户不能浏览口令哈希。但是，如果编辑了Web页面的话（在Internet Explorer中“查看源文件”），“HTTPPassword”隐藏字段会包含有口令哈希。
+<br />
+
+<br />
+
+									其他显示为空的字段也存在类似的问题。攻击者可以利用类似漏洞检索到的重要信息还有口令变更日期、客户端平台、客户端机器名称、客户端Lotus Domino版本等。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：
+<br />
+
+<br />
+
+									如果您不能立刻安装补丁或者升级，NSFOCUS建议您采取以下措施以降低威胁：
+<br />
+
+<br />
+
+									* 从HTML源码中隐藏HTTP口令：
+<br />
+
+<br />
+
+									1) 打开$PersonalInheritableSchema子表单。
+<br />
+
+									2) 找到以下字段：$dspHTTPPassword和HTTPPassword。
+<br />
+
+									3) 在以上两个字段的字段属性中，在“Hide paragram from”的隐藏选项卡中清除选择“Web browsers”。
+<br />
+
+									4) 打开“Person“表单。
+<br />
+
+									5) 在表单属性的第二个选项卡中，禁用“Generate HTML for all fields”选项。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2005-07-28</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-11-26</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2005-2428" target="_blank">CVE-2005-2428</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-0977" target="_blank">CVE-2007-0977</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/14389" target="_blank">14389</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=7939" target="_blank">7939</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200508-029&nbsp;&nbsp;
+
+									CNNVD-200702-333&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20052428&nbsp;&nbsp;
+
+									CNCVE-20070977&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.5(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

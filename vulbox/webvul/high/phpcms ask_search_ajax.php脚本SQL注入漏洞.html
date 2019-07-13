@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">phpcms ask/search_ajax.php脚本SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHPCMS 是国内领先的网站管理系统，同时也是一个开源的PHP开发框架。
+<br />
+
+<br />
+
+									Phpcms没有正确地过滤提交给ask/search_ajax.php脚本的$where参数便在SQL查询中使用，远程攻击者可以通过提交恶意请求执行SQL注入攻击。以下是有漏洞的PHP代码段：
+<br />
+
+<br />
+
+									&lt;?php
+<br />
+
+									require &#39;./include/common.inc.php&#39;;
+<br />
+
+									require_once MOD_ROOT.&#39;include/ask.class.php&#39;;
+<br />
+
+									$ask = new ask();
+<br />
+
+									header(&#39;Content-type: text/html; charset=utf-8&#39;);
+<br />
+
+									if(strtolower(CHARSET) != &#39;utf-8&#39;) $q = iconv(CHARSET, &#39;utf-8&#39;, $q);
+<br />
+
+									if($q)
+<br />
+
+									{
+<br />
+
+									$where = &quot; title LIKE &#39;%$q%&#39; AND status = 5&quot;; //没做过滤直接感染了$where
+<br />
+
+									}
+<br />
+
+									else
+<br />
+
+									{
+<br />
+
+									exit(&#39;null&#39;);
+<br />
+
+									}
+<br />
+
+									$infos = $ask-&gt;listinfo($where, &#39;askid DESC&#39;, &#39;&#39;, 10);
+<br />
+
+<br />
+
+									foreach($infos as $key=&gt;$val)
+<br />
+
+									{
+<br />
+
+									$val[&#39;title&#39;] = str_replace($q, &#39;&lt;span class=&quot;c_orange&quot;&gt;&#39;.$q.&#39;&lt;/span&gt;&#39;, $val[&#39;title&#39;]);
+<br />
+
+									$info[$key][&#39;title&#39;] = CHARSET != &#39;utf-8&#39; ? iconv(CHARSET, &#39;utf-8&#39;, $val[&#39;title&#39;]) : $val[&#39;title&#39;];
+<br />
+
+									$info[$key][&#39;url&#39;] = $val[&#39;url&#39;];
+<br />
+
+									}
+<br />
+
+<br />
+
+									echo(json_encode($info));
+<br />
+
+									?&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Phpcms
+<br />
+
+									---
+<br />
+
+									目前厂商已经发布了升级补丁修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.phpcms.cn<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-10-27</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-02-24</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15186" target="_blank">15186</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

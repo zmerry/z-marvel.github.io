@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Lotus Domino信息泄露及缓冲区溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Lotus Domino/Notes服务器是一款基于WEB合作的应用程序架构，运行在Linux/Unix和Microsoft Windows操作系统平台下。
+<br />
+
+<br />
+
+									Lotus Domino/Notes实现上存在多个安全漏洞，远程攻击者可能利用这些漏洞获取敏感信息或控制服务器。
+<br />
+
+<br />
+
+									如果Domino服务器上配置启用了IMAP服务的话，则拥有有效凭据且在TCP 143端口上创建了到IMAP Domino服务器的TCP会话的攻击者可以触发缓冲区溢出，导致拒绝服务或执行任意指令。
+<br />
+
+<br />
+
+									如果结合特定的@公式命令使用Evaluate LotusScript方式设计视图和代理的话，就可能返回用户通常无法访问的信息，具体取决于视图和代理的编写方式和当时服务器或用户的身份。
+<br />
+
+<br />
+
+									如果要使用基于Domino服务器的CA进程，就必须在服务器控制台上发布一些命令，其中的activate（tell ca activate &lt;certifier number&gt; &lt;password&gt;）和unlock（tell ca unlock &lt;idfile&gt; &lt;password&gt;）命令要求使用口令，但某些Domino版本会在console.log文本文件和管理面板中明文显示口令。
+<br />
+
+<br />
+
+									&lt;*来源：iDEFENSE
+<br />
+
+									        Daniel Nashed
+<br />
+
+<br />
+
+									  链接：http://www-1.ibm.com/support/docview.wss?uid=swg21270623
+<br />
+
+									        http://www-1.ibm.com/support/docview.wss?uid=swg21273266
+<br />
+
+									        http://www-1.ibm.com/support/docview.wss?uid=swg21261095
+<br />
+
+									        http://secunia.com/advisories/27321/
+<br />
+
+									        http://labs.idefense.com/intelligence/vulnerabilities/display.php?id=605
+<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：
+<br />
+
+<br />
+
+									* 在控制台上全部以小写字母输入CA activate或unlock命令。
+<br />
+
+									* 在防火墙限制通过IMAP到Domino服务器的访问。
+<br />
+
+<br />
+
+									厂商补丁：
+<br />
+
+<br />
+
+									IBM
+<br />
+
+									---
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.ers.ibm.com/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>9</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2007-10-29</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-11-06</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-3510" target="_blank">CVE-2007-3510</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/26176" target="_blank">26176</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=11066" target="_blank">11066</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200710-493&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20073510&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									9.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-11066&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

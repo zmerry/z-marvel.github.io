@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">HP Power Manager formExportDataLogs目录遍历漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									HP Power Manager是基于Web的应用，允许管理员通过基于浏览器的控制台管理HP UPS。<br />
+
+									<br />
+
+									HP Power Manager没有正确的过滤提交给/goform/formExportDataLogs URL的参数，远程攻击者可以在请求中包含特制的fileName参数通过目录遍历攻击执行任意代码。<br />
+
+									<br />
+
+									&lt;*来源：Alin Rad Pop<br />
+
+									  <br />
+
+									  链接：http://secunia.com/secunia_research/2009-48/<br />
+
+									        http://h20000.www2.hp.com/bizsupport/TechSupport/Document.jsp?objectID=c01971741&amp;printver=true<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									HP<br />
+
+									--<br />
+
+									HP已经为此发布了一个安全公告（HPSBMA02485）以及相应补丁:<br />
+
+									HPSBMA02485：SSRT090252 rev.1 - HP Power Manager, Remote Execution of Arbitrary Code<br />
+
+									链接：http://h20000.www2.hp.com/bizsupport/TechSupport/Document.jsp?objectID=c01971741&amp;printver=true<br />
+
+									<br />
+
+									补丁下载：<br />
+
+									http://h18004.www1.hp.com/products/servers/proliantstorage/power-protection/software/power-manager/pm3-dl.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-01-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-07-02</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-4000" target="_blank">CVE-2009-4000</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/37873" target="_blank">37873</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14384" target="_blank">14384</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201001-213&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20094000&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									10.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-5364&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

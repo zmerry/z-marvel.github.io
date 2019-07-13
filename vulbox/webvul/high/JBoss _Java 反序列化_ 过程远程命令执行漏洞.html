@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">JBoss &quot;Java 反序列化&quot; 过程远程命令执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									java反序列化漏洞是一类被广泛应用的漏洞，绝大多数的编程语言都会提供内建方法使用户可以将自身应用所产生的数据存入硬盘或通过网络传输出去。这种将应用数据转化为其他格式的过程称之为序列化，而将读取序列化数据的过程称之为反序列化。
+<br />
+
+									Java 在进行反序列化操作的时候会使用 ObjectInputStream 类调用 readObject() 方法去读取传递过来的序列化对象字节流进行处理，要想利用反序列化过程进行攻击，就必须构造出一个能够自动执行的代码调用链。
+<br />
+
+									2015年11月06日,FoxGlove 安全研究团队于在其博客上公开了一篇关于常见 Java 应用如何利用反序列化操作进行远程命令执行的文章。文中提到了今年1月 AppSec2015 上一个关于各语言序列化操作利用议题《Marshalling Pickles》，其中介绍了 Ruby、Python、PHP 和 Java 中反序列化操作的危害，详细说明了 Java 中如何使用 Apache Commons Collections 这个常用库来构造 POP 链（类ROP链）来进行任意命令执行，并且提供了相应的 Payload 生成工具。
+<br />
+
+									在Jboss中的JMXInvokerServlet可以使用HTTP协议与其进行通话。这一通信功能依赖于java的序列化类。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方案
+<br />
+
+									（1）使用 SerialKiller 替换进行序列化操作的 ObjectInputStream 类
+<br />
+
+									（2）在不影响业务的情况下，临时删除掉项目里的 &quot;org/apache/commons/collections/functors/InvokerTransformer.class&quot; 文件
+<br />
+
+<br />
+
+<br />
+
+									https://github.com/ikkisoft/SerialKiller<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2015-11-06</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2015-11-13</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

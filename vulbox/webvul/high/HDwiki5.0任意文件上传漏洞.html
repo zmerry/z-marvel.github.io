@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">HDwiki5.0任意文件上传漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									hdwiki是互动百科开发的一款免费建站，自助建站程序。
+<br />
+
+<br />
+
+									但是HDwiki中某些上传功能存在安全漏洞，通过一些数据即可绕过上传限制，最终控制远程站点.<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商解决方案:
+<br />
+
+<br />
+
+									修改file.class.php文件里的函数function uploadfile(）
+<br />
+
+									if(substr($attach[&#39;type&#39;],0,6)!=&#39;image/&#39; || !in_array(file::extname($attach[&#39;name&#39;]), array(&#39;jpg&#39;,&#39;jpeg&#39;,&#39;bmp&#39;,&#39;gif&#39;,&#39;png&#39;))) {
+<br />
+
+									        $result[&#39;msg&#39;] =&#39;格式错误&#39;;
+<br />
+
+									        return $result;
+<br />
+
+									      } 
+<br />
+
+<br />
+
+									同时我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+									http://kaiyuan.hudong.com/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>9</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-02-14</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-06-11</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

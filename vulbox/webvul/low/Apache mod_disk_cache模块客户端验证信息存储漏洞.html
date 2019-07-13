@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Apache mod_disk_cache模块客户端验证信息存储漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Apache是一款开放源代码流行的Httpd服务程序。<br />
+
+									<br />
+
+									Apache包含的mod_disk_cache模块存在信息泄露问题，远程攻击者可以利用这个漏洞获得客户端验证的敏感信息。<br />
+
+									<br />
+
+									mod_disk_cache模块把所有客户端验证信息存储在磁盘上，问题存在于modules/experimental/mod_disk_cache.c代码中的write_headers()函数：<br />
+
+									<br />
+
+									========================================================================<br />
+
+									/* Parse the vary header and dump those fields from the headers_in. */<br />
+
+									/* Make call to the same thing cache_select_url calls to crack Vary. */<br />
+
+									/* @@@ Some day, not today. */<br />
+
+									if (r-&gt;headers_in) {<br />
+
+									~    int i;<br />
+
+									~    apr_table_entry_t *elts = (apr_table_entry_t *)<br />
+
+									~       apr_table_elts(r-&gt;headers_in)-&gt;elts;<br />
+
+									~    for (i = 0; i &lt; apr_table_elts(r-&gt;headers_in)-&gt;nelts; ++i) {<br />
+
+									~        if (elts[i].key != NULL) {<br />
+
+									~            buf = apr_pstrcat(r-&gt;pool, elts[i].key, &quot;: &quot;,  elts[i].val,<br />
+
+									~                  CRLF, NULL);<br />
+
+									~            amt = strlen(buf);<br />
+
+									~            apr_file_write(hfd, buf, &amp;amt);<br />
+
+									~        }<br />
+
+									~    }<br />
+
+									~    buf = apr_pstrcat(r-&gt;pool, CRLF, NULL);<br />
+
+									~    amt = strlen(buf);<br />
+
+									~    apr_file_write(hfd, buf, &amp;amt);<br />
+
+									}<br />
+
+									========================================================================<br />
+
+									<br />
+
+									所有r-&gt;headers_in字段写入到磁盘上，这个字段包含所有客户端的验证信息。因此攻击者可以借此获得一些验证的明文密码等信息。<br />
+
+									<br />
+
+									&lt;*来源：Andreas Steinmetz （ast@domdv.de）<br />
+
+									  <br />
+
+									  链接：http://marc.theaimsgroup.com/?l=bugtraq&amp;m=107981737322495&amp;w=2<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									 <br />
+
+									Apache Group<br />
+
+									 ------------<br />
+
+									 目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：<br />
+
+									 <br />
+
+									http://httpd.apache.org/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>2</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2004-03-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-10-16</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2004-1834" target="_blank">CVE-2004-1834</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/9933" target="_blank">9933</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=6216" target="_blank">6216</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200403-091&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20041834&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									2.1&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-06216&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

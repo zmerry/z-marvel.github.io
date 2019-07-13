@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">猜测出目标web应用表单登录存在弱口令</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									通过用户名、密码字典多次尝试目标站点基于表单的登录，猜测出可用于登录该站点的用户名，口令。
+<br />
+
+									由于是通过枚举用户名，口令多次尝试登录，未限制登录错误次数的站点易受到此攻击。
+<br />
+
+									本漏洞属于Web应用安全常见漏洞。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									1、建议限制用户错误登录的次数，当超过错误登录次数，锁定该账户。
+<br />
+
+									2、增加口令的复杂度：
+<br />
+
+									1）对于用户注册的口令，建议制定注册口令的复杂度要求标准，如：要求口令至少由8个字符组成且口令必须使用大小写字母、数字以及~!@#$%^&amp;*()-+_等特殊字符的组合。对于不符合复杂度要求的口令，不允许该用户进行注册。
+<br />
+
+									2）对于程序安装过程中出现的默认口令，建议用户及时对默认口令进行修改，可参照1）中口令要求进行修改。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-09-28</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

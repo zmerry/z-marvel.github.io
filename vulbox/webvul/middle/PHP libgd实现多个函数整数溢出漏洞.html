@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP libgd实现多个函数整数溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									此次扫描根据版本信息判断漏洞存在，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的libgd实现中gdImageCreate()和gdImageCreateTrueColor()函数存在整数溢出漏洞，远程攻击者可能利用此漏洞控制服务器。<br />
+
+									<br />
+
+									这两个函数可由ImageCreate()和ImageCreateTrueColor()直接调用。 <br />
+
+									<br />
+
+									...<br />
+
+									<br />
+
+									im-&gt;tpixels = (int **) gdMalloc(sizeof(int *) * sy);<br />
+
+									im-&gt;AA_opacity = (unsigned char **) gdMalloc(sizeof(unsigned char *) * sy);<br />
+
+									<br />
+
+									...<br />
+
+									<br />
+
+									for (i = 0; i &lt; sy; i++) {<br />
+
+									    im-&gt;tpixels[i] = (int *) gdCalloc(sx, sizeof(int));<br />
+
+									    im-&gt;AA_opacity[i] = (unsigned char *) gdCalloc(sx, sizeof(unsigned char));<br />
+
+									}<br />
+
+									<br />
+
+									...<br />
+
+									<br />
+
+									使用很大的sy/height或sx/width值就可以在为im-&gt;tpixels和im-&gt;AA_opacity分配内存时触发整数溢出，导致崩溃或执行任意代码。由于可从PHP代码的多个位置调用gdImageCreate()和gdImageCreateTrueColor()，如使用任意imagecreatefrom* -函数，因此可以通过向Web应用上传图形来远程触发溢出。<br />
+
+									<br />
+
+									PHP的libgd实现中gdImageCopyResized()函数也存在整数溢出漏洞，该函数可由imagecopyresized()或imagecopyresampled()调用。 <br />
+
+									<br />
+
+									...<br />
+
+									<br />
+
+									stx = (int *) gdMalloc (sizeof (int) * srcW);<br />
+
+									sty = (int *) gdMalloc (sizeof (int) * srcH);<br />
+
+									<br />
+
+									...<br />
+
+									<br />
+
+									for (i = 0; (i &lt; srcW); i++) {<br />
+
+									    stx[i] = dstW * (i+1) / srcW - dstW * i / srcW ;<br />
+
+									}<br />
+
+									for (i = 0; (i &lt; srcH); i++) {<br />
+
+									    sty[i] = dstH * (i+1) / srcH - dstH * i / srcH ;<br />
+
+									}<br />
+
+									<br />
+
+									...<br />
+
+									<br />
+
+									向srcW或srcH传送很大的值就会在分配stx和sty的缓冲区时触发整数溢出，分配操作后的for循环会试图写入大量数据，导致崩溃或执行任意代码。如果Web应用程序使用这个函数调整远程上传图形的大小，则上传特制图形文件就可以触发这个溢出。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net/releases/5_2_4.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2007-09-04</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2007-09-17</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-3996" target="_blank">CVE-2007-3996</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=10871" target="_blank">10871</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200709-015&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20073996&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.8&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-10871&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

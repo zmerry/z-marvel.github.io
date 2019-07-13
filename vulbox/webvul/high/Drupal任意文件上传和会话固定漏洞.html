@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Drupal任意文件上传和会话固定漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Drupal是一款开放源码的内容管理平台。
+<br />
+
+									Drupal存在多个安全漏洞，攻击者可以利用漏洞上传任意文件到服务器，劫持任意会话，未授权访问受影响应用程序。
+<br />
+
+									文件API不正确处理使用部分扩展的文件上传，可导致上传的文件被Apache执行。.htaccess保存在Drupal文件目录中可防止上传被执行。只有当服务器配置忽略.htaccess文件中的指令时这些文件才会被执行。
+<br />
+
+									当匿名用户使用单次登录链接用于确认EMAIL地址和重设忘记的密码时Drupal没有重生成会话ID，可以修复和重用目标用户的会话ID。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Drupal
+<br />
+
+									------
+<br />
+
+									Drupal 高版本已经修复此漏洞，建议用户下载使用：
+<br />
+
+									http://drupal.org/<br />
+
+									<br />
+
+									用户可联系供应商升级到最新版本：
+<br />
+
+									Drupal Drupal 5.18
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.19
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.13
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.10
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 6.13
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 5.12
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.2
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.3
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 6.0
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 6.9
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 6.12
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 6.11
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 5.9
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.1
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.0
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.6
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 6.1
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 5.16
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.8
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.15
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.1 revision 1.1
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.11
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 6.10
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 5.5
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 6.5
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 5.7
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 6.7
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 6.3
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 6.2
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 6.6
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 6.4
+<br />
+
+									Drupal drupal-6.14.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-6.14.tar.gz
+<br />
+
+									Drupal Drupal 5.4
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz
+<br />
+
+									Drupal Drupal 5.17
+<br />
+
+									Drupal drupal-5.20.tar.gz
+<br />
+
+									http://ftp.drupal.org/files/projects/drupal-5.20.tar.gz<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>8</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-09-25</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-12-24</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

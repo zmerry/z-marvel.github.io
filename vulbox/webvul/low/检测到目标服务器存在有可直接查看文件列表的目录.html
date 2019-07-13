@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标服务器存在有可直接查看文件列表的目录</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									自动目录列表/索引是Web服务器的一个功能，如果请求目录中不存在常规文件(index.html,home.html,default.htm),web服务器会枚举该目录下所有的文件。当用户请求网站的主页时，通常输入http://www.example.com，使用域名并且不包含特定的文件。当web服务器处理该请求时，会搜索根目录下的默认文件并返回给客户端。如果默认页面不存在，web服务器会生成目录索引并返回给客户端。
+<br />
+
+									    通过返回的目录索引信息攻击者可以获得当前目录下的文件列表，从而根据文件中可能存在的漏洞攻击服务器。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									对于apache服务器，在apache配置文件httpd.conf中，从Options中删除Indexes.
+<br />
+
+<br />
+
+									对于IIS服务器，禁用目录浏览属性<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-06-23</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/1063" target="_blank">1063</a>
+
+									<a href="http://www.securityfocus.com/bid/6721" target="_blank">6721</a>
+
+									<a href="http://www.securityfocus.com/bid/8898" target="_blank">8898</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

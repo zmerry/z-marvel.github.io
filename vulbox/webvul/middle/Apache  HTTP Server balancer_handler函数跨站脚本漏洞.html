@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Apache  HTTP Server balancer_handler函数跨站脚本漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Apache HTTP Server是开源HTTP服务器。 
+<br />
+
+<br />
+
+									Apache HTTP Server被报告存在多个漏洞，攻击者能利用这些漏洞进行跨站脚本攻击。
+<br />
+
+<br />
+
+									1）mod_info, mod_ldap, mod_status, mod_imagemap, 以及mod_proxy_ftp模块中某些与hostnames和URI相关的输入没有经过正确的检查即返回给用户。
+<br />
+
+									2）传递给mod_proxy_balancer模块管理接口的某些不确定输入没有经过正确检查即返回给用户。
+<br />
+
+<br />
+
+									这些漏洞可能被恶意攻击者用来在受影响的网站上下文中插入代码，从而在用户浏览器会话中执行任意HTML和脚本代码。
+<br />
+
+<br />
+
+									漏洞影响 2.2.24之前的版本以及2.4.4。
+<br />
+
+<br />
+
+									&lt;*来源：Jim Jagielski
+<br />
+
+									        Stefan Fritsch
+<br />
+
+									        Niels Heinen
+<br />
+
+<br />
+
+									  链接：http://secunia.com/advisories/52394/
+<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Apache Group
+<br />
+
+									------------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://httpd.apache.org/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2013-02-26</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-04-17</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-4558" target="_blank">CVE-2012-4558</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/58165" target="_blank">58165</a>
+
+									<a href="http://www.securityfocus.com/bid/64758" target="_blank">64758</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=22772" target="_blank">22772</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201302-521&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20124558&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									4.3&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2013-01298&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

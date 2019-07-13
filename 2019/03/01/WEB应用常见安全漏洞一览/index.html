@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="web应用常见安全漏洞产生原因和解决方案。">
+<meta name="keywords" content="Penetration,转载,Web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WEB应用常见安全漏洞一览">
+<meta property="og:url" content="http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="web应用常见安全漏洞产生原因和解决方案。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-01T05:37:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WEB应用常见安全漏洞一览">
+<meta name="twitter:description" content="web应用常见安全漏洞产生原因和解决方案。">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>WEB应用常见安全漏洞一览</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/03/02/Cheat-Sheet-Penetration-Testing-Tools/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/02/10/kali更新内核/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&text=WEB应用常见安全漏洞一览"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&title=WEB应用常见安全漏洞一览"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&is_video=false&description=WEB应用常见安全漏洞一览"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=WEB应用常见安全漏洞一览&body=Check out this article: http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&title=WEB应用常见安全漏洞一览"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&title=WEB应用常见安全漏洞一览"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&title=WEB应用常见安全漏洞一览"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&title=WEB应用常见安全漏洞一览"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&name=WEB应用常见安全漏洞一览&description=&lt;p&gt;web应用常见安全漏洞产生原因和解决方案。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-SQL-注入"><span class="toc-number">1.</span> <span class="toc-text">1. SQL 注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因"><span class="toc-number">1.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案"><span class="toc-number">1.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考"><span class="toc-number">1.3.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-XSS-攻击"><span class="toc-number">2.</span> <span class="toc-text">2. XSS 攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因-1"><span class="toc-number">2.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-1"><span class="toc-number">2.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考-1"><span class="toc-number">2.3.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-CSRF-攻击"><span class="toc-number">3.</span> <span class="toc-text">3. CSRF 攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因-2"><span class="toc-number">3.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-2"><span class="toc-number">3.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考-2"><span class="toc-number">3.3.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-DDoS-攻击"><span class="toc-number">4.</span> <span class="toc-text">4. DDoS 攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因-3"><span class="toc-number">4.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-3"><span class="toc-number">4.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考-3"><span class="toc-number">4.3.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-XXE-漏洞"><span class="toc-number">5.</span> <span class="toc-text">5. XXE 漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-4"><span class="toc-number">5.1.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考-4"><span class="toc-number">5.2.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-JSON-劫持"><span class="toc-number">6.</span> <span class="toc-text">6. JSON 劫持</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因-4"><span class="toc-number">6.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-5"><span class="toc-number">6.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考-5"><span class="toc-number">6.3.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-暴力破解"><span class="toc-number">7.</span> <span class="toc-text">7. 暴力破解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-6"><span class="toc-number">7.1.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-HTTP-报头追踪漏洞"><span class="toc-number">8.</span> <span class="toc-text">8. HTTP 报头追踪漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-7"><span class="toc-number">8.1.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-信息泄露"><span class="toc-number">9.</span> <span class="toc-text">9. 信息泄露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-目录遍历漏洞"><span class="toc-number">10.</span> <span class="toc-text">10. 目录遍历漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-命令执行漏洞"><span class="toc-number">11.</span> <span class="toc-text">11. 命令执行漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-文件上传漏洞"><span class="toc-number">12.</span> <span class="toc-text">12. 文件上传漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-其他漏洞"><span class="toc-number">13.</span> <span class="toc-text">13. 其他漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-业务漏洞"><span class="toc-number">14.</span> <span class="toc-text">14. 业务漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-框架或应用漏洞"><span class="toc-number">15.</span> <span class="toc-text">15. 框架或应用漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后续"><span class="toc-number">16.</span> <span class="toc-text">后续</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        WEB应用常见安全漏洞一览
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-01T05:37:04.000Z" itemprop="datePublished">2019-03-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全技术/">安全技术</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Penetration/">Penetration</a>, <a class="tag-link" href="/tags/Web/">Web</a>, <a class="tag-link" href="/tags/转载/">转载</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>web应用常见安全漏洞产生原因和解决方案。</p>
+<a id="more"></a>
+<h2 id="1-SQL-注入"><a href="#1-SQL-注入" class="headerlink" title="1. SQL 注入"></a>1. SQL 注入</h2><p>SQL 注入就是通过给 web 应用接口传入一些特殊字符，达到欺骗服务器执行恶意的 SQL 命令。</p>
+<p>SQL 注入漏洞属于后端的范畴，但前端也可做体验上的优化。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>当使用外部不可信任的数据作为参数进行数据库的增、删、改、查时，如果未对外部数据进行过滤，就会产生 SQL 注入漏洞。</p>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">name = &quot;外部输入名称&quot;;</div><div class="line"></div><div class="line">sql = &quot;select * from users where name=&quot; + name;</div></pre></td></tr></table></figure>
+<p>上面的 SQL 语句目的是通过用户输入的用户名查找用户信息，因为由于 SQL 语句是直接拼接的，也没有进行过滤，所以，当用户输入 <code>&#39;&#39; or &#39;1&#39;=&#39;1&#39;</code> 时，这个语句的功能就是搜索 <code>users</code> 全表的记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from users where name=&apos;&apos; or &apos;1&apos;=&apos;1&apos;;</div></pre></td></tr></table></figure>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>具体的解决方案很多，但大部分都是基于一点：不信任任何外部输入。</p>
+<p>所以，对任何外部输入都进行过滤，然后再进行数据库的增、删、改、查。</p>
+<p>此外，适当的权限控制、不曝露必要的安全信息和日志也有助于预防 SQL 注入漏洞。</p>
+<p>参考 <a href="https://juejin.im/post/5bd5b820e51d456f72531fa8#heading-2" target="_blank" rel="external">Web 安全漏洞之 SQL 注入 - 防御方法</a> 了解具体的解决方案。</p>
+<h3 id="推荐参考"><a href="#推荐参考" class="headerlink" title="推荐参考"></a>推荐参考</h3><ul>
+<li><a href="https://juejin.im/post/5bd5b820e51d456f72531fa8" target="_blank" rel="external">Web 安全漏洞之 SQL 注入</a></li>
+<li><a href="https://segmentfault.com/a/1190000007520556" target="_blank" rel="external">SQL 注入详解</a></li>
+</ul>
+<h2 id="2-XSS-攻击"><a href="#2-XSS-攻击" class="headerlink" title="2. XSS 攻击"></a>2. XSS 攻击</h2><p>XSS 攻击全称跨站脚本攻击（Cross-Site Scripting），简单的说就是攻击者通过在目标网站上注入恶意脚本并运行，获取用户的敏感信息如 Cookie、SessionID 等，影响网站与用户数据安全。</p>
+<p>XSS 攻击更偏向前端的范畴，但后端在保存数据的时候也需要对数据进行安全过滤。</p>
+<h3 id="原因-1"><a href="#原因-1" class="headerlink" title="原因"></a>原因</h3><p>当攻击者通过某种方式向浏览器页面注入了恶意代码，并且浏览器执行了这些代码。</p>
+<p>比如：</p>
+<p>在一个文章应用中（如微信文章），攻击者在文章编辑后台通过注入 <code>script</code> 标签及 <code>js</code> 代码，后端未加过滤就保存到数据库，前端渲染文章详情的时候也未加过滤，这就会让这段 <code>js</code> 代码执行，引起 XSS 攻击。</p>
+<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>一个基本的思路是渲染前端页面（不管是客户端渲染还是服务器端渲染）或者动态插入 HTML 片段时，任何数据都不可信任，都要先做 HTML 过滤，然后再渲染。</p>
+<p>参考 <a href="https://segmentfault.com/a/1190000016551188#articleHeader7" target="_blank" rel="external">前端安全系列（一）：如何防止XSS攻击？ - 攻击的预防</a> 了解具体的解决方案。</p>
+<h3 id="推荐参考-1"><a href="#推荐参考-1" class="headerlink" title="推荐参考"></a>推荐参考</h3><ul>
+<li><a href="https://segmentfault.com/a/1190000016551188" target="_blank" rel="external">前端安全系列（一）：如何防止XSS攻击？</a></li>
+<li><a href="https://juejin.im/entry/56da82a87664bf0052ebad41" target="_blank" rel="external">前端防御 XSS</a></li>
+<li><a href="https://juejin.im/entry/5b4b56fd5188251b1a7b2ac1" target="_blank" rel="external">浅说 XSS 和 CSRF</a></li>
+</ul>
+<h2 id="3-CSRF-攻击"><a href="#3-CSRF-攻击" class="headerlink" title="3. CSRF 攻击"></a>3. CSRF 攻击</h2><p>CSRF 攻击全称跨站请求伪造（Cross-site Request Forgery），简单的说就是攻击者盗用了你的身份，以你的名义发送恶意请求。</p>
+<h3 id="原因-2"><a href="#原因-2" class="headerlink" title="原因"></a>原因</h3><p>一个典型的 CSRF 攻击有着如下的流程：</p>
+<ul>
+<li>受害者登录 <code>a.com</code>，并保留了登录凭证（Cookie）</li>
+<li>攻击者引诱受害者访问了 <code>b.com</code></li>
+<li><code>b.com</code> 向 <code>a.com</code> 发送了一个请求：<code>a.com/act=xx</code>（浏览器会默认携带 <code>a.com</code> 的 Cookie）</li>
+<li><code>a.com</code> 接收到请求后，对请求进行验证，并确认是受害者的凭证，误以为是受害者自己发送的请求</li>
+<li><code>a.com</code> 以受害者的名义执行了 <code>act=xx</code></li>
+<li>攻击完成，攻击者在受害者不知情的情况下，冒充受害者，让 <code>a.com</code> 执行了自己定义的操作</li>
+</ul>
+<p>注：上面的过程摘自 <a href="https://segmentfault.com/a/1190000016659945" target="_blank" rel="external">前端安全系列之二：如何防止CSRF攻击？</a></p>
+<h3 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h3><p>防止 CSRF 攻击需要在服务器端入手，基本的思路是能正确识别是否是用户发起的请求。</p>
+<p>参考 <a href="https://segmentfault.com/a/1190000016659945#articleHeader4" target="_blank" rel="external">前端安全系列之二：如何防止CSRF攻击？ - 防护策略</a> 了解具体的解决方案。</p>
+<h3 id="推荐参考-2"><a href="#推荐参考-2" class="headerlink" title="推荐参考"></a>推荐参考</h3><ul>
+<li><a href="https://segmentfault.com/a/1190000016659945" target="_blank" rel="external">前端安全系列之二：如何防止CSRF攻击？</a></li>
+<li><a href="https://juejin.im/post/5ba1a800e51d450e8657f5dd" target="_blank" rel="external">Web安全漏洞之CSRF</a></li>
+<li><a href="https://juejin.im/entry/5b4b56fd5188251b1a7b2ac1" target="_blank" rel="external">浅说 XSS 和 CSRF</a></li>
+</ul>
+<h2 id="4-DDoS-攻击"><a href="#4-DDoS-攻击" class="headerlink" title="4. DDoS 攻击"></a>4. DDoS 攻击</h2><p>DoS 攻击全称拒绝服务（Denial of Service），简单的说就是让一个公开网站无法访问，而 DDoS 攻击（分布式拒绝服务 Distributed Denial of Service）是 DoS 的升级版。</p>
+<p>这个就完全属于后端的范畴了。</p>
+<h3 id="原因-3"><a href="#原因-3" class="headerlink" title="原因"></a>原因</h3><p>攻击者不断地提出服务请求，让合法用户的请求无法及时处理，这就是 DoS 攻击。</p>
+<p>攻击者使用多台计算机或者计算机集群进行 DoS 攻击，就是 DDoS 攻击。</p>
+<h3 id="解决方案-3"><a href="#解决方案-3" class="headerlink" title="解决方案"></a>解决方案</h3><p>防止 DDoS 攻击的基本思路是限流，限制单个用户的流量（包括 IP 等）。</p>
+<p>参考 <a href="https://segmentfault.com/a/1190000016584829#articleHeader19" target="_blank" rel="external">DDoS的攻击及防御 - 防御</a> 了解具体的解决方案。</p>
+<h3 id="推荐参考-3"><a href="#推荐参考-3" class="headerlink" title="推荐参考"></a>推荐参考</h3><ul>
+<li><a href="https://segmentfault.com/a/1190000016584829" target="_blank" rel="external">DDoS的攻击及防御</a></li>
+<li><a href="https://juejin.im/entry/5b7a21256fb9a01a031aef67" target="_blank" rel="external">浅谈 DDoS 攻击与防御</a></li>
+<li><a href="https://juejin.im/entry/56d824591ea493005db9d284" target="_blank" rel="external">使用 Nginx、Nginx Plus 抵御 DDOS 攻击</a></li>
+</ul>
+<h2 id="5-XXE-漏洞"><a href="#5-XXE-漏洞" class="headerlink" title="5. XXE 漏洞"></a>5. XXE 漏洞</h2><p>XXE 漏洞全称 XML 外部实体漏洞（XML External Entity），当应用程序解析 XML 输入时，如果没有禁止外部实体的加载，导致可加载恶意外部文件和代码，就会造成任意文件读取、命令执行、内网端口扫描、攻击内网网站等攻击。</p>
+<p>这个只在能够接收 XML 格式参数的接口才会出现。</p>
+<h3 id="解决方案-4"><a href="#解决方案-4" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
+<li>禁用外部实体</li>
+<li>过滤用户提交的XML数据</li>
+</ol>
+<p>参考 <a href="https://www.cnblogs.com/r00tuser/p/7255939.html" target="_blank" rel="external">xxe漏洞的学习与利用总结</a> 了解具体的解决方案。</p>
+<h3 id="推荐参考-4"><a href="#推荐参考-4" class="headerlink" title="推荐参考"></a>推荐参考</h3><ul>
+<li><a href="https://juejin.im/entry/5b719fdc6fb9a009a0607aaa" target="_blank" rel="external">好刚: 6分钟视频看懂XXE漏洞攻击</a></li>
+<li><a href="https://www.cnblogs.com/r00tuser/p/7255939.html" target="_blank" rel="external">xxe漏洞的学习与利用总结</a></li>
+<li><a href="https://www.cnblogs.com/ESHLkangi/p/9245404.html" target="_blank" rel="external">XXE漏洞攻防学习（上）</a></li>
+</ul>
+<h2 id="6-JSON-劫持"><a href="#6-JSON-劫持" class="headerlink" title="6. JSON 劫持"></a>6. JSON 劫持</h2><p>JSON 劫持（JSON Hijacking）是用于获取敏感数据的一种攻击方式，属于 CSRF 攻击的范畴。</p>
+<h3 id="原因-4"><a href="#原因-4" class="headerlink" title="原因"></a>原因</h3><p>一些 Web 应用会把一些敏感数据以 json 的形式返回到前端，如果仅仅通过 Cookie 来判断请求是否合法，那么就可以利用类似 CSRF 的手段，向目标服务器发送请求，以获得敏感数据。 </p>
+<p>比如下面的链接在已登录的情况下会返回 json 格式的用户信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://www.test.com/userinfo</div></pre></td></tr></table></figure>
+<p>攻击者可以在自己的虚假页面中，加入如下标签：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;script src=&quot;http://www.test.com/userinfo&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>如果当前浏览器已经登录了 <code>www.test.com</code>，并且 Cookie 未过期，然后访问了攻击者的虚假页面，那么该页面就可以拿到 json 形式的用户敏感信息，因为 <code>script</code> 标签会自动解析 json 数据，生成对应的 js 对象。然后再通过：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Object.prototype.__defineSetter__</div></pre></td></tr></table></figure>
+<p>这个函数来触发自己的恶意代码。 </p>
+<p>但是这个函数在当前的新版本 Chrome 和 Firefox 中都已经失效了。</p>
+<p>注：上面的过程摘自 <a href="https://blog.csdn.net/yjclsx/article/details/80353754" target="_blank" rel="external">JSON和JSONP劫持以及解决方法</a></p>
+<h3 id="解决方案-5"><a href="#解决方案-5" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
+<li><code>X-Requested-With</code> 标识</li>
+<li>浏览器 JSON 数据识别</li>
+<li>禁止 Javascript 执行 JSON 数据</li>
+</ol>
+<h3 id="推荐参考-5"><a href="#推荐参考-5" class="headerlink" title="推荐参考"></a>推荐参考</h3><ul>
+<li><a href="https://blog.csdn.net/yjclsx/article/details/80353754" target="_blank" rel="external">JSON和JSONP劫持以及解决方法</a></li>
+<li><a href="https://www.cnblogs.com/52php/p/5677775.html" target="_blank" rel="external">JSONP 安全攻防技术（JSON劫持、 XSS漏洞）</a></li>
+</ul>
+<h2 id="7-暴力破解"><a href="#7-暴力破解" class="headerlink" title="7. 暴力破解"></a>7. 暴力破解</h2><p>这个一般针对密码而言，弱密码（Weak Password）很容易被别人（对你很了解的人等）猜到或被破解工具暴力破解。</p>
+<h3 id="解决方案-6"><a href="#解决方案-6" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
+<li>密码复杂度要足够大，也要足够隐蔽</li>
+<li>限制尝试次数</li>
+</ol>
+<h2 id="8-HTTP-报头追踪漏洞"><a href="#8-HTTP-报头追踪漏洞" class="headerlink" title="8. HTTP 报头追踪漏洞"></a>8. HTTP 报头追踪漏洞</h2><p>HTTP/1.1（RFC2616）规范定义了 HTTP TRACE 方法，主要是用于客户端通过向 Web 服务器提交 TRACE 请求来进行测试或获得诊断信息。</p>
+<p>当 Web 服务器启用 TRACE 时，提交的请求头会在服务器响应的内容（Body）中完整的返回，其中 HTTP 头很可能包括 Session Token、Cookies 或其它认证信息。攻击者可以利用此漏洞来欺骗合法用户并得到他们的私人信息。</p>
+<h3 id="解决方案-7"><a href="#解决方案-7" class="headerlink" title="解决方案"></a>解决方案</h3><p>禁用 HTTP TRACE 方法。</p>
+<h2 id="9-信息泄露"><a href="#9-信息泄露" class="headerlink" title="9. 信息泄露"></a>9. 信息泄露</h2><p>由于 Web 服务器或应用程序没有正确处理一些特殊请求，泄露 Web 服务器的一些敏感信息，如用户名、密码、源代码、服务器信息、配置信息等。</p>
+<p>所以一般需注意：</p>
+<ul>
+<li>应用程序报错时，不对外产生调试信息</li>
+<li>过滤用户提交的数据与特殊字符</li>
+<li>保证源代码、服务器配置的安全</li>
+</ul>
+<h2 id="10-目录遍历漏洞"><a href="#10-目录遍历漏洞" class="headerlink" title="10. 目录遍历漏洞"></a>10. 目录遍历漏洞</h2><p>攻击者向 Web 服务器发送请求，通过在 URL 中或在有特殊意义的目录中附加 <code>../</code>、或者附加 <code>../</code> 的一些变形（如 <code>..\</code> 或 <code>..//</code> 甚至其编码），导致攻击者能够访问未授权的目录，以及在 Web 服务器的根目录以外执行命令。</p>
+<h2 id="11-命令执行漏洞"><a href="#11-命令执行漏洞" class="headerlink" title="11. 命令执行漏洞"></a>11. 命令执行漏洞</h2><p>命令执行漏洞是通过 URL 发起请求，在 Web 服务器端执行未授权的命令，获取系统信息、篡改系统配置、控制整个系统、使系统瘫痪等。</p>
+<h2 id="12-文件上传漏洞"><a href="#12-文件上传漏洞" class="headerlink" title="12. 文件上传漏洞"></a>12. 文件上传漏洞</h2><p>如果对文件上传路径变量过滤不严，并且对用户上传的文件后缀以及文件类型限制不严，攻击者可通过 Web 访问的目录上传任意文件，包括网站后门文件（<code>webshell</code>），进而远程控制网站服务器。 </p>
+<p>所以一般需注意：</p>
+<ul>
+<li>在开发网站及应用程序过程中，需严格限制和校验上传的文件，禁止上传恶意代码的文件</li>
+<li>限制相关目录的执行权限，防范 <code>webshell</code> 攻击</li>
+</ul>
+<h2 id="13-其他漏洞"><a href="#13-其他漏洞" class="headerlink" title="13. 其他漏洞"></a>13. 其他漏洞</h2><ol>
+<li>SSLStrip 攻击</li>
+<li>OpenSSL Heartbleed 安全漏洞</li>
+<li>CCS 注入漏洞</li>
+<li>证书有效性验证漏洞</li>
+</ol>
+<h2 id="14-业务漏洞"><a href="#14-业务漏洞" class="headerlink" title="14. 业务漏洞"></a>14. 业务漏洞</h2><p>一般业务漏洞是跟具体的应用程序相关，比如参数篡改（连续编号 ID / 订单、1 元支付）、重放攻击（伪装支付）、权限控制（越权操作）等。</p>
+<p>另外可以参考：<a href="https://blog.csdn.net/xueshao110/article/details/78912988" target="_blank" rel="external">6种常见web漏洞坑</a></p>
+<h2 id="15-框架或应用漏洞"><a href="#15-框架或应用漏洞" class="headerlink" title="15. 框架或应用漏洞"></a>15. 框架或应用漏洞</h2><ul>
+<li>WordPress 4.7 / 4.7.1：REST API 内容注入漏洞</li>
+<li>Drupal Module RESTWS 7.x：Remote PHP Code Execution</li>
+<li>SugarCRM 6.5.23：REST PHP Object Injection Exploit</li>
+<li>Apache Struts：REST Plugin With Dynamic Method Invocation Remote Code Execution</li>
+<li>Oracle GlassFish Server：REST CSRF</li>
+<li>QQ Browser 9.6：API 权限控制问题导致泄露隐私模式</li>
+<li>Hacking Docker：Registry API 未授权访问</li>
+</ul>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>更多博客，查看 <a href="https://github.com/senntyou/blogs" target="_blank" rel="external">https://github.com/senntyou/blogs</a></p>
+<p>作者：<a href="https://github.com/senntyou" target="_blank" rel="external">深予之 (@senntyou)</a></p>
+<p>版权声明：自由转载-非商用-非衍生-保持署名（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank" rel="external">创意共享3.0许可证</a>）</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-SQL-注入"><span class="toc-number">1.</span> <span class="toc-text">1. SQL 注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因"><span class="toc-number">1.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案"><span class="toc-number">1.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考"><span class="toc-number">1.3.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-XSS-攻击"><span class="toc-number">2.</span> <span class="toc-text">2. XSS 攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因-1"><span class="toc-number">2.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-1"><span class="toc-number">2.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考-1"><span class="toc-number">2.3.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-CSRF-攻击"><span class="toc-number">3.</span> <span class="toc-text">3. CSRF 攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因-2"><span class="toc-number">3.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-2"><span class="toc-number">3.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考-2"><span class="toc-number">3.3.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-DDoS-攻击"><span class="toc-number">4.</span> <span class="toc-text">4. DDoS 攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因-3"><span class="toc-number">4.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-3"><span class="toc-number">4.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考-3"><span class="toc-number">4.3.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-XXE-漏洞"><span class="toc-number">5.</span> <span class="toc-text">5. XXE 漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-4"><span class="toc-number">5.1.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考-4"><span class="toc-number">5.2.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-JSON-劫持"><span class="toc-number">6.</span> <span class="toc-text">6. JSON 劫持</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因-4"><span class="toc-number">6.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-5"><span class="toc-number">6.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐参考-5"><span class="toc-number">6.3.</span> <span class="toc-text">推荐参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-暴力破解"><span class="toc-number">7.</span> <span class="toc-text">7. 暴力破解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-6"><span class="toc-number">7.1.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-HTTP-报头追踪漏洞"><span class="toc-number">8.</span> <span class="toc-text">8. HTTP 报头追踪漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案-7"><span class="toc-number">8.1.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-信息泄露"><span class="toc-number">9.</span> <span class="toc-text">9. 信息泄露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-目录遍历漏洞"><span class="toc-number">10.</span> <span class="toc-text">10. 目录遍历漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-命令执行漏洞"><span class="toc-number">11.</span> <span class="toc-text">11. 命令执行漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-文件上传漏洞"><span class="toc-number">12.</span> <span class="toc-text">12. 文件上传漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-其他漏洞"><span class="toc-number">13.</span> <span class="toc-text">13. 其他漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-业务漏洞"><span class="toc-number">14.</span> <span class="toc-text">14. 业务漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-框架或应用漏洞"><span class="toc-number">15.</span> <span class="toc-text">15. 框架或应用漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后续"><span class="toc-number">16.</span> <span class="toc-text">后续</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&text=WEB应用常见安全漏洞一览"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&title=WEB应用常见安全漏洞一览"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&is_video=false&description=WEB应用常见安全漏洞一览"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=WEB应用常见安全漏洞一览&body=Check out this article: http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&title=WEB应用常见安全漏洞一览"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&title=WEB应用常见安全漏洞一览"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&title=WEB应用常见安全漏洞一览"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&title=WEB应用常见安全漏洞一览"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/01/WEB应用常见安全漏洞一览/&name=WEB应用常见安全漏洞一览&description=&lt;p&gt;web应用常见安全漏洞产生原因和解决方案。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

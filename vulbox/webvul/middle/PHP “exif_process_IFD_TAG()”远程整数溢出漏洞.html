@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP “exif_process_IFD_TAG()”远程整数溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是一种在电脑上运行的脚本语言，主要用途是在于处理动态网页，包含了命令行运行接口或者产生图形用户界面程序。
+<br />
+
+<br />
+
+									PHP的实现上存在漏洞，在32位版本中，函数exif_process_IFD_TAG没有正确检验值offset_val，成功利用此漏洞可允许远程攻击者在受影响Web服务器中执行任意代码，可能会造成拒绝服务。
+<br />
+
+<br />
+
+									&lt;*来源：flolechaud
+<br />
+
+<br />
+
+									  链接：https://bugs.php.net/bug.php?id=60150
+<br />
+
+									*&gt;
+<br />
+
+<br />
+
+									测试方法：
+<br />
+
+									警 告
+<br />
+
+<br />
+
+									以下程序(方法)可能带有攻击性，仅供安全研究与教学之用。使用者风险自负！
+<br />
+
+<br />
+
+									====
+<br />
+
+									exif.c:2852:
+<br />
+
+<br />
+
+									value_ptr = offset_base+offset_val;
+<br />
+
+									        if (offset_val+byte_count &gt; IFDlength || value_ptr &lt; dir_entry) 
+<br />
+
+									{
+<br />
+
+									====
+<br />
+
+<br />
+
+									The check (offset_val + byte_count) is not safe :
+<br />
+
+<br />
+
+									(gdb) 
+<br />
+
+									2852            value_ptr = offset_base+offset_val;
+<br />
+
+									(gdb) 
+<br />
+
+									2853            if (offset_val+byte_count &gt; IFDlength || value_ptr &lt; 
+<br />
+
+									dir_entry) {
+<br />
+
+									(gdb) 
+<br />
+
+									2905        ImageInfo-&gt;sections_found |= FOUND_ANY_TAG;
+<br />
+
+									(gdb) p/x offset_base 
+<br />
+
+									$1 = 0x5af564
+<br />
+
+									(gdb) p/x offset_val  
+<br />
+
+									$2 = 0xf20008bc
+<br />
+
+									(gdb) p/x value_ptr  
+<br />
+
+									$3 = 0xf25afe20
+<br />
+
+									(gdb) p/x offset_val     
+<br />
+
+									$4 = 0xf20008bc
+<br />
+
+									(gdb) p/x byte_count
+<br />
+
+									$5 = 0xe000067
+<br />
+
+									(gdb) p/x IFDlength 
+<br />
+
+									$6 = 0x1586
+<br />
+
+									(gdb) p/x offset_val+byte_count
+<br />
+
+									$7 = 0x923
+<br />
+
+									(gdb) p/x (int64_t)offset_val+byte_count
+<br />
+
+									$8 = 0x100000923
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+									$ CFLAGS=&quot;-m32 -g&quot; CXXFLAGS=&quot;-m32 -g&quot; ./configure --disable-all --enable-exif
+<br />
+
+									$ CFLAGS=&quot;-m32 -g&quot; CXXFLAGS=&quot;-m32 -g&quot; make
+<br />
+
+<br />
+
+									$ php --version
+<br />
+
+									PHP 5.4.0beta1 (cli) (built: Oct 19 2011 21:15:00) 
+<br />
+
+									Copyright (c) 1997-2011 The PHP Group
+<br />
+
+									Zend Engine v2.4.0, Copyright (c) 1998-2011 Zend Technologies
+<br />
+
+<br />
+
+<br />
+
+<br />
+
+									Test script:
+<br />
+
+									---------------
+<br />
+
+									florent$ cat run.php
+<br />
+
+									&lt;?php
+<br />
+
+<br />
+
+									$exif = exif_read_data($argv[1]);
+<br />
+
+<br />
+
+									?&gt;
+<br />
+
+<br />
+
+									florent$ php run.php ./sample.jpg
+<br />
+
+<br />
+
+<br />
+
+									Expected result:
+<br />
+
+									----------------
+<br />
+
+									Warning or Error without bad pointer dereference.
+<br />
+
+<br />
+
+									Actual result:
+<br />
+
+									--------------
+<br />
+
+									(gdb) r run.php ./Sample.jpg
+<br />
+
+									Starting program: /Users/florent/Downloads/php-5.4.0beta1/sapi/cli/php run.php 
+<br />
+
+									./Sample.jpg
+<br />
+
+									Reading symbols for shared libraries ++........................ done
+<br />
+
+<br />
+
+									Program received signal EXC_BAD_ACCESS, Could not access memory.
+<br />
+
+									Reason: KERN_INVALID_ADDRESS at address: 0xf25afe24
+<br />
+
+									0x0008ba9c in php_strnlen (str=0xf25afe24 &lt;Address 0xf25afe24 out of bounds&gt;, 
+<br />
+
+									maxlen=234881127) at exif.c:296
+<br />
+
+									296        if (str &amp;&amp; maxlen &amp;&amp; *str) {
+<br />
+
+									(gdb) bt
+<br />
+
+									#0  0x0008ba9c in php_strnlen (str=0xf25afe24 &lt;Address 0xf25afe24 out of 
+<br />
+
+									bounds&gt;, maxlen=234881127) at exif.c:296
+<br />
+
+									#1  0x0008cf04 in exif_iif_add_value (image_info=0xbfffee30, section_index=7, 
+<br />
+
+									name=0xbfffe818 &quot;DateTimeOriginal&quot;, tag=36867, format=2, length=234881127, 
+<br />
+
+									value=0xf25afe24, motorola_intel=0) at exif.c:1699
+<br />
+
+									#2  0x0008d284 in exif_iif_add_tag (image_info=0xbfffee30, section_index=7, 
+<br />
+
+									name=0xbfffe818 &quot;DateTimeOriginal&quot;, tag=36867, format=2, length=234881127, 
+<br />
+
+									value=0xf25afe24) at exif.c:1803
+<br />
+
+									#3  0x00090b56 in exif_process_IFD_TAG (ImageInfo=0xbfffee30, dir_entry=0x5af6a8 
+<br />
+
+									&quot;\003?\002&quot;, offset_base=0x5af568 &quot;II*&quot;, IFDlength=5510, displacement=12, 
+<br />
+
+									section_index=7, ReadNextIFD=1, tag_table=0x4291a0) at exif.c:3110
+<br />
+
+									#4  0x00090d20 in exif_process_IFD_in_JPEG (ImageInfo=0xbfffee30, 
+<br />
+
+									dir_start=0x5af66a &quot;#&quot;, offset_base=0x5af568 &quot;II*&quot;, IFDlength=5510, 
+<br />
+
+									displacement=12, section_index=7) at exif.c:3138
+<br />
+
+									#5  0x00090ae3 in exif_process_IFD_TAG (ImageInfo=0xbfffee30, dir_entry=0x5af5ea 
+<br />
+
+									&quot;i?\004&quot;, offset_base=0x5af568 &quot;II*&quot;, IFDlength=5510, displacement=12, 
+<br />
+
+									section_index=3, ReadNextIFD=1, tag_table=0x4291a0) at exif.c:3101
+<br />
+
+									#6  0x00090d20 in exif_process_IFD_in_JPEG (ImageInfo=0xbfffee30, 
+<br />
+
+									dir_start=0x5af570 &quot;\f&quot;, offset_base=0x5af568 &quot;II*&quot;, IFDlength=5510, 
+<br />
+
+									displacement=12, section_index=3) at exif.c:3138
+<br />
+
+									#7  0x00091032 in exif_process_TIFF_in_JPEG (ImageInfo=0xbfffee30, 
+<br />
+
+									CharBuf=0x5af568 &quot;II*&quot;, length=5510, displacement=12) at exif.c:3215
+<br />
+
+									#8  0x0009114a in exif_process_APP1 (ImageInfo=0xbfffee30, CharBuf=0x5af560 
+<br />
+
+									&quot;\025?Exif&quot;, length=5518, displacement=4) at exif.c:3240
+<br />
+
+									#9  0x00091792 in exif_scan_JPEG_header (ImageInfo=0xbfffee30) at exif.c:3385
+<br />
+
+									#10 0x000927e4 in exif_scan_FILE_header (ImageInfo=0xbfffee30) at exif.c:3763
+<br />
+
+									#11 0x000931c8 in exif_read_file (ImageInfo=0xbfffee30, FileName=0x5aa3c4 
+<br />
+
+									&quot;./Sample.jpg&quot;, read_thumbnail=0, read_all=0) at exif.c:3902
+<br />
+
+									#12 0x00093412 in zif_exif_read_data (ht=1, return_value=0x5ab254, 
+<br />
+
+									return_value_ptr=0x0, this_ptr=0x0, return_value_used=1) at exif.c:3955
+<br />
+
+									#13 0x00265c88 in zend_do_fcall_common_helper_SPEC (execute_data=0x592028) at 
+<br />
+
+									zend_vm_execute.h:642
+<br />
+
+									#14 0x0026d26b in ZEND_DO_FCALL_SPEC_CONST_HANDLER (execute_data=0x592028) at 
+<br />
+
+									zend_vm_execute.h:2215
+<br />
+
+									#15 0x00264529 in execute (op_array=0x5ac7a4) at zend_vm_execute.h:410
+<br />
+
+									#16 0x00225f27 in zend_execute_scripts (type=8, retval=0x0, file_count=3) at 
+<br />
+
+									zend.c:1271
+<br />
+
+									#17 0x00199f29 in php_execute_script (primary_file=0xbffffa60) at main.c:2391
+<br />
+
+									#18 0x0038625c in do_cli (argc=3, argv=0xbffffc04) at php_cli.c:983
+<br />
+
+									#19 0x00387837 in main (argc=3, argv=0xbffffc04) at php_cli.c:1356<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									PHP
+<br />
+
+									---
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-11-28</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-12-31</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-4566" target="_blank">CVE-2011-4566</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/50907" target="_blank">50907</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=18273" target="_blank">18273</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201111-467&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20114566&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.4&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2011-5173&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

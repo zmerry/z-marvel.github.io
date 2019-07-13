@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">WordPress Simple:Press插件value参数SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									WordPress是一款免费的论坛Blog系统。
+<br />
+
+<br />
+
+									WordPress所使用的Simple:Press插件没有正确地过滤用户在搜索字段所输入的搜索变量便注入到了SQL查询中使用：
+<br />
+
+<br />
+
+									sf-header-forum.php  
+<br />
+
+<br />
+
+									---[snip]---
+<br />
+
+									385        # Add Search Vars
+<br />
+
+<br />
+
+									386        if(isset($_GET[&#39;search&#39;]))
+<br />
+
+<br />
+
+									387        {
+<br />
+
+<br />
+
+									388            if($_GET[&#39;search&#39;] != &#39;&#39;) $sfvars[&#39;searchpage&#39;] =
+<br />
+
+									sf_esc_int($_GET[&#39;search&#39;]);
+<br />
+
+<br />
+
+									389            if(isset($_GET[&#39;value&#39;]) ? $sfvars[&#39;searchvalue&#39;] =
+<br />
+
+									stripslashes(urldecode($_GET[&#39;value&#39;])) : $sfvars[&#39;searchvalue&#39;] =
+<br />
+
+									&#39;&#39;);
+<br />
+
+<br />
+
+									390            if(isset($_GET[&#39;type&#39;]) ? $sfvars[&#39;searchtype&#39;] =
+<br />
+
+									sf_esc_int($_GET[&#39;type&#39;]) : $sfvars[&#39;searchtype&#39;] = 1);
+<br />
+
+<br />
+
+									400            if(isset($_GET[&#39;include&#39;]) ? $sfvars[&#39;searchinclude&#39;] =
+<br />
+
+									sf_esc_int($_GET[&#39;include&#39;]) : $sfvars[&#39;searchinclude&#39;] = 1);
+<br />
+
+<br />
+
+									401            if($sfvars[&#39;searchinclude&#39;] == 0) $sfvars[&#39;searchinclude&#39;] =1;
+<br />
+
+<br />
+
+									402            if($sfvars[&#39;searchtype&#39;] == 0) $sfvars[&#39;searchtype&#39;] =1;
+<br />
+
+<br />
+
+									403        } else {
+<br />
+
+									---[snip]---
+<br />
+
+<br />
+
+									在389行，HTTP GET请求value被定义为全局变量$sfvars[&#39;searchvalue&#39;]，但在sf-database.php文件中将其注入到了SQL查询中：  
+<br />
+
+<br />
+
+									sf-database.php  
+<br />
+
+<br />
+
+									---[snip]---
+<br />
+
+									...
+<br />
+
+									401        $searchvalue=urldecode($sfvars[&#39;searchvalue&#39;]);
+<br />
+
+<br />
+
+									...
+<br />
+
+<br />
+
+									404        if($sfvars[&#39;searchtype&#39;] == 6)
+<br />
+
+<br />
+
+									...
+<br />
+
+<br />
+
+									409            $ANDWHERE = &quot; AND topic_status_flag=&quot;.$sfvars[&#39;searchvalue&#39;].&quot; &quot;;
+<br />
+
+<br />
+
+									410
+<br />
+
+<br />
+
+									411        } elseif($sfvars[&#39;searchtype&#39;] == 8)
+<br />
+
+<br />
+
+									...
+<br />
+
+<br />
+
+									414            $userid = $sfvars[&#39;searchvalue&#39;];
+<br />
+
+<br />
+
+									415            $SELECT = &quot;SELECT SQL_CALC_FOUND_ROWS DISTINCT &quot;;
+<br />
+
+<br />
+
+									416            $MATCH = &quot;&quot;;
+<br />
+
+<br />
+
+									417            $ANDWHERE = &quot; AND &quot;.SFPOSTS.&quot;.user_id=&quot;.$userid.&quot; &quot;;
+<br />
+
+<br />
+
+									418
+<br />
+
+<br />
+
+									419        } elseif($sfvars[&#39;searchtype&#39;] == 9)
+<br />
+
+<br />
+
+									...
+<br />
+
+<br />
+
+									422            $userid = $sfvars[&#39;searchvalue&#39;];
+<br />
+
+									...
+<br />
+
+<br />
+
+									425            $ANDWHERE = &quot; AND &quot;.SFTOPICS.&quot;.user_id=&quot;.$userid.&quot; &quot;;
+<br />
+
+									...
+<br />
+
+									---[snip]---<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									WordPress
+<br />
+
+									---------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://simple-press.com/download/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>8</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-07-05</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-08-26</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/41348" target="_blank">41348</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15375" target="_blank">15375</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

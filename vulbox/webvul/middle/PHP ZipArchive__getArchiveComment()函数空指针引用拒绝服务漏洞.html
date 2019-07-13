@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP ZipArchive::getArchiveComment()函数空指针引用拒绝服务漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									此次扫描是通过版本进行的，可能发生误报。
+<br />
+
+<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。
+<br />
+
+<br />
+
+									ZipArchive库允许透明的读写ZIP压缩档案及其之中的文件。对于PHP中所使用的ZipArchive::getArchiveComment函数：
+<br />
+
+<br />
+
+									- ---
+<br />
+
+									1945     static ZIPARCHIVE_METHOD(getArchiveComment)
+<br />
+
+									1946     {
+<br />
+
+									1947     struct zip *intern;
+<br />
+
+									1948     zval *this = getThis();
+<br />
+
+									1949     long flags = 0;
+<br />
+
+									1950     const char * comment;
+<br />
+
+									1951     int comment_len = 0;
+<br />
+
+									1952     
+<br />
+
+									1953     if (!this) {
+<br />
+
+									1954     RETURN_FALSE;
+<br />
+
+									1955     }
+<br />
+
+									1956     
+<br />
+
+									1957     ZIP_FROM_OBJECT(intern, this);
+<br />
+
+									1958     
+<br />
+
+									1959     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;|l&quot;, &amp;flags)
+<br />
+
+									== FAILURE) {
+<br />
+
+									1960     return;
+<br />
+
+									1961     }
+<br />
+
+									1962     
+<br />
+
+									1963     comment = zip_get_archive_comment(intern, &amp;comment_len,
+<br />
+
+									(int)flags); &lt;==== RETURN NULL AND -1
+<br />
+
+									1964     RETURN_STRINGL((char *)comment, (long)comment_len, 1); &lt;===== NULL
+<br />
+
+									POINTER DEFERENCE HERE
+<br />
+
+									1965     }
+<br />
+
+									- ---
+<br />
+
+<br />
+
+									这种方式从zip_get_archive_comment()函数返回字符串。而在这个函数中：
+<br />
+
+<br />
+
+									- ---
+<br />
+
+									40     ZIP_EXTERN(const char *)
+<br />
+
+									41     zip_get_archive_comment(struct zip *za, int *lenp, int flags)
+<br />
+
+									42     {
+<br />
+
+									43     if ((flags &amp; ZIP_FL_UNCHANGED)
+<br />
+
+									44     || (za-&gt;ch_comment_len == -1)) {
+<br />
+
+									45     if (za-&gt;cdir) {
+<br />
+
+									46     if (lenp != NULL)
+<br />
+
+									47     *lenp = za-&gt;cdir-&gt;comment_len;
+<br />
+
+									48     return za-&gt;cdir-&gt;comment;
+<br />
+
+									49     }
+<br />
+
+									50     else {
+<br />
+
+									51     if (lenp != NULL)
+<br />
+
+									52     *lenp = -1; &lt;===================== -1
+<br />
+
+									53     return NULL; &lt;==================== NULL
+<br />
+
+									54     }
+<br />
+
+									55     }
+<br />
+
+									56     
+<br />
+
+									57     if (lenp != NULL)
+<br />
+
+									58     *lenp = za-&gt;ch_comment_len;
+<br />
+
+									59     return za-&gt;ch_comment;
+<br />
+
+									60     }
+<br />
+
+									- ---
+<br />
+
+<br />
+
+									52和53行应返回空指针和(int)-1。在结果中会以以下方式执行RETURN_STRINGL()：
+<br />
+
+<br />
+
+									RETURN_STRINGL(NULL, -1, 1);
+<br />
+
+<br />
+
+									memcpy(3)中会出现崩溃。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									The PHP Development Team <br />
+
+									---------  <br />
+
+									目前 php 开发团队已经发布 php 最新版本, 请到厂商的官方页面下载最新版本:  <br />
+
+									链接：http://cn2.php.net/downloads.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-11-08</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-11-24</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-3709" target="_blank">CVE-2010-3709</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/44718" target="_blank">44718</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15984" target="_blank">15984</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201011-095&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20103709&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									4.3&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-2757&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

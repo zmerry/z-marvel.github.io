@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP-Nuke多个SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP-Nuke是一个广为流行的网站创建和管理工具，它可以使用很多数据库软件作为后端，比如MySQL、PostgreSQL、mSQL、Interbase、Sybase等。
+<br />
+
+<br />
+
+									PHP-Nuke中的&#39;Members_List&#39;和&#39;Your_Account&#39;脚本对用于构建SQL查询的外部数据缺少正确过滤，远程攻击者可以利用这个漏洞进行破坏数据库系统，控制PHP-Nuke等攻击。
+<br />
+
+<br />
+
+									&#39;Members_List&#39;和&#39;Your_Account&#39;模块中的脚本对用户提交的数据缺少正确过滤，攻击者可以插入恶意数据到提交的SQL查询中，导致修改原来的查询逻辑，可破坏整个PHP-Nuke系统。也可以用于其他类型的攻击，如显示用户，更改管理员用户名，把普通用户权限更改为管理员权限，或包括所有用户EMAIL和加密密码信息到指定文件中等等。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://www.phpnuke.org<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2003-03-06</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2003-03-14</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/7031" target="_blank">7031</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=4520" target="_blank">4520</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

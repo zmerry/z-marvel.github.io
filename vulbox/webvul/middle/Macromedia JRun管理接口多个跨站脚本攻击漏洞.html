@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Macromedia JRun管理接口多个跨站脚本攻击漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Macromedia JRun是一款Macromedia公司开发的Java应用服务器，提供快速可靠的J2EE兼容平台。<br />
+
+									<br />
+
+									Macromedia JRun包含的管理接口多个脚本对用户提交的输入缺少充分过滤，远程攻击者可以利用这个漏洞进行跨站脚本攻击，可能导致管理员敏感信息泄露。<br />
+
+									<br />
+
+									Macromedia JRun包含的管理接口用于基于WEB的管理配置，其中包含的webserverlist.jsp脚本对用户提交给DefaultDomain service参数的数据缺少充分过滤。攻击者可以提交包含恶意脚本代码或者恶意HTML标记数据给这些参数，当目标用户如管理员浏览此页面时，可导致基于验证的COOKIE信息泄露。<br />
+
+									<br />
+
+									另外clusterframe.jsp脚本对cluster参数缺少充分过滤，具有如下描述的相同问题。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									Macromedia<br />
+
+									----------<br />
+
+									建议随时关注厂商链接，更新到最新版本：<br />
+
+									<br />
+
+									http://www.macromedia.com/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2003-12-02</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-12-03</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/9112" target="_blank">9112</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=5727" target="_blank">5727</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标URL存在框架注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									攻击者有可能注入含有恶意内容的 frame 或 iframe 标记。如果用户不够谨慎，就有可能浏览该标记，却意识不到自己会离开原始站点而进入恶意的站点。之后，攻击者便可以诱导用户再次登录，然后获取其登录凭证。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									建议过滤出所有以下字符： 
+<br />
+
+									[1] |（竖线符号）
+<br />
+
+									[2] &amp; （&amp; 符号）
+<br />
+
+									[3];（分号）
+<br />
+
+									[4] $（美元符号）
+<br />
+
+									[5] %（百分比符号）
+<br />
+
+									[6] @（at 符号）
+<br />
+
+									[7] &#39;（单引号）
+<br />
+
+									[8] &quot;（引号）
+<br />
+
+									[9] \&#39;（反斜杠转义单引号）
+<br />
+
+									[10] \\&quot;（反斜杠转义引号）
+<br />
+
+									[11] &lt;&gt;（尖括号）
+<br />
+
+									[12] ()（括号）
+<br />
+
+									[13] +（加号）
+<br />
+
+									[14] CR（回车符，ASCII 0x0d）
+<br />
+
+									[15] LF（换行，ASCII 0x0a）
+<br />
+
+									[16] ,（逗号）
+<br />
+
+									[17] \（反斜杠）<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>8</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2013-07-25</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-07-25</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.5(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

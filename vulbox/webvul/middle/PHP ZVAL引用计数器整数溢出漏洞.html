@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP ZVAL引用计数器整数溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									此次扫描根据版本信息判断漏洞存在，可能出现误报。
+<br />
+
+<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。
+<br />
+
+<br />
+
+									PHP的ZVAL结构中引用计数实现上存在整数溢出漏洞，远程攻击者可能利用此漏洞在服务器上执行任意指令。
+<br />
+
+<br />
+
+									在PHP 4中内部描述变量的ZVAL结构类似于：
+<br />
+
+<br />
+
+									struct _zval_struct {
+<br />
+
+									        /* Variable information */
+<br />
+
+									        zvalue_value value;     /* value */
+<br />
+
+									        zend_uchar type;        /* active type */
+<br />
+
+									        zend_uchar is_ref;
+<br />
+
+									        zend_ushort refcount;
+<br />
+
+									};
+<br />
+
+<br />
+
+									在设计这个结构时引用计数器为16位宽，这样在32位系统上整个结构为8个字节长；在PHP 5中这个字段为32位宽，因为16位太容易溢出，PHP对引用计数器的溢出也没有内部的防范措施。但对于PHP 4这意味着以下代码会溢出计数器，在脚本端触发变量的双重释放：
+<br />
+
+<br />
+
+									  $var = &quot;POC&quot;;
+<br />
+
+									  for ($i = 0; $i &lt; 0x10001; $i++) {
+<br />
+
+									    $arr[] = &amp;$var;
+<br />
+
+									  }
+<br />
+
+<br />
+
+									攻击者可以利用这个漏洞破坏内存，可能执行任意指令，从而绕过disable_functions之类的安全限制。
+<br />
+
+<br />
+
+									此外由于很多老版本PHP应用程序仍对用户提供的数据使用unserialize()，因此也可能远程触发这个漏洞。Unserialize()函数以不安全的方式使用已还原序列化的__wakeup()方式，可能导致远程执行任意指令。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									PHP 4.4.4 及之后的版本已经修复此问题。
+<br />
+
+<br />
+
+									厂商补丁：
+<br />
+
+<br />
+
+									PHP
+<br />
+
+									---
+<br />
+
+									目前厂商已经提供升级程序，我们建议用户从厂商的站点获取最新版本：
+<br />
+
+<br />
+
+									http://www.php.net/downloads.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2007-03-06</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2007-03-09</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-1286" target="_blank">CVE-2007-1286</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/22765" target="_blank">22765</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=10012" target="_blank">10012</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200703-202&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20071286&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.8&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-10012&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

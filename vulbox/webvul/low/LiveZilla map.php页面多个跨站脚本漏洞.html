@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">LiveZilla map.php页面多个跨站脚本漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									LiveZilla是新一代的在线客服与客户地理位置跟踪系统。
+<br />
+
+<br />
+
+									LiveZilla没有正确地过滤提交给map.php页面的lat、lng和zom参数便返回给了用户，远程攻击者可以通过提交恶意参数请求执行跨站脚本攻击，导致在用户浏览器会话中执行任意HTML和脚本代码。以下是有漏洞的代码段：
+<br />
+
+<br />
+
+									1. livezilla/templates/map.tpl（18-20行）
+<br />
+
+									var default_lat = &lt;!--dlat--&gt;;
+<br />
+
+									var default_lng = &lt;!--dlng--&gt;;
+<br />
+
+									var default_zom = &lt;!--dzom--&gt;;
+<br />
+
+<br />
+
+									2. livezilla/map.php（15-28行）
+<br />
+
+									if(isset($_GET[&quot;lat&quot;]))
+<br />
+
+									$map = str_replace(&quot;&lt;!--dlat--&gt;&quot;,$_GET[&quot;lat&quot;],$map);
+<br />
+
+									else
+<br />
+
+									$map = str_replace(&quot;&lt;!--dlat--&gt;&quot;,&quot;25&quot;,$map);
+<br />
+
+<br />
+
+									if(isset($_GET[&quot;lng&quot;]))
+<br />
+
+									$map = str_replace(&quot;&lt;!--dlng--&gt;&quot;,$_GET[&quot;lng&quot;],$map);
+<br />
+
+									else
+<br />
+
+									$map = str_replace(&quot;&lt;!--dlng--&gt;&quot;,&quot;10&quot;,$map);
+<br />
+
+<br />
+
+									if(isset($_GET[&quot;zom&quot;]))
+<br />
+
+									$map = str_replace(&quot;&lt;!--dzom--&gt;&quot;,$_GET[&quot;zom&quot;],$map);
+<br />
+
+									else
+<br />
+
+									$map = str_replace(&quot;&lt;!--dzom--&gt;&quot;,&quot;1&quot;,$map);<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									LiveZilla GmbH
+<br />
+
+									--------------
+<br />
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://www.livezilla.net/home/en/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-12-29</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-01-14</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-4450" target="_blank">CVE-2009-4450</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14275" target="_blank">14275</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200912-387&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20094450&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.1(CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

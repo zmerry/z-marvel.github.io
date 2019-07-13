@@ -1,0 +1,405 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHPCMS_V9 /modules/comment/index.php 本地文件包含漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									由于PHPCMSV9文件attachments.php的未验证上传用户权限，可以上传文件(仅图片)。加上其他文件存在可以截断的本地包含漏洞，导致包含任意文件并获取webshell
+<br />
+
+<br />
+
+									文件\phpcms\modules\attachment\attachments.php
+<br />
+
+<br />
+
+									   1. public function crop_upload() {
+<br />
+
+									   2. if (isset($GLOBALS[&quot;HTTP_RAW_POST_DATA&quot;])) {
+<br />
+
+									   3. $pic = $GLOBALS[&quot;HTTP_RAW_POST_DATA&quot;];
+<br />
+
+									   4. ……
+<br />
+
+									   5. file_put_contents($this-&gt;upload_path.$filepath.$new_file, $pic);
+<br />
+
+									通过调用该函数可以上传图片文件，程序最后将上传后的图片详细地址输出给用户
+<br />
+
+<br />
+
+									文件\phpcms\modules\comment\index.php
+<br />
+
+<br />
+
+									   1. $this-&gt;commentid = isset($_GET[&#39;commentid&#39;]) &amp;&amp; trim(urldecode($_GET[&#39;commentid&#39;])) ? trim(urldecode($_GET[&#39;commentid&#39;])) : $this-&gt;_show_msg(L(&#39;illegal_parameters&#39;));
+<br />
+
+									   2. $this-&gt;commentid = safe_replace($this-&gt;commentid);
+<br />
+
+									变量$_GET[&#39;commentid&#39;]先经过urldecode函数做url解码，再经过安全函数safe_replace过滤。
+<br />
+
+<br />
+
+									函数safe_replace在文件\phpcms\libs\functions\ global.func.php
+<br />
+
+<br />
+
+									   1. function safe_replace($string) {
+<br />
+
+									   2. $string = str_replace(&#39;%20&#39;,&#39;&#39;,$string);
+<br />
+
+									   3. $string = str_replace(&#39;%27&#39;,&#39;&#39;,$string);
+<br />
+
+									   4. $string = str_replace(&#39;%2527&#39;,&#39;&#39;,$string);
+<br />
+
+									   5. $string = str_replace(&#39;*&#39;,&#39;&#39;,$string);
+<br />
+
+									   6. $string = str_replace(&#39;&quot;&#39;,&#39;&amp;quot;&#39;,$string);
+<br />
+
+									   7. $string = str_replace(&quot;&#39;&quot;,&#39;&#39;,$string);
+<br />
+
+									   8. $string = str_replace(&#39;&quot;&#39;,&#39;&#39;,$string);
+<br />
+
+									   9. $string = str_replace(&#39;;&#39;,&#39;&#39;,$string);
+<br />
+
+									  10. $string = str_replace(&#39;&lt;&#39;,&#39;&amp;lt;&#39;,$string);
+<br />
+
+									  11. $string = str_replace(&#39;&gt;&#39;,&#39;&amp;gt;&#39;,$string);
+<br />
+
+									  12. $string = str_replace(&quot;{&quot;,&#39;&#39;,$string);
+<br />
+
+									  13. $string = str_replace(&#39;}&#39;,&#39;&#39;,$string);
+<br />
+
+									  14. $string = str_replace(&#39;\\\&#39;,&#39;&#39;,$string);
+<br />
+
+									  15. return $string;
+<br />
+
+									  16. }
+<br />
+
+									变量$_GET[&#39;commentid&#39;] 经过函数urldecode解码，可以绕过gpc对特殊字符的过滤。虽然后面经过安全函数safe_replace的过滤，但最终没有过滤\0
+<br />
+
+<br />
+
+									在相同文件\phpcms\modules\comment\index.php中，
+<br />
+
+<br />
+
+									   1. public function post() {
+<br />
+
+									   2. ……
+<br />
+
+									   3. if (!$data = get_comment_api($this-&gt;commentid)) {
+<br />
+
+									   4. $this-&gt;_show_msg(L(&#39;illegal_parameters&#39;));
+<br />
+
+									   5. } else {
+<br />
+
+									   6. $title = $data[&#39;title&#39;];
+<br />
+
+									   7. $url = $data[&#39;url&#39;];
+<br />
+
+									   8. unset($data);
+<br />
+
+									   9. }
+<br />
+
+									变量$this-&gt;commentid进入到函数get_comment_api中, 
+<br />
+
+<br />
+
+									函数定义在文件\phpcms\modules\comment\functions\global.func.php中
+<br />
+
+<br />
+
+									   1. function get_comment_api($commentid) {
+<br />
+
+									   2. list($modules, $contentid, $siteid) = id_decode($commentid);
+<br />
+
+									   3. if (empty($modules) || empty($siteid) || empty($contentid)) {
+<br />
+
+									   4. return false;
+<br />
+
+									   5. }
+<br />
+
+									   6. $comment_api = &#39;&#39;;
+<br />
+
+									   7. $module = explode(&#39;_&#39;, $modules);
+<br />
+
+									   8. $comment_api = pc_base::load_app_class(&#39;comment_api&#39;, $module[0]);
+<br />
+
+									   9. if (empty($comment_api)) return false;
+<br />
+
+									  10. return $comment_api-&gt;get_info($modules, $contentid, $siteid);
+<br />
+
+									  11. }
+<br />
+
+									变量$commentid经过分割，$module[0]进入到函数load_app_class
+<br />
+
+<br />
+
+									在文件\phpcms\base.php可以找到load_app_class
+<br />
+
+<br />
+
+									   1. public static function load_app_class($classname, $m = &#39;&#39;, $initialize = 1) {
+<br />
+
+									   2. $m = empty($m) &amp;&amp; defined(&#39;ROUTE_M&#39;) ? ROUTE_M : $m;
+<br />
+
+									   3. if (empty($m)) return false;
+<br />
+
+									   4. return self::_load_class($classname, &#39;modules&#39;.DIRECTORY_SEPARATOR.$m.DIRECTORY_SEPARATOR.&#39;classes&#39;, $initialize);
+<br />
+
+									   5. }
+<br />
+
+<br />
+
+									变量$module[0]进入_load_class函数，代码如下:
+<br />
+
+<br />
+
+									   1. private static function _load_class($classname, $path = &#39;&#39;, $initialize = 1) {
+<br />
+
+									   2. static $classes = array();
+<br />
+
+									   3. if (empty($path)) $path = &#39;libs&#39;.DIRECTORY_SEPARATOR.&#39;classes&#39;;
+<br />
+
+									   4.  
+<br />
+
+									   5. $key = md5($path.$classname);
+<br />
+
+									   6. if (isset($classes[$key])) {
+<br />
+
+									   7. if (!empty($classes[$key])) {
+<br />
+
+									   8. return $classes[$key];
+<br />
+
+									   9. } else {
+<br />
+
+									  10. return true;
+<br />
+
+									  11. }
+<br />
+
+									  12. }
+<br />
+
+									  13.  
+<br />
+
+									  14. if (file_exists(PC_PATH.$path.DIRECTORY_SEPARATOR.$classname.&#39;.class.php&#39;)) {
+<br />
+
+									  15. include PC_PATH.$path.DIRECTORY_SEPARATOR.$classname.&#39;.class.php&#39;;
+<br />
+
+									最终产生本地包含漏洞，且变量$classname是可以保留最初的截断00
+<br />
+
+<br />
+
+									验证方法：
+<br />
+
+									http://sebug.net/appdir/phpcms/index.php?m=comment&amp;c=index&amp;a=post&amp;commentid=/图片地址%2500_6-1-1<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方案：
+<br />
+
+									1、过滤变量$_GET[&#39;commentid&#39;]
+<br />
+
+									2、安全函数safe_replace增加对00字符的过滤
+<br />
+
+<br />
+
+									厂商补丁：
+<br />
+
+									PHPCMS
+<br />
+
+									-------
+<br />
+
+									目前厂商已经提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+									http://bbs.phpcms.cn/thread-444632-1-1.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-12-17</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-12-26</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

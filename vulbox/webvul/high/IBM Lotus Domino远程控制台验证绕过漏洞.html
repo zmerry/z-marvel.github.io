@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">IBM Lotus Domino远程控制台验证绕过漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Lotus Domino是集电子邮件、文档数据库、快速应用开发技术以及Web技术为一体的电子邮件与群集平台。
+<br />
+
+<br />
+
+									Lotus Domino在实现上存在远程控制台验证绕过漏洞，远程攻击者可利用此漏洞以系统级别的权限执行任意代码，完全控制受影响系统，造成拒绝服务。
+<br />
+
+<br />
+
+									TCP端口2050上默认监听的远程控制台功能中存在漏洞。在处理用户验证时，服务器使用用户提供的COOKIEFILE路径接收以保存的凭证。应用程序然后比较此数据和用户提供的用户名和Cookie。COOKIEFILE路径可以是UNC路径，允许攻击者控制已知正确凭证和不确定凭证。远程攻击者可利用此漏洞以系统用户权限执行任意代码。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：
+<br />
+
+<br />
+
+									如果您不能立刻安装补丁或者升级，NSFOCUS建议您采取以下措施以降低威胁：
+<br />
+
+<br />
+
+									*设置控制台密码，提供另一级别的验证并限制控制台中可用的命令。也可限制对运行Domino Server Controller 应用程序的主机上的2050/tcp的访问到已验证主机。
+<br />
+
+<br />
+
+									厂商补丁：
+<br />
+
+<br />
+
+									IBM
+<br />
+
+									---
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www-304.ibm.com/support/docview.wss?uid=swg21461514<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-03-25</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-05-31</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-1519" target="_blank">CVE-2011-1519</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/46985" target="_blank">46985</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=16616" target="_blank">16616</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201103-319&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20111519&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									10.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

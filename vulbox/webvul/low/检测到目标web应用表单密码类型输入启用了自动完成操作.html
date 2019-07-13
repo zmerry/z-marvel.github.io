@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标web应用表单密码类型输入启用了自动完成操作</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									在web应用form表单中，如果input标签没有指定“autocomplete”属性为“off”，则“autocomplete”的属性会自动默认为“on”。当web应用form表单中的密码类型的input标签的“autocomplete”属性为“on”时，用户若提交了一个新的用户名和密码时，浏览器将会询问用户是否保存该用户名和密码信息。如果用户选择保存，则之后在显示该web应用表单时，用户名和密码将会被自动填充到对应的输入框中。用户一但保存密码，攻击者就可以通过本地从浏览器缓存中获取明文密码，导致用户敏感信息泄露。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									修改web应用form表单中密码类型input标签的“autocomplete”属性为“off”。
+<br />
+
+<br />
+
+									示例：
+<br />
+
+<br />
+
+									1）当密码类型的input标签没有“autocomplete”属性名时，如：
+<br />
+
+									   &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;
+<br />
+
+									   则增加“autocomplete”属性为“off”即可，修改为：
+<br />
+
+									   &lt;input type=&quot;password&quot; name=&quot;password&quot; autocomplete=&quot;off&quot;&gt;
+<br />
+
+<br />
+
+									2) 当密码类型的input标签有“autocomplete”属性名，但其属性值为“on”时，如：
+<br />
+
+									   &lt;input type=&quot;password&quot; name=&quot;password&quot; autocomplete=&quot;on&quot;&gt;
+<br />
+
+									   则修改“autocomplete”属性为“off”即可，修改为：
+<br />
+
+									   &lt;input type=&quot;password&quot; name=&quot;password&quot; autocomplete=&quot;off&quot;&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>1</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2014-11-14</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									0.0(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

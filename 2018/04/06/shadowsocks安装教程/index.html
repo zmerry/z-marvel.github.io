@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="直接使用pip install 安装的是2.80版本启动的时候会报错：method aes-256-gcm not supported需要升级到3.0版本：update shadowsocks to 3.0pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U已下载文件备份到source/_post">
+<meta name="keywords" content="Tools,原创,FQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shadowsocks安装教程">
+<meta property="og:url" content="http://www.okoksec.com/2018/04/06/shadowsocks安装教程/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="直接使用pip install 安装的是2.80版本启动的时候会报错：method aes-256-gcm not supported需要升级到3.0版本：update shadowsocks to 3.0pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U已下载文件备份到source/_post">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-05T17:35:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shadowsocks安装教程">
+<meta name="twitter:description" content="直接使用pip install 安装的是2.80版本启动的时候会报错：method aes-256-gcm not supported需要升级到3.0版本：update shadowsocks to 3.0pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U已下载文件备份到source/_post">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>shadowsocks安装教程</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/05/06/MacOS升级High sierra提示需要接通电源解决/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/02/01/Hack-github-Box/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&text=shadowsocks安装教程"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&title=shadowsocks安装教程"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&is_video=false&description=shadowsocks安装教程"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=shadowsocks安装教程&body=Check out this article: http://www.okoksec.com/2018/04/06/shadowsocks安装教程/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&title=shadowsocks安装教程"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&title=shadowsocks安装教程"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&title=shadowsocks安装教程"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&title=shadowsocks安装教程"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&name=shadowsocks安装教程&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装防火墙"><span class="toc-number">1.</span> <span class="toc-text">安装防火墙</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#启动防火墙"><span class="toc-number">2.</span> <span class="toc-text">启动防火墙</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#端口号是你自己设置的端口"><span class="toc-number">3.</span> <span class="toc-text">端口号是你自己设置的端口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后台运行"><span class="toc-number">4.</span> <span class="toc-text">后台运行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#调试时使用下面命令，实时查看日志"><span class="toc-number">5.</span> <span class="toc-text">调试时使用下面命令，实时查看日志</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        shadowsocks安装教程
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-04-05T17:35:06.000Z" itemprop="datePublished">2018-04-06</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/软件工具/">软件工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/FQ/">FQ</a>, <a class="tag-link" href="/tags/Tools/">Tools</a>, <a class="tag-link" href="/tags/原创/">原创</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <a id="more"></a>
+<p>直接使用<br>pip install 安装的是2.80版本<br>启动的时候会报错：method aes-256-gcm not supported<br>需要升级到3.0版本：<br>update shadowsocks to 3.0<br>pip install <a href="https://github.com/shadowsocks/shadowsocks/archive/master.zip" target="_blank" rel="external">https://github.com/shadowsocks/shadowsocks/archive/master.zip</a> -U<br>已下载文件备份到source/_post/files目录下</p>
+<p>启动方式：ssserver -c shadowsocks.json<br>后台启动：ssserver -c shadowsocks.json -d start<br>关闭：ssserver -c shadowsocks.json -d stop<br>日志文件：/var/log/shadowsocks.log<br>需要打开防火墙开通相应的访问端口（建议采用443等常用端口，防止被屏蔽）</p>
+<p>搭建 Shadowsocks 服务<br>安装组件</p>
+<p>yum install m2crypto python-setuptools<br>easy_install pip<br>pip install shadowsocks</p>
+<p>安装完成后配置服务器参数</p>
+<p>vi  /etc/shadowsocks.json</p>
+<p>写入如下配置:</p>
+<p>{<br>    “server”:”0.0.0.0”,<br>    “server_port”:443,<br>    “local_address”: “127.0.0.1”,<br>    “local_port”:1080,<br>    “password”:”123456”,<br>    “timeout”:300,<br>    “method”:”aes-256-cfb”,<br>    “fast_open”: false<br>}</p>
+<p>多端口的如下：</p>
+<p>{<br>    “server”:”0.0.0.0”,<br>    “local_address”: “127.0.0.1”,<br>    “local_port”:1080,<br>    “port_password”: {<br>         “443”: “443”,<br>         “8888”: “8888”<br>     },<br>    “timeout”:300,<br>    “method”:”aes-256-cfb”,<br>    “fast_open”: false<br>}</p>
+<p>其中server字段与local_address填写之前的IP Address。password是自己用于连接这个shadow socks的密码，自定义就好。 其他的不需要更改。</p>
+<p>然后保存退出。</p>
+<p>vi 的命令: 按 “i” 进入编辑模式，编辑后按 “esc” 退出编辑模式， 输入 “:wq” 保存退出vi。<br>配置防火墙</p>
+<h1 id="安装防火墙"><a href="#安装防火墙" class="headerlink" title="安装防火墙"></a>安装防火墙</h1><p>yum install firewalld</p>
+<h1 id="启动防火墙"><a href="#启动防火墙" class="headerlink" title="启动防火墙"></a>启动防火墙</h1><p>systemctl start firewalld</p>
+<p>开启防火墙相应的端口</p>
+<h1 id="端口号是你自己设置的端口"><a href="#端口号是你自己设置的端口" class="headerlink" title="端口号是你自己设置的端口"></a>端口号是你自己设置的端口</h1><p>firewall-cmd –permanent –zone=public –add-port=443/tcp<br>firewall-cmd –reload</p>
+<p>启动 Shadowsocks 服务</p>
+<h1 id="后台运行"><a href="#后台运行" class="headerlink" title="后台运行"></a>后台运行</h1><p>ssserver -c /etc/shadowsocks.json -d start</p>
+<h1 id="调试时使用下面命令，实时查看日志"><a href="#调试时使用下面命令，实时查看日志" class="headerlink" title="调试时使用下面命令，实时查看日志"></a>调试时使用下面命令，实时查看日志</h1><p>ssserver -c /etc/shadowsocks.json</p>
+<p>GitHub上有一键安装脚本：<br>      接着开始使用一键安装脚本，搭建ss、ssr，依次输入下面三个（每个命令输入后，按回车执行）：</p>
+<pre><code>wget –no-check-certificate -O shadowsocks-all.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-all.sh
+
+chmod +x shadowsocks-all.sh
+
+./shadowsocks-all.sh 2&gt;&amp;1 | tee shadowsocks-all.log
+</code></pre><p>links:<br><a href="https://github.com/shadowsocks/shadowsocks/issues/1097" target="_blank" rel="external">https://github.com/shadowsocks/shadowsocks/issues/1097</a><br><a href="https://zhangdanyang.com/#/Post/5a75116be9116c2be23e7b5d" target="_blank" rel="external">https://zhangdanyang.com/#/Post/5a75116be9116c2be23e7b5d</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装防火墙"><span class="toc-number">1.</span> <span class="toc-text">安装防火墙</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#启动防火墙"><span class="toc-number">2.</span> <span class="toc-text">启动防火墙</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#端口号是你自己设置的端口"><span class="toc-number">3.</span> <span class="toc-text">端口号是你自己设置的端口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后台运行"><span class="toc-number">4.</span> <span class="toc-text">后台运行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#调试时使用下面命令，实时查看日志"><span class="toc-number">5.</span> <span class="toc-text">调试时使用下面命令，实时查看日志</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&text=shadowsocks安装教程"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&title=shadowsocks安装教程"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&is_video=false&description=shadowsocks安装教程"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=shadowsocks安装教程&body=Check out this article: http://www.okoksec.com/2018/04/06/shadowsocks安装教程/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&title=shadowsocks安装教程"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&title=shadowsocks安装教程"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&title=shadowsocks安装教程"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&title=shadowsocks安装教程"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2018/04/06/shadowsocks安装教程/&name=shadowsocks安装教程&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">e107 usersettings.php SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									e107是用php编写的内容管理系统。 
+<br />
+
+<br />
+
+									e107的usersettings.php脚本没有正确地过滤对hide[]密钥所传送的输入，如果magic_quotes_gpc = off的话远程攻击者就可以通过提交恶意请求执行SQL注入攻击。以下是usersettings.php中的有漏洞代码段：
+<br />
+
+<br />
+
+									433 - 441行： 
+<br />
+
+<br />
+
+									 if($ue_fields) {
+<br />
+
+									    $hidden_fields = implode(&quot;^&quot;, array_keys($_POST[&#39;hide&#39;])); &lt;------ {1}
+<br />
+
+<br />
+
+									     if($hidden_fields != &quot;&quot;)
+<br />
+
+									     {
+<br />
+
+										 $hidden_fields = &quot;^&quot;.$hidden_fields.&quot;^&quot;;  
+<br />
+
+									     }
+<br />
+
+									     $ue_fields .= &quot;, user_hidden_fields = &#39;&quot;.$hidden_fields.&quot;&#39;&quot;; &lt;---- {2}
+<br />
+
+									   }
+<br />
+
+<br />
+
+									470 - 476行：
+<br />
+
+<br />
+
+									  if($ue_fields) 
+<br />
+
+									  {
+<br />
+
+									    [etc..]
+<br />
+
+									    $sql-&gt;db_Update(&quot;user_extended&quot;, $ue_fields.&quot; WHERE user_extended_id = &#39;&quot;.intval($inp).&quot;&#39;&quot;);
+<br />
+
+									  }  
+<br />
+
+<br />
+
+									ue[] POST变量需要有效的密钥，如aim、msn或其他user_extended_fields（@fields数组）。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://e107.org/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-04-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-04-26</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/34614" target="_blank">34614</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=13244" target="_blank">13244</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

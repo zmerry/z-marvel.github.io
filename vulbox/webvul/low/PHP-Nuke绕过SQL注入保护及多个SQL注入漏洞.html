@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP-Nuke绕过SQL注入保护及多个SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP-Nuke是一个广为流行的网站创建和管理工具，它可以使用很多数据库软件作为后端，比如MySQL、PostgreSQL、mSQL、Interbase、Sybase等。
+<br />
+
+<br />
+
+									PHP-Nuke实现上存在多个SQL注入漏洞，远程攻击者可能利用这些漏洞非授权操作数据库。
+<br />
+
+<br />
+
+									在mainfile.php文件中435行：
+<br />
+
+									__________________________________________
+<br />
+
+<br />
+
+									  //Union Tap
+<br />
+
+									  //Copyright Zhen-Xjell 2004 http://nukecops.com
+<br />
+
+									  //Beta 3 Code to prevent UNION SQL Injections
+<br />
+
+									  unset($matches);
+<br />
+
+									  unset($loc);
+<br />
+
+									  if(isset($_SERVER[&#39;QUERY_STRING&#39;])) {
+<br />
+
+									    if (preg_match(&quot;/([OdWo5NIbpuU4V2iJT0n]{5}) /&quot;, \
+<br />
+
+									rawurldecode($loc=$_SERVER[&#39;QUERY_STRING&#39;]), $matches)) {  die(&#39;Illegal Operation \
+<br />
+
+									1&#39;);  }
+<br />
+
+									  }
+<br />
+
+									  if(!isset($admin) OR (isset($admin) AND !is_admin($admin))) {
+<br />
+
+									    $queryString = $_SERVER[&#39;QUERY_STRING&#39;];
+<br />
+
+										if (($_SERVER[&#39;PHP_SELF&#39;] != &quot;/index.php&quot;) OR !isset($url))
+<br />
+
+										{
+<br />
+
+										   if (stristr($queryString,&#39;http://&#39;)) die(&#39;Illegal Operation 2&#39;);
+<br />
+
+										}
+<br />
+
+									    if ((stristr($queryString,&#39;%20union%20&#39;)) OR (stristr($queryString,&#39;/*&#39;)) OR \
+<br />
+
+									(stristr($queryString,&#39;*/union/*&#39;)) OR (stristr($queryString,&#39;c2nyaxb0&#39;)) OR \
+<br />
+
+									(stristr($queryString,&#39;+union+&#39;))  OR ((stristr($queryString,&#39;cmd=&#39;)) AND \
+<br />
+
+									(!stristr($queryString,&#39;&amp;cmd&#39;))) OR ((stristr($queryString,&#39;exec&#39;)) AND \
+<br />
+
+									(!stristr($queryString,&#39;execu&#39;))) OR (stristr($queryString,&#39;concat&#39;))) {  \
+<br />
+
+									die(&#39;Illegal Operation 3&#39;);  }
+<br />
+
+									  }__________________________________________
+<br />
+
+<br />
+
+									攻击者可以通过不同的过滤器绕过对SQL注入的保护。
+<br />
+
+<br />
+
+<br />
+
+									此外Web_Links、News和Download模块中还存在多个SQL注入漏洞：
+<br />
+
+<br />
+
+									+++++++++++++++++++++++++++
+<br />
+
+<br />
+
+									PHP.ini
+<br />
+
+									Magic Quotes = OFF 
+<br />
+
+									Register Global = ON
+<br />
+
+									+++++++++++++++++++++++++++
+<br />
+
+<br />
+
+									Web_Links/index.php文件中有漏洞的函数如下：
+<br />
+
+<br />
+
+									function viewlinkcomments($lid) {
+<br />
+
+										global $prefix, $db, $admin, $bgcolor2, $module_name, $admin_file;
+<br />
+
+										include(&quot;header.php&quot;);
+<br />
+
+										include(&quot;modules/$module_name/l_config.php&quot;);
+<br />
+
+										menu(1);
+<br />
+
+										$row = $db-&gt;sql_fetchrow($db-&gt;sql_query(&quot;SELECT title FROM &quot;.$prefix.&quot;_links_links \
+<br />
+
+									WHERE lid=&#39;$lid&#39;&quot;)); // BUG ---&gt; $lid  $ttitle = filter($row[&#39;title&#39;], &quot;nohtml&quot;);
+<br />
+
+										$lid = intval(trim($lid)); //WTF?&lt;===== lol ??????????????? :):):):):)
+<br />
+
+										echo &quot;&lt;br&gt;&quot;;
+<br />
+
+									...
+<br />
+
+									__________________________________________________
+<br />
+
+<br />
+
+									function viewlinkcomments($lid) {
+<br />
+
+									function viewlinkeditorial($lid){
+<br />
+
+									function viewlinkcomments($lid){
+<br />
+
+									function ratelink($lid, $user) {
+<br />
+
+<br />
+
+									$lid变量没有经过过滤，因此攻击者可以执行任意sql命令。
+<br />
+
+<br />
+
+<br />
+
+									Downloads模块中有漏洞函数：
+<br />
+
+<br />
+
+									function viewdownloadeditorial($lid) {
+<br />
+
+									function viewdownloadcomments($lid) {
+<br />
+
+									function ratedownload($lid, $user) {
+<br />
+
+<br />
+
+									$lid变量没有经过过滤。
+<br />
+
+<br />
+
+<br />
+
+									News模块中有漏洞函数：
+<br />
+
+<br />
+
+									function rate_complete($sid, $rated=0, $score) {
+<br />
+
+<br />
+
+									$sid变量没有经过过滤。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://phpnuke.org/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2007-04-17</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2007-04-20</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/23528" target="_blank">23528</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=10236" target="_blank">10236</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

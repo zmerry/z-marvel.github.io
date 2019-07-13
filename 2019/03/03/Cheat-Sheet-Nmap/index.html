@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Nmap (network mapper), the god of port scanners used for network discovery and the basis for most security enumeration during the initial stages of a penetration test. The tool was written and mainta">
+<meta name="keywords" content="Hacking,Penetration,转载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cheat Sheet Nmap">
+<meta property="og:url" content="http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="Nmap (network mapper), the god of port scanners used for network discovery and the basis for most security enumeration during the initial stages of a penetration test. The tool was written and mainta">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://highon.coffee/img/nmap-trinity.png">
+<meta property="og:updated_time" content="2019-03-03T03:18:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cheat Sheet Nmap">
+<meta name="twitter:description" content="Nmap (network mapper), the god of port scanners used for network discovery and the basis for most security enumeration during the initial stages of a penetration test. The tool was written and mainta">
+<meta name="twitter:image" content="https://highon.coffee/img/nmap-trinity.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Cheat Sheet Nmap</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-Reverse-Shell/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-Linux-Commands/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&text=Cheat Sheet Nmap"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&title=Cheat Sheet Nmap"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&is_video=false&description=Cheat Sheet Nmap"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet Nmap&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&title=Cheat Sheet Nmap"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&title=Cheat Sheet Nmap"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&title=Cheat Sheet Nmap"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&title=Cheat Sheet Nmap"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&name=Cheat Sheet Nmap&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nmap-Examples"><span class="toc-number">1.</span> <span class="toc-text">Nmap Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Agressive-scan-timings-are-faster-but-could-yeild-inaccurate-results"><span class="toc-number">1.0.1.</span> <span class="toc-text">Agressive scan timings are faster, but could yeild inaccurate results!</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nmap-scan-from-file"><span class="toc-number">1.1.</span> <span class="toc-text">Nmap scan from file</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nmap-output-formats"><span class="toc-number">1.2.</span> <span class="toc-text">Nmap output formats</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nmap-Netbios-Examples"><span class="toc-number">1.3.</span> <span class="toc-text">Nmap Netbios Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#–script-args-unsafe-1-has-the-potential-to-crash-servers-services"><span class="toc-number">1.3.1.</span> <span class="toc-text">–script-args=unsafe=1 has the potential to crash servers / services</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nmap-Nikto-Scan"><span class="toc-number">1.4.</span> <span class="toc-text">Nmap Nikto Scan</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nmap-Cheatsheet"><span class="toc-number">2.</span> <span class="toc-text">Nmap Cheatsheet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Target-Specification"><span class="toc-number">2.1.</span> <span class="toc-text">Target Specification</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Host-Discovery"><span class="toc-number">2.2.</span> <span class="toc-text">Host Discovery</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Scan-Techniques"><span class="toc-number">2.3.</span> <span class="toc-text">Scan Techniques</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Port-Specification-and-Scan-Order"><span class="toc-number">2.4.</span> <span class="toc-text">Port Specification and Scan Order</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Service-Version-Detection"><span class="toc-number">2.5.</span> <span class="toc-text">Service Version Detection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Script-Scan"><span class="toc-number">2.6.</span> <span class="toc-text">Script Scan</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OS-Detection"><span class="toc-number">2.7.</span> <span class="toc-text">OS Detection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Timing-and-Performance"><span class="toc-number">2.8.</span> <span class="toc-text">Timing and Performance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Firewalls-IDS-Evasion-and-Spoofing"><span class="toc-number">2.9.</span> <span class="toc-text">Firewalls IDS Evasion and Spoofing</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nmap-Output-Options"><span class="toc-number">2.10.</span> <span class="toc-text">Nmap Output Options</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Misc-Nmap-Options"><span class="toc-number">2.11.</span> <span class="toc-text">Misc Nmap Options</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-Enumeration-Examples"><span class="toc-number"></span> <span class="toc-text">Nmap Enumeration Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Enumerating-Netbios"><span class="toc-number">1.</span> <span class="toc-text">Enumerating Netbios</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-find-exposed-Netbios-servers"><span class="toc-number"></span> <span class="toc-text">Nmap find exposed Netbios servers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-done-256-IP-addresses-1-hosts-up-scanned-in-28-74-seconds"><span class="toc-number"></span> <span class="toc-text">Nmap done: 256 IP addresses (1 hosts up) scanned in 28.74 seconds</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-find-exposed-Netbios-name"><span class="toc-number"></span> <span class="toc-text">Nmap find exposed Netbios name</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-done-256-IP-addresses-1-hosts-up-scanned-in-28-74-seconds-1"><span class="toc-number"></span> <span class="toc-text">Nmap done: 256 IP addresses (1 hosts up) scanned in 28.74 seconds</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-check-MS08-067"><span class="toc-number"></span> <span class="toc-text">Nmap check MS08-067</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Cheat Sheet Nmap
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-03T03:18:16.000Z" itemprop="datePublished">2019-03-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全技术/">安全技术</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Hacking/">Hacking</a>, <a class="tag-link" href="/tags/Penetration/">Penetration</a>, <a class="tag-link" href="/tags/转载/">转载</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <a id="more"></a>
+<p><strong>Nmap</strong> (network mapper), the god of port scanners used for network discovery and the basis for most security enumeration during the initial stages of a <a href="/blog/penetration-testing-tools-cheat-sheet/">penetration test</a>. The tool was written and maintained by Fyodor AKA Gordon Lyon.</p>
+<p><a href="http://nmap.org" target="_blank" rel="external">Nmap</a> displays exposed services on a target machine along with other useful information such as the verion and OS detection.</p>
+<p>Nmap has made twelve movie appearances, including The Matrix Reloaded, Die Hard 4, Girl With the Dragon Tattoo, and The Bourne Ultimatum.</p>
+<p><img src="https://highon.coffee/img/nmap-trinity.png" alt="Nmap Trinity"></p>
+<p><strong>Nmap in a nutshell</strong></p>
+<ul>
+<li>Host discovery</li>
+<li>Port discovery / enumeration</li>
+<li>Service discovery</li>
+<li>Operating system version detection</li>
+<li>Hardware (MAC) address detection</li>
+<li>Service version detection</li>
+<li>Vulnerability / exploit detection, using Nmap scripts (NSE)</li>
+</ul>
+<h3 id="Nmap-Examples"><a href="#Nmap-Examples" class="headerlink" title="Nmap Examples"></a>Nmap Examples</h3><p>Basic Nmap scanning examples, often used at the first stage of enumeration.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nmap -sP 10.0.0.0/24</code></td>
+<td>Ping scans the network, listing machines that respond to ping.</td>
+</tr>
+<tr>
+<td><code>nmap -p 1-65535 -sV -sS -T4 target</code></td>
+<td>Full TCP port scan using with service version detection - usually my first scan, I find T4 more accurate than T5 and still “pretty quick”.</td>
+</tr>
+<tr>
+<td><code>nmap -v -sS -A -T4 target</code></td>
+<td>Prints verbose output, runs stealth syn scan, T4 timing, OS and version detection + traceroute and scripts against target services.</td>
+</tr>
+<tr>
+<td><code>nmap -v -sS -A -T5 target</code></td>
+<td>Prints verbose output, runs stealth syn scan, T5 timing, OS and version detection + traceroute and scripts against target services.</td>
+</tr>
+<tr>
+<td><code>nmap -v -sV -O -sS -T5 target</code></td>
+<td>Prints verbose output, runs stealth syn scan, T5 timing, OS and version detection.</td>
+</tr>
+<tr>
+<td><code>nmap -v -p 1-65535 -sV -O -sS -T4 target</code></td>
+<td>Prints verbose output, runs stealth syn scan, T4 timing, OS and version detection + full port range scan.</td>
+</tr>
+<tr>
+<td><code>nmap -v -p 1-65535 -sV -O -sS -T5 target</code></td>
+<td>Prints verbose output, runs stealth syn scan, T5 timing, OS and version detection + full port range scan.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Agressive-scan-timings-are-faster-but-could-yeild-inaccurate-results"><a href="#Agressive-scan-timings-are-faster-but-could-yeild-inaccurate-results" class="headerlink" title="Agressive scan timings are faster, but could yeild inaccurate results!"></a>Agressive scan timings are faster, but could yeild inaccurate results!</h5><p>T5 uses very aggressive scan timings and could lead to missed ports, T4 is a better compromise if you need fast results.</p>
+<h4 id="Nmap-scan-from-file"><a href="#Nmap-scan-from-file" class="headerlink" title="Nmap scan from file"></a>Nmap scan from file</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nmap -iL ip-addresses.txt</code></td>
+<td>Scans a list of IP addresses, you can add options before / after.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Nmap-output-formats"><a href="#Nmap-output-formats" class="headerlink" title="Nmap output formats"></a>Nmap output formats</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nmap -sV -p 139,445 -oG grep-output.txt 10.0.1.0/24</code></td>
+<td>Outputs “grepable” output to a file, in this example Netbios servers.E.g, The output file could be grepped for “Open”.</td>
+</tr>
+<tr>
+<td>`nmap -sS -sV -T5 10.0.1.99 –webxml -oX -<br></td>
+<td>xsltproc –output file.html -`</td>
+<td>Export nmap output to HTML report.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Nmap-Netbios-Examples"><a href="#Nmap-Netbios-Examples" class="headerlink" title="Nmap Netbios Examples"></a>Nmap Netbios Examples</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nmap -sV -v -p 139,445 10.0.0.1/24</code></td>
+<td>Find all Netbios servers on subnet</td>
+</tr>
+<tr>
+<td><code>nmap -sU --script nbstat.nse -p 137 target</code></td>
+<td>Nmap display Netbios name</td>
+</tr>
+<tr>
+<td><code>nmap --script-args=unsafe=1 --script &lt;br&gt; smb-check-vulns.nse -p 445 target</code></td>
+<td>Nmap check if Netbios servers are vulnerable to MS08-067</td>
+</tr>
+</tbody>
+</table>
+<h5 id="–script-args-unsafe-1-has-the-potential-to-crash-servers-services"><a href="#–script-args-unsafe-1-has-the-potential-to-crash-servers-services" class="headerlink" title="–script-args=unsafe=1 has the potential to crash servers / services"></a>–script-args=unsafe=1 has the potential to crash servers / services</h5><p>Becareful when running this command.</p>
+<h4 id="Nmap-Nikto-Scan"><a href="#Nmap-Nikto-Scan" class="headerlink" title="Nmap Nikto Scan"></a>Nmap Nikto Scan</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>`nmap -p80 10.0.1.0/24 -oG -</td>
+<td>nikto.pl -h -`</td>
+<td>Scans for http servers on port 80 and pipes into Nikto for scanning.</td>
+</tr>
+<tr>
+<td>`nmap -p80,443 10.0.1.0/24 -oG -</td>
+<td>nikto.pl -h -`</td>
+<td>Scans for http/https servers on port 80, 443 and pipes into Nikto for scanning.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Nmap-Cheatsheet"><a href="#Nmap-Cheatsheet" class="headerlink" title="Nmap Cheatsheet"></a>Nmap Cheatsheet</h3><h4 id="Target-Specification"><a href="#Target-Specification" class="headerlink" title="Target Specification"></a>Target Specification</h4><p>Nmap allows hostnames, IP addresses, subnets.</p>
+<p>Example blah.highon.coffee, nmap.org/24, 192.168.0.1; 10.0.0-255.1-254</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-iL</code></td>
+<td>inputfilename: Input from list of hosts/networks</td>
+</tr>
+<tr>
+<td><code>-iR</code></td>
+<td>num hosts: Choose random targets</td>
+</tr>
+<tr>
+<td><code>--exclude</code></td>
+<td>host1[,host2][,host3],… : Exclude hosts/networks</td>
+</tr>
+<tr>
+<td><code>--excludefile</code></td>
+<td>exclude_file: Exclude list from file</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Host-Discovery"><a href="#Host-Discovery" class="headerlink" title="Host Discovery"></a>Host Discovery</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-sL</code></td>
+<td>List Scan - simply list targets to scan</td>
+</tr>
+<tr>
+<td><code>-sn</code></td>
+<td>Ping Scan - disable port scan</td>
+</tr>
+<tr>
+<td><code>-Pn</code></td>
+<td>Treat all hosts as online – skip host discovery</td>
+</tr>
+<tr>
+<td><code>-PS/PA/PU/PY[portlist]</code></td>
+<td>TCP SYN/ACK, UDP or SCTP discovery to given ports</td>
+</tr>
+<tr>
+<td><code>-PE/PP/PM</code></td>
+<td>ICMP echo, timestamp, and netmask request discovery probes</td>
+</tr>
+<tr>
+<td><code>-PO[protocol list]</code></td>
+<td>IP Protocol Ping</td>
+</tr>
+<tr>
+<td><code>-n/-R</code></td>
+<td>Never do DNS resolution/Always resolve [default: sometimes]</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Scan-Techniques"><a href="#Scan-Techniques" class="headerlink" title="Scan Techniques"></a>Scan Techniques</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-sS&lt;br&gt;-sT&lt;br&gt;-sA&lt;br&gt;-sW&lt;br&gt;-sM</code></td>
+<td>TCP SYN scanConnect scanACK scanWindow scanMaimon scan</td>
+</tr>
+<tr>
+<td><code>-sU</code></td>
+<td>UDP Scan</td>
+</tr>
+<tr>
+<td><code>-sN&lt;br&gt;-sF&lt;br&gt;-sX</code></td>
+<td>TCP Null scanFIN scanXmas scan</td>
+</tr>
+<tr>
+<td><code>--scanflags</code></td>
+<td>Customize TCP scan flags</td>
+</tr>
+<tr>
+<td><code>-sI zombie host[:probeport]</code></td>
+<td>Idle scan</td>
+</tr>
+<tr>
+<td><code>-sY&lt;br&gt;-sZ</code></td>
+<td>SCTP INIT scanCOOKIE-ECHO scan</td>
+</tr>
+<tr>
+<td><code>-sO</code></td>
+<td>IP protocol scan</td>
+</tr>
+<tr>
+<td><code>-b &quot;FTP relay host&quot;</code></td>
+<td>FTP bounce scan</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Port-Specification-and-Scan-Order"><a href="#Port-Specification-and-Scan-Order" class="headerlink" title="Port Specification and Scan Order"></a>Port Specification and Scan Order</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-p</code></td>
+<td>Specify ports, e.g. -p80,443 or -p1-65535</td>
+</tr>
+<tr>
+<td><code>-p U:PORT</code></td>
+<td>Scan UDP ports with Nmap, e.g. -p U:53</td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td>Fast mode, scans fewer ports than the default scan</td>
+</tr>
+<tr>
+<td><code>-r</code></td>
+<td>Scan ports consecutively - don’t randomize</td>
+</tr>
+<tr>
+<td><code>--top-ports &quot;number&quot;</code></td>
+<td>Scan “number” most common ports</td>
+</tr>
+<tr>
+<td><code>--port-ratio &quot;ratio&quot;</code></td>
+<td>Scan ports more common than “ratio”</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Service-Version-Detection"><a href="#Service-Version-Detection" class="headerlink" title="Service Version Detection"></a>Service Version Detection</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-sV</code></td>
+<td>Probe open ports to determine service/version info</td>
+</tr>
+<tr>
+<td><code>--version-intensity &quot;level&quot;</code></td>
+<td>Set from 0 (light) to 9 (try all probes)</td>
+</tr>
+<tr>
+<td><code>--version-light</code></td>
+<td>Limit to most likely probes (intensity 2)</td>
+</tr>
+<tr>
+<td><code>--version-all</code></td>
+<td>Try every single probe (intensity 9)</td>
+</tr>
+<tr>
+<td><code>--version-trace</code></td>
+<td>Show detailed version scan activity (for debugging)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Script-Scan"><a href="#Script-Scan" class="headerlink" title="Script Scan"></a>Script Scan</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-sC</code></td>
+<td>equivalent to –script=default</td>
+</tr>
+<tr>
+<td><code>--script=&quot;Lua scripts&quot;</code></td>
+<td>“Lua scripts” is a comma separated list of directories, script-files or script-categories</td>
+</tr>
+<tr>
+<td><code>--script-args=n1=v1,[n2=v2,...]</code></td>
+<td>provide arguments to scripts</td>
+</tr>
+<tr>
+<td><code>-script-args-file=filename</code></td>
+<td>provide NSE script args in a file</td>
+</tr>
+<tr>
+<td><code>--script-trace</code></td>
+<td>Show all data sent and received</td>
+</tr>
+<tr>
+<td><code>--script-updatedb</code></td>
+<td>Update script database</td>
+</tr>
+<tr>
+<td><code>--script-help=&quot;Lua scripts&quot;</code></td>
+<td>Show help about scripts</td>
+</tr>
+</tbody>
+</table>
+<h4 id="OS-Detection"><a href="#OS-Detection" class="headerlink" title="OS Detection"></a>OS Detection</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-O</code></td>
+<td>Enable OS Detection</td>
+</tr>
+<tr>
+<td><code>--osscan-limit</code></td>
+<td>Limit OS detection to promising targets</td>
+</tr>
+<tr>
+<td><code>--osscan-guess</code></td>
+<td>Guess OS more aggressively</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Timing-and-Performance"><a href="#Timing-and-Performance" class="headerlink" title="Timing and Performance"></a>Timing and Performance</h4><p>Options which take TIME are in seconds, or append ‘ms’ (milliseconds),<br>‘s’ (seconds), ‘m’ (minutes), or ‘h’ (hours) to the value (e.g. 30m).</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-T 0-5</code></td>
+<td>Set timing template - higher is faster (less accurate)</td>
+</tr>
+<tr>
+<td><code>--min-hostgroup SIZE &lt;br&gt;--max-hostgroup SIZE</code></td>
+<td>Parallel host scan group sizes</td>
+</tr>
+<tr>
+<td><code>--min-parallelism NUMPROBES &lt;br&gt;--max-parallelism NUMPROBES</code></td>
+<td>Probe parallelization</td>
+</tr>
+<tr>
+<td><code>--min-rtt-timeout TIME&lt;br&gt;--max-rtt-timeout TIME&lt;br&gt;--initial-rtt-timeout TIME</code></td>
+<td>Specifies probe round trip time</td>
+</tr>
+<tr>
+<td><code>--max-retries TRIES</code></td>
+<td>Caps number of port scan probe retransmissions</td>
+</tr>
+<tr>
+<td><code>--host-timeout TIME</code></td>
+<td>Give up on target after this long</td>
+</tr>
+<tr>
+<td><code>--scan-delay TIME &lt;br&gt;--max-scan-delay TIME</code></td>
+<td>Adjust delay between probes</td>
+</tr>
+<tr>
+<td><code>--min-rate NUMBER</code></td>
+<td>Send packets no slower than NUMBER per second</td>
+</tr>
+<tr>
+<td><code>--max-rate NUMBER</code></td>
+<td>Send packets no faster than NUMBER per second</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Firewalls-IDS-Evasion-and-Spoofing"><a href="#Firewalls-IDS-Evasion-and-Spoofing" class="headerlink" title="Firewalls IDS Evasion and Spoofing"></a>Firewalls IDS Evasion and Spoofing</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-f; --mtu VALUE</code></td>
+<td>Fragment packets (optionally w/given MTU)</td>
+</tr>
+<tr>
+<td><code>-D decoy1,decoy2,ME</code></td>
+<td>Cloak a scan with decoys</td>
+</tr>
+<tr>
+<td><code>-S IP-ADDRESS</code></td>
+<td>Spoof source address</td>
+</tr>
+<tr>
+<td><code>-e IFACE</code></td>
+<td>Use specified interface</td>
+</tr>
+<tr>
+<td><code>-g PORTNUM&lt;br&gt;--source-port PORTNUM</code></td>
+<td>Use given port number</td>
+</tr>
+<tr>
+<td><code>--proxies url1,[url2],...</code></td>
+<td>Relay connections through HTTP / SOCKS4 proxies</td>
+</tr>
+<tr>
+<td><code>--data-length NUM</code></td>
+<td>Append random data to sent packets</td>
+</tr>
+<tr>
+<td><code>--ip-options OPTIONS</code></td>
+<td>Send packets with specified ip options</td>
+</tr>
+<tr>
+<td><code>--ttl VALUE</code></td>
+<td>Set IP time to live field</td>
+</tr>
+<tr>
+<td><code>--spoof-mac ADDR/PREFIX/VENDOR</code></td>
+<td>Spoof NMAP MAC address</td>
+</tr>
+<tr>
+<td><code>--badsum</code></td>
+<td>Send packets with a bogus TCP/UDP/SCTP checksum</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Nmap-Output-Options"><a href="#Nmap-Output-Options" class="headerlink" title="Nmap Output Options"></a>Nmap Output Options</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-oN</code></td>
+<td>Output Normal</td>
+</tr>
+<tr>
+<td><code>-oX</code></td>
+<td>Output to XML</td>
+</tr>
+<tr>
+<td><code>-oS</code></td>
+<td>Script Kiddie / 1337 speak… sigh</td>
+</tr>
+<tr>
+<td><code>-oG</code></td>
+<td>Output greppable - easy to grep nmap output</td>
+</tr>
+<tr>
+<td><code>-oA BASENAME</code></td>
+<td>Output in the three major formats at once</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>Increase verbosity level use -vv or more for greater effect</td>
+</tr>
+<tr>
+<td><code>-d</code></td>
+<td>Increase debugging level use -dd or more for greater effect</td>
+</tr>
+<tr>
+<td><code>--reason</code></td>
+<td>Display the reason a port is in a particular state</td>
+</tr>
+<tr>
+<td><code>--open</code></td>
+<td>Only show open or possibly open ports</td>
+</tr>
+<tr>
+<td><code>--packet-trace</code></td>
+<td>Show all packets sent / received</td>
+</tr>
+<tr>
+<td><code>--iflist</code></td>
+<td>Print host interfaces and routes for debugging</td>
+</tr>
+<tr>
+<td><code>--log-errors</code></td>
+<td>Log errors/warnings to the normal-format output file</td>
+</tr>
+<tr>
+<td><code>--append-output</code></td>
+<td>Append to rather than clobber specified output files</td>
+</tr>
+<tr>
+<td><code>--resume FILENAME</code></td>
+<td>Resume an aborted scan</td>
+</tr>
+<tr>
+<td><code>--stylesheet PATH/URL</code></td>
+<td>XSL stylesheet to transform XML output to HTML</td>
+</tr>
+<tr>
+<td><code>--webxml</code></td>
+<td>Reference stylesheet from Nmap.Org for more portable XML</td>
+</tr>
+<tr>
+<td><code>--no-stylesheet</code></td>
+<td>Prevent associating of XSL stylesheet w/XML output</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Misc-Nmap-Options"><a href="#Misc-Nmap-Options" class="headerlink" title="Misc Nmap Options"></a>Misc Nmap Options</h4><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-6</code></td>
+<td>Enable IPv6 scanning</td>
+</tr>
+<tr>
+<td><code>-A</code></td>
+<td>Enable OS detection, version detection, script scanning, and traceroute</td>
+</tr>
+<tr>
+<td><code>--datedir DIRNAME</code></td>
+<td>Specify custom Nmap data file location</td>
+</tr>
+<tr>
+<td><code>--send-eth&lt;br&gt;--send-ip</code></td>
+<td>Send using raw ethernet frames or IP packets</td>
+</tr>
+<tr>
+<td><code>--privileged</code></td>
+<td>Assume that the user is fully privileged</td>
+</tr>
+<tr>
+<td><code>--unprivileged</code></td>
+<td>Assume the user lacks raw socket privileges</td>
+</tr>
+<tr>
+<td><code>-V</code></td>
+<td>Show nmap version number</td>
+</tr>
+<tr>
+<td><code>-h</code></td>
+<td>Show nmap help screen</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Nmap-Enumeration-Examples"><a href="#Nmap-Enumeration-Examples" class="headerlink" title="Nmap Enumeration Examples"></a>Nmap Enumeration Examples</h2><p>The following are real world examples of Nmap enumeration.</p>
+<h3 id="Enumerating-Netbios"><a href="#Enumerating-Netbios" class="headerlink" title="Enumerating Netbios"></a>Enumerating Netbios</h3><p>The following example enumerates Netbios on the target networks, the same process can be applied to other services by modifying ports / NSE scripts.</p>
+<p>Detect all exposed Netbios servers on the subnet.</p>
+<h2 id="Nmap-find-exposed-Netbios-servers"><a href="#Nmap-find-exposed-Netbios-servers" class="headerlink" title="Nmap find exposed Netbios servers"></a><strong><center>Nmap find exposed Netbios servers</center></strong></h2><p>root :~#<br>nmap -sV -v -p 139,445 10.0.1.0/24</p>
+<p>Starting Nmap 6.47 ( <a href="http://nmap.org" target="_blank" rel="external">http://nmap.org</a> ) at 2014-12-11 21:26 GMT<br><br>Nmap scan report for nas.decepticons 10.0.1.12<br><br>Host is up (0.014s latency).<br><br>PORT STATE SERVICE VERSION<br><br>139/tcp open netbios-ssn Samba smbd 3.X (workgroup: MEGATRON)<br><br>445/tcp open netbios-ssn Samba smbd 3.X (workgroup: MEGATRON)<br><br>Service detection performed. Please report any incorrect results at <a href="http://nmap.org/submit/" target="_blank" rel="external">http://nmap.org/submit/</a> .<br></p>
+<h2 id="Nmap-done-256-IP-addresses-1-hosts-up-scanned-in-28-74-seconds"><a href="#Nmap-done-256-IP-addresses-1-hosts-up-scanned-in-28-74-seconds" class="headerlink" title="Nmap done: 256 IP addresses (1 hosts up) scanned in 28.74 seconds"></a>Nmap done: 256 IP addresses (1 hosts up) scanned in 28.74 seconds<br></h2><p>Nmap find Netbios name.</p>
+<h2 id="Nmap-find-exposed-Netbios-name"><a href="#Nmap-find-exposed-Netbios-name" class="headerlink" title="Nmap find exposed Netbios name"></a><strong><center>Nmap find exposed Netbios name</center></strong></h2><p>root :~#<br>nmap -sU –script nbstat.nse -p 137 10.0.1.12</p>
+<p>Starting Nmap 6.47 ( <a href="http://nmap.org" target="_blank" rel="external">http://nmap.org</a> ) at 2014-12-11 21:26 GMT<br><br>Nmap scan report for nas.decepticons 10.0.1.12<br><br>Host is up (0.014s latency).<br><br>PORT STATE SERVICE VERSION<br><br>137/udp open netbios-ns<br><br>Host script results:<br><br>|_nbstat: NetBIOS name: STARSCREAM, NetBIOS user: unknown, NetBIOS MAC: unknown (unknown)</p>
+<h2 id="Nmap-done-256-IP-addresses-1-hosts-up-scanned-in-28-74-seconds-1"><a href="#Nmap-done-256-IP-addresses-1-hosts-up-scanned-in-28-74-seconds-1" class="headerlink" title="Nmap done: 256 IP addresses (1 hosts up) scanned in 28.74 seconds"></a>Nmap done: 256 IP addresses (1 hosts up) scanned in 28.74 seconds<br></h2><p>Check if Netbios servers are vulnerable to MS08-067</p>
+<h2 id="Nmap-check-MS08-067"><a href="#Nmap-check-MS08-067" class="headerlink" title="Nmap check MS08-067"></a><strong><center>Nmap check MS08-067</center></strong></h2><p>root :~# nmap –script-args=unsafe=1 –script smb-check-vulns.nse -p 445<br>10.0.0.1</p>
+<p>Nmap scan report for ie6winxp.decepticons (10.0.1.1)<br><br>Host is up (0.00026s latency).<br><br>PORT STATE SERVICE<br><br>445/tcp open microsoft-ds<br><br>Host script results:<br><br>| smb-check-vulns:<br><br>| MS08-067: VULNERABLE<br><br>| Conficker: Likely CLEAN<br><br>| regsvc DoS: NOT VULNERABLE<br><br>| SMBv2 DoS (CVE-2009-3103): NOT VULNERABLE<br><br>|_ MS07-029: NO SERVICE (the Dns Server RPC service is inactive)<br><br>Nmap done: 1 IP address (1 host up) scanned in 5.45 seconds<br></p>
+<p>The information gathered during the enumeration indicates the target is vulnerable to MS08-067, exploitation will confirm if it’s vulnerable to MS08-067.</p>
+<p>原文链接：<a href="http://highon.coffee/" target="_blank" rel="external">HighOn.Coffee</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nmap-Examples"><span class="toc-number">1.</span> <span class="toc-text">Nmap Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Agressive-scan-timings-are-faster-but-could-yeild-inaccurate-results"><span class="toc-number">1.0.1.</span> <span class="toc-text">Agressive scan timings are faster, but could yeild inaccurate results!</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nmap-scan-from-file"><span class="toc-number">1.1.</span> <span class="toc-text">Nmap scan from file</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nmap-output-formats"><span class="toc-number">1.2.</span> <span class="toc-text">Nmap output formats</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nmap-Netbios-Examples"><span class="toc-number">1.3.</span> <span class="toc-text">Nmap Netbios Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#–script-args-unsafe-1-has-the-potential-to-crash-servers-services"><span class="toc-number">1.3.1.</span> <span class="toc-text">–script-args=unsafe=1 has the potential to crash servers / services</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nmap-Nikto-Scan"><span class="toc-number">1.4.</span> <span class="toc-text">Nmap Nikto Scan</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nmap-Cheatsheet"><span class="toc-number">2.</span> <span class="toc-text">Nmap Cheatsheet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Target-Specification"><span class="toc-number">2.1.</span> <span class="toc-text">Target Specification</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Host-Discovery"><span class="toc-number">2.2.</span> <span class="toc-text">Host Discovery</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Scan-Techniques"><span class="toc-number">2.3.</span> <span class="toc-text">Scan Techniques</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Port-Specification-and-Scan-Order"><span class="toc-number">2.4.</span> <span class="toc-text">Port Specification and Scan Order</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Service-Version-Detection"><span class="toc-number">2.5.</span> <span class="toc-text">Service Version Detection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Script-Scan"><span class="toc-number">2.6.</span> <span class="toc-text">Script Scan</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OS-Detection"><span class="toc-number">2.7.</span> <span class="toc-text">OS Detection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Timing-and-Performance"><span class="toc-number">2.8.</span> <span class="toc-text">Timing and Performance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Firewalls-IDS-Evasion-and-Spoofing"><span class="toc-number">2.9.</span> <span class="toc-text">Firewalls IDS Evasion and Spoofing</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nmap-Output-Options"><span class="toc-number">2.10.</span> <span class="toc-text">Nmap Output Options</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Misc-Nmap-Options"><span class="toc-number">2.11.</span> <span class="toc-text">Misc Nmap Options</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-Enumeration-Examples"><span class="toc-number"></span> <span class="toc-text">Nmap Enumeration Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Enumerating-Netbios"><span class="toc-number">1.</span> <span class="toc-text">Enumerating Netbios</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-find-exposed-Netbios-servers"><span class="toc-number"></span> <span class="toc-text">Nmap find exposed Netbios servers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-done-256-IP-addresses-1-hosts-up-scanned-in-28-74-seconds"><span class="toc-number"></span> <span class="toc-text">Nmap done: 256 IP addresses (1 hosts up) scanned in 28.74 seconds</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-find-exposed-Netbios-name"><span class="toc-number"></span> <span class="toc-text">Nmap find exposed Netbios name</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-done-256-IP-addresses-1-hosts-up-scanned-in-28-74-seconds-1"><span class="toc-number"></span> <span class="toc-text">Nmap done: 256 IP addresses (1 hosts up) scanned in 28.74 seconds</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap-check-MS08-067"><span class="toc-number"></span> <span class="toc-text">Nmap check MS08-067</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&text=Cheat Sheet Nmap"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&title=Cheat Sheet Nmap"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&is_video=false&description=Cheat Sheet Nmap"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet Nmap&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&title=Cheat Sheet Nmap"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&title=Cheat Sheet Nmap"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&title=Cheat Sheet Nmap"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&title=Cheat Sheet Nmap"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Nmap/&name=Cheat Sheet Nmap&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

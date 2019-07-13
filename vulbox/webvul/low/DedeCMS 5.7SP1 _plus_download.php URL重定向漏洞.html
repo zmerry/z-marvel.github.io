@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">DedeCMS 5.7SP1 /plus/download.php URL重定向漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									DEDECMS织梦内容管理系统，国内一款基于PHP+MySQL的技术开发的，支持多种服务器平台的PHP网站内容管理系统。
+<br />
+
+									DedeCMS 5.7SP1版本 /plus/download.php文件中，对link参数处理不当导致url跳转漏洞。恶意攻击者将url地址经过base64编码后赋值给link参数诱惑用户访问链接即可跳转指定的URL地址。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方案：
+<br />
+
+									在跳转之前对$link参数进行判断，非本站url则跳转到首页或错误提示页面。
+<br />
+
+									将/plus/download.php中第67行
+<br />
+
+									header(&quot;location:$link&quot;);
+<br />
+
+									替换为：
+<br />
+
+									if(stristr($link,$cfg_basehost))  
+<br />
+
+									{  
+<br />
+
+									    header(&quot;location:$link&quot;);  
+<br />
+
+									}  
+<br />
+
+									else
+<br />
+
+									{  
+<br />
+
+									    header(&quot;location:$cfg_basehost&quot;);  
+<br />
+
+									}<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2015-08-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2015-12-09</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

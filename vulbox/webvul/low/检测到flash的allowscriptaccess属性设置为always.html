@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到flash的allowscriptaccess属性设置为always</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									HTML代码中的AllowScriptAccess参数决定了flash控件在加载flash文件时flash文件是否允许和外部html页面交互。AllowScriptAccess可以通过&lt;param&gt;标签或者&lt;embed&gt;标签指定。
+<br />
+
+<br />
+
+									AllowScriptAccess参数有3种选项：&quot;always&quot; &quot;sameDomain&quot;或者&quot;never&quot;
+<br />
+
+<br />
+
+									当AllowScriptAccess的值为&quot;always&quot;，表示允许flash文件可以与html页面做交互，而不受是否属于同一域名的限制。
+<br />
+
+									当AllowScriptAccess的值为&quot;sameDomain&quot;，表示只有当flash文件和html页面属于同一域名时，才允许flash和html页面做交互。
+<br />
+
+									当AllowScriptAccess的值为&quot;never,&quot; 表示flash文件不允许和html页面做交互。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									修改AllowScriptAccess的值为&quot;sameDomain&quot;。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>1</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-08-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-11-04</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									0.0(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

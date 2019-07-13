@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="渗透测试，是专业安全人员为找出系统中的漏洞而进行的操作。当然，是在恶意黑客找到这些漏洞之前。而这些业内安全专家各自钟爱的工具各种各样，一些工具是公开免费的，另一些则需要支付费用，但这篇文章向你保证，值得一看。">
+<meta name="keywords" content="Hacking,Penetration,转载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最好用的17个渗透测试工具">
+<meta property="og:url" content="http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="渗透测试，是专业安全人员为找出系统中的漏洞而进行的操作。当然，是在恶意黑客找到这些漏洞之前。而这些业内安全专家各自钟爱的工具各种各样，一些工具是公开免费的，另一些则需要支付费用，但这篇文章向你保证，值得一看。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-03T04:41:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="最好用的17个渗透测试工具">
+<meta name="twitter:description" content="渗透测试，是专业安全人员为找出系统中的漏洞而进行的操作。当然，是在恶意黑客找到这些漏洞之前。而这些业内安全专家各自钟爱的工具各种各样，一些工具是公开免费的，另一些则需要支付费用，但这篇文章向你保证，值得一看。">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>最好用的17个渗透测试工具</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/03/08/WannaMine3-0挖矿病毒清除脚本/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-VI/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&text=最好用的17个渗透测试工具"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&title=最好用的17个渗透测试工具"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&is_video=false&description=最好用的17个渗透测试工具"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=最好用的17个渗透测试工具&body=Check out this article: http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&title=最好用的17个渗透测试工具"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&title=最好用的17个渗透测试工具"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&title=最好用的17个渗透测试工具"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&title=最好用的17个渗透测试工具"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&name=最好用的17个渗透测试工具&description=&lt;p&gt;渗透测试，是专业安全人员为找出系统中的漏洞而进行的操作。当然，是在恶意黑客找到这些漏洞之前。而这些业内安全专家各自钟爱的工具各种各样，一些工具是公开免费的，另一些则需要支付费用，但这篇文章向你保证，值得一看。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        最好用的17个渗透测试工具
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-03T04:41:00.000Z" itemprop="datePublished">2019-03-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全工具/">安全工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Hacking/">Hacking</a>, <a class="tag-link" href="/tags/Penetration/">Penetration</a>, <a class="tag-link" href="/tags/转载/">转载</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>渗透测试，是专业安全人员为找出系统中的漏洞而进行的操作。当然，是在恶意黑客找到这些漏洞之前。而这些业内安全专家各自钟爱的工具各种各样，一些工具是公开免费的，另一些则需要支付费用，但这篇文章向你保证，值得一看。</p>
+<a id="more"></a>
+<p>##1. Nmap</p>
+<p>2017年9月1日是Nmap的20岁生日。从诞生之初，Nmap就一直是网络发现和攻击界面测绘的首选工具。从主机发现和端口扫描，到操作系统检测和IDS规避/欺骗，Nmap是大大小小黑客行动的基本工具。</p>
+<p><a href="https://nmap.org/" target="_blank" rel="external">https://nmap.org/</a></p>
+<p>##2. Aircrack-ng</p>
+<p>与Nmap类似，Aircrack-ng是那种，渗透测试员不仅知道，且只要评估无线网络，就会经常用到的工具。Aircrack-ng是无线评估工具套装，覆盖数据包捕捉和攻击（包含破解WAP和WEP）。</p>
+<p><a href="http://www.aircrack-ng.org/" target="_blank" rel="external">http://www.aircrack-ng.org/</a></p>
+<p>##3. Wifiphisher</p>
+<p>Wifiphisher是个伪造恶意接入点的工具，可针对WiFi网络发起自动化网络钓鱼攻击。基于任务范围，Wifiphisher可致凭证获取或实际的感染。其网站上的文档部分可查阅完整概述。</p>
+<p><a href="https://wifiphisher.org/" target="_blank" rel="external">https://wifiphisher.org/</a></p>
+<p>##4. Burp Suite</p>
+<p>与Web浏览器配合使用，可发现给定App的功能和安全问题，是发起定制攻击的基础。</p>
+<p>目前，免费版本功能很有限，但付费版本（每用户349美元）提供全面的网络爬取和扫描功能（支持超过100个漏洞——囊括OWASP十大）；多攻击点；基于范围的配置。关于此工具最常见的评价是，它可用于自动化重复功能，提供App与服务器互动的良好视图。</p>
+<p><strong><a href="https://portswigger.net/burp/" target="_blank" rel="external">https://portswigger.net/burp/</a></strong></p>
+<p>##5. OWASP ZAP</p>
+<p>OWASP Zed 攻击代理 (ZAP)是与 Burp Suite 相提并论的一款应用测试工具。普遍观点是，ZAP适合应用安全新手，而 Burp Suite 是首选核心评估工具。资金紧张的人倾向于ZAP，因为这是一款开源工具。OWASP推荐ZAP用作应用测试，并发布了一系列教程，指导使用者在长期安全项目中有效利用该工具。</p>
+<p><a href="https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project" target="_blank" rel="external">https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project</a></p>
+<p>##6. SQLmap</p>
+<p>如其网站所言，SQLmap是一款”自动化SQL注入和数据库接管工具”。这一描述充分解释了该工具的核心本质。SQLmap支持所有常见数据库平台——MySQL、MSSQL、Access、DB2、PostgreSQL、Sybase、SQLite，还有6中不同攻击方法。</p>
+<p><a href="http://sqlmap.org/" target="_blank" rel="external">http://sqlmap.org/</a></p>
+<p>##7. CME(CrackMapExec)</p>
+<p>CME是一款后漏洞利用工具，可帮助自动化大型活动目录(AD)网络安全评估任务。其缔造者——昵称”byt3bl33d3r”的黑客，称该工具的生存概念是，”利用AD内置功能/协议达成其功能，并规避大多数终端防护/IDS/IPS解决方案。”</p>
+<p>测试红队的CME用例很明朗，但蓝队同样可以使用该工具来评估账户权限，模拟攻击，查找配置错误。CME还使用PowerSploit工具包和Impacket库。</p>
+<p><a href="https://github.com/byt3bl33d3r/CrackMapExec" target="_blank" rel="external">https://github.com/byt3bl33d3r/CrackMapExec</a></p>
+<p>##8. Impacket</p>
+<p>为CEM所用的Impacket，是一个Python类库，用于对SMB1-3或 IPv4 / IPv6 上的TCP、UDP、ICMP、IGMP和ARP之类的协议进行低级编程访问。可以从零开始构造数据包，或者从原始数据中解析包。</p>
+<p><a href="https://github.com/CoreSecurity/impacket" target="_blank" rel="external">https://github.com/CoreSecurity/impacket</a></p>
+<p>##9. PowerSploit</p>
+<p>PowerSploit是在评估过程中使用的一系列模块的集合。正如名字揭示的，这些模块本身用于Windows上的PowerShell。其功能包括：驻留、杀软规避、渗漏、代码执行、脚本修改、侦察等等。</p>
+<p><a href="https://github.com/PowerShellMafia/PowerSploit" target="_blank" rel="external">https://github.com/PowerShellMafia/PowerSploit</a></p>
+<p>##10. Luckystrike</p>
+<p>出自”curi0usJack”之手的Luckystrike，是一款恶意Excel(.xls)和Word(.doc)文档生成工具。Luckystrike可与标准命令行、PowerShell脚本和可执行程序(EXE)配合使用。</p>
+<p><a href="https://github.com/curi0usJack/luckystrike" target="_blank" rel="external">https://github.com/curi0usJack/luckystrike</a></p>
+<p>##11. BeEF（浏览器漏洞利用框架）</p>
+<p>BeEF是利用客户端攻击方法，评估目标环境切实安全状态的趁手工具。鉴于该工具提供的众多功能和选项，很多安全专家都提到了BeEF，并评价称特别好用。</p>
+<p><a href="http://beefproject.com/" target="_blank" rel="external">http://beefproject.com/</a></p>
+<p>##12. THC-Hydra</p>
+<p>THC-Hydra是一款网络登录破解器，支持多个服务。实际上，它支持的服务数量超过48个，包括思科auth、思科enable、IMAP、IRC、LDAP、MS-SQL、MYSQL、Rlogin、Rsh、RTSP和SSH(v1和v2)。该工具不甚复杂，详细的说明文档覆盖了很多细节，方便新手启用。</p>
+<p><a href="https://github.com/vanhauser-thc/thc-hydra" target="_blank" rel="external">https://github.com/vanhauser-thc/thc-hydra</a></p>
+<p>##13. Immunity Debugger</p>
+<p>Immunity Debugger 是帮助安全人员编写漏洞利用程序、分析恶意软件和逆向工程二进制文件的工具。里面功能繁多，但有两份文档很好地阐述了其中大多数功能，一份是伊戈尔·诺夫科维奇写的概览，一份是SANS阅览区关于基础逆向工程的论文。如果逆向或漏洞利用程序编写已经在你的技能集里面，那你可能已经十分熟悉该工具了；如果还没有，值得一看。</p>
+<p><a href="https://www.immunityinc.com/products/debugger/" target="_blank" rel="external">https://www.immunityinc.com/products/debugger/</a></p>
+<p>##14. 社会工程工具箱(SET)</p>
+<p>如名称所示，SET是面向社会工程的渗透测试框架。这是个很流行的工具，甚至在电视上都看到过它的身影。美剧《机器人先生》中SET被频繁使用的场景，让黑客们会心一笑。</p>
+<p>源自TrustedSec的另两款工具也值得一提：Unicorn，用于PowerShell降级攻击和内存代码直接注入（与SET绝配），还有nps_payload，生成入侵检测规避载荷。</p>
+<p><a href="https://github.com/trustedsec/social-engineer-toolkit" target="_blank" rel="external">https://github.com/trustedsec/social-engineer-toolkit</a></p>
+<p>##15. Metasploit</p>
+<p>Metasploit框架太常用了，跟默认必备工具似的，除了 Kali Linux，就数它被安全专家们提到最多。Kali是Linux发行版之一，此处提到的工具大多被预装到了Kali中。</p>
+<p>多年来，Metasploit一直是众多渗透测试员的主要工具。即便在被Rapid7收购之后，也依然像开源项目一样受到全面支持，整个漏洞利用程序开发者社区都在不断发展该工具。如果漏洞或漏洞利用程序出现在新闻报道中，Metasploit必然会将其纳入。需要评估某网络已知漏洞情况？Metasploit能帮你搞定。</p>
+<p><a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="external">https://github.com/rapid7/metasploit-framework</a></p>
+<p>##16. 渗透测试工具速查表</p>
+<p>HighOn.Coffee博客的渗透测试工具速查表，提供多种常用命令的高级参考，从网络配置到端口扫描和网络服务攻击，应有尽有。</p>
+<p><a href="https://highon.coffee/blog/penetration-testing-tools-cheat-sheet/" target="_blank" rel="external">https://highon.coffee/blog/penetration-testing-tools-cheat-sheet/</a></p>
+<p>##17. SecLists</p>
+<p>SecLists，看名字就知道，这是一份列表集，托管在GitHub上，列表类型包括用户名、口令、常见数据模式、模糊测试载荷、shell等等，可帮助渗透测试员快速完成手头任务。</p>
+<p><a href="https://github.com/danielmiessler/SecLists" target="_blank" rel="external">https://github.com/danielmiessler/SecLists</a></p>
+<p>原文链接：<a href="https://www.aqniu.com/hack-geek/28188.html" target="_blank" rel="external">https://www.aqniu.com/hack-geek/28188.html</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&text=最好用的17个渗透测试工具"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&title=最好用的17个渗透测试工具"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&is_video=false&description=最好用的17个渗透测试工具"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=最好用的17个渗透测试工具&body=Check out this article: http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&title=最好用的17个渗透测试工具"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&title=最好用的17个渗透测试工具"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&title=最好用的17个渗透测试工具"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&title=最好用的17个渗透测试工具"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/最好用的17个渗透测试工具/&name=最好用的17个渗透测试工具&description=&lt;p&gt;渗透测试，是专业安全人员为找出系统中的漏洞而进行的操作。当然，是在恶意黑客找到这些漏洞之前。而这些业内安全专家各自钟爱的工具各种各样，一些工具是公开免费的，另一些则需要支付费用，但这篇文章向你保证，值得一看。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

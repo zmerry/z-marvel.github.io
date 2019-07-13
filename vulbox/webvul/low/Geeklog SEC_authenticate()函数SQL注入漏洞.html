@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Geeklog SEC_authenticate()函数SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Geeklog是一个免费的、开放源码的Web应用程序。它可以使用户创建一个虚拟的社区，可以管理用户，张贴文章等。Geeklog采用PHP实现，以MySQL为后台数据库。
+<br />
+
+<br />
+
+									Geeklog的index.php模块中的SEC_authenticate()函数没有正确的验证用户所提交的PHP_AUTH_USER和REMOTE_USER变量参数，远程攻击者可以通过提交恶意查询请求执行SQL注入攻击。以下是/public_html/webservices/atom/index.php文件中34-53行的有漏洞代码段：
+<br />
+
+<br />
+
+									    ...
+<br />
+
+									    require_once &#39;../../lib-common.php&#39;;
+<br />
+
+<br />
+
+									    if (PHP_VERSION &lt; 5) {
+<br />
+
+									    $_CONF[&#39;disable_webservices&#39;] = true;
+<br />
+
+									    } else {
+<br />
+
+									        require_once $_CONF[&#39;path_system&#39;] . &#39;/lib-webservices.php&#39;;
+<br />
+
+									    }
+<br />
+
+									    if ($_CONF[&#39;disable_webservices&#39;]) {
+<br />
+
+									        COM_displayMessageAndAbort($LANG_404[3], &#39;&#39;, 404, &#39;Not Found&#39;);
+<br />
+
+									    }
+<br />
+
+									    header(&#39;Content-type: &#39; . &#39;application/atom+xml&#39; . &#39;; charset=UTF-8&#39;);
+<br />
+
+									    WS_authenticate();
+<br />
+
+									    ...
+<br />
+
+<br />
+
+									/system/lib-webservices.php文件780-877行的WS_authenticate()函数：
+<br />
+
+<br />
+
+									    ...
+<br />
+
+									    function WS_authenticate()
+<br />
+
+									    {
+<br />
+
+									    global $_CONF, $_TABLES, $_USER, $_GROUPS, $_RIGHTS, $WS_VERBOSE;
+<br />
+
+<br />
+
+									    $uid = &#39;&#39;;
+<br />
+
+									    $username = &#39;&#39;;
+<br />
+
+									    $password = &#39;&#39;;
+<br />
+
+<br />
+
+									    $status = -1;
+<br />
+
+<br />
+
+									    if (isset($_SERVER[&#39;PHP_AUTH_USER&#39;])) {
+<br />
+
+									        $username = $_SERVER[&#39;PHP_AUTH_USER&#39;];
+<br />
+
+									        $password = $_SERVER[&#39;PHP_AUTH_PW&#39;];
+<br />
+
+<br />
+
+									        if ($WS_VERBOSE) {
+<br />
+
+									            COM_errorLog(&quot;WS: Attempting to log in user &#39;$username&#39;&quot;);
+<br />
+
+									        }
+<br />
+
+									    } elseif (!empty($_SERVER[&#39;REMOTE_USER&#39;])) {
+<br />
+
+<br />
+
+<br />
+
+									        list($auth_type, $auth_data) = explode(&#39; &#39;, $_SERVER[&#39;REMOTE_USER&#39;]);
+<br />
+
+									        list($username, $password) = explode(&#39;:&#39;, base64_decode($auth_data));
+<br />
+
+<br />
+
+									        if ($WS_VERBOSE) {
+<br />
+
+									            COM_errorLog(&quot;WS: Attempting to log in user &#39;$username&#39; (via \$_SERVER[&#39;REMOTE_USER&#39;])&quot;);  }
+<br />
+
+									    } else {
+<br />
+
+									        if ($WS_VERBOSE) {
+<br />
+
+									            COM_errorLog(&quot;WS: No login given&quot;);
+<br />
+
+									        }
+<br />
+
+<br />
+
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    ...
+<br />
+
+<br />
+
+									之后在907-909行：
+<br />
+
+<br />
+
+									    ...
+<br />
+
+									     if (($status == -1) &amp;&amp; $_CONF[&#39;user_login_method&#39;][&#39;standard&#39;]) {
+<br />
+
+									            $status = SEC_authenticate($username, $password, $uid);
+<br />
+
+									        }
+<br />
+
+<br />
+
+									    ...
+<br />
+
+<br />
+
+									/system/lib-security.php文件的695-717行：
+<br />
+
+<br />
+
+									    ...
+<br />
+
+										function SEC_authenticate($username, $password, &amp;$uid)
+<br />
+
+									    {
+<br />
+
+									    global $_CONF, $_TABLES, $LANG01;
+<br />
+
+<br />
+
+									    $result = DB_query(&quot;SELECT status, passwd, email, uid FROM {$_TABLES[&#39;users&#39;]} WHERE username=&#39;$username&#39; AND ((remoteservice is null) or (remoteservice = &#39;&#39;))&quot;); //&lt;------------------- SQL INJECTION HERE  
+<br />
+
+<br />
+
+									        $tmp = DB_error();
+<br />
+
+									    $nrows = DB_numRows($result);
+<br />
+
+<br />
+
+									    if (($tmp == 0) &amp;&amp; ($nrows == 1)) {
+<br />
+
+									        $U = DB_fetchArray($result);
+<br />
+
+									        $uid = $U[&#39;uid&#39;];
+<br />
+
+									        if ($U[&#39;status&#39;] == USER_ACCOUNT_DISABLED) {
+<br />
+
+									            // banned, jump to here to save an md5 calc.
+<br />
+
+									            return USER_ACCOUNT_DISABLED;
+<br />
+
+									        } elseif ($U[&#39;passwd&#39;] != SEC_encryptPassword($password)) {
+<br />
+
+<br />
+
+									            return -1; // failed login
+<br />
+
+									        } elseif ($U[&#39;status&#39;] == USER_ACCOUNT_AWAITING_APPROVAL) {
+<br />
+
+									            return USER_ACCOUNT_AWAITING_APPROVAL;
+<br />
+
+									        } elseif ($U[&#39;status&#39;] == USER_ACCOUNT_AWAITING_ACTIVATION) {
+<br />
+
+									            // Awaiting user activation, activate:
+<br />
+
+									            DB_change($_TABLES[&#39;users&#39;], &#39;status&#39;, USER_ACCOUNT_ACTIVE,
+<br />
+
+									                      &#39;username&#39;, $username);
+<br />
+
+									            return USER_ACCOUNT_ACTIVE;
+<br />
+
+									        } else {
+<br />
+
+									            return $U[&#39;status&#39;]; // just return their status
+<br />
+
+									        }
+<br />
+
+									    } else {
+<br />
+
+									        $tmp = $LANG01[32] . &quot;: &#39;&quot; . $username . &quot;&#39;&quot;;
+<br />
+
+									        COM_errorLog($tmp, 1);
+<br />
+
+									        return -1;
+<br />
+
+									    }
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    ...
+<br />
+
+<br />
+
+									可在这个函数的username参数中注入SQL代码，该参数来自$_SERVER[&#39;PHP_AUTH_USER&#39;]或$_SERVER[&#39;REMOTE_USER&#39;]变量。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://geeklog.sourceforge.net/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-04-09</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-04-14</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/34456" target="_blank">34456</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=13189" target="_blank">13189</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

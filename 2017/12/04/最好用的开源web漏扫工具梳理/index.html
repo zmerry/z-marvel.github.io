@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="赛门铁克2017年互联网安全威胁报告中提出在他们今年扫描的网站中，有76%都含有恶意软件。如果你在用WordPress，SUCURI的另一份报告也显示，超过70％的被扫描网站也都存在一个或多个漏洞。 如果你刚好是某个网络应用程序的所有者，怎样才能保证你的网站是安全的、不会泄露敏感信息？ 如果是基于云的安全解决方案，那么可能只需要进行常规漏扫。但如果不是，我们就必须执行例行扫描，采取必要的行动降低安">
+<meta name="keywords" content="Tools,Penetration,原创,Web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最好用的开源web漏扫工具梳理">
+<meta property="og:url" content="http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="赛门铁克2017年互联网安全威胁报告中提出在他们今年扫描的网站中，有76%都含有恶意软件。如果你在用WordPress，SUCURI的另一份报告也显示，超过70％的被扫描网站也都存在一个或多个漏洞。 如果你刚好是某个网络应用程序的所有者，怎样才能保证你的网站是安全的、不会泄露敏感信息？ 如果是基于云的安全解决方案，那么可能只需要进行常规漏扫。但如果不是，我们就必须执行例行扫描，采取必要的行动降低安">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-04T02:17:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="最好用的开源web漏扫工具梳理">
+<meta name="twitter:description" content="赛门铁克2017年互联网安全威胁报告中提出在他们今年扫描的网站中，有76%都含有恶意软件。如果你在用WordPress，SUCURI的另一份报告也显示，超过70％的被扫描网站也都存在一个或多个漏洞。 如果你刚好是某个网络应用程序的所有者，怎样才能保证你的网站是安全的、不会泄露敏感信息？ 如果是基于云的安全解决方案，那么可能只需要进行常规漏扫。但如果不是，我们就必须执行例行扫描，采取必要的行动降低安">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>最好用的开源web漏扫工具梳理</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/12/04/使用Python编写一个渗透测试探测器/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/11/18/Metasploit-basic-Tools-and-Exploits/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&text=最好用的开源web漏扫工具梳理"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&title=最好用的开源web漏扫工具梳理"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&is_video=false&description=最好用的开源web漏扫工具梳理"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=最好用的开源web漏扫工具梳理&body=Check out this article: http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&title=最好用的开源web漏扫工具梳理"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&title=最好用的开源web漏扫工具梳理"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&title=最好用的开源web漏扫工具梳理"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&title=最好用的开源web漏扫工具梳理"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&name=最好用的开源web漏扫工具梳理&description=&lt;p&gt;赛门铁克2017年互联网安全威胁报告中提出在他们今年扫描的网站中，有76%都含有恶意软件。如果你在用WordPress，SUCURI的另一份报告也显示，超过70％的被扫描网站也都存在一个或多个漏洞。&lt;/p&gt;
+&lt;p&gt;如果你刚好是某个网络应用程序的所有者，怎样才能保证你的网站是安全的、不会泄露敏感信息？&lt;/p&gt;
+&lt;p&gt;如果是基于云的安全解决方案，那么可能只需要进行常规漏扫。但如果不是，我们就必须执行例行扫描，采取必要的行动降低安全风险。&lt;/p&gt;
+&lt;p&gt;当然很多付费扫描器功能会更加全面、严谨，包含报表输出、警报、详细的应急指南等等附加功能。&lt;/p&gt;
+&lt;p&gt;开源工具最大的缺点是漏洞库可能没有付费软件那么全面。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        最好用的开源web漏扫工具梳理
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-12-04T02:17:33.000Z" itemprop="datePublished">2017-12-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全工具/">安全工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Penetration/">Penetration</a>, <a class="tag-link" href="/tags/Tools/">Tools</a>, <a class="tag-link" href="/tags/Web/">Web</a>, <a class="tag-link" href="/tags/原创/">原创</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>赛门铁克2017年互联网安全威胁报告中提出在他们今年扫描的网站中，有76%都含有恶意软件。如果你在用WordPress，SUCURI的另一份报告也显示，超过70％的被扫描网站也都存在一个或多个漏洞。</p>
+<p>如果你刚好是某个网络应用程序的所有者，怎样才能保证你的网站是安全的、不会泄露敏感信息？</p>
+<p>如果是基于云的安全解决方案，那么可能只需要进行常规漏扫。但如果不是，我们就必须执行例行扫描，采取必要的行动降低安全风险。</p>
+<p>当然很多付费扫描器功能会更加全面、严谨，包含报表输出、警报、详细的应急指南等等附加功能。</p>
+<p>开源工具最大的缺点是漏洞库可能没有付费软件那么全面。</p>
+<a id="more"></a>
+<ol>
+<li>Arachni</li>
+</ol>
+<p>Arachni是一款基于Ruby框架搭建的高性能安全扫描程序，适用于现代Web应用程序。可用于Mac、Windows及Linux系统的可移植二进制文件。</p>
+<p>Arachni不仅能对基本的静态或CMS网站进行扫描，还能够做到对以下平台指纹信息（(硬盘序列号和网卡物理地址)）的识别。且同时支持主动检查和被动检查。</p>
+<p>Windows、Solaris、Linux、BSD、Unix</p>
+<p>Nginx、Apache、Tomcat、IIS、Jetty</p>
+<p>Java、Ruby、Python、ASP、PHP</p>
+<p>Django、Rails、CherryPy、CakePHP、ASP.NET MVC、Symfony</p>
+<p>一般检测的漏洞类型包括：</p>
+<p>NoSQL/Blind/SQL/Code/LDAP/Command/XPath注入</p>
+<p>跨站请求伪造</p>
+<p>路径遍历</p>
+<p>本地/远程文件包含</p>
+<p>Response splitting</p>
+<p>跨站脚本</p>
+<p>未验证的DOM重定向</p>
+<p>源代码披露</p>
+<p>另外，你可以选择输出HTML、XML、Text、JSON、YAML等格式的审计报告。</p>
+<p>Arachni帮助我们以插件的形式将扫描范围扩展到更深层的级别。Arachni的详细介绍与下载地址：click here。</p>
+<ol>
+<li>XssPy</li>
+</ol>
+<p>一个有力的事实是，微软、斯坦福、摩托罗拉、Informatica等很多大型企业机构都在用这款基于python的XSS（跨站脚本）漏洞扫描器。它的编写者Faizan Ahmad才华出众，XssPy是一个非常智能的工具，不仅能检查主页或给定页面，还能够检查网站上的所有链接以及子域。因此，XssPy的扫描非常细致且范围广泛。</p>
+<p>下载地址：click here。</p>
+<ol>
+<li>w3af</li>
+</ol>
+<p>w3af是一个从2006年年底开始的基于Python的开源项目，可用于Linux和Windows系统。w3af能够检测200多个漏洞，包括OWASP top 10中提到的。</p>
+<p>w3af能够帮你将payload注入header、URL、cookies、字符串查询、post-data等，利用Web应用程序进行审计，且支持各种记录方法完成报告，例如：</p>
+<p>CSV</p>
+<p>HTML</p>
+<p>Console</p>
+<p>Text</p>
+<p>XML</p>
+<p>Email</p>
+<p>这个程序建立在一个插件架构上，所有可用插件地址：click here。</p>
+<p>w3af下载地址：click here。</p>
+<ol>
+<li>Nikto</li>
+</ol>
+<p>相信很多人对Nikto并不陌生，这是由Netsparker（专做web安全扫描器企业，总部坐标英国）赞助的开源项目，旨在发现Web服务器配置错误、插件和Web漏洞。Nikto对6500多个风险项目进行过综合测试。支持HTTP代理、SSL或NTLM身份验证等，还能确定每个目标扫描的最大执行时间。</p>
+<p>Nikto也适用于Kali Linux。</p>
+<p>Nikto在企业内部网络解决方案中查找web服务器安全风险的应用前景非常广阔。</p>
+<p>下载地址：click here。</p>
+<ol>
+<li>Wfuzz</li>
+</ol>
+<p>Wfuzz（Web Fuzzer）也是渗透中会用到的应用程序评估工具。它可以对任何字段的HTTP请求中的数据进行模糊处理，对Web应用程序进行审查。</p>
+<p>Wfuzz需要在被扫描的计算机上安装Python。具体的使用指南可参见这个：链接。</p>
+<p>Wfuzz下载地址：click here。</p>
+<ol>
+<li>OWASP ZAP</li>
+</ol>
+<p>ZAP（Zet Attack Proxy）是全球数百名志愿者程序员在积极更新维护的著名渗透测试工具之一。它是一款跨平台的Java工具，甚至都可以在Raspberry Pi上运行。ZAP在浏览器和Web应用程序之间拦截和检查消息。</p>
+<p>ZAP值得一提的优良功能：</p>
+<p>Fuzzer</p>
+<p>自动与被动扫描</p>
+<p>支持多种脚本语言</p>
+<p>Forced browsing（强制浏览）</p>
+<p>下载地址：click here。</p>
+<ol>
+<li>Wapiti</li>
+</ol>
+<p>Wapiti扫描特定的目标网页，寻找能够注入数据的脚本和表单，从而验证其中是否存在漏洞。它不是对源代码的安全检查，而是执行黑盒扫描。</p>
+<p>支持GET和POST HTTP请求方式、HTTP和HTTPS代理以及多个认证等。</p>
+<p>下载地址：click here。</p>
+<ol>
+<li>Vega</li>
+</ol>
+<p>Vega由Subgraph开发，Subgraph是一个用Java编写的多平台支持工具，用于查找XSS，SQLi、RFI和很多其它的漏洞。</p>
+<p>Vega的图形用户界面相对来说比较美观。它可以通过特定的凭证登录某个应用后执行自动扫描。</p>
+<p>如果你懂开发，还可以利用vega API创建新的攻击模块。</p>
+<p>下载地址：click here。</p>
+<ol>
+<li>SQLmap</li>
+</ol>
+<p>顾名思义，我们可以借助sqlmap对数据库进行渗透测试和漏洞查找。</p>
+<p>支持所有操作系统上的Python 2.6或2.7。如果你正在查找SQL注入和数据库漏洞利用，sqlmap是一个好助手。</p>
+<p>下载地址：click here。</p>
+<ol>
+<li>Grabber</li>
+</ol>
+<p>这也是一个做得不错的Python小工具。这里列举一些特色功能：</p>
+<p>JavaScript源代码分析器</p>
+<p>跨站点脚本、SQL注入、SQL盲注</p>
+<p>利用PHP-SAT的PHP应用程序测试</p>
+<p>下载地址：click here。</p>
+<ol>
+<li>Golismero</li>
+</ol>
+<p>这是一个管理和运行Wfuzz、DNS recon、sqlmap、OpenVas、机器人分析器等一些流行安全工具的框架。</p>
+<p>Golismero非常智能，能够整合其它工具的测试反馈，输出一个统一的结果。</p>
+<p>下载地址：click here。</p>
+<ol>
+<li>OWASP Xenotix XSS</li>
+</ol>
+<p>OWASP的Xenotix XSS是一个用于查找和利用跨站点脚本的高级框架，内置了三个智能模糊器，用于快速扫描和结果优化。</p>
+<p>这款工具有上百个功能，详细的功能列表与下载地址：click here。</p>
+<p>网络安全对于在线业务至关重要，希望上面这些免费的漏扫程序能够帮助各位读者及时发现风险，在被恶意人员利用之前即完成漏洞修复。</p>
+<p>原文链接：<a href="https://mp.weixin.qq.com/s?__biz=MjM5NjA0NjgyMA==&amp;mid=2651066552&amp;idx=4&amp;sn=de4780737782336c6f125054ae7fc000&amp;chksm=bd1f82338a680b256eb002485738f332f6043d5f49ea7f7d6b520650205f009540bdca960cc7&amp;mpshare=1&amp;scene=1&amp;srcid=1204w9worH4UGrKK9Jw8Hzfz#rd" target="_blank" rel="external">https://mp.weixin.qq.com/s?__biz=MjM5NjA0NjgyMA==&amp;mid=2651066552&amp;idx=4&amp;sn=de4780737782336c6f125054ae7fc000&amp;chksm=bd1f82338a680b256eb002485738f332f6043d5f49ea7f7d6b520650205f009540bdca960cc7&amp;mpshare=1&amp;scene=1&amp;srcid=1204w9worH4UGrKK9Jw8Hzfz#rd</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&text=最好用的开源web漏扫工具梳理"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&title=最好用的开源web漏扫工具梳理"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&is_video=false&description=最好用的开源web漏扫工具梳理"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=最好用的开源web漏扫工具梳理&body=Check out this article: http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&title=最好用的开源web漏扫工具梳理"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&title=最好用的开源web漏扫工具梳理"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&title=最好用的开源web漏扫工具梳理"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&title=最好用的开源web漏扫工具梳理"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2017/12/04/最好用的开源web漏扫工具梳理/&name=最好用的开源web漏扫工具梳理&description=&lt;p&gt;赛门铁克2017年互联网安全威胁报告中提出在他们今年扫描的网站中，有76%都含有恶意软件。如果你在用WordPress，SUCURI的另一份报告也显示，超过70％的被扫描网站也都存在一个或多个漏洞。&lt;/p&gt;
+&lt;p&gt;如果你刚好是某个网络应用程序的所有者，怎样才能保证你的网站是安全的、不会泄露敏感信息？&lt;/p&gt;
+&lt;p&gt;如果是基于云的安全解决方案，那么可能只需要进行常规漏扫。但如果不是，我们就必须执行例行扫描，采取必要的行动降低安全风险。&lt;/p&gt;
+&lt;p&gt;当然很多付费扫描器功能会更加全面、严谨，包含报表输出、警报、详细的应急指南等等附加功能。&lt;/p&gt;
+&lt;p&gt;开源工具最大的缺点是漏洞库可能没有付费软件那么全面。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

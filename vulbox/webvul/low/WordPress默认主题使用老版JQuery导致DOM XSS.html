@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">WordPress默认主题使用老版JQuery导致DOM XSS</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									WordPress是一种使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设自己的博客。
+<br />
+
+<br />
+
+									在WordPress 流行的 Genericons example.html 页面中，默认主题 Twenty Fifteen 及知名插件 Jetpack 都内置了该页面，由于 example.html 使用了老版本存在 DOM XSS 缺陷的 jQuery，且使用不当，导致出现 DOM XSS，这种攻击将无视浏览器的 XSS Filter 防御。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+									-------
+<br />
+
+									wordpress
+<br />
+
+									-------
+<br />
+
+									1、目前官方已经修复此漏洞，请及时到官方下载最新版安装程序。
+<br />
+
+									2、删除WordPress目录下所有包含1.7.2/jquery.min.js的example.html，如： 
+<br />
+
+									/wp-content/themes/twentyfifteen/genericons/example.html &lt;=1.8.3都应该删掉，不想删就把jQuery替换为新版本。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2015-05-08</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2015-05-08</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

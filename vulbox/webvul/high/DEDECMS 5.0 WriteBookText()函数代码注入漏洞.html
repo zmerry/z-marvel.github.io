@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">DEDECMS 5.0 WriteBookText()函数代码注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									DedeCms 基于PHP+MySQL的技术开发，支持Windows、Linux、Unix等多种服务器平台，简单、健壮、灵活、开源几大特点占领了国内CMS的大部份市场，是目前国内应用最广泛的php类CMS系统。
+<br />
+
+									在DedeCms 5.0 版本中，由于WriteBookText()函数是把body参数的值保存为php文件，当恶意用户在输入的参数为恶意构造的php代码时，访问保存后的文件，就会执行其中的恶意代码。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+									目前厂商已经提供升级程序，我们建议使用此软件的用户从厂商的主页以获取最新版本：
+<br />
+
+									http://www.dedecms.com
+<br />
+
+									或者NSFOCUS建议您在inc_bookfunctions.php文件的function WriteBookText($cid,$body)函数中，将$body = &quot;&lt;&quot;.&quot;?php\r\n&quot;.$body.&quot;\r\n?&quot;.&quot;&gt;&quot;;替换为$body = &quot;&lt;&quot;.&quot;?php exit();\r\n&quot;.$body.&quot;\r\n?&quot;.&quot;&gt;&quot;;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2008-05-02</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-06-15</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

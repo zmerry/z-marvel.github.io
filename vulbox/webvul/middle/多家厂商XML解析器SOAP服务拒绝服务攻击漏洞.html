@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">多家厂商XML解析器SOAP服务拒绝服务攻击漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									ColdFusion MX和JRun 4 Web及IBM WebSphere服务程序使用默认的Apache Crimson XML解析器处理WEB服务SOAP请求。<br />
+
+									<br />
+
+									多家厂商在通过SOAP服务解析XML文档时存在问题，远程攻击者可以利用这个漏洞对服务进行拒绝服务攻击。<br />
+
+									<br />
+
+									攻击者可以使用XML属性构建恶意SOAP请求，可在目录SOAP服务器上产生拒绝服务条件，此类攻击可使XML解析器在长时间内消耗所有CPU资源，停止对其他正常服务的响应。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									IBM<br />
+
+									---<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：<br />
+
+									<br />
+
+									WebSphere Application Server 5.0.x可从如下地址获得升级程序：<br />
+
+									<br />
+
+									http://www.ibm.com/developerworks/cn/websphere/downloads/<br />
+
+									<br />
+
+									Jrun 可从如下地址获得升级程序：<br />
+
+									http://www.adobe.com/products/jrun/productinfo/faq/eod/<br />
+
+									<br />
+
+									ColdFusion MX 可从如下地址获得升级程序：<br />
+
+									http://www.adobe.com/products/coldfusion-family.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2003-12-15</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-12-03</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/9185" target="_blank">9185</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=5777" target="_blank">5777</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

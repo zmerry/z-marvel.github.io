@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP 4.0.3 IMAP模块远程缓冲区溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是一种被广泛使用的脚本语言，用于基于Web的CGI程序，它可被安装在包括Apache、IIS、 Caudium、Netscape、iPlanet和OmniHTTPd等多种Web服务器上。
+<br />
+
+<br />
+
+									PHP 4.0.3中的IMAP模块不正确调用imap_open()函数，远程攻击者可以利用这个漏洞进行缓冲区溢出，可导致目标用户程序崩溃。
+<br />
+
+<br />
+
+									PHP 4.0.3版本中包含的IMAP模块中的imap_open()函数不正确调用strcpy()，攻击者提交恶意数据可导致出发缓冲区溢出。目前没有证实可利用来在系统上执行任意指令。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时处理办法:<br />
+
+									<br />
+
+									如果您不能立刻安装补丁或者升级，NSFOCUS建议您采取以下措施以降低威胁：
+<br />
+
+<br />
+
+									* pre &lt;pre@geekgang.co.uk&gt;提供了如下第三方补丁：
+<br />
+
+<br />
+
+									diff -ru php-4.0.4pl1/ext/imap/php_imap.c php-4.0.4pl1-patched/ext/imap/php_imap.c 
+<br />
+
+									--- php-4.0.4pl1/ext/imap/php_imap.cWed Oct 25 18:43:52 2000 
+<br />
+
+									+++ php-4.0.4pl1-patched/ext/imap/php_imap.cMon Feb 26 13:17:08 2001 
+<br />
+
+									@@ -371,8 +371,8 @@ 
+<br />
+
+<br />
+
+									static void php_imap_init_globals(zend_imap_globals *imap_globals) 
+<br />
+
+									{ 
+<br />
+
+									-imap_globals-&gt;imap_user=NIL; 
+<br />
+
+									-imap_globals-&gt;imap_password=NIL; 
+<br />
+
+									+imap_globals-&gt;imap_user[0] = 0; 
+<br />
+
+									+imap_globals-&gt;imap_password[0] = 0; 
+<br />
+
+									imap_globals-&gt;imap_folders=NIL; 
+<br />
+
+									imap_globals-&gt;imap_sfolders=NIL; 
+<br />
+
+									imap_globals-&gt;imap_alertstack=NIL; 
+<br />
+
+									@@ -633,8 +633,11 @@ 
+<br />
+
+									} 
+<br />
+
+									} 
+<br />
+
+<br />
+
+									-IMAPG(imap_user) = estrndup(Z_STRVAL_PP(user), Z_STRLEN_PP(user)); 
+<br />
+
+									-IMAPG(imap_password) = estrndup(Z_STRVAL_PP(passwd), Z_STRLEN_PP(passwd)); 
+<br />
+
+									+strncpy(IMAPG(imap_user), Z_STRVAL_PP(user), IMAPSTRLEN); 
+<br />
+
+									+strncpy(IMAPG(imap_password), Z_STRVAL_PP(passwd), IMAPSTRLEN); 
+<br />
+
+									+ 
+<br />
+
+									+ IMAPG(imap_user)[IMAPSTRLEN-1] = 0; 
+<br />
+
+									+IMAPG(imap_password)[IMAPSTRLEN-1] = 0; 
+<br />
+
+<br />
+
+									#ifdef OP_RELOGIN 
+<br />
+
+									/* AJS: persistent connection handling */ 
+<br />
+
+									@@ -766,8 +769,6 @@ 
+<br />
+
+									} else { 
+<br />
+
+									#endif 
+<br />
+
+									imap_stream = mail_open(NIL, Z_STRVAL_PP(mailbox), flags); 
+<br />
+
+									-efree(IMAPG(imap_user)); 
+<br />
+
+									-efree(IMAPG(imap_password)); 
+<br />
+
+<br />
+
+									if (imap_stream == NIL) { 
+<br />
+
+									php_error(E_WARNING, &quot;Couldn&#39;t open stream %s\n&quot;, (*mailbox)-&gt;value.str.val); 
+<br />
+
+									diff -ru php-4.0.4pl1/ext/imap/php_imap.h php-4.0.4pl1-patched/ext/imap/php_imap.h 
+<br />
+
+									--- php-4.0.4pl1/ext/imap/php_imap.hTue Oct 17 16:42:05 2000 
+<br />
+
+									+++ php-4.0.4pl1-patched/ext/imap/php_imap.hMon Feb 26 13:16:11 2001 
+<br />
+
+									@@ -13,6 +13,7 @@ 
+<br />
+
+									extern zend_module_entry imap_module_entry; 
+<br />
+
+									#define imap_module_ptr &amp;imap_module_entry 
+<br />
+
+<br />
+
+									+#define IMAPSTRLEN 80 
+<br />
+
+<br />
+
+									/* Data types */ 
+<br />
+
+<br />
+
+									@@ -140,8 +141,8 @@ 
+<br />
+
+									PHP_FUNCTION(imap_mime_header_decode); 
+<br />
+
+<br />
+
+									ZEND_BEGIN_MODULE_GLOBALS(imap) 
+<br />
+
+									-char *imap_user; 
+<br />
+
+									-char *imap_password; 
+<br />
+
+									+char imap_user[IMAPSTRLEN]; 
+<br />
+
+									+char imap_password[IMAPSTRLEN]; 
+<br />
+
+									STRINGLIST *imap_folders; 
+<br />
+
+									STRINGLIST *imap_sfolders; 
+<br />
+
+									STRINGLIST *imap_alertstack;<br />
+
+									<br />
+
+									厂商解决方案:<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									PHP Upgrade PHP 4.3.0
+<br />
+
+									http://www.php.net/downloads.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2003-01-14</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-12-03</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/6557" target="_blank">6557</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=4184" target="_blank">4184</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

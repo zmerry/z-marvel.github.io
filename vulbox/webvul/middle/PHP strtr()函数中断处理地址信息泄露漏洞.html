@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP strtr()函数中断处理地址信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的strtr()函数中存在信息泄露漏洞：<br />
+
+									<br />
+
+									PHP_FUNCTION(strtr)<br />
+
+									{                              <br />
+
+									    zval **from;<br />
+
+									    char *str, *to = NULL;<br />
+
+									    int str_len, to_len = 0;<br />
+
+									    int ac = ZEND_NUM_ARGS();<br />
+
+									    <br />
+
+									    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;sZ|s&quot;, &amp;str, &amp;str_len, &amp;from, &amp;to, &amp;to_len) == FAILURE) {<br />
+
+									        return;<br />
+
+									    }<br />
+
+									    <br />
+
+									    if (ac == 2 &amp;&amp; Z_TYPE_PP(from) != IS_ARRAY) {<br />
+
+									        php_error_docref(NULL TSRMLS_CC, E_WARNING, &quot;The second argument is not an array&quot;);<br />
+
+									        RETURN_FALSE;<br />
+
+									    }<br />
+
+									<br />
+
+									    /* shortcut for empty string */<br />
+
+									    if (str_len == 0) {<br />
+
+									        RETURN_EMPTY_STRING();<br />
+
+									    }<br />
+
+									<br />
+
+									    if (ac == 2) {<br />
+
+									        php_strtr_array(return_value, str, str_len, HASH_OF(*from));<br />
+
+									    } else {<br />
+
+									        convert_to_string_ex(from);<br />
+
+									<br />
+
+									        ZVAL_STRINGL(return_value, str, str_len, 1);<br />
+
+									        <br />
+
+									        php_strtr(Z_STRVAL_P(return_value),<br />
+
+									                  Z_STRLEN_P(return_value),<br />
+
+									                  Z_STRVAL_PP(from),<br />
+
+									                  to,<br />
+
+									                  MIN(Z_STRLEN_PP(from),<br />
+
+									                  to_len));<br />
+
+									    }<br />
+
+									}<br />
+
+									<br />
+
+									zend_parse_parameters()函数将2个字符串参数和ZVAL拷贝到了本地变量，破坏了这些变量与原始ZVAL之间的联系。问题是字符串指针仍指向与原始字符串ZVAL完全相同的字符串，如果原始字符串ZVAL已被修改，就会导致字符串指针无效，指向已释放的且被重用的内存。在函数中将第二个参数转换为字符串，这就允许通过__toString()方式传送对象触发中断。由于PHP的call time pass by reference功能，之后攻击者可以从__toString()方式杀死第二个参数并重新用于哈希表。这导致strtr()作用于哈希表的内存而不是字符串的内存，攻击者可以泄露重要的内部内存偏移。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：<br />
+
+									<br />
+
+									* 禁用call time pass by reference功能。<br />
+
+									<br />
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+									<br />
+
+									如果您能承受该风险，您可以继续使用该服务，并时刻关注官方网站，获取升级补丁和升级包，及时更新；<br />
+
+									如果您不能承受该风险，请关闭该服务，或在防火墙中关闭服务端口。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-05-27</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-06-04</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-2100" target="_blank">CVE-2010-2100</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15141" target="_blank">15141</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201005-403&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20102100&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-1010&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

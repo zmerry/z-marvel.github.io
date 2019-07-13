@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">ThinkPHP framework 任意代码执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									ThinkPHP是一个国内使用很广泛的老牌PHP MVC框架。国内有不少创业公司或者项目都用了这个框架。
+<br />
+
+<br />
+
+									最近官方发布了一个安全补丁，官方表述是：该URL安全漏洞会造成用户在客户端伪造URL，执行非法代码。
+<br />
+
+									分析一下官方的补丁:
+<br />
+
+									/trunk/ThinkPHP/Lib/Core/Dispatcher.class.php
+<br />
+
+									125  -   $res = preg_replace(&#39;@(w+)&#39;.$depr.&#39;([^&#39;.$depr.&#39;\/]+)@e&#39;, &#39;$var[\&#39;\\\1\&#39;]=&quot;\\\2&quot;;&#39;, implode($depr,$paths));
+<br />
+
+									125  +   $res = preg_replace(&#39;@(w+)&#39;.$depr.&#39;([^&#39;.$depr.&#39;\/]+)@e&#39;, &#39;$var[\&#39;\\\1\&#39;]=\&#39;\\\2\&#39;;&#39;, implode($depr,$paths));
+<br />
+
+									这个代码是把pathinfo当作restful类型url进行解析的，主要作用是把pathinfo中的数据解析并合并到$_GET数组中。
+<br />
+
+									然而在用正则解析pathinfo的时候，主要是这一句：
+<br />
+
+									$res = preg_replace(&#39;@(w+)&#39;.$depr.&#39;([^&#39;.$depr.&#39;\/]+)@e&#39;, &#39;$var[\&#39;\\\1\&#39;]=&quot;\\\2&quot;;&#39;, implode($depr,$paths));
+<br />
+
+									这里明显使用了preg_replace的/e参数，这是个非常危险的参数，如果用了这个参数，preg_replace第二个参数就会被当做php代码执行，作者用这种方式在第二个参数中，利用PHP代码给数组动态赋值。
+<br />
+
+									&#39;$var[\&#39;\\\1\&#39;]=&quot;\\\2&quot;;&#39;
+<br />
+
+									而这里又是双引号，而双引号中的php变量语法又是能够被解析执行的。因此，攻击者只要对任意一个使用thinkphp框架编写的应用程序，使用如下方式进行访问，即可执行任意PHP代码：
+<br />
+
+									index.php/module/action/param1/${@print(THINK_VERSION)}<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									用户可下载官方发布的补丁：
+<br />
+
+									http://code.google.com/p/thinkphp/source/detail?spec=svn2904&amp;r=2838
+<br />
+
+									或者或者直接修改源码：
+<br />
+
+									/trunk/ThinkPHP/Lib/Core/Dispatcher.class.php
+<br />
+
+									$res = preg_replace(&#39;@(w+)&#39;.$depr.&#39;([^&#39;.$depr.&#39;\/]+)@e&#39;, &#39;$var[\&#39;\\\1\&#39;]=&quot;\\\2&quot;;&#39;, implode($depr,$paths));
+<br />
+
+									修改为
+<br />
+
+									$res = preg_replace(&#39;@(w+)&#39;.$depr.&#39;([^&#39;.$depr.&#39;\/]+)@e&#39;, &#39;$var[\&#39;\\\1\&#39;]=&quot;\\\2&#39;;&#39;, implode($depr,$paths));
+<br />
+
+									将preg_replace第二个参数中的双引号改为单引号，防止其中的php变量语法被解析执行。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2012-03-23</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-04-12</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP shm_put_var()访问已释放资源漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									当PHP函数需要追踪数据结构时，会使用Zend引擎注册资源。资源系统中的引用计数器仅会追踪指向实际资源的PHP变量，不会计算有多少函数在内部使用资源，这就在PHP代码中引入了漏洞。如果用户代码可以在PHP函数通过资源标识符获得了资源数据后中断该函数，就可以释放资源然后在内存中同样的位置分配同样大小的PHP字符串。可利用这个PHP字符串创建特制的资源允许利用PHP函数的内部。当恶意中断结束后，函数就会继续，使用已被替换的资源数据。<br />
+
+									<br />
+
+									其中的一个有漏洞函数是sysvshm扩展的shm_put_var()函数：<br />
+
+									<br />
+
+									PHP_FUNCTION(shm_put_var)<br />
+
+									{<br />
+
+									    ...<br />
+
+									<br />
+
+									    if (SUCCESS != zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;rlz&quot;, &amp;shm_id, &amp;shm_key, &amp;arg_var)) {<br />
+
+									        return;<br />
+
+									    }<br />
+
+									<br />
+
+									    SHM_FETCH_RESOURCE(shm_list_ptr, shm_id);<br />
+
+									    <br />
+
+									    /* setup string-variable and serialize */<br />
+
+									    PHP_VAR_SERIALIZE_INIT(var_hash);<br />
+
+									    php_var_serialize(&amp;shm_var, &amp;arg_var, &amp;var_hash TSRMLS_CC);<br />
+
+									    PHP_VAR_SERIALIZE_DESTROY(var_hash);<br />
+
+									    <br />
+
+									    /* insert serialized variable into shared memory */<br />
+
+									    ret = php_put_shm_data(shm_list_ptr-&gt;ptr, shm_key, shm_var.c, shm_var.len);<br />
+
+									<br />
+
+									shm_put_var()内部调用了序列化功能，该功能也会序列化对象并调用对象的__sleep()方式。这个__sleep()方式之后可以释放 shm资源，允许替换内存中在php_put_shm_data()调用中使用的shm_list_ptr结构，这会写入任意受控的内存。<br />
+
+									<br />
+
+									static int php_put_shm_data(sysvshm_chunk_head *ptr, long key, const char *data, long len)<br />
+
+									{<br />
+
+									    sysvshm_chunk *shm_var;<br />
+
+									    long total_size;<br />
+
+									    long shm_varpos;<br />
+
+									<br />
+
+									    ...<br />
+
+									<br />
+
+									    shm_var = (sysvshm_chunk *) ((char *) ptr + ptr-&gt;end);  <br />
+
+									    shm_var-&gt;key = key;<br />
+
+									    shm_var-&gt;length = len;<br />
+
+									    shm_var-&gt;next = total_size;  <br />
+
+									    memcpy(&amp;(shm_var-&gt;mem), data, len);<br />
+
+									    ptr-&gt;end += total_size;<br />
+
+									    ptr-&gt;free -= total_size;<br />
+
+									    return 0;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-05-07</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-05-11</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-1861" target="_blank">CVE-2010-1861</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14978" target="_blank">14978</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201005-120&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20101861&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.4&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-0819&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP ext/filter函数去除空格远程缓冲区溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									此次扫描根据版本信息判断漏洞存在，可能出现误报。
+<br />
+
+<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。
+<br />
+
+<br />
+
+									PHP在内存管理的代码实现上存在漏洞，远程攻击者可能利用此漏洞在某些特定系统平台下执行任意指令。
+<br />
+
+<br />
+
+									PHP的堆内存管理器会存储用户所请求的控制信息。当使用FILTER_VALIDATE_INT过滤器时，首先要对入站的用户输入数据执行去除空格操作，由以下宏完成：
+<br />
+
+<br />
+
+									#define PHP_FILTER_TRIM_DEFAULT(p, len, end) { \
+<br />
+
+									        while (*p == &#39; &#39; || *p == &#39;\t&#39; || *p == &#39;\r&#39; || *p == &#39;\v&#39;) { \
+<br />
+
+									                p++; \
+<br />
+
+									                len--; \
+<br />
+
+									        } \
+<br />
+
+									        start = p; \
+<br />
+
+									        end = p + len - 1; \
+<br />
+
+									        if (*end == &#39; &#39; || *end == &#39;\t&#39; || *end == &#39;\r&#39; || *end == &#39;\v&#39;) { \
+<br />
+
+									                unsigned int i; \
+<br />
+
+									                for (i = len - 1; i &gt;= 0; i--) { \
+<br />
+
+									                        if (!(p[i] == &#39; &#39; || p[i] == &#39;\t&#39; || p[i] == &#39;\r&#39; || p[i] == &#39;\v&#39;)) { \
+<br />
+
+									                                break; \
+<br />
+
+									                        } \
+<br />
+
+									                } \
+<br />
+
+									                i++; \
+<br />
+
+									                p[i] = &#39;\0&#39;; \
+<br />
+
+									                end = p + i - 1; \
+<br />
+
+									                len = (int) (end - p) + 1; \
+<br />
+
+									        } \
+<br />
+
+									}
+<br />
+
+<br />
+
+									如果存在空格的话，这个宏首先向前移动start指针，然后在回退的时候end指针也执行同样的操作，最后向末尾写入一个空字节结束字符串。但由于回退并不是在字符串的开始处停止的，因此如果缓冲区开始之前的字节中包含有属于空白字符集的ASCII字符的话，上述操作就会在所分配的缓冲区之前写入空字节。
+<br />
+
+<br />
+
+									PHP新的内存管理器将之前内存块的大小储存在缓冲区之前，因此在little endian系统中缓冲区之前的字节不太可能出现空格空白字符；但在big endian系统中（如PPC）远程攻击者可能创建在缓冲区之前包含有空白字符的堆结构，这样去除空格操作就会用空字节覆盖该结构，破坏控制信息，导致执行任意指令。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									PHP
+<br />
+
+									---
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.php.net/downloads.php#v5<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>7</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2007-03-14</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2007-03-13</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-1453" target="_blank">CVE-2007-1453</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/22922" target="_blank">22922</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=10046" target="_blank">10046</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200703-387&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20071453&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.5&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-10046&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

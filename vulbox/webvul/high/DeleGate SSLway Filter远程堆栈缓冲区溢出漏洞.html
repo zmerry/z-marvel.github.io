@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">DeleGate SSLway Filter远程堆栈缓冲区溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									DeleGate是一款多功能应用级网关，运行在多个平台上。
+<br />
+
+<br />
+
+									DeleGate SSLway过滤器在处理用户提供的部分证书字段内容时缺少充分边界检查，远程攻击者可以利用这个漏洞对网关程序进行缓冲区溢出攻击，可能以进程权限在系统上执行任意指令。
+<br />
+
+<br />
+
+									当DeleGate SSLway过滤器使用时处理客户或服务端连接时存在漏洞，使用标题或发送者名字字段内容超过256字节的证书，可触发缓冲区溢出:
+<br />
+
+<br />
+
+									   static ssl_prcert(ssl,show,outssl,outfd,what)
+<br />
+
+									            SSL *ssl;
+<br />
+
+									            char *what;
+<br />
+
+									    {       X509 *peer;
+<br />
+
+									            char subjb[256],*sb,issrb[256],*is;
+<br />
+
+									            char *dp,ident[256];
+<br />
+
+<br />
+
+									            ident[0] = 0;
+<br />
+
+									            if( peer = SSL_get_peer_certificate(ssl) ){
+<br />
+
+									                    sb = X509_NAME_oneline(X509_get_subject_name(peer),subjb,1024);
+<br />
+
+									                    is = X509_NAME_oneline(X509_get_issuer_name(peer),issrb,1024);
+<br />
+
+<br />
+
+									X509_NAME_oneline()的第二个参数是要写入的缓冲区，第三个参数是缓冲区大小，上面缓冲区大小定义为1024字节，而缓冲区实际只有256字节，因此过多的数据可覆盖ssl_prcert()的返回地址。
+<br />
+
+<br />
+
+									&lt;*来源：Joel Eriksson （je@bitnux.com）
+<br />
+
+<br />
+
+									  链接：http://marc.theaimsgroup.com/?l=bugtraq&amp;m=108386181021070&amp;w=2
+<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									DeleGate
+<br />
+
+									--------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.delegate.org/delegate/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>7</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2004-05-06</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-04-11</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2004-2003" target="_blank">CVE-2004-2003</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/10295" target="_blank">10295</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=6409" target="_blank">6409</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200405-047&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20042003&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.5&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2004-1332&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

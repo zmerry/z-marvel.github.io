@@ -1,0 +1,490 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP mb_ereg_replace()函数代码注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描为版本扫描，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP所使用的mb_ereg_replace()函数是支持多字节的正则表达式替换函数，原型如下：<br />
+
+									<br />
+
+									string mb_ereg_replace  ( string $pattern  , string $replacement  , string $string  [, string $option= &quot;msr&quot;  ] )<br />
+
+									<br />
+
+									当指定mb_ereg(i)_replace()的option参数为e时，replacement参数在适当的逆向引用替换完后将作为php代码执行，但php在处理这一过程中存在安全隐患，可能导致绕过程序的逻辑执行任意代码。<br />
+
+									<br />
+
+									mb_ereg_replace()的代码：<br />
+
+									<br />
+
+									// php_mbregex.c<br />
+
+									PHP_FUNCTION(mb_ereg_replace)<br />
+
+									{<br />
+
+									    _php_mb_regex_ereg_replace_exec(INTERNAL_FUNCTION_PARAM_PASSTHRU, 0);<br />
+
+									}<br />
+
+									...<br />
+
+									static void _php_mb_regex_ereg_replace_exec(INTERNAL_FUNCTION_PARAMETERS, OnigOptionType options)<br />
+
+									{<br />
+
+									...<br />
+
+									    smart_str out_buf = { 0 };<br />
+
+									    smart_str eval_buf = { 0 };<br />
+
+									    smart_str *pbuf;<br />
+
+									...<br />
+
+									        if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;Zss|s&quot;,<br />
+
+									                                    &amp;arg_pattern_zval,<br />
+
+									                                    &amp;replace, &amp;replace_len,<br />
+
+									                                    &amp;string, &amp;string_len,<br />
+
+									                                    &amp;option_str, &amp;option_str_len) == FAILURE) {<br />
+
+									            RETURN_FALSE;<br />
+
+									        }<br />
+
+									...<br />
+
+									    re = php_mbregex_compile_pattern(arg_pattern, arg_pattern_len, options, MBSTRG(current_mbctype), syntax TSRMLS_CC);<br />
+
+									// 编译模式,编译后的模式存储在re_pattern_buffer结构<br />
+
+									...<br />
+
+									    if (eval) {<br />
+
+									        pbuf = &amp;eval_buf;<br />
+
+									        description = zend_make_compiled_string_description(&quot;mbregex replace&quot; TSRMLS_CC);<br />
+
+									    } else {<br />
+
+									        pbuf = &amp;out_buf;<br />
+
+									        description = NULL;<br />
+
+									// *pbuf,eval_buf,out_buf都是smart_str结构,结构说明如下:<br />
+
+									// typedef struct {<br />
+
+									//     char *c;<br />
+
+									//     size_t len;<br />
+
+									//     size_t a;<br />
+
+									// } smart_str;<br />
+
+									    }<br />
+
+									<br />
+
+									    /* do the actual work */<br />
+
+									    err = 0;<br />
+
+									    pos = string;<br />
+
+									    string_lim = (OnigUChar*)(string + string_len);<br />
+
+									    regs = onig_region_new();<br />
+
+									// 分配内存,初始化re_registers结构,用于存储模式匹配值[num_regs成员为子模式匹配值个数,beg成员为模式及子模式匹配值的开始位,end成员为结束位]<br />
+
+									    while (err &gt;= 0) {<br />
+
+									        err = onig_search(re, (OnigUChar *)string, (OnigUChar *)string_lim, pos, (OnigUChar *)string_lim, regs, 0);<br />
+
+									// 依据编译好的模式进行匹配<br />
+
+									...<br />
+
+									            /* copy the part of the string before the match */<br />
+
+									            smart_str_appendl(&amp;out_buf, pos, (size_t)((OnigUChar *)(string + regs-&gt;beg[0]) - pos));<br />
+
+									// 添加模式匹配值开始前的部分[用于函数的返回值]<br />
+
+									            /* copy replacement and backrefs */<br />
+
+									            i = 0;<br />
+
+									            p = replace;<br />
+
+									            while (i &lt; replace_len) {<br />
+
+									                int fwd = (int) php_mb_mbchar_bytes_ex(p, enc);<br />
+
+									                n = -1;<br />
+
+									                if ((replace_len - i) &gt;= 2 &amp;&amp; fwd == 1 &amp;&amp;<br />
+
+									                    p[0] == &#39;\\\&#39; &amp;&amp; p[1] &gt;= &#39;0&#39; &amp;&amp; p[1] &lt;= &#39;9&#39;) {<br />
+
+									                    n = p[1] - &#39;0&#39;;<br />
+
+									                }<br />
+
+									                if (n &gt;= 0 &amp;&amp; n &lt; regs-&gt;num_regs) {<br />
+
+									                    if (regs-&gt;beg[n] &gt;= 0 &amp;&amp; regs-&gt;beg[n] &lt; regs-&gt;end[n] &amp;&amp; regs-&gt;end[n] &lt;= string_len) {<br />
+
+									                        smart_str_appendl(pbuf, string + regs-&gt;beg[n], regs-&gt;end[n] - regs-&gt;beg[n]);<br />
+
+									// 如果使用逆向引用且存在相应的[子]模式匹配值,就调用smart_str_appendl添加[子]模式匹配值[调用memcpy把值copy到pbuf-&gt;c+pbuf-&gt;len]<br />
+
+									                    }<br />
+
+									                } else {<br />
+
+									                    smart_str_appendl(pbuf, p, fwd);<br />
+
+									                    p += fwd;<br />
+
+									                    i += fwd;<br />
+
+									                }<br />
+
+									            }<br />
+
+									...<br />
+
+									            if (eval) {<br />
+
+									                zval v;<br />
+
+									                /* null terminate buffer */<br />
+
+									                smart_str_appendc(&amp;eval_buf, &#39;\0&#39;);<br />
+
+									                /* do eval */<br />
+
+									                if (zend_eval_string(eval_buf.c, &amp;v, description TSRMLS_CC) == FAILURE) {<br />
+
+									                    efree(description);<br />
+
+									                    php_error_docref(NULL TSRMLS_CC,E_ERROR, &quot;Failed evaluating code: ss&quot;, PHP_EOL, eval_buf.c);<br />
+
+									                    /* zend_error() does not return in this case */<br />
+
+									                }<br />
+
+									<br />
+
+									// 如果option指定为e,就调用zend_eval_string处理eval_buf.c,也就是pbuf-&gt;c[先编译成opcode,在调用zend_execute处理opcode]<br />
+
+									//上面的代码mb_ereg_replace对所捕获的子模式的匹配值没有安全处理,直接调用zend_eval_string执行replace后的值.<br />
+
+									//这样将引来一些安全隐患:比如可以引入&#39;来闭合之前的&#39; ,另外我们也可以引入nullbyte来截断后面的代码[zend_eval_string是not binary safe的]:)<br />
+
+									<br />
+
+									为了对比说明这个安全漏洞我们同样来分析下preg_replace()在/e下执行php代码的处理过程:<br />
+
+									<br />
+
+									//preg_replace()<br />
+
+									...<br />
+
+									            if (eval) {<br />
+
+									                eval_result_len = preg_do_eval(replace, replace_len, subject,<br />
+
+									                                               offsets, count, &amp;eval_result TSRMLS_CC);<br />
+
+									// 在e修正符模式下调用preg_do_eval<br />
+
+									...<br />
+
+									static int preg_do_eval(char *eval_str, int eval_str_len, char *subject,<br />
+
+									                        int *offsets, int count, char **result TSRMLS_DC)<br />
+
+									{<br />
+
+									...<br />
+
+									    smart_str    code = {0};<br />
+
+									    <br />
+
+									    eval_str_end = eval_str + eval_str_len;<br />
+
+									    walk = segment = eval_str;<br />
+
+									    walk_last = 0;<br />
+
+									<br />
+
+									    while (walk &lt; eval_str_end) {<br />
+
+									        /* If found a backreference.. */<br />
+
+									        if (&#39;\\\&#39; == *walk || &#39;$&#39; == *walk) {<br />
+
+									            smart_str_appendl(&amp;code, segment, walk - segment);<br />
+
+									            if (walk_last == &#39;\\\&#39;) {<br />
+
+									                code.c[code.len-1] = *walk++;<br />
+
+									                segment = walk;<br />
+
+									                walk_last = 0;<br />
+
+									                continue;<br />
+
+									            }<br />
+
+									            segment = walk;<br />
+
+									            if (preg_get_backref(&amp;walk, &amp;backref)) {<br />
+
+									                if (backref &lt; count) {<br />
+
+									                    /* Find the corresponding string match and substitute it<br />
+
+									                       in instead of the backref */<br />
+
+									                    match = subject + offsets[backref&lt;&lt;1];<br />
+
+									                    match_len = offsets[(backref&lt;&lt;1)+1] - offsets[backref&lt;&lt;1];<br />
+
+									                    if (match_len) {<br />
+
+									                        esc_match = php_addslashes_ex(match, match_len, &amp;esc_match_len, 0, 1 TSRMLS_CC);<br />
+
+									// 如果使用逆向引用且存在相应的[子]模式匹配值,就对所捕获的[子]模式匹配值调用php_addslashes_ex<br />
+
+									...<br />
+
+									                smart_str_appendl(&amp;code, esc_match, esc_match_len);<br />
+
+									// 添加[子]模式匹配值<br />
+
+									...<br />
+
+									    smart_str_appendl(&amp;code, segment, walk - segment);<br />
+
+									    smart_str_0(&amp;code);<br />
+
+									<br />
+
+									    compiled_string_description = zend_make_compiled_string_description(&quot;regexp code&quot; TSRMLS_CC);<br />
+
+									    /* Run the code */<br />
+
+									    if (zend_eval_string(code.c, &amp;retval, compiled_string_description TSRMLS_CC) == FAILURE) {<br />
+
+									        efree(compiled_string_description);<br />
+
+									        php_error_docref(NULL TSRMLS_CC,E_ERROR, &quot;Failed evaluating code: ss&quot;, PHP_EOL, code.c);<br />
+
+									        /* zend_error() does not return in this case */<br />
+
+									    }<br />
+
+									// 调用zend_eval_string处理code.c<br />
+
+									<br />
+
+									preg_replace()函数同样对所捕获的模式匹配值调用php_addslashes_ex。<br />
+
+									<br />
+
+									从上面对mb_ereg_replace()代码分析看看出mb_ereg_replace()函数整个处理过程可以简单描述为：<br />
+
+									<br />
+
+									检查参数，编译pattern，依据编译后的pattern对string进行匹配，如果存在匹配值把string中模式匹配值前面的部分添加到返回值，对模式匹配值进行替换，如果replacement中使用逆向引用且存在相应的子模式匹配值，替换replacement中的逆向引用。注意这里没对替换的模式及子模式匹配值做任何处理，另外这里其实并非替换，具体处理过程请看上面的源码。如果option没有指定e，就把replacement添加到返回值；如果指定e，把replacement作为php代码执行，并把代码执行后的返回值添加到返回值。把string中模式匹配值后面的部分添加到返回值，返回返回值。<br />
+
+									<br />
+
+									通过对mb_ereg_replace()正则替换流程的分析及很多的应用程序的代码分析，发现很多程序员对正则表达式替换函数（包括preg_replace等函数）的处理过程不了解可能导致一些逻辑错误。例如如下代码：<br />
+
+									<br />
+
+									&lt;?php<br />
+
+									$onlineip = &#39;ryat&#39;;<br />
+
+									echo $onlineip = preg_replace(&quot;/^([\d\.]+).*/&quot;, &quot;\\\1&quot;, $onlineip);<br />
+
+									?&gt;<br />
+
+									<br />
+
+									上面的代码直接输出ryat了，这是由于正则替换时，当不匹配时就会返回原值。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-06-02</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-06-02</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/34873" target="_blank">34873</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=13326" target="_blank">13326</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

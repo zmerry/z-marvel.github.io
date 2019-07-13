@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">phpcms2008网站管理系统adsclass.php SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									ads\include\ads.class.php
+<br />
+
+									function edit($ads, $adsid, $username = &#39;&#39;)//110行
+<br />
+
+									{
+<br />
+
+									if(!$this-&gt;check_form($ads)) return FALSE;
+<br />
+
+									$ads = $this-&gt;check_form($ads);
+<br />
+
+									if(defined(&#39;IN_ADMIN&#39;))
+<br />
+
+									{
+<br />
+
+									$ads[&#39;fromdate&#39;] = strtotime($ads[&#39;fromdate&#39;]);
+<br />
+
+									$ads[&#39;todate&#39;] = strtotime($ads[&#39;todate&#39;]);
+<br />
+
+									}
+<br />
+
+									$this-&gt;adsid = $adsid;
+<br />
+
+									$where = &#39; adsid=&#39;.$this-&gt;adsid;
+<br />
+
+									if($username) $where .= &quot; AND username=&#39;$username&#39;&quot;;
+<br />
+
+<br />
+
+									return $this-&gt;db-&gt;update($this-&gt;table, $ads, $where);
+<br />
+
+									}
+<br />
+
+<br />
+
+									Ads\member.php
+<br />
+
+									if(!$c_ads-&gt;edit($info, $adsid, $_username)) showmessage($c_ads-&gt;msg(), &#39;goback&#39;);  //47行
+<br />
+
+									变量$adsid没有经过处理就直接进入SQL查询，造成SQL注入。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+									PHPCMS
+<br />
+
+									-------
+<br />
+
+									目前厂商已经提供补丁或者升级程序，我们建议使用此软件的用户从厂商的主页获取最新版本：
+<br />
+
+									http://www.phpcms.cn<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>9</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-05-24</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-04-09</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

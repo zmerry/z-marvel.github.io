@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">XWork绕过安全限制执行任意命令漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									XWork是一个命令模式框架，用于支持Struts 2及其他应用。
+<br />
+
+<br />
+
+									XWork处理用户请求参数数据时存在漏洞，远程攻击者可以利用此漏洞在系统上执行任意命令。
+<br />
+
+<br />
+
+									Struts2中WebWork框架使用XWork基于HTTP参数名执行操作和调用，将每个HTTP参数名处理为OGNL（对象图形导航语言）语句，而OGNL将：  
+<br />
+
+<br />
+
+									user.address.city=Bishkek&amp;user[&#39;favoriteDrink&#39;]=kumys  
+<br />
+
+<br />
+
+									转换为：  
+<br />
+
+<br />
+
+									action.getUser().getAddress().setCity(&quot;Bishkek&quot;)  
+<br />
+
+									action.getUser().setFavoriteDrink(&quot;kumys&quot;)  
+<br />
+
+<br />
+
+									这是通过ParametersInterceptor来执行的，使用用户提供的HTTP参数调用ValueStack.setValue()。  
+<br />
+
+<br />
+
+									除了获取和设置属性外，OGNL还支持其他一些功能：  
+<br />
+
+<br />
+
+									    * 方法调用：foo()  
+<br />
+
+									    * 静态方式调用： @java.lang.System@exit(1)  
+<br />
+
+									    * 构建函数调用：new MyClass()  
+<br />
+
+									    * 处理上下文变量：#foo = new MyClass()  
+<br />
+
+<br />
+
+									由于HTTP参数名为OGNL语句，为了防范攻击者通过HTTP参数调用任意方式，XWork使用了以下两个变量保护方式的执行：  
+<br />
+
+<br />
+
+									    * OgnlContext的属性xwork.MethodAccessor.denyMethodExecution（默认设置为true）  
+<br />
+
+									    * SecurityMemberAccess私有字段allowStaticMethodAccess（默认设置为false）
+<br />
+
+<br />
+
+									为了方便开发人员访问各种常用的对象，XWork提供了一些预定义的上下文变量：  
+<br />
+
+<br />
+
+									    * #application  
+<br />
+
+									    * #session  
+<br />
+
+									    * #request  
+<br />
+
+									    * #parameters  
+<br />
+
+									    * #attr  
+<br />
+
+									    * #context
+<br />
+
+									    * #_memberAccess
+<br />
+
+									    * #root  
+<br />
+
+									    * #this  
+<br />
+
+									    * #_typeResolver  
+<br />
+
+									    * #_classResolver  
+<br />
+
+									    * #_traceEvaluations  
+<br />
+
+									    * #_lastEvaluation  
+<br />
+
+									    * #_keepLastEvaluation  
+<br />
+
+<br />
+
+									这些变量代表各种服务器端对象。为了防范篡改服务器端对象，XWork的ParametersInterceptor不允许参数名中出现“#”字符，但如果使用了Java的unicode字符串表示\u0023，攻击者就可以绕过保护，修改保护Java方式执行的值：  
+<br />
+
+<br />
+
+									#_memberAccess[&#39;allowStaticMethodAccess&#39;] = true  
+<br />
+
+									#foo = new java .lang.Boolean(&quot;false&quot;)  
+<br />
+
+									#context[&#39;xwork.MethodAccessor.denyMethodExecution&#39;] = #foo  
+<br />
+
+									#rt = @java.lang.Runtime@getRuntime()  
+<br />
+
+									#rt.exec(&#39;mkdir /tmp/PWNED&#39;)<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Apache Group
+<br />
+
+									------------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://svn.apache.org/viewvc?view=revision&amp;revision=956389<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-07-09</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-08-23</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-1870" target="_blank">CVE-2010-1870</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15431" target="_blank">15431</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201008-173&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20101870&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									9.8(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-01359&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

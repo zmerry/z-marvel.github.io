@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="软件1、Spotify：sudo snap install spotify2、网易云音乐：官网下载好后，进入下载目录。sudo dpkg-i netease-cloud-music1.1.0amd64_ubuntu.deb sudoapt-get install -f sudo dpkg-i netease-cloud-music1.1.0amd64_ubuntu.deb安装以后如果不能打开，按">
+<meta name="keywords" content="原创,Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu18.04 Tricks小技巧">
+<meta property="og:url" content="http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="软件1、Spotify：sudo snap install spotify2、网易云音乐：官网下载好后，进入下载目录。sudo dpkg-i netease-cloud-music1.1.0amd64_ubuntu.deb sudoapt-get install -f sudo dpkg-i netease-cloud-music1.1.0amd64_ubuntu.deb安装以后如果不能打开，按">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-17T06:43:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu18.04 Tricks小技巧">
+<meta name="twitter:description" content="软件1、Spotify：sudo snap install spotify2、网易云音乐：官网下载好后，进入下载目录。sudo dpkg-i netease-cloud-music1.1.0amd64_ubuntu.deb sudoapt-get install -f sudo dpkg-i netease-cloud-music1.1.0amd64_ubuntu.deb安装以后如果不能打开，按">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Ubuntu18.04 Tricks小技巧</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/07/19/等保测评笔记本/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/06/15/Hackintosh黑苹果HD4600开机花瓶解决/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&text=Ubuntu18.04 Tricks小技巧"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&title=Ubuntu18.04 Tricks小技巧"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&is_video=false&description=Ubuntu18.04 Tricks小技巧"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Ubuntu18.04 Tricks小技巧&body=Check out this article: http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&title=Ubuntu18.04 Tricks小技巧"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&title=Ubuntu18.04 Tricks小技巧"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&title=Ubuntu18.04 Tricks小技巧"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&title=Ubuntu18.04 Tricks小技巧"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&name=Ubuntu18.04 Tricks小技巧&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#软件"><span class="toc-number">1.</span> <span class="toc-text">软件</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Ubuntu18.04 Tricks小技巧
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-06-17T06:43:34.000Z" itemprop="datePublished">2018-06-17</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/操作系统/">操作系统</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Linux/">Linux</a>, <a class="tag-link" href="/tags/原创/">原创</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <a id="more"></a>
+<h2 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h2><p>1、Spotify：sudo snap install spotify<br>2、网易云音乐：<br>官网下载好后，进入下载目录。<br>sudo dpkg-i netease-cloud-music1.1.0amd64_ubuntu.deb</p>
+<p>sudoapt-get install -f</p>
+<p>sudo dpkg-i netease-cloud-music1.1.0amd64_ubuntu.deb<br>安装以后如果不能打开，按照以下步骤操作。<br>不过可以通过修改权限来完成，不过修改后需要重启。<br>cd　～/.cache</p>
+<p>chmod 777 netease-cloud-music</p>
+<p>reboot</p>
+<p>ubuntu set weak password need to be root user</p>
+<p> Firefox提示firefox you must log in to this network before you can access the internet<br>    about:config 搜索 network.captive-portal-service.enabled;false</p>
+<p>#lockDialogGroup {<br>  background: #2c001e url(resource:///org/gnome/shell/theme/noise-texture.png);<br>  background-repeat: repeat; }</p>
+<p>atom:<br>    hydrogen<br>    atom-beauty<br>    atom-ternjs<br>    autocomplete-python<br>    busy-signal<br>    emmet<br>    file-icons<br>    fit-plus<br>    intentions<br>    language-ejs<br>    linter<br>    linter-flake8<br>    linter-ui-default<br>    markdown-image-helper<br>    markdown-writer<br>    minimap<br>    script</p>
+<p>sublime:<br>    A File Icon<br>    Anaconda<br>    AutoPEP8<br>    Boxy Theme<br>    Emmet<br>    OmniMarkupPreviewer<br>    package-Control<br>    PyV8<br>    SublimeLinter-pep8<br>    SublimeREPL<br>    zzz A File Icon zzz what?</p>
+<p>gnome:<br>    Alternate Tab    off<br>    Application Menu on<br>    Auto Move Windows off<br>    Dash to Dock    on<br>    Dynamic Top Bar on<br>    Hide Top Bar on<br>    Launch new instance    off<br>    Native Window placement    off<br>    Pixel Saver on<br>    Place Status Indicator    on<br>    Removable Drive Menu    on<br>    Screenshot Window Sizer    off<br>    Ubuntu Applndicator<br>    Ubuntu Dock<br>    User Themes    on<br>    Window List    off<br>    window Navigator    off</p>
+<p>linux:<br>    TWEak tools<br>    genymotion</p>
+<p>terminal:</p>
+<p> dconf dump /org/gnome/terminal/legacy/profiles:/<br>[/]<br>list=[‘b1dcc9dd-5262-4d8d-a863-c897e6d979b9’, ‘1961e46d-1ead-4137-9b53-2e3575fe7e8e’]</p>
+<p>[:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]<br>foreground-color=’rgb(170,170,170)’<br>visible-name=’console’<br>palette=[‘rgb(0,0,0)’, ‘rgb(205,0,0)’, ‘rgb(0,205,0)’, ‘rgb(205,205,0)’, ‘rgb(30,144,255)’, ‘rgb(205,0,205)’, ‘rgb(0,205,205)’, ‘rgb(229,229,229)’, ‘rgb(76,76,76)’, ‘rgb(255,0,0)’, ‘rgb(0,255,0)’, ‘rgb(255,255,0)’, ‘rgb(70,130,180)’, ‘rgb(255,0,255)’, ‘rgb(0,255,255)’, ‘rgb(255,255,255)’]<br>cursor-shape=’ibeam’<br>use-transparent-background=true<br>use-theme-colors=false<br>use-theme-transparency=false<br>background-color=’rgb(0,0,0)’<br>background-transparency-percent=28</p>
+<p>[:1961e46d-1ead-4137-9b53-2e3575fe7e8e]<br>foreground-color=’rgb(170,170,170)’<br>visible-name=’Unnamed (Copy)’<br>palette=[‘rgb(0,0,0)’, ‘rgb(205,0,0)’, ‘rgb(0,205,0)’, ‘rgb(205,205,0)’, ‘rgb(30,144,255)’, ‘rgb(205,0,205)’, ‘rgb(0,205,205)’, ‘rgb(229,229,229)’, ‘rgb(76,76,76)’, ‘rgb(255,0,0)’, ‘rgb(0,255,0)’, ‘rgb(255,255,0)’, ‘rgb(70,130,180)’, ‘rgb(255,0,255)’, ‘rgb(0,255,255)’, ‘rgb(255,255,255)’]<br>cursor-shape=’ibeam’<br>use-transparent-background=true<br>use-theme-colors=false<br>use-theme-transparency=false<br>background-color=’rgb(0,0,0)’<br>background-transparency-percent=28</p>
+<p>List profiles</p>
+<p>dconf dump /org/gnome/terminal/legacy/profiles:/</p>
+<p>dump profiles</p>
+<p>dconf dump /org/gnome/terminal/legacy/profiles:/:1430663d-083b-4737-a7f5-8378cc8226d1/ &gt; material-theme-profile.dconf</p>
+<p>load profiles</p>
+<p>dconf load /org/gnome/terminal/legacy/profiles:/:1430663d-083b-4737-a7f5-8378cc8226d1/ &lt; material-theme-profile.dconf</p>
+<p>console.dconf:<br>[/]<br>foreground-color=’rgb(170,170,170)’<br>visible-name=’console’<br>palette=[‘rgb(0,0,0)’, ‘rgb(205,0,0)’, ‘rgb(0,205,0)’, ‘rgb(205,205,0)’, ‘rgb(30,144,255)’, ‘rgb(205,0,205)’, ‘rgb(0,205,205)’, ‘rgb(229,229,229)’, ‘rgb(76,76,76)’, ‘rgb(255,0,0)’, ‘rgb(0,255,0)’, ‘rgb(255,255,0)’, ‘rgb(70,130,180)’, ‘rgb(255,0,255)’, ‘rgb(0,255,255)’, ‘rgb(255,255,255)’]<br>cursor-shape=’ibeam’<br>use-transparent-background=true<br>use-theme-colors=false<br>use-theme-transparency=false<br>background-color=’rgb(0,0,0)’<br>background-transparency-percent=28</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#软件"><span class="toc-number">1.</span> <span class="toc-text">软件</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&text=Ubuntu18.04 Tricks小技巧"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&title=Ubuntu18.04 Tricks小技巧"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&is_video=false&description=Ubuntu18.04 Tricks小技巧"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Ubuntu18.04 Tricks小技巧&body=Check out this article: http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&title=Ubuntu18.04 Tricks小技巧"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&title=Ubuntu18.04 Tricks小技巧"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&title=Ubuntu18.04 Tricks小技巧"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&title=Ubuntu18.04 Tricks小技巧"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2018/06/17/Ubuntu18.04-Tricks小技巧/&name=Ubuntu18.04 Tricks小技巧&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

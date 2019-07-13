@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP 5.3.1更新修复多个安全漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									此次扫描是通过版本进行的，可能发生误报。
+<br />
+
+<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。
+<br />
+
+<br />
+
+									PHP的5.3.1之前版本的多个函数中存在安全漏洞，可能允许远程攻击者绕过安全限制执行非授权操作，或导致拒绝服务。
+<br />
+
+<br />
+
+									1) imagecolortransparent函数没有正确地对颜色索引执行过滤检查。
+<br />
+
+<br />
+
+									2) tempnam()中的错误可能允许绕过safe_mode限制。以下是ext/standard/file.c中的有漏洞代码段：
+<br />
+
+<br />
+
+									PHP_FUNCTION(tempnam)
+<br />
+
+									{
+<br />
+
+									char *dir, *prefix;
+<br />
+
+									int dir_len, prefix_len;
+<br />
+
+									size_t p_len;
+<br />
+
+									char *opened_path;
+<br />
+
+									char *p;
+<br />
+
+									int fd;
+<br />
+
+<br />
+
+									if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;ss&quot;, &amp;dir, &amp;dir_len,
+<br />
+
+									&amp;prefix, &amp;prefix_len) == FAILURE) {
+<br />
+
+									return;
+<br />
+
+									}
+<br />
+
+<br />
+
+									if (php_check_open_basedir(dir TSRMLS_CC)) { [1]
+<br />
+
+									RETURN_FALSE;
+<br />
+
+									}
+<br />
+
+<br />
+
+									php_basename(prefix, prefix_len, NULL, 0, &amp;p, &amp;p_len TSRMLS_CC);
+<br />
+
+									if (p_len &gt; 64) {
+<br />
+
+									p[63] = &#39;\0&#39;;
+<br />
+
+									}
+<br />
+
+<br />
+
+									if ((fd = php_open_temporary_fd(dir, p, &amp;opened_path TSRMLS_CC)) &gt;= 0) {
+<br />
+
+									close(fd);
+<br />
+
+									RETVAL_STRING(opened_path, 0);
+<br />
+
+									}
+<br />
+
+									efree(p);
+<br />
+
+									}
+<br />
+
+<br />
+
+									在[1]处tempnam()函数仅检查了open_basedir值。
+<br />
+
+<br />
+
+									3) posix_mkfifo()函数中的错误可能允许绕过open_basedir限制。以下是ext/posix/posix.c文件中的有漏洞代码段：
+<br />
+
+<br />
+
+									PHP_FUNCTION(posix_mkfifo)
+<br />
+
+									{
+<br />
+
+									char *path;
+<br />
+
+									int path_len;
+<br />
+
+									long mode;
+<br />
+
+									int result;
+<br />
+
+<br />
+
+									if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;sl&quot;, &amp;path,
+<br />
+
+									&amp;path_len, &amp;mode) == FAILURE) {
+<br />
+
+									RETURN_FALSE;
+<br />
+
+									}
+<br />
+
+<br />
+
+									if (PG(safe_mode) &amp;&amp; (!php_checkuid(path, NULL, CHECKUID_ALLOW_ONLY_DIR)))
+<br />
+
+									{ [1]
+<br />
+
+									RETURN_FALSE;
+<br />
+
+									}
+<br />
+
+<br />
+
+									result = mkfifo(path, mode);
+<br />
+
+									if (result &lt; 0) {
+<br />
+
+									POSIX_G(last_error) = errno;
+<br />
+
+									RETURN_FALSE;
+<br />
+
+									}
+<br />
+
+<br />
+
+									RETURN_TRUE;
+<br />
+
+									}
+<br />
+
+<br />
+
+									在[1]处posix_mkfifo函数仅检查了safe_mode值。
+<br />
+
+<br />
+
+									4) 在向multipart/form-data内容类型的PHP脚本发送POST请求时，如果在请求中包含了文件列表，PHP就会对该请求的每个文件创建一个临时文件。攻击者可以在请求中包含大量的文件，然后发送大量这类请求。服务器由于无法同时处理这些文件会停止响应。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									PHP
+<br />
+
+									---
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.php.net/get/php-5.3.1.tar.gz/from/a/mirror<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>7</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-11-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-12-01</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3292" target="_blank">CVE-2009-3292</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3557" target="_blank">CVE-2009-3557</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3558" target="_blank">CVE-2009-3558</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3559" target="_blank">CVE-2009-3559</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-4017" target="_blank">CVE-2009-4017</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/37079" target="_blank">37079</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14121" target="_blank">14121</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200909-412&nbsp;&nbsp;
+
+									CNNVD-200911-227&nbsp;&nbsp;
+
+									CNNVD-200911-228&nbsp;&nbsp;
+
+									CNNVD-200911-229&nbsp;&nbsp;
+
+									CNNVD-200911-246&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20093292&nbsp;&nbsp;
+
+									CNCVE-20093557&nbsp;&nbsp;
+
+									CNCVE-20093558&nbsp;&nbsp;
+
+									CNCVE-20093559&nbsp;&nbsp;
+
+									CNCVE-20094017&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.5&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-5228&nbsp;&nbsp;
+
+									CNVD-2009-5227&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

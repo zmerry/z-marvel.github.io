@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP chunk_split()中断信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的chunk_split()函数中存在信息泄露漏洞：<br />
+
+									<br />
+
+									PHP_FUNCTION(chunk_split)<br />
+
+									{<br />
+
+									    char *str;<br />
+
+									    char *result;<br />
+
+									    char *end    = &quot;\r\n&quot;;<br />
+
+									    int endlen   = 2;<br />
+
+									    long chunklen = 76;<br />
+
+									    int result_len;<br />
+
+									    int str_len;<br />
+
+									    <br />
+
+									    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;s|ls&quot;, &amp;str, &amp;str_len, &amp;chunklen, &amp;end, &amp;endlen) == FAILURE) {<br />
+
+									        return;<br />
+
+									    }<br />
+
+									<br />
+
+									    if (chunklen &lt;= 0) {<br />
+
+									        php_error_docref(NULL TSRMLS_CC, E_WARNING, &quot;Chunk length should be greater than zero&quot;);<br />
+
+									        RETURN_FALSE;<br />
+
+									    }<br />
+
+									<br />
+
+									    if (chunklen &gt; str_len) {<br />
+
+									        /* to maintain BC, we must return original string + ending */<br />
+
+									        result_len = endlen + str_len;<br />
+
+									        result = emalloc(result_len + 1);<br />
+
+									        memcpy(result, str, str_len);<br />
+
+									        memcpy(result + str_len, end, endlen);<br />
+
+									        result[result_len] = &#39;\0&#39;;<br />
+
+									        RETURN_STRINGL(result, result_len, 0);  <br />
+
+									    }<br />
+
+									<br />
+
+									zend_parse_parameters()函数将字符串指针、长度和ineger参数拷贝到了本地变量，放松了这些变量与原始ZVAL之间的联系。问题是任何对ZVAL的修改都不会反映在本地变量上，因此任何中断都可能修改ZVAL，导致本地变量指向已释放和重新使用的内存。此外由于 zend_parse_parameters()支持对象的__toString()方式，只要以chunk_split()第三个参数的形式传送对象就可以中断参数解析。由于PHP的call time pass by reference功能，之后攻击者可以从__toString()方式杀死chunk_split()的第一个参数并重新用于哈希表。这导致 chunk_split()作用于哈希表的内存而不是字符串的内存，攻击者可以泄露重要的内部内存偏移。这种攻击最方便的代码路径是提供大于原始字符串长度的块长度。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：<br />
+
+									<br />
+
+									* 删除call time pass by reference功能。<br />
+
+									<br />
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									目前厂商已经发布了升级版本以修复这个安全问题，请到厂商的主页下载5.3.2以后版本或者最新版本：<br />
+
+									<br />
+
+									http://www.php.net/downloads.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-05-07</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-05-06</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-1862" target="_blank">CVE-2010-1862</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14950" target="_blank">14950</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201005-121&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20101862&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-4599&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP Microsoft Windows Shell转义函数命令执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHP是一种流行的WEB服务器端编程语言。<br />
+
+									<br />
+
+									PHP不正确过滤函数的参数，远程攻击者可以利用这个PHP的shell转义函数以进程权限执行任意命令。<br />
+
+									<br />
+
+									问题存在于Php的escapeshellcmd()和escapeshellarg()的SHELL命令转义函数中，这些函数用于对用户提供的数据进行SHELL META字符的转移，最后传递给如system()、passthru()、popen()、exec()等函数。不过这两个函数对&#39;|&gt;&#39;字符过滤不正确，允许攻击者访问环境变量，重定向输入及执行任意命令，而escapeshellarg()函数不正确过滤&#39;&#39;，可导致攻击者访问环境变量。因此如果应用程序不正确调用这两个函数，就可能导致敏感信息泄露或者执行任意命令。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									PHP<br />
+
+									---<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：<br />
+
+									<br />
+
+									PHP Upgrade PHP 4.3.7<br />
+
+									http://www.php.net/downloads.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2004-06-18</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-12-03</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/10471" target="_blank">10471</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=6577" target="_blank">6577</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

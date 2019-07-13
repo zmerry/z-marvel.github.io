@@ -1,0 +1,495 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">MyBB index.php文件eval()函数调用远程代码执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									MyBB是一款流行的Web论坛程序。
+<br />
+
+<br />
+
+									在index.php文件336行左右代码如下：
+<br />
+
+<br />
+
+									$plugins-&gt;run_hooks(&quot;index_end&quot;);
+<br />
+
+									//出现了eval函数，注意参数
+<br />
+
+									eval(&quot;\$index = \\&quot;&quot;.$templates-&gt;get(&quot;index&quot;).&quot;\\&quot;;&quot;);
+<br />
+
+									output_page($index);
+<br />
+
+<br />
+
+									看以下eval()函数中的内容是否可以控制，继续找到templates类查看get函数的定义：
+<br />
+
+<br />
+
+									//inc/class_templates.php，65行左右
+<br />
+
+<br />
+
+									function get($title, $eslashes=1, $htmlcomments=1)
+<br />
+
+									    {
+<br />
+
+									        global $db, $theme, $mybb;
+<br />
+
+<br />
+
+									        //
+<br />
+
+									        // DEVELOPMENT MODE
+<br />
+
+									        //
+<br />
+
+									        if($mybb-&gt;dev_mode == 1)
+<br />
+
+									        {
+<br />
+
+									            $template = $this-&gt;dev_get($title);
+<br />
+
+									            if($template !== false)
+<br />
+
+									            {
+<br />
+
+									                $this-&gt;cache[$title] = $template;
+<br />
+
+									            }
+<br />
+
+									        }
+<br />
+
+<br />
+
+									        if(!isset($this-&gt;cache[$title]))
+<br />
+
+									        {
+<br />
+
+									            $query = $db-&gt;simple_select(&quot;templates&quot;, &quot;template&quot;, &quot;title=&#39;&quot;.$db-&gt;escape_string($title).&quot;&#39; AND sid IN (&#39;-2&#39;,&#39;-1&#39;,&#39;&quot;.$theme[&#39;templateset&#39;].&quot;&#39;)&quot;, array(&#39;order_by&#39; =&gt; &#39;sid&#39;, &#39;order_dir&#39; =&gt; &#39;DESC&#39;, &#39;limit&#39; =&gt; 1));
+<br />
+
+									        //从数据库里面的取出模版的代码
+<br />
+
+									            $gettemplate = $db-&gt;fetch_array($query);
+<br />
+
+									            if($mybb-&gt;debug_mode)
+<br />
+
+									            {
+<br />
+
+									                $this-&gt;uncached_templates[$title] = $title;
+<br />
+
+									            }
+<br />
+
+<br />
+
+									            if(!$gettemplate)
+<br />
+
+									            {
+<br />
+
+									                $gettemplate[&#39;template&#39;] = &quot;&quot;;
+<br />
+
+									            }
+<br />
+
+<br />
+
+									            $this-&gt;cache[$title] = $gettemplate[&#39;template&#39;];
+<br />
+
+									        }
+<br />
+
+									        $template = $this-&gt;cache[$title];
+<br />
+
+<br />
+
+									        if($htmlcomments)
+<br />
+
+									        {
+<br />
+
+									            if($mybb-&gt;settings[&#39;tplhtmlcomments&#39;] == 1)
+<br />
+
+									            {
+<br />
+
+									                $template = &quot;&lt;!-- start: &quot;.htmlspecialchars_uni($title).&quot; --&gt;\n{$template}\n&lt;!-- end: &quot;.htmlspecialchars_uni($title).&quot; --&gt;&quot;;
+<br />
+
+									            }
+<br />
+
+									            else
+<br />
+
+									            {
+<br />
+
+									                $template = &quot;\n{$template}\n&quot;;
+<br />
+
+									            }
+<br />
+
+									        }
+<br />
+
+<br />
+
+									        if($eslashes)
+<br />
+
+									        {
+<br />
+
+									            $template = str_replace(&quot;\\\&#39;&quot;, &quot;&#39;&quot;, addslashes($template));
+<br />
+
+									        }
+<br />
+
+									        return $template;
+<br />
+
+									    }
+<br />
+
+<br />
+
+									从上面的代码可以看出，get()函数是从数据库里面取出模板的内容经过处理后返回给eval函数。数据库里的数据是通过以下方式获取的：
+<br />
+
+<br />
+
+									//admin/modules/style/templates.php，372行开始
+<br />
+
+<br />
+
+									    if($mybb-&gt;input[&#39;action&#39;] == &quot;edit_template&quot;)
+<br />
+
+									{
+<br />
+
+									    $plugins-&gt;run_hooks(&quot;admin_style_templates_edit_template&quot;);
+<br />
+
+<br />
+
+									    if(!$mybb-&gt;input[&#39;title&#39;] || !$sid)
+<br />
+
+									    {
+<br />
+
+									        flash_message($lang-&gt;error_missing_input, &#39;error&#39;);
+<br />
+
+									        admin_redirect(&quot;index.php?module=style/templates&quot;);
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    if($mybb-&gt;request_method == &quot;post&quot;)
+<br />
+
+									    {
+<br />
+
+									        if(empty($mybb-&gt;input[&#39;title&#39;]))
+<br />
+
+									        {
+<br />
+
+									            $errors[] = $lang-&gt;error_missing_title;
+<br />
+
+									        }
+<br />
+
+<br />
+
+									        if(!$errors)
+<br />
+
+									        {
+<br />
+
+									            $query = $db-&gt;simple_select(&quot;templates&quot;, &quot;*&quot;, &quot;tid=&#39;{$mybb-&gt;input[&#39;tid&#39;]}&#39;&quot;);
+<br />
+
+									            $template = $db-&gt;fetch_array($query);
+<br />
+
+									            //获取到我们输入的内容，包括模板的标题和内容
+<br />
+
+									            $template_array = array(
+<br />
+
+									                &#39;title&#39; =&gt; $db-&gt;escape_string($mybb-&gt;input[&#39;title&#39;]),
+<br />
+
+									                &#39;sid&#39; =&gt; $sid,
+<br />
+
+									                &#39;template&#39; =&gt; $db-&gt;escape_string(trim($mybb-&gt;input[&#39;template&#39;])),
+<br />
+
+									                &#39;version&#39; =&gt; $mybb-&gt;version_code,
+<br />
+
+									                &#39;status&#39; =&gt; &#39;&#39;,
+<br />
+
+									                &#39;dateline&#39; =&gt; TIME_NOW
+<br />
+
+									            );
+<br />
+
+<br />
+
+									            // Make sure we have the correct tid associated with this template. If the user double submits then the tid could originally be the master template tid, but because the form is sumbitted again, the tid doesn&#39;t get updated to the new modified template one. This then causes the master template to be overwritten
+<br />
+
+									            $query = $db-&gt;simple_select(&quot;templates&quot;, &quot;tid&quot;, &quot;title=&#39;&quot;.$db-&gt;escape_string($template[&#39;title&#39;]).&quot;&#39; AND (sid = &#39;-2&#39; OR sid = &#39;{$template[&#39;sid&#39;]}&#39;)&quot;, array(&#39;order_by&#39; =&gt; &#39;sid&#39;, &#39;order_dir&#39; =&gt; &#39;desc&#39;, &#39;limit&#39; =&gt; 1));
+<br />
+
+									            $template[&#39;tid&#39;] = $db-&gt;fetch_field($query, &quot;tid&quot;);
+<br />
+
+<br />
+
+									            if($sid &gt; 0)
+<br />
+
+									            {
+<br />
+
+									                // Check to see if it&#39;s never been edited before (i.e. master) of if this a new template (i.e. we&#39;ve renamed it)  or if it&#39;s a custom template
+<br />
+
+									                $query = $db-&gt;simple_select(&quot;templates&quot;, &quot;sid&quot;, &quot;title=&#39;&quot;.$db-&gt;escape_string($mybb-&gt;input[&#39;title&#39;]).&quot;&#39; AND (sid = &#39;-2&#39; OR sid = &#39;{$sid}&#39; OR sid=&#39;{$template[&#39;sid&#39;]}&#39;)&quot;, array(&#39;order_by&#39; =&gt; &#39;sid&#39;, &#39;order_dir&#39; =&gt; &#39;desc&#39;));
+<br />
+
+									                $existing_sid = $db-&gt;fetch_field($query, &quot;sid&quot;);
+<br />
+
+									                $existing_rows = $db-&gt;num_rows($query);
+<br />
+
+									                //更新模版数据库
+<br />
+
+									                if(($existing_sid == -2 &amp;&amp; $existing_rows == 1) || $existing_rows == 0)
+<br />
+
+									                {
+<br />
+
+									                    $tid = $db-&gt;insert_query(&quot;templates&quot;, $template_array);
+<br />
+
+									                }
+<br />
+
+									                else
+<br />
+
+									                {
+<br />
+
+									                    $db-&gt;update_query(&quot;templates&quot;, $template_array, &quot;tid=&#39;{$template[&#39;tid&#39;]}&#39; AND sid != &#39;-2&#39;&quot;);
+<br />
+
+									                }
+<br />
+
+									            }
+<br />
+
+<br />
+
+									从以上的代码可以看出，这是一个典型的“二次”漏洞。在后台将php代码通过编辑模板注入到数据库，然后到访问前台文件取出代码进入eval函数成功执行代码，注入代码的时候要规避一些敏感符号。但这个漏洞需要管理员权限才能利用，仅能作为后台getwebshell的方法。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									MyBB
+<br />
+
+									----
+<br />
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://www.mybboard.com/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-01-11</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-01-19</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14316" target="_blank">14316</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

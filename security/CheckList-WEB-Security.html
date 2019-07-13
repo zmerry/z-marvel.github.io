@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Web Application Penetration Testing Checklist – A Detailed Cheat SheetWhat is Web Application Penetration Testing?Web Application Pen testing is a method of identifying, analyzing and Report the vuln">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CheckList WEB Security">
+<meta property="og:url" content="http://www.okoksec.com/security/CheckList-WEB-Security.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="Web Application Penetration Testing Checklist – A Detailed Cheat SheetWhat is Web Application Penetration Testing?Web Application Pen testing is a method of identifying, analyzing and Report the vuln">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-30T15:13:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CheckList WEB Security">
+<meta name="twitter:description" content="Web Application Penetration Testing Checklist – A Detailed Cheat SheetWhat is Web Application Penetration Testing?Web Application Pen testing is a method of identifying, analyzing and Report the vuln">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>CheckList WEB Security</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+    <div class="content index py4">
+        
+          <header id="header">
+  <a href="/">
+  
+    
+      <div id="logo" style="background-image: url(/images/logo.png);"></div>
+    
+  
+    <div id="title">
+      <h1>ZMarvel</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fas fa-bars fa-2x"></i></a>
+      </li>
+       
+        <li><a href="/">首页</a></li>
+       
+        <li><a href="/about/">关于</a></li>
+       
+        <li><a href="/archives/">归档</a></li>
+       
+        <li><a href="/tags/">标签</a></li>
+       
+        <li><a href="/categories/">分类</a></li>
+       
+        <li><a href="/project/">项目</a></li>
+       
+        <li><a href="/search/">搜索</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <a id="more"></a>
+<h1 id="Web-Application-Penetration-Testing-Checklist-–-A-Detailed-Cheat-Sheet"><a href="#Web-Application-Penetration-Testing-Checklist-–-A-Detailed-Cheat-Sheet" class="headerlink" title="Web Application Penetration Testing Checklist – A Detailed Cheat Sheet"></a>Web Application Penetration Testing Checklist – A Detailed Cheat Sheet</h1><h2 id="What-is-Web-Application-Penetration-Testing"><a href="#What-is-Web-Application-Penetration-Testing" class="headerlink" title="What is Web Application Penetration Testing?"></a><strong>What is Web Application Penetration Testing?</strong></h2><p>Web Application Pen testing is a method of identifying, analyzing and Report the vulnerabilities which exist on the Web application including <strong>buffer overflow, input validation, code Execution, Bypass Authentication, SQL Injection, CSRF, and Cross Site Scripting</strong> (XSS) in the target web Application that is given for Penetration Testing.</p>
+<p>Repeat testing and conduct a series of methods. One of the best methods is to conduct penetration testing for all kinds of web application vulnerabilities.</p>
+<h2 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a><strong>Information Gathering</strong></h2><ol>
+<li>Retrieve and Analyze the robot.txt files by using a tool called GNU Wget.</li>
+<li>Examine the version of software.database Details, the error technical component, bugs by the error codes by requesting invalid pages.</li>
+<li>Implement the techniques such as DNS inverse queries, DNS zone Transfers, web based DNS Searches.</li>
+<li>Perform Directory style Searching and vulnerability scanning, Probe for URLs, using tools such as <strong>NMAP</strong> and <strong>Nessus</strong>.</li>
+<li>Identify the Entry point of the application using <strong>OWSAP ZAP, Burb Proxy, TemperIE, WebscarabTemper Data</strong>.</li>
+<li>By using traditional Fingerprint Tool such as <strong>Nmap, Amap</strong>, perform TCP/ICMP  and service Fingerprinting.</li>
+<li>By Requesting Common File Extension such as <strong>.ASP, .EXE, .HTML, .PHP</strong> ,Test for recognized file types/Extensions/Directories.</li>
+<li>Examine the Sources code From the Accessing Pages of the Application front end.</li>
+</ol>
+<h2 id="Authentication-Testing"><a href="#Authentication-Testing" class="headerlink" title="Authentication Testing"></a><strong>Authentication Testing</strong></h2><ol>
+<li>Check if it is possible to <strong>“reuse”</strong> the session after Logout.also check if the application automatically logs out a user has idle for a certain amount of time.</li>
+<li>Check whether any sensitive information  Remain Stored stored in browser cache.</li>
+<li>Check and try to Reset the password, by social engineering crack secretive questions and guessing.</li>
+<li>check if the <strong>“Remember my password”</strong> Mechanism is implemented by checking the HTML code of the login page.</li>
+<li>Check if the hardware devices directly communicate and independently with authentication infrastructure using additional communication channel.</li>
+<li>Test <strong>CAPTCHA</strong> for authentication vulnerabilities presented or not.</li>
+<li>Check whether any weak security <strong>questions/Answer</strong> are presented.</li>
+</ol>
+<h2 id="Authorization-Testing"><a href="#Authorization-Testing" class="headerlink" title="Authorization Testing"></a><strong>Authorization Testing</strong></h2><ol>
+<li>Test the Role and Privilege Manipulation to Access the Resources.</li>
+<li>Test For Path Traversal by Performing input Vector Enumeration and analyze the input validation functions presented in the web application.</li>
+<li>Test for cookie and parameter Tempering using web spider tools.</li>
+<li>Test for HTTP Request Tempering and check whether gain illegal access to reserved resources.</li>
+</ol>
+<h2 id="Configuration-Management-Testing"><a href="#Configuration-Management-Testing" class="headerlink" title="Configuration  Management Testing"></a><strong>Configuration  Management Testing</strong></h2><ol>
+<li>Check directory and File Enumeration review server and application Documentation. also, check the infrastructure and application admin interfaces.</li>
+<li>Analyze the Web server banner and Performing network scanning.</li>
+<li>Check and verify the presence of old Documentation and Backup and referenced files such as sources codes, passwords, installation paths.</li>
+<li>check and identify the ports associated with the <strong>SSL/TLS</strong> services using <strong>NMAP</strong> and <strong>NESSUS</strong>.</li>
+<li>Review OPTIONS HTTP method using <strong>Netcat</strong>and <strong>Telnet.</strong></li>
+<li>Test for HTTP methods and XST for credentials of legitimate users.</li>
+<li>Perform application configuration management test to review the information of the source code, log files and default Error Codes.</li>
+</ol>
+<h2 id="Session-Management-Testing"><a href="#Session-Management-Testing" class="headerlink" title="Session Management Testing"></a><strong>Session Management Testing</strong></h2><ol>
+<li>Check the URL’s in the Restricted area to Test for Cross Site Request Forgery.</li>
+<li>Test for Exposed Session variables by inspecting Encryption and reuse of <strong>session token, Proxies and caching, GET&amp;POST</strong>.</li>
+<li>Collect a sufficient number of cookie samples and analyze the cookie sample algorithm and forge a valid Cookie in order to perform an Attack.</li>
+<li>Test the cookie attribute using intercept proxies such as <strong>Burb Proxy, OWASP ZAP</strong>, or traffic intercept proxies such as Temper Data.</li>
+<li>Test the session Fixation, to avoid seal user session.(session Hijacking )</li>
+</ol>
+<h2 id="Data-Validation-Testing"><a href="#Data-Validation-Testing" class="headerlink" title="Data Validation Testing"></a><strong>Data Validation Testing</strong></h2><ol>
+<li>Performing Sources code Analyze for javascript Coding Errors.</li>
+<li>Perform Union Query SQL injection testing, standard SQL injection Testing, blind  SQL querY Testing, using tools such as <strong>SQLninja, SQLdumper, SQL power injector</strong> .etc.</li>
+<li>Analyze the HTML Code, Test for stored XSS, leverage stored XSS using tools such as <strong>XSS proxy, Backframe, Burb, XSS Assistant.</strong></li>
+<li>Perform <strong>LDAP injection</strong> testing for sensitive information about users and hosts.</li>
+<li>Perform <strong>IMAP/SMTP injection</strong> Testing for Access the Backend Mail server.</li>
+<li>Perform <strong>XPATH Injection</strong> Testing for Accessing the confidential information</li>
+<li>Perform <strong>XML injection</strong> testing to know information about XML Structure.</li>
+<li>Perform Code injection testing to identify input validation Error.</li>
+<li>Perform Buffer Overflow testing for Stack and heap memory information and application control flow.</li>
+<li>Test for HTTP Splitting and smuggling for cookies and HTTP redirect information.</li>
+</ol>
+<h2 id="Denial-of-Service-Testing"><a href="#Denial-of-Service-Testing" class="headerlink" title="Denial of Service Testing"></a><strong>Denial of Service Testing</strong></h2><ol>
+<li>Send Any Large number of Requests that perform database operations and observe any Slowdown and  New Error Messages.</li>
+<li>Perform manual source code analysis and submit a range of input varying lengths to the applications</li>
+<li>Test for SQL wildcard attacks for application information testing.</li>
+<li>Test for User specifies object allocation whether a maximum number of object that application can handle.</li>
+<li>Enter Extreme Large number of the input field that used by the application as a Loop counter.</li>
+<li>Use a script to automatically submit an extremely long value for severing the request.</li>
+</ol>
+<p><br></p>
+<h1 id="Web-应用渗透测试报告"><a href="#Web-应用渗透测试报告" class="headerlink" title="Web 应用渗透测试报告"></a>Web 应用渗透测试报告</h1><h1 id="（）"><a href="#（）" class="headerlink" title="（）"></a>（）</h1><p><br <br=""></p>
+<p>目录</p>
+<p><a href="#bookmark3">一 、</a> <a href="#bookmark3">渗 透 测 试 详 情</a> <a href="#bookmark3">1</a></p>
+<ol>
+<li><a href="#bookmark4">测 试 概 述</a> <a href="#bookmark4">1</a></li>
+<li><a href="#bookmark5">测 试 收 益</a> <a href="#bookmark5">1</a></li>
+</ol>
+<p><a href="#bookmark12">二 、</a> <a href="#bookmark12">渗 透 测 试 内 容</a> <a href="#bookmark12">2</a></p>
+<ol>
+<li><a href="#bookmark13">参 考 标 准</a> <a href="#bookmark13">2</a></li>
+<li><a href="#bookmark14">测 试 范 围</a> <a href="#bookmark14">2</a></li>
+<li><a href="#bookmark15">测 试 模 式</a> <a href="#bookmark15">3</a></li>
+<li><a href="#bookmark16">测 试 项</a> <a href="#bookmark16">3</a></li>
+<li><a href="#bookmark17">测 试 团 队</a> <a href="#bookmark17">4</a></li>
+</ol>
+<p><a href="#bookmark69">三 、</a> <a href="#bookmark69">测 试 结 果</a> <a href="#bookmark69">4</a></p>
+<ol>
+<li><a href="#bookmark70">站 点 漏 洞 统 计</a> <a href="#bookmark70">4</a></li>
+<li><p><a href="#bookmark71">配 置 管 理 测 试</a> <a href="#bookmark71">7</a></p>
+<ol>
+<li><a href="#bookmark72">应 用 平 台 配 置 错 误</a> <a href="#bookmark72">7</a></li>
+<li><a href="#bookmark73">敏 感 信 息 文 件 扩 展 处 理 错 误</a> <a href="#bookmark73">7</a></li>
+<li><a href="#bookmark74">敏 感 文 件 和 未 被 应 用 文 件 暴 露</a> <a href="#bookmark74">7</a></li>
+<li><a href="#bookmark75">后 台 管 理 界 面 暴 露</a> <a href="#bookmark75">7</a></li>
+<li><a href="#bookmark76">不 安 全 的</a> <a href="#bookmark76">HTTP</a> <a href="#bookmark76">方 法</a> <a href="#bookmark76">8</a></li>
+<li><a href="#bookmark77">跨 域 策 略 配 置 错 误</a> <a href="#bookmark77">8</a></li>
+<li><a href="#bookmark78">慢 速</a> <a href="#bookmark78">HTTP</a> <a href="#bookmark78">拒 绝 服 务 攻 击</a> <a href="#bookmark78">8</a></li>
+<li><a href="#bookmark79">错 误 页 面 可 利 用 信 息 暴 露</a> <a href="#bookmark79">8</a></li>
+<li><a href="#bookmark80">未 验 证 的 重 定 向</a> <a href="#bookmark80">9</a></li>
+<li><a href="#bookmark81">http host</a> <a href="#bookmark81">头 攻 击</a> <a href="#bookmark81">9</a></li>
+</ol>
+</li>
+<li><p><a href="#bookmark82">身 份 管 理 测 试</a> <a href="#bookmark82">9</a></p>
+<ol>
+<li><a href="#bookmark83">角 色 定 义 策 略 漏 洞</a> <a href="#bookmark83">9</a></li>
+<li><a href="#bookmark84">用 户 注 册 策 略 漏 洞</a> <a href="#bookmark84">9</a></li>
+<li><a href="#bookmark85">账 户 权 限 配 置 不 合 理</a> <a href="#bookmark85">10</a></li>
+</ol>
+</li>
+<li><p><a href="#bookmark86">认 证 测 试</a> <a href="#bookmark86">10</a></p>
+<ol>
+<li><a href="#bookmark87">短 信 验 证 码 策 略 漏 洞</a> <a href="#bookmark87">10</a></li>
+<li><a href="#bookmark88">图 形 验 证 码 策 略 漏 洞</a> <a href="#bookmark88">10</a></li>
+<li><a href="#bookmark89">账 户 锁 定 策 略 漏 洞</a> <a href="#bookmark89">10</a></li>
+<li><a href="#bookmark90">可 枚 举 真 实 账 户</a> <a href="#bookmark90">11</a></li>
+<li><a href="#bookmark91">密 码 策 略 漏 洞</a> <a href="#bookmark91">11</a></li>
+<li><a href="#bookmark92">密 码 更 改 功 能 漏 洞</a> <a href="#bookmark92">11</a></li>
+<li><a href="#bookmark93">存 在 默 认 用 户 凭 证</a> <a href="#bookmark93">11</a></li>
+<li><a href="#bookmark94">浏 览 器 缓 存 威 胁</a> <a href="#bookmark94">11</a></li>
+<li><a href="#bookmark95">记 忆 密 码 功 能 威 胁</a> <a href="#bookmark95">12</a></li>
+<li><a href="#bookmark96">安 全 问 答 策 略 漏 洞</a> <a href="#bookmark96">12</a></li>
+</ol>
+</li>
+<li><p><a href="#bookmark97">授 权 测 试</a> <a href="#bookmark97">12</a></p>
+<ol>
+<li><a href="#bookmark98">目 录 遍 历</a> <a href="#bookmark98">/</a> <a href="#bookmark98">文 件 包 含 漏 洞</a> <a href="#bookmark98">12</a></li>
+<li><a href="#bookmark99">越 权 漏 洞</a> <a href="#bookmark99">12</a></li>
+</ol>
+</li>
+<li><p><a href="#bookmark100">输 入 验 证 测 试</a> <a href="#bookmark100">13</a></p>
+<ol>
+<li><a href="#bookmark101">跨 站 脚 本 攻 击</a> <a href="#bookmark101">13</a></li>
+<li><a href="#bookmark102">SQL</a> <a href="#bookmark102">注 入</a> <a href="#bookmark102">13</a></li>
+<li><a href="#bookmark103">XML</a> <a href="#bookmark103">注 入</a> <a href="#bookmark103">13</a></li>
+</ol>
+</li>
+<li><p><a href="#bookmark104">会 话 管 理 测 试</a> <a href="#bookmark104">14</a></p>
+<ol>
+<li><a href="#bookmark105">跨 站 请 求 伪 造</a> <a href="#bookmark105">14</a></li>
+<li><a href="#bookmark106">会 话 管 理 架 构 绕 过</a> <a href="#bookmark106">14</a></li>
+<li><a href="#bookmark107">Cookie</a> <a href="#bookmark107">属 性 漏 洞</a> <a href="#bookmark107">14</a></li>
+<li><a href="#bookmark108">会 话 固 化 漏 洞</a> <a href="#bookmark108">14</a></li>
+</ol>
+</li>
+<li><p><a href="#bookmark109">加 密 体 系 脆 弱 性 测 试</a> <a href="#bookmark109">15</a></p>
+<ol>
+<li><a href="#bookmark110">SSL/TLS</a> <a href="#bookmark110">弱 加 密 、 传 输 层 协 议 缺 陷</a> <a href="#bookmark110">15</a></li>
+<li><a href="#bookmark111">通 过 未 加 密 信 道 发 送 敏 感 数 据</a> <a href="#bookmark111">15</a></li>
+<li><a href="#bookmark112">HTTP</a> <a href="#bookmark112">强 制 安 全 传 输 漏 洞</a> <a href="#bookmark112">15</a></li>
+</ol>
+</li>
+<li><a href="#bookmark113">业 务 逻 辑 测 试</a> <a href="#bookmark113">15</a><ol>
+<li><a href="#bookmark114">业 务 逻 辑 数 据 验 证 漏 洞</a> <a href="#bookmark114">15</a></li>
+<li><a href="#bookmark115">数 据 完 整 性 验 证 漏 洞</a> <a href="#bookmark115">16</a></li>
+<li><a href="#bookmark116">处 理 耗 时 漏 洞</a> <a href="#bookmark116">16</a></li>
+<li><a href="#bookmark117">重 放 攻 击</a> <a href="#bookmark117">16</a></li>
+<li><a href="#bookmark118">工 作 流 程 逃 逸</a> <a href="#bookmark118">16</a></li>
+<li><a href="#bookmark119">文 件 上 传 漏 洞</a> <a href="#bookmark119">16</a></li>
+</ol>
+</li>
+</ol>
+<p><a href="#bookmark125">四 、</a> <a href="#bookmark125">重 大 漏 洞 利 用 专 题</a> <a href="#bookmark125">17</a></p>
+<pre><code>1. [认 证 模 式 绕 过](#bookmark126) [17](#bookmark126)
+2. [短 信 轰 炸](#bookmark127) [17](#bookmark127)
+3. [数 据 泄 露](#bookmark128) [17](#bookmark128)
+4. [获 取 服 务 器 权 限](#bookmark129) [17](#bookmark129)
+</code></pre><p><a href="#bookmark133">五 、</a> <a href="#bookmark133">测 试 结 论</a> <a href="#bookmark133">18</a></p>
+<ol>
+<li><a href="#bookmark134">整 体 评 价</a> <a href="#bookmark134">18</a></li>
+<li><a href="#bookmark135">注 意 事 项</a> <a href="#bookmark135">18</a></li>
+</ol>
+<p><a href="#bookmark137">六 、</a> <a href="#bookmark137">附 件</a> <a href="#bookmark137">18</a></p>
+<p><a name="bookmark0">一、 </a>渗透测试详情<a name="bookmark3">‌</a></p>
+<p><br></p>
+<ol>
+<li><a name="bookmark1">测试概述</a><a name="bookmark4">‌</a> <br><br>信息系统在现代管理中扮演着十分重要的角色，伴随业务的发展，网站、系统、APP 等都在不断进行不同程度的更新和扩展，同时，所受到愈发严重的安全威胁，可能受到的恶意攻击包括：信息篡改与重放、数据泄露、网络间谍、”黑客”入侵、病毒传播、特洛伊木马、蠕虫程序等。这些攻击完全能造成信息系统瘫痪、重要信息流失。 一旦生产系统被攻击导致系统不可用，将会导致系统承载的具体业务不能顺利展开，严重干扰正常运营秩序，造成被攻击方声誉与实际上的损失。 为保障有关系统对外服务安全，我们将根据具体需求，采用成熟、规范的测 试方法和工具对有关系统进行渗透测试评估与安全扫描，以及时发现存在的问题，提出恰当的改进建议，为系统安全提供保障。 渗透测试过程主要依据现今已经掌握的安全漏洞信息，模拟黑客的真实攻击方法对系统和网络进行非破坏性质的攻击性测试，渗透测试行为将在客户的书面明确授权和监督下进行。 <br></li>
+<li><a name="bookmark2">测试收益</a><a name="bookmark5">‌</a></li>
+</ol>
+<p><br></p>
+<p>渗透测试是站在实战角度对客户单位指定的目标系统进行的安全评估，可以让客户单位相关人员直观的了解到自己网络、系统、应用中隐含的漏洞和危害发生时可能导致的损失。通过我们的渗透测试，可以获得如下收益。</p>
+<p>安全缺陷：从黑客的角度发现客户单位安全体系中的漏洞（隐含缺陷），协助客户单位明确目前降低风险的措施，为下一步的安全策略调整指明了方向。 测试报告：能帮助客户单位以实际案例的形式来说明目前安全现状，从而增</p>
+<p>加客户单位 对信息安全的认知度，提升客户单位人员的风险危机意识，从而实现内部安全等级的整体提升。</p>
+<p>交互式渗透测试：我们的渗透测试人员在客户单位约定的范围、时间内实施测试，而客户单位人员可以与此同时进行相关的检测监控工作，确认自己能不能</p>
+<p>发现正在进行的渗透动作，从中真实的评估自己的检测预警能力。</p>
+<p><br></p>
+<p><a name="bookmark6">二、 </a>渗透测试内容<a name="bookmark12">‌</a></p>
+<p><br></p>
+<ol>
+<li><p><a name="bookmark7">参考标准</a><a name="bookmark13">‌</a> <br></p>
+<ul>
+<li>OWASP （开放 Web 软件安全规划） 致力于推动 Web 安全的开放社群、非营利性组织，目前全球包括台湾分会共有 82 个分会近万名会员，其主要目标是协助解决造成不安全 Web 软件的主因，并透过开放式计划的方式，由组织成员研发工具与撰写技术文件，向全世界分享最新攻击趋势、与测试及防御方法，目前 OWASP 已有超过 30 多个正在进行中的计划，包括最知名的 OWASTop 10(十大 Web 弱点)- Web 应用程序安全问题分类、Web 安全练习平台、侦测与保护 PHP/Java/ASP.Net 程序代码等。</li>
+<li>PTES(Penetration Testing Execution Standard) PTES 渗透测试执行标准是安全业界在渗透测试技术领域中开发的一个新标准，目标是在对渗透测试进行重新定义，新标准的核心理念是通过建立起进行渗透测试所要求的基本准则基线，来定义一次真正的渗透测试过程，并得到安全业办的广泛认同。</li>
+<li>OSSTMM （开源安全测试方法手册） OSSTMM 提供物理安全，人类心理学，数据网络，无线通信媒介和电讯通信这五类渠道非常细致的测试用例，同时给出了评估测试结果的指标标准。 <br></li>
+</ul>
+</li>
+<li><a name="bookmark8">测试范围</a><a name="bookmark14">‌</a> <br></li>
+</ol>
+<p>| 序号 | 测试站点 | 站点链接 | 测试账户 | 备注 |<br>| 1 |  |  |  |  |<br>| 2 |  |  |  |  |<br>| 3 |  |  |  |  |</p>
+<ol>
+<li><a name="bookmark9">测试模式</a><a name="bookmark15">‌</a> <br></li>
+</ol>
+<p>| 测试模式 | 介绍 |<br>| 黑盒测试 | 黑盒测试即测试小组在不知晓目标环境的情况下，以模拟黑客真实攻击方式，尝试突破其应用系统或服务端安全限制及业务逻辑的测试。 |<br>| 灰盒测试 | 灰盒测试是基于对程序内部细节有限认知上的应用调试方法。测试者可能知道系统组件之间是如何互相作用的，但缺乏对内部程序功能和运作的详细了解。 |</p>
+<p><br></p>
+<ol>
+<li><a name="bookmark10">测试项</a><a name="bookmark16">‌</a> <br></li>
+</ol>
+<p>| 测试类型 | 测试项 |<br>| 配置管理测试 | 应用平台配置错误 |<br>| 敏感信息文件扩展处理错误 |<br>| 敏感文件和未被应用文件暴露 |<br>| 后台管理界面暴露 |<br>| 不安全的 HTTP 方法 |<br>| 跨域策略配置错误 |<br>| 慢速 HTTP 拒绝服务攻击 |<br>| 报错页面可利用信息暴露 |<br>| 未验证的重定向 |<br>| http host 头攻击 |<br>| 身份管理测试 | 角色定义策略漏洞 |<br>| 用户注册策略漏洞 |<br>| 账户权限配置不合理 |<br>| 认证测试 | 短信验证码策略漏洞 |<br>| 图形验证码策略漏洞 |<br>| 账户锁定策略漏洞 |<br>| 可枚举真实账户 |<br>| 密码策略漏洞 |<br>| 密码更改功能漏洞 |<br>| 存在默认用户凭证 |<br>| 浏览器缓存威胁 |</p>
+<p><br></p>
+<p>|  | 记忆密码功能存在威胁 |<br>| 安全问答策略漏洞 |<br>| 授权测试 | 目录遍历/文件包含漏洞 |<br>| 越权漏洞 |<br>| 输入验证测试 | 跨站脚本攻击 |<br>| SQL 注入 |<br>| XML 注入 |<br>| 会话管理测试 | 跨站请求伪造 |<br>| 会话管理架构绕过 |<br>| Cookie 属性漏洞 |<br>| 会话固化漏洞 |<br>| 加密体系脆弱性测试 | SSL/TLS 弱加密、传输层协议缺陷 |<br>| 通过未加密信道发送敏感数据 |<br>| HTTP 强制安全传输漏洞 |<br>| 业务逻辑测试 | 业务逻辑数据验证漏洞 |<br>| 数据完整性验证漏洞 |<br>| 处理耗时漏洞 |<br>| 重放攻击 |<br>| 工作流程逃逸 |<br>| 文件上传漏洞 |</p>
+<p><br></p>
+<ol>
+<li><a name="bookmark11">测试团队</a><a name="bookmark17">‌</a></li>
+</ol>
+<p><br></p>
+<p>安全服务团队</p>
+<p><br></p>
+<p><a name="bookmark18">三、 </a>测试结果<a name="bookmark69">‌</a></p>
+<p><br></p>
+<ol>
+<li><p><a name="bookmark19">站点漏洞统计</a><a name="bookmark70">‌</a> <br><br>对某某网站做安全测试，共发现安全缺陷 项。 高危漏洞： 中危漏洞： 低危漏洞： <br></p>
+<ol>
+<li>漏洞威胁饼状图 <br><br>XX 站点安全评估 <br><br>9% <br><br>19% <br><br>高危漏洞数：4 中危漏洞数：6 低危漏洞数：9 <br><br>43% 紧急漏洞数：2 29% <br></li>
+<li>漏洞类型分布柱状图 <br><br>4.5</li>
+</ol>
+</li>
+</ol>
+<p>|  |  |  |<br>|  |  |<br>|  |  |  |  |<br>|  |  |  |<br>|  |  |  |  |  |<br>|  |  |  |  |<br>|  |  |  |  |  |  |<br>|  |  |  |  |  |</p>
+<p>4 3.5 3 2.5 2 1.5 1 0.5 0 <br><br>XX 站点漏洞类型分布 SQL XSS 命 令 执 行 其 他 SQL       XSS       命令执行   其他 <br></p>
+<pre><code>3. 漏洞详情统计 &lt;br&gt;
+</code></pre><table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">漏洞名称</td>
+<td>所在模块</td>
+<td>漏洞描述</td>
+<td>威胁等级</td>
+<td>漏洞序号</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>| 后台管理界面暴露 | Tomcat 应用平台 | tomcat 管理平台暴露 | 中危 | 3.3.4 |<br>|  |  |  |  |  |<br>|  |  |  |  |  |<br>|  |  |  |  |  |</p>
+<p><br></p>
+<ol>
+<li><p><a name="bookmark20">配置管理测试</a><a name="bookmark71">‌</a> <br></p>
+<ol>
+<li><a name="bookmark21">应用平台配置错误</a><a name="bookmark72">‌</a> <br></li>
+</ol>
+</li>
+</ol>
+<p>| 漏洞描述 | XX 模块出现XX 配置错误 |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP 5.2 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>2. &lt;a name=&quot;bookmark22&quot;&gt;敏感信息文件扩展处理错误&lt;/a&gt;&lt;a name=&quot;bookmark73&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP 5.3 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>3. &lt;a name=&quot;bookmark23&quot;&gt;敏感文件和未被应用文件暴露&lt;/a&gt;&lt;a name=&quot;bookmark74&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP 5.4 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>4. &lt;a name=&quot;bookmark24&quot;&gt;后台管理界面暴露&lt;/a&gt;&lt;a name=&quot;bookmark75&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP 5.5 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>5. &lt;a name=&quot;bookmark25&quot;&gt;不安全的HTTP 方法&lt;/a&gt;&lt;a name=&quot;bookmark76&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP 5.6 TRACE(高危),OPTIONS,DELETE, SEARCH,COPY,MOVE, PROPFIND, PROPPATCH, MKCOL ,LOCK ,UNLOCK |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>6. &lt;a name=&quot;bookmark26&quot;&gt;跨域策略配置错误&lt;/a&gt;&lt;a name=&quot;bookmark77&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP 5.8 Access-control-allow-origin:* |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>7. &lt;a name=&quot;bookmark27&quot;&gt;慢速HTTP 拒绝服务攻击&lt;/a&gt;&lt;a name=&quot;bookmark78&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：Slowhttptest等工具 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>8. &lt;a name=&quot;bookmark28&quot;&gt;错误页面可利用信息暴露&lt;/a&gt;&lt;a name=&quot;bookmark79&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注： |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>9. &lt;a name=&quot;bookmark29&quot;&gt;未验证的重定向&lt;/a&gt;&lt;a name=&quot;bookmark80&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注： |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>10. &lt;a name=&quot;bookmark30&quot;&gt;http host 头攻击&lt;/a&gt;&lt;a name=&quot;bookmark81&quot;&gt;‌&lt;/a&gt;
+</code></pre><p><br></p>
+<p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注： |<br>| 修复建议 |  |</p>
+<p><br></p>
+<ol>
+<li><p><a name="bookmark31">身份管理测试</a><a name="bookmark82">‌</a> <br></p>
+<ol>
+<li><a name="bookmark32">角色定义策略漏洞</a><a name="bookmark83">‌</a> <br></li>
+</ol>
+</li>
+</ol>
+<p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP6.1生成展示权限矩阵 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>2. &lt;a name=&quot;bookmark33&quot;&gt;用户注册策略漏洞&lt;/a&gt;&lt;a name=&quot;bookmark84&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP6.2 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>3. &lt;a name=&quot;bookmark34&quot;&gt;账户权限配置不合理&lt;/a&gt;&lt;a name=&quot;bookmark85&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP6.3 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<ol>
+<li><p><a name="bookmark35">认证测试</a><a name="bookmark86">‌</a> <br></p>
+<ol>
+<li><a name="bookmark36">短信验证码策略漏洞</a><a name="bookmark87">‌</a> <br></li>
+</ol>
+</li>
+</ol>
+<p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：短信验证码截获、爆破、绕过、多次使用等 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>2. &lt;a name=&quot;bookmark37&quot;&gt;图形验证码策略漏洞&lt;/a&gt;&lt;a name=&quot;bookmark88&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：图形验证码失效、重复使用等 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>3. &lt;a name=&quot;bookmark38&quot;&gt;账户锁定策略漏洞&lt;/a&gt;&lt;a name=&quot;bookmark89&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP7.3 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>4. &lt;a name=&quot;bookmark39&quot;&gt;可枚举真实账户&lt;/a&gt;&lt;a name=&quot;bookmark90&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP6.4 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>5. &lt;a name=&quot;bookmark40&quot;&gt;密码策略漏洞&lt;/a&gt;&lt;a name=&quot;bookmark91&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP7.7 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>6. &lt;a name=&quot;bookmark41&quot;&gt;密码更改功能漏洞&lt;/a&gt;&lt;a name=&quot;bookmark92&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP7.7 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>7. &lt;a name=&quot;bookmark42&quot;&gt;存在默认用户凭证&lt;/a&gt;&lt;a name=&quot;bookmark93&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP6.5、OWASP7.2 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>8. &lt;a name=&quot;bookmark43&quot;&gt;浏览器缓存威胁&lt;/a&gt;&lt;a name=&quot;bookmark94&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 风险等级 | 附注：中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP7.6 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>9. &lt;a name=&quot;bookmark44&quot;&gt;记忆密码功能威胁&lt;/a&gt;&lt;a name=&quot;bookmark95&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：低/中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP7.5 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>10. &lt;a name=&quot;bookmark45&quot;&gt;安全问答策略漏洞&lt;/a&gt;&lt;a name=&quot;bookmark96&quot;&gt;‌&lt;/a&gt;
+</code></pre><p><br></p>
+<p>| 漏洞描述 |  |<br>| 风险等级 | 附注：低/中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP7.8 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<ol>
+<li><p><a name="bookmark46">授权测试</a><a name="bookmark97">‌</a> <br></p>
+<ol>
+<li><a name="bookmark47">目录遍历/文件包含漏洞</a><a name="bookmark98">‌</a> <br></li>
+</ol>
+</li>
+</ol>
+<p>| 漏洞描述 |  |<br>| 风险等级 | 附注：高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP8.1 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>2. &lt;a name=&quot;bookmark48&quot;&gt;越权漏洞&lt;/a&gt;&lt;a name=&quot;bookmark99&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 风险等级 | 附注：高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP8.2，8.3，8.4 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<ol>
+<li><p><a name="bookmark49">输入验证测试</a><a name="bookmark100">‌</a> <br></p>
+<ol>
+<li><a name="bookmark50">跨站脚本攻击</a><a name="bookmark101">‌</a> <br></li>
+</ol>
+</li>
+</ol>
+<p>| 漏洞描述 |  |<br>| 风险等级 | 附注：高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP10.1，10.2 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>2. &lt;a name=&quot;bookmark51&quot;&gt;SQL 注入&lt;/a&gt;&lt;a name=&quot;bookmark102&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP10.5 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>3. &lt;a name=&quot;bookmark52&quot;&gt;XML 注入&lt;/a&gt;&lt;a name=&quot;bookmark103&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP10.8 |<br>| 修复建议 |  |</p>
+<ol>
+<li><p><a name="bookmark53">会话管理测试</a><a name="bookmark104">‌</a> <br></p>
+<ol>
+<li><a name="bookmark54">跨站请求伪造</a><a name="bookmark105">‌</a> <br></li>
+</ol>
+</li>
+</ol>
+<p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP9.5 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>2. &lt;a name=&quot;bookmark55&quot;&gt;会话管理架构绕过&lt;/a&gt;&lt;a name=&quot;bookmark106&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP9.1 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>3. &lt;a name=&quot;bookmark56&quot;&gt;Cookie 属性漏洞&lt;/a&gt;&lt;a name=&quot;bookmark107&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：低/中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP9.2 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>4. &lt;a name=&quot;bookmark57&quot;&gt;会话固化漏洞&lt;/a&gt;&lt;a name=&quot;bookmark108&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：低/中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP9.3 |<br>| 修复建议 |  |</p>
+<ol>
+<li><p><a name="bookmark58">加密体系脆弱性测试</a><a name="bookmark109">‌</a> <br></p>
+<ol>
+<li><a name="bookmark59">SSL/TLS 弱加密、传输层协议缺陷</a><a name="bookmark110">‌</a> <br></li>
+</ol>
+</li>
+</ol>
+<p>| 漏洞描述 |  |<br>| 风险等级 | 附注：低/中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP12.1 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>2. &lt;a name=&quot;bookmark60&quot;&gt;通过未加密信道发送敏感数据&lt;/a&gt;&lt;a name=&quot;bookmark111&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP7.1、9.4、12.2 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>3. &lt;a name=&quot;bookmark61&quot;&gt;HTTP 强制安全传输漏洞&lt;/a&gt;&lt;a name=&quot;bookmark112&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP5.7 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<ol>
+<li><p><a name="bookmark62">业务逻辑测试</a><a name="bookmark113">‌</a> <br></p>
+<ol>
+<li><a name="bookmark63">业务逻辑数据验证漏洞</a><a name="bookmark114">‌</a> <br></li>
+</ol>
+</li>
+</ol>
+<p>| 漏洞描述 |  |<br>| 风险等级 | 附注：低/中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP13.1 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>2. &lt;a name=&quot;bookmark64&quot;&gt;数据完整性验证漏洞&lt;/a&gt;&lt;a name=&quot;bookmark115&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP13.3 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>3. &lt;a name=&quot;bookmark65&quot;&gt;处理耗时漏洞&lt;/a&gt;&lt;a name=&quot;bookmark116&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：低/中风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP13.4 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>4. &lt;a name=&quot;bookmark66&quot;&gt;重放攻击&lt;/a&gt;&lt;a name=&quot;bookmark117&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：仅限上传数据占用资源等。上传文件和短信轰炸均有其他相应章节。 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>5. &lt;a name=&quot;bookmark67&quot;&gt;工作流程逃逸&lt;/a&gt;&lt;a name=&quot;bookmark118&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：中/高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP13.6 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>6. &lt;a name=&quot;bookmark68&quot;&gt;文件上传漏洞&lt;/a&gt;&lt;a name=&quot;bookmark119&quot;&gt;‌&lt;/a&gt;
+</code></pre><p><br></p>
+<p>| 风险等级 | 附注：高风险 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP13.8，13.9 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<p><a name="bookmark120">四、 </a>重大漏洞利用专题<a name="bookmark125">‌</a></p>
+<p><br></p>
+<pre><code>1. &lt;a name=&quot;bookmark121&quot;&gt;认证模式绕过&lt;/a&gt;&lt;a name=&quot;bookmark126&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：紧急 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP13.8，13.9 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>2. &lt;a name=&quot;bookmark122&quot;&gt;短信轰炸&lt;/a&gt;&lt;a name=&quot;bookmark127&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：紧急 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP13.8，13.9 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>3. &lt;a name=&quot;bookmark123&quot;&gt;数据泄露&lt;/a&gt;&lt;a name=&quot;bookmark128&quot;&gt;‌&lt;/a&gt; &lt;br&gt;
+</code></pre><p>| 漏洞描述 |  |<br>| 风险等级 | 附注：紧急 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP13.8，13.9 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<pre><code>4. &lt;a name=&quot;bookmark124&quot;&gt;获取服务器权限&lt;/a&gt;&lt;a name=&quot;bookmark129&quot;&gt;‌&lt;/a&gt;
+</code></pre><p><br></p>
+<p>| 风险等级 | 附注：紧急 |<br>| 所在模块 |  |<br>| 所在 URL |  |<br>| 漏洞验证 | 附注：OWASP13.8，13.9 |<br>| 修复建议 |  |</p>
+<p><br></p>
+<p><a name="bookmark130">五、 </a>测试结论<a name="bookmark133">‌</a></p>
+<p><br></p>
+<ol>
+<li><a name="bookmark131">整体评价</a><a name="bookmark134">‌</a> <br><br>对 XX 系统进行渗透测试，共检测到重大漏洞利用项 X 个，高危漏洞 X 个，中危漏洞X 个，低危漏洞 X 个。 XXXX，XXXX 等方面为高中危漏洞高发区，显示出系统在这些方面存在较多不足。 经整体安全评估，本应用站点风险级别为X 风险应用。 <br></li>
+<li><a name="bookmark132">注意事项</a><a name="bookmark135">‌</a></li>
+</ol>
+<p><br></p>
+<p>检测到的功能性问题、数据修改情况、需要项目组帮助清除的痕迹以及其他备注记录在此处。</p>
+<p><br></p>
+<p><a name="bookmark136">六 、 </a>附 件<a name="bookmark137">‌</a></p>
+<p><br></p>
+<ol>
+<li>系统安全评估授权书</li>
+</ol>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

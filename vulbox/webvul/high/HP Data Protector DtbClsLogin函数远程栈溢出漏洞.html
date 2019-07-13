@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">HP Data Protector DtbClsLogin函数远程栈溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									HP Data Protector Express软件用于为数据、应用和系统提供安全防护。<br />
+
+									<br />
+
+									HP Data Protector Express的 dpwindtb.dll模块（Windows平台）和libdplindtb.so模块（Linux平台）所定义的DtbClsLogin函数将用户所提供的输入直接拷贝到了栈缓冲区上。如果用户提供了超长的字符串，就可以触发栈溢出，导致执行任意代码。<br />
+
+									<br />
+
+									&lt;*来源：AbdulAziz Hariri<br />
+
+									  <br />
+
+									  链接：http://secunia.com/advisories/35084<br />
+
+									        http://marc.info/?l=full-disclosure&amp;m=128440466707244&amp;w=2<br />
+
+									        http://www13.itrc.hp.com/service/cki/docDisplay.do?docId=emr_na-c02498535<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									HP<br />
+
+									--<br />
+
+									HP已经为此发布了一个安全公告（HPSBMA02576）以及相应补丁:<br />
+
+									HPSBMA02576：SSRT090231 rev.1 - HP Data Protector Express and HP Data Protector Express Single Server Edition (SSE), Local Denial of Service (DoS), Execution of Arbitrary Code<br />
+
+									链接：http://www13.itrc.hp.com/service/cki/docDisplay.do?docId=emr_na-c02498535<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>7</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-09-09</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-12-27</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-3007" target="_blank">CVE-2010-3007</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/43105" target="_blank">43105</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15744" target="_blank">15744</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201009-078&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20103007&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.2&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-1923&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">phpMyAdmin多个安全漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									phpMyAdmin是用PHP编写的工具，用于通过WEB管理MySQL。
+<br />
+
+<br />
+
+									phpMyAdmin在实现上存在多个漏洞，可被恶意用户利用泄露敏感信息并控制受影响系统。
+<br />
+
+<br />
+
+									1）libraries/auth/swekey/swekey.auth.lib.php中的&quot;Swekey_login()&quot;函数中存在错误，可被利用覆盖会话变量并注入和执行任意PHP代码；
+<br />
+
+<br />
+
+									2）传递到libraries/server_synchronize.lib.php中的&quot;PMA_createTargetTables()&quot;函数的输入在调用带有e修饰符的&quot;preg_replace()&quot;函数之前没有正确过滤，可被利用通过URL编码的NULL字节执行任意PHP代码；
+<br />
+
+<br />
+
+									3）传递到libraries/display_tbl.lib.php中的&quot;PMA_displayTableBody()&quot;函数的输入在用于包括文件之前没有正确过滤，可被利用通过目录遍历序列包含本地资源中的任意文件。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									phpMyAdmin
+<br />
+
+									----------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.phpmyadmin.net/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>8</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-07-05</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-07-16</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-2505" target="_blank">CVE-2011-2505</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-2506" target="_blank">CVE-2011-2506</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-2507" target="_blank">CVE-2011-2507</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-2508" target="_blank">CVE-2011-2508</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/48563" target="_blank">48563</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=17174" target="_blank">17174</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201107-082&nbsp;&nbsp;
+
+									CNNVD-201107-083&nbsp;&nbsp;
+
+									CNNVD-201107-084&nbsp;&nbsp;
+
+									CNNVD-201107-085&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20112505&nbsp;&nbsp;
+
+									CNCVE-20112506&nbsp;&nbsp;
+
+									CNCVE-20112507&nbsp;&nbsp;
+
+									CNCVE-20112508&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.5(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2011-06166&nbsp;&nbsp;
+
+									CNVD-2011-06170&nbsp;&nbsp;
+
+									CNVD-2011-06169&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

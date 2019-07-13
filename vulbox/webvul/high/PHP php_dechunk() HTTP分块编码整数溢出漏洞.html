@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP php_dechunk() HTTP分块编码整数溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的ext/standard/filters.c文件中的php_dechunk()函数在处理HTTP流时存在符号错误，通过dechunk过滤器处理超大的HTTP块时可以触发内存破坏。<br />
+
+									<br />
+
+									新的PHP dechunk过滤器中的状态机使用以下结构记忆当前的状态：<br />
+
+									<br />
+
+									typedef struct _php_chunked_filter_data {<br />
+
+									    php_chunked_filter_state state;<br />
+
+									    int chunk_size;<br />
+
+									    int persistent;<br />
+
+									} php_chunked_filter_data;<br />
+
+									<br />
+
+									chunk_size存储为有符整形，由于使用了块大小解码器，这可能导致问题：<br />
+
+									<br />
+
+									case CHUNK_SIZE:<br />
+
+									    while (p &lt; end) {<br />
+
+									        if (*p &gt;= &#39;0&#39; &amp;&amp; *p &lt;= &#39;9&#39;) {<br />
+
+									            data-&gt;chunk_size = (data-&gt;chunk_size * 16) + (*p - &#39;0&#39;);<br />
+
+									        } else if (*p &gt;= &#39;A&#39; &amp;&amp; *p &lt;= &#39;F&#39;) {<br />
+
+									            data-&gt;chunk_size = (data-&gt;chunk_size * 16) + (*p - &#39;A&#39; + 10);<br />
+
+									        } else if (*p &gt;= &#39;a&#39; &amp;&amp; *p &lt;= &#39;f&#39;) {<br />
+
+									            data-&gt;chunk_size = (data-&gt;chunk_size * 16) + (*p - &#39;a&#39; + 10);<br />
+
+									        } else if (data-&gt;state == CHUNK_SIZE_START) {<br />
+
+									            data-&gt;state = CHUNK_ERROR;<br />
+
+									            break;<br />
+
+									        } else {<br />
+
+									            data-&gt;state = CHUNK_SIZE_EXT_START;<br />
+
+									            break;<br />
+
+									        }<br />
+
+									        data-&gt;state = CHUNK_SIZE;<br />
+
+									        p++;<br />
+
+									    }<br />
+
+									<br />
+
+									块大小解码器没有防范整数溢出，正的32位块大小会导致在chunk_size状态变量中存储负整数，之后将块大小与剩余的缓冲区空间做比较时会触发溢出：<br />
+
+									<br />
+
+									case CHUNK_BODY:<br />
+
+									    if (end - p &gt;= data-&gt;chunk_size) {<br />
+
+									        if (p != out) {<br />
+
+									            memmove(out, p, data-&gt;chunk_size);<br />
+
+									        }<br />
+
+									        out += data-&gt;chunk_size;<br />
+
+									        out_len += data-&gt;chunk_size;<br />
+
+									        p += data-&gt;chunk_size;<br />
+
+									<br />
+
+									在chunk_size有符整形变量中存储负的块大小会绕过检查，导致在两个堆缓冲区之间拷贝2GB到4GB。通常这仅能导致崩溃，但在多线程Web服务器中也可能导致可利用的内存破坏。不过PHP很少在多线程环境中使用。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									如果您能承受该风险，您可以继续使用该服务，并时刻关注官方网站，获取升级补丁和升级包，及时更新；<br />
+
+									如果您不能承受该风险，请关闭该服务，或在防火墙中关闭服务端口。<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>7</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-05-07</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-05-07</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-1866" target="_blank">CVE-2010-1866</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/39877" target="_blank">39877</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14940" target="_blank">14940</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201005-125&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20101866&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.5&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-4595&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

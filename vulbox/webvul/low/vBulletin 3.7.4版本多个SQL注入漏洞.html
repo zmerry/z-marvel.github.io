@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">vBulletin 3.7.4版本多个SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									vBulletin是一款开放源代码的PHP论坛程序。
+<br />
+
+<br />
+
+									vBulletin论坛的admincp/verify.php文件没有正确地验证用户提交的answer参数：
+<br />
+
+<br />
+
+									[---------- source code snippet start ----------]
+<br />
+
+									if ($_POST[&#39;do&#39;] == &#39;updateanswer&#39;)
+<br />
+
+									{
+<br />
+
+										$vbulletin-&gt;input-&gt;clean_array_gpc(&#39;p&#39;, array(
+<br />
+
+											&#39;answer&#39; =&gt; TYPE_STR,
+<br />
+
+										));
+<br />
+
+									..
+<br />
+
+									$db-&gt;query_write(&quot;
+<br />
+
+										UPDATE &quot; . TABLE_PREFIX . &quot;hvanswer
+<br />
+
+										SET answer = &#39;&quot; . $vbulletin-&gt;GPC[&#39;answer&#39;] . &quot;&#39;
+<br />
+
+										WHERE answerid = &quot; . $vbulletin-&gt;GPC[&#39;answerid&#39;]
+<br />
+
+									);
+<br />
+
+									[----------- source code snippet end -----------]
+<br />
+
+<br />
+
+									admincp/attachmentpermission.php文件没有正确的验证extension参数。
+<br />
+
+<br />
+
+									admincp/image.php文件没有正确的验证iperm参数：
+<br />
+
+<br />
+
+									[---------- source code snippet start ----------]
+<br />
+
+									if ($_POST[&#39;do&#39;] == &#39;updatepermissions&#39;)
+<br />
+
+									{
+<br />
+
+										$vbulletin-&gt;input-&gt;clean_array_gpc(&#39;p&#39;, array(
+<br />
+
+											&#39;iperm&#39;           =&gt; TYPE_ARRAY,
+<br />
+
+											&#39;imagecategoryid&#39; =&gt; TYPE_INT
+<br />
+
+										));
+<br />
+
+									..
+<br />
+
+									foreach($vbulletin-&gt;GPC[&#39;iperm&#39;] AS $usergroupid =&gt; $canuse)
+<br />
+
+									{
+<br />
+
+										if ($canuse == 0)
+<br />
+
+										{
+<br />
+
+											$db-&gt;query_write(&quot;
+<br />
+
+												INSERT INTO &quot; . TABLE_PREFIX . &quot;imagecategorypermission
+<br />
+
+												(
+<br />
+
+													imagecategoryid,
+<br />
+
+													usergroupid
+<br />
+
+												)
+<br />
+
+												VALUES
+<br />
+
+												(
+<br />
+
+													&quot; . $vbulletin-&gt;GPC[&#39;imagecategoryid&#39;] . &quot;,
+<br />
+
+													$usergroupid
+<br />
+
+												)
+<br />
+
+									[----------- source code snippet end -----------]
+<br />
+
+<br />
+
+									远程攻击者可以通过向论坛提交恶意的请求执行SQL注入攻击。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://www.vbulletin.com/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2008-11-17</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2008-11-27</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/32353" target="_blank">32353</a>
+
+									<a href="http://www.securityfocus.com/bid/ 32352" target="_blank"> 32352</a>
+
+									<a href="http://www.securityfocus.com/bid/ 32349" target="_blank"> 32349</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=12629" target="_blank">12629</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

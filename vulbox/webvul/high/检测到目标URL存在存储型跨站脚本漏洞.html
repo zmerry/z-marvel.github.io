@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标URL存在存储型跨站脚本漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									跨站脚本攻击（也称为XSS）指利用网站漏洞从用户那里恶意盗取信息。用户在浏览网站、使用即时通讯软件、甚至在阅读电子邮件时，通常会点击其中的链接。攻击者通过在链接中插入恶意代码，就能够盗取用户信息或在终端用户系统上执行恶意代码。
+<br />
+
+<br />
+
+									存储型跨站脚本漏洞是指攻击者注入的跨站脚本长期性的存储到服务器，当任何用户访问存在跨站脚本的页面时，都会遭到跨站脚本攻击。
+<br />
+
+<br />
+
+									成功的跨站脚本攻击所带来的主要问题包括：
+<br />
+
+<br />
+
+									帐号劫持 - 攻击者可以在会话cookie过期之前劫持用户的会话，并以访问ULR用户的权限执行操作，如发布数据库查询并查看结果。 
+<br />
+
+<br />
+
+									恶意脚本执行 - 用户可能在不知情的情况下执行攻击者注入到动态生成页面中的JavaScript、VBScript、ActiveX、HTML甚至Flash内容。 
+<br />
+
+<br />
+
+									蠕虫传播 - 通过Ajax应用，跨站脚本可以以类似于病毒的方式传播。跨站脚本负载可以自动将其自身注入到页面中，并通过更多的跨站脚本轻易的重新注入同一主机，而所有这些都无需手动刷新页面。因此，跨站脚本可以使用复杂的HTTP方式发送多个请求，并以用户不可视的方式自我传播。
+<br />
+
+<br />
+
+									信息窃取 - 攻击者可以通过重新定向和伪造站点将用户连接到攻击者所选择的恶意服务器并获得用户所输入的任何信息。
+<br />
+
+<br />
+
+									拒绝服务 - 通常攻击者通过在包含有跨站脚本漏洞的站点上使用畸形的显示请求，就可以导致主机站点反复的自我查询，出现拒绝服务的情况。 
+<br />
+
+<br />
+
+									浏览器重新定向 - 在某些使用帧的站点上，用户可能在实际上已经被重新定向到恶意站点的情况下误导为仍处在原始站点上，因为浏览权地址栏中的URL仍保持不变。这是由于没有重新定向整个页面，而只是执行JavaScript的帧。 
+<br />
+
+<br />
+
+									控制用户设置 - 攻击者可以恶意更改用户设置。
+<br />
+
+									本漏洞属于Web应用安全常见漏洞。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									推荐措施包括实施安全编程技术确保正确过滤用户
+<br />
+
+									提供的数据，并编码所有用户提供的数据以防以可执行的格式向终端用户发送注入的脚本。
+<br />
+
+<br />
+
+									对于开发
+<br />
+
+									========
+<br />
+
+<br />
+
+									可通过仔细验证所有输入和正确编码所有输出来防范跨站脚本攻击。可使用标准的ASP.NET验证控件或直接在代码中实施验证，要尽可能使用严格的模版。
+<br />
+
+<br />
+
+									输出编码要确保在将内容发送给客户端之前对任何可脚本化的内容都进行了正确的HTML编码。可通过HttpUtility.HtmlEncode函数实现，如以下Label控件示例所示：
+<br />
+
+<br />
+
+									Label2.Text = HttpUtility.HtmlEncode(input)
+<br />
+
+<br />
+
+									要考虑用户输入通过应用可能用到的所有路径。例如，如果数据是由用户输入的，存储在数据库中，然后再重新显示，就必须要确保在每次检索的时候都能正确编码。如果必须允许自由格式文本输入（如在消息板中），而又希望允许使用一些HTML格式，则可以通过仅明确允许很小的安全标签列表来安全的处理这种情况，如下所示：
+<br />
+
+<br />
+
+									C#示例：
+<br />
+
+									StringBuilder sb = new StringBuilder(HttpUtility.HtmlEncode(input)); 
+<br />
+
+									sb.Replace(&quot;&amp;lt;b&amp;gt;&quot;, &quot;&lt;b&gt;&quot;); 
+<br />
+
+									sb.Replace(&quot;&amp;lt;/b&amp;gt;&quot;, &quot;&lt;/b&gt;&quot;); 
+<br />
+
+									sb.Replace(&quot;&amp;lt;i&amp;gt;&quot;, &quot;&lt;i&gt;&quot;); 
+<br />
+
+									sb.Replace(&quot;&amp;lt;/i&amp;gt;&quot;, &quot;&lt;/i&gt;&quot;); 
+<br />
+
+									Response.Write(sb.ToString());
+<br />
+
+<br />
+
+									VB.NET示例： 
+<br />
+
+									Dim sb As StringBuilder = New StringBuilder( _ 
+<br />
+
+									HttpUtility.HtmlEncode(input)) 
+<br />
+
+									sb.Replace(&quot;&amp;lt;b&amp;gt;&quot;, &quot;&lt;b&gt;&quot;) 
+<br />
+
+									sb.Replace(&quot;&amp;lt;/b&amp;gt;&quot;, &quot;&lt;/b&gt;&quot;) 
+<br />
+
+									sb.Replace(&quot;&amp;lt;i&amp;gt;&quot;, &quot;&lt;i&gt;&quot;) 
+<br />
+
+									sb.Replace(&quot;&amp;lt;/i&amp;gt;&quot;, &quot;&lt;/i&gt;&quot;) 
+<br />
+
+									Response.Write(sb.ToString())
+<br />
+
+<br />
+
+									Java示例：
+<br />
+
+									public static String HTMLEncode(String aText){
+<br />
+
+									    final StringBuilder result = new StringBuilder();
+<br />
+
+									    final StringCharacterIterator iterator = new StringCharacterIterator(aText);
+<br />
+
+									    char character = iterator.current();
+<br />
+
+									    while (character != CharacterIterator.DONE ){
+<br />
+
+									        if (character == &#39;&lt;&#39;) {
+<br />
+
+									            result.append(&quot;&amp;lt;&quot;);
+<br />
+
+									        }
+<br />
+
+									        else if (character == &#39;&gt;&#39;) {
+<br />
+
+									            result.append(&quot;&amp;gt;&quot;);
+<br />
+
+									        }
+<br />
+
+									        else if (character == &#39;&amp;&#39;) {
+<br />
+
+									            result.append(&quot;&amp;amp;&quot;);
+<br />
+
+									        }
+<br />
+
+									        else if (character == &#39;\\&quot;&#39;) {
+<br />
+
+									            result.append(&quot;&amp;quot;&quot;);
+<br />
+
+									        }
+<br />
+
+									    else {
+<br />
+
+									        //the char is not a special one
+<br />
+
+									        //add it to the result as is
+<br />
+
+									        result.append(character);
+<br />
+
+									        }
+<br />
+
+									    character = iterator.next();
+<br />
+
+									    }
+<br />
+
+									    return result.toString();
+<br />
+
+									}
+<br />
+
+<br />
+
+<br />
+
+									以下建议可帮助构建能够抵御跨站脚本攻击的web应用。 
+<br />
+
+<br />
+
+									定义允许的内容。确保web应用对所有输入参数（cookies、头、查询字符串、表单、隐藏字段等）验证严格定义的预期结果。 
+<br />
+
+<br />
+
+									检查POST和GET请求的响应，确保返回内容是预期的且有效。
+<br />
+
+<br />
+
+									通过编码用户提供的数据从用户输入中删除冲突字符、括号、单双引号。这可以防范以可执行的方式向终端用户发送注入的脚本。
+<br />
+
+<br />
+
+									在可能的时候将所有客户端提供的数据仅限于字母数字的数据。使用这种过滤方案时，如果用户输入了&lt;script&gt;alert(&#39;aaa&#39;)&lt;/script&gt;，就会被减少为scriptalert(&#39;aaa&#39;)script。如果必须使用非字母数字字符，在HTTP响应中使用之前将其编码为HTML实体，这样就无法将其用于修改HTML文档的结构。
+<br />
+
+<br />
+
+									使用双重用户认证机制而不是单重认证。
+<br />
+
+<br />
+
+									在修改或使用脚本之前确认其来源。
+<br />
+
+<br />
+
+									在自己的代码中使用时不要明确的信任任何来自他人的脚本，无论是从web下载还是来自熟人。
+<br />
+
+<br />
+
+									大多数服务器端脚本语言都提供了内嵌方式将输入变量的值转换为正确的不可解释HTML。应使用这种方式在将输入显示给客户端之前过滤所有输入。 
+<br />
+
+<br />
+
+									PHP: string htmlspecialchars (string string [, int quote_style])
+<br />
+
+<br />
+
+									ASP / ASP.NET: Server.HTMLEncode (strHTML String)
+<br />
+
+<br />
+
+									对于安全操作
+<br />
+
+									============
+<br />
+
+<br />
+
+									服务器端编码指的是首先通过编码函数发送所有的动态内容，使用所选择字符集中的代码替换Scripting标签，这可以帮助防范跨站脚本攻击。服务器端编码的缺点是可能耗费资源，对一些web服务器的性能产生负面影响。 
+<br />
+
+<br />
+
+									如果必须允许站点用户使用HTML标签，如允许用户使用的格式化标签的公告栏，则应限制可使用的标签。创建可接受标签的列表，如粗体字、斜体字或下划线，并仅允许使用这些，拒绝任何其他标签。以下是一些可帮助检测跨站脚本的正则表达式。
+<br />
+
+<br />
+
+									简单跨站脚本攻击的正则表达式： 
+<br />
+
+									/((\%3C)|&lt;)((\%2F)|\/)*[a-z0-9\%]+((\%3E)|&gt;)/ix
+<br />
+
+<br />
+
+									应如下将上述正则表达式添加到新的Snort规则：
+<br />
+
+<br />
+
+									alert tcp $EXTERNAL_NET any -&gt; $HTTP_SERVERS $HTTP_PORTS (msg:&quot;NIICross-Site Scripting attempt&quot;; flow:to_server,established;pcre:&quot;/((\%3C)|&lt;)((\%2F)|\/)*[a-z0-9\%]+((\%3E)|&gt;)/i&quot;;classtype:Web-application-attack; sid:9000; rev:5;)
+<br />
+
+<br />
+
+									跨站脚本攻击的偏执行正则表达式：
+<br />
+
+									/((\%3C)|&lt;)[^\n]+((\%3E)|&gt;)/I
+<br />
+
+<br />
+
+									这条特征仅仅查找起始的HTML标签及其对等的16进制，之后的一个或多个字符为非换行符，再之后为结尾标签或其对等的16进制。这可能导致一些误报，具体取决于Web应用和Web服务器的架构。但这种方式可以确保捕获任何攻击，甚至远程类似的跨站脚本攻击。对于公众方面，可以加强教育程序，帮助用户防范可用于帐号劫持和其他形式身份窃取的在线欺诈，如网络钓鱼。 
+<br />
+
+<br />
+
+									对于质量保证
+<br />
+
+									============
+<br />
+
+<br />
+
+									存储型XSS脚本攻击最为常见的场景就是在博客或新闻发布系统中，攻击者将包含有恶意代码的数据信息直接写入文章或文章评论中，Web应用程序会将用户输入的数据信息保存在服务端的数据库或其他文件形式中，所有浏览文章或评论的用户，web应用会从数据库中获取内容，从而在客户端浏览器环境中执行插入的恶意代码。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-10-28</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.1(CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="本篇将会涉及：资源探测一个有用的字典资源第一个暴力探测器资源探测资源探测在渗透测试中还是属于资源的映射和信息的收集阶段。主要有以下三个类型：字典攻击暴力破解模糊测试字典攻击，在破解密码或密钥的时候，通过自定义的字典文件，有针对性地尝试字典文件内所有的字典组合。暴力破解，也叫做穷举法，按照特定的组合，进行枚举所有的组合。简单来说就是将密码进行逐个推算直到找出真正的密码为止。模糊测试，指通过向目标系统">
+<meta name="keywords" content="Penetration,原创,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Python编写一个渗透测试探测器">
+<meta property="og:url" content="http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="本篇将会涉及：资源探测一个有用的字典资源第一个暴力探测器资源探测资源探测在渗透测试中还是属于资源的映射和信息的收集阶段。主要有以下三个类型：字典攻击暴力破解模糊测试字典攻击，在破解密码或密钥的时候，通过自定义的字典文件，有针对性地尝试字典文件内所有的字典组合。暴力破解，也叫做穷举法，按照特定的组合，进行枚举所有的组合。简单来说就是将密码进行逐个推算直到找出真正的密码为止。模糊测试，指通过向目标系统">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-04T02:30:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Python编写一个渗透测试探测器">
+<meta name="twitter:description" content="本篇将会涉及：资源探测一个有用的字典资源第一个暴力探测器资源探测资源探测在渗透测试中还是属于资源的映射和信息的收集阶段。主要有以下三个类型：字典攻击暴力破解模糊测试字典攻击，在破解密码或密钥的时候，通过自定义的字典文件，有针对性地尝试字典文件内所有的字典组合。暴力破解，也叫做穷举法，按照特定的组合，进行枚举所有的组合。简单来说就是将密码进行逐个推算直到找出真正的密码为止。模糊测试，指通过向目标系统">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>使用Python编写一个渗透测试探测器</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/12/04/绕过防火墙/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/12/04/最好用的开源web漏扫工具梳理/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&text=使用Python编写一个渗透测试探测器"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&title=使用Python编写一个渗透测试探测器"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&is_video=false&description=使用Python编写一个渗透测试探测器"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=使用Python编写一个渗透测试探测器&body=Check out this article: http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&title=使用Python编写一个渗透测试探测器"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&title=使用Python编写一个渗透测试探测器"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&title=使用Python编写一个渗透测试探测器"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&title=使用Python编写一个渗透测试探测器"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&name=使用Python编写一个渗透测试探测器&description=&lt;p&gt;本篇将会涉及：&lt;br&gt;资源探测&lt;br&gt;一个有用的字典资源&lt;br&gt;第一个暴力探测器&lt;br&gt;资源探测&lt;br&gt;资源探测在渗透测试中还是属于资源的映射和信息的收集阶段。&lt;br&gt;主要有以下三个类型：&lt;br&gt;字典攻击&lt;br&gt;暴力破解&lt;br&gt;模糊测试&lt;br&gt;字典攻击，在破解密码或密钥的时候，通过自定义的字典文件，有针对性地尝试字典文件内所有的字典组合。&lt;br&gt;暴力破解，也叫做穷举法，按照特定的组合，进行枚举所有的组合。简单来说就是将密码进行逐个推算直到找出真正的密码为止。&lt;br&gt;模糊测试，指通过向目标系统提供非预期性的输入并监视其发生的异常结果来发现目标系统的漏洞。&lt;br&gt;资源探测的作用&lt;br&gt;通过资源探测，我们可以在目标系统中发现文件、目录、活动、服务还有相关的参数，为下一步的行动提供信息参考。&lt;br&gt;一个开源的模糊测试数据库&lt;br&gt;&lt;a href=&quot;https://github.com/fuzzdb-project/fuzzdb是一个开源的漏洞注入和资源发现的原语字典。其提供了攻击、资源发现和响应分析的资源。&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/fuzzdb-project/fuzzdb是一个开源的漏洞注入和资源发现的原语字典。其提供了攻击、资源发现和响应分析的资源。&lt;/a&gt;&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#coding-utf-8"><span class="toc-number">1.</span> <span class="toc-text">coding:utf-8</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#程序标识"><span class="toc-number">2.</span> <span class="toc-text">程序标识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#程序用法"><span class="toc-number">3.</span> <span class="toc-text">程序用法</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        使用Python编写一个渗透测试探测器
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-12-04T02:30:46.000Z" itemprop="datePublished">2017-12-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全技术/">安全技术</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Penetration/">Penetration</a>, <a class="tag-link" href="/tags/Python/">Python</a>, <a class="tag-link" href="/tags/原创/">原创</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>本篇将会涉及：<br>资源探测<br>一个有用的字典资源<br>第一个暴力探测器<br>资源探测<br>资源探测在渗透测试中还是属于资源的映射和信息的收集阶段。<br>主要有以下三个类型：<br>字典攻击<br>暴力破解<br>模糊测试<br>字典攻击，在破解密码或密钥的时候，通过自定义的字典文件，有针对性地尝试字典文件内所有的字典组合。<br>暴力破解，也叫做穷举法，按照特定的组合，进行枚举所有的组合。简单来说就是将密码进行逐个推算直到找出真正的密码为止。<br>模糊测试，指通过向目标系统提供非预期性的输入并监视其发生的异常结果来发现目标系统的漏洞。<br>资源探测的作用<br>通过资源探测，我们可以在目标系统中发现文件、目录、活动、服务还有相关的参数，为下一步的行动提供信息参考。<br>一个开源的模糊测试数据库<br><a href="https://github.com/fuzzdb-project/fuzzdb是一个开源的漏洞注入和资源发现的原语字典。其提供了攻击、资源发现和响应分析的资源。" target="_blank" rel="external">https://github.com/fuzzdb-project/fuzzdb是一个开源的漏洞注入和资源发现的原语字典。其提供了攻击、资源发现和响应分析的资源。</a></p>
+<a id="more"></a>
+<p>第一个暴力探测器<br>在之前的章节，我们了解了使用Python进行HTTP请求的方法，在本章，我们了解的资源探测的作用的用途。接下面我们就利用Python编写一个资源探测器，用来对Web网站进行资源探测。<br>我们将上面介绍的开源模糊测试数据库FUZZDB从github上克隆或下载下来：<br>1240<br>这个数据库会作为我们的资源探测器的字典，来对web站点进行针对性的探测。<br>新建一个Python文件，开始我们的暴力探测器的编写。<br>首先，引入相关的模块：</p>
+<h1 id="coding-utf-8"><a href="#coding-utf-8" class="headerlink" title="coding:utf-8"></a>coding:utf-8</h1><p>import requests<br>from threading import Thread<br>import sys<br>import getopt<br>requests用于请求目标站点；<br>threading用于启用多线程；<br>sys用于解析命令行参数；<br>getopt用于处理命令行参数；<br>然后，定义一个程序的横幅：</p>
+<h1 id="程序标识"><a href="#程序标识" class="headerlink" title="程序标识"></a>程序标识</h1><p>def banner():<br>    print(“\n<strong><strong><strong><strong><em>**</em></strong></strong></strong></strong>“)<br>    name = ‘’’</p>
+<hr>
+<p> |<strong><em>  /         (</em>)   | |<br>    / / _ </strong> <strong><em>  </em> _</strong>| |<em> __</em> <em> __<br>   / / | ‘</em> ` <em> | / <strong>| </strong>/ </em> \ ‘<strong>|<br>  / /</strong>| | | | | | _<em> \ ||  <strong>/ |<br> /__</strong></em>|<em>| |</em>| |<em>|</em>|<strong>_/\</strong>__<em>|</em>|<br>    ‘’’<br>    print(name)<br>    print(“州的先生-暴力发掘器 v0.1”)<br>    print(“<strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong>“)<br>这个横幅用于在程序启动的时候显示出来，除了让程序个性一点之外，也没啥用。<br>再定义一个函数，用来显示程序的用法：</p>
+<h1 id="程序用法"><a href="#程序用法" class="headerlink" title="程序用法"></a>程序用法</h1><p>def usage():<br>    print(“用法：”)<br>    print(“     -w:网址 (<a href="http://wensite.com/FUZZ" target="_blank" rel="external">http://wensite.com/FUZZ</a>)”)<br>    print(“     -t:线程数”)<br>    print(“     -f:字典文件”)<br>    print(“例子：bruteforcer.py -w <a href="http://zmister.com/FUZZ" target="_blank" rel="external">http://zmister.com/FUZZ</a> -t 5 -f commom.txt”)<br>我们的程序因为是在命令行下运行的，所以需要设置一些参数，在这里，我们用：<br>-w来指定网址<br>-t 来指定线程数<br>-f来指定字典文件<br>这三个参数缺一不可。<br>这两个函数创建好后，运行程序便会出现如下界面：<br>1240<br>看上去是不是有那么点意思。<br>接着，我们创建一个继承于Thread的类request_performer()，用于创建线程并向目标站点发起请求以及获取响应：<br>class request_performer(Thread):<br>    def <strong>init</strong>(self,word,url):<br>        Thread.<strong>init</strong>(self)<br>        try:<br>            self.word = word.split(“\n”)[0]<br>            self.urly = url.replace(‘FUZZ’,self.word)<br>            self.url = self.urly<br>        except Exception as e:<br>            print(e)<br>    def run(self):<br>        try:<br>            r = requests.get(self.url)<br>            print(self.url,”-“,str(r.status_code))<br>            i[0] = i[0] -1<br>        except Exception as e:<br>            print(e)<br>在request_performer()类的run()方法里面，我们利用requests对URL进行请求并将响应的状态码打印出来。而这，就是我们这个探测器的最主要功能了。<br>再创建一个启动request_performer()类的函数launcher_thread()，用于遍历字典文件中的关键字组合成URL并生成新的线程。<br>def launcher_thread(names,th,url):<br>    global i<br>    i = []<br>    resultlist = []<br>    i.append(0)<br>    while len(names):<br>        try:<br>            if i[0] &lt; int(th):<br>                n = names.pop(0)<br>                i[0] = i[0]+1<br>                thread = request_performer(n,url)<br>                thread.start()<br>        except KeyboardInterrupt:<br>            print(“用户停止了程序运行。完成探测”)<br>            sys.exit()<br>    return True<br>继续创建一个函数start()，用于接收命令行中的参数将其传递给launcher_thread()函数：<br>def start(argv):<br>    banner()<br>    if len(sys.argv) &lt; 5:<br>        usage()<br>        sys.exit()<br>    try:<br>        opts,args = getopt.getopt(sys.argv[1:],”w:t:f:”)<br>    except getopt.GetoptError:<br>        print(“错误的参数”)<br>        sys.exit()<br>    for opt,arg in opts:<br>        if opt == ‘-w’:<br>            url = arg<br>        elif opt == ‘-f’:<br>            dicts = arg<br>        elif opt == ‘-t’:<br>            threads = int(arg)<br>    try:<br>        f = open(dicts,’r’)<br>        words = f.readlines()<br>    except Exception as e:<br>        print(“打开文件错误：”,dicts,”\n”)<br>        print(e)<br>        sys.exit()<br>    launcher_thread(words,threads,url)<br>最后，当然是在主程序中运行了：<br>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    try:<br>        start(sys.argv[1:])<br>    except KeyboardInterrupt:<br>        print(“用户停止了程序运行。完成探测”)<br>咱们这个程序到底有什么用呢？<br>在这里，我们不得不再提一下上面提及过的FUZZDB数据库。fuzzdb是一个用于模糊测试的数据库，类似于一个庞大的字典。而这些字典的内容呢，都是安全大神们维护的、在实践中发现很有可能会是攻击点的目录或路径。<br>我们可以打开数据库中的一个txt文件看看：<br>1240<br>这是一个针对wordpress博客系统插件的一个字典，这里面都是插件的路径和目录。<br>测试暴力探测器<br>还记得在渗透测试环境搭建那篇文章介绍的虚拟机环境吗？<br>里面有一个充满漏洞的Web应用<a href="http://www.scruffybank.com/，我们可以使用我们刚刚编写好的暴力探测器对这个网站进行一下探测。" target="_blank" rel="external">http://www.scruffybank.com/，我们可以使用我们刚刚编写好的暴力探测器对这个网站进行一下探测。</a><br>字典文件我们先采用一个简单的字典：<br>1240<br>我们在命令行运行命令：<br>python3 brutediscovery.py -w <a href="http://www.scruffybank.com/FUZZ" target="_blank" rel="external">http://www.scruffybank.com/FUZZ</a> -t 5 -f common.txt<br>得到结果：<br>1240<br>common.txt字典中有三个是成功的响应，我们打开其中一个<a href="http://www.scruffybank.com/robots.txt看看：" target="_blank" rel="external">http://www.scruffybank.com/robots.txt看看：</a><br>1240<br>包含了三个禁止搜索引擎爬取的链接，看字面意思，其中一个还是后台地址admin，但是在结果页我们知道/admin是404错误，但是有一个/Admin，我们打开看看：<br>1240<br>弹出了认证登录框，但是我们没有用户名和密码，目前来说只能作罢。<br>我们再使用FUZZDB数据库里的字典测试一下。选择fuzzdb-master/discovery/predictable-filepaths/php目录下的PHP.fuzz.txt：<br>1240<br>同样在终端命令行运行命令：<br>python3 brutediscovery.py -w <a href="http://www.scruffybank.com/FUZZ" target="_blank" rel="external">http://www.scruffybank.com/FUZZ</a> -t 5 -f PHP.fuzz.txt<br>得到结果：<br>1240<br>虽然有很多404，但是我们还是发现了一些成功的响应：<br>比如info.php，打开原来是PHP的info界面：<br>1240<br>login.php为登录页面：<br>1240<br>phpmyadmin是mysql数据库的web管理入口：<br>1240<br>在数据探测收集阶段，我们通过我们自己编写的暴力探测器，获得了这些页面的信息，对分析服务器和web应用的漏洞并进行针对性的渗透有很大的帮助。<br>在接下来的文章里，我们将丰富和完善我们编写的渗透测试工具的功能。<br>敬请期待！<br>文章首发：<a href="http://zmister.com/archives/180.html" target="_blank" rel="external">http://zmister.com/archives/180.html</a><br>Python爬虫、数据分析、机器学习、渗透测试、Web应用、GUI开发，<a href="http://zmister.com/" target="_blank" rel="external">http://zmister.com/</a><br>原文链接：<a href="http://blog.51cto.com/6230973/1983975?from=timeline#10006-weixin-1-52626-6b3bffd01fdde4900130bc5a2751b6d1" target="_blank" rel="external">http://blog.51cto.com/6230973/1983975?from=timeline#10006-weixin-1-52626-6b3bffd01fdde4900130bc5a2751b6d1</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#coding-utf-8"><span class="toc-number">1.</span> <span class="toc-text">coding:utf-8</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#程序标识"><span class="toc-number">2.</span> <span class="toc-text">程序标识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#程序用法"><span class="toc-number">3.</span> <span class="toc-text">程序用法</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&text=使用Python编写一个渗透测试探测器"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&title=使用Python编写一个渗透测试探测器"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&is_video=false&description=使用Python编写一个渗透测试探测器"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=使用Python编写一个渗透测试探测器&body=Check out this article: http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&title=使用Python编写一个渗透测试探测器"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&title=使用Python编写一个渗透测试探测器"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&title=使用Python编写一个渗透测试探测器"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&title=使用Python编写一个渗透测试探测器"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2017/12/04/使用Python编写一个渗透测试探测器/&name=使用Python编写一个渗透测试探测器&description=&lt;p&gt;本篇将会涉及：&lt;br&gt;资源探测&lt;br&gt;一个有用的字典资源&lt;br&gt;第一个暴力探测器&lt;br&gt;资源探测&lt;br&gt;资源探测在渗透测试中还是属于资源的映射和信息的收集阶段。&lt;br&gt;主要有以下三个类型：&lt;br&gt;字典攻击&lt;br&gt;暴力破解&lt;br&gt;模糊测试&lt;br&gt;字典攻击，在破解密码或密钥的时候，通过自定义的字典文件，有针对性地尝试字典文件内所有的字典组合。&lt;br&gt;暴力破解，也叫做穷举法，按照特定的组合，进行枚举所有的组合。简单来说就是将密码进行逐个推算直到找出真正的密码为止。&lt;br&gt;模糊测试，指通过向目标系统提供非预期性的输入并监视其发生的异常结果来发现目标系统的漏洞。&lt;br&gt;资源探测的作用&lt;br&gt;通过资源探测，我们可以在目标系统中发现文件、目录、活动、服务还有相关的参数，为下一步的行动提供信息参考。&lt;br&gt;一个开源的模糊测试数据库&lt;br&gt;&lt;a href=&quot;https://github.com/fuzzdb-project/fuzzdb是一个开源的漏洞注入和资源发现的原语字典。其提供了攻击、资源发现和响应分析的资源。&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/fuzzdb-project/fuzzdb是一个开源的漏洞注入和资源发现的原语字典。其提供了攻击、资源发现和响应分析的资源。&lt;/a&gt;&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">FCKeditor connector.php任意文件上传漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									FCKeditor是一款开放源码的HTML文本编辑器。
+<br />
+
+<br />
+
+									FCKeditor的editor/filemanager/browser/default/connectors/php/connector.php模块中存在文件上传限制漏洞：
+<br />
+
+<br />
+
+									    147.    function FileUpload( $resourceType, $currentFolder )
+<br />
+
+									    148.    {
+<br />
+
+									    149.        $sErrorNumber = &#39;0&#39; ;
+<br />
+
+									    150.        $sFileName = &#39;&#39; ;
+<br />
+
+									    151.    
+<br />
+
+									    152.        if ( isset( $_FILES[&#39;NewFile&#39;] ) &amp;&amp; !is_null( $_FILES[&#39;NewFile&#39;][&#39;tmp_name&#39;] ) )
+<br />
+
+									    153.        {
+<br />
+
+									    154.            $oFile = $_FILES[&#39;NewFile&#39;] ;
+<br />
+
+									    155.    
+<br />
+
+									    156.            // Map the virtual path to the local server path.
+<br />
+
+									    157.            $sServerDir = ServerMapFolder( $resourceType, $currentFolder ) ;
+<br />
+
+									    158.    
+<br />
+
+									    159.            // Get the uploaded file name.
+<br />
+
+									    160.            $sFileName = $oFile[&#39;name&#39;] ;
+<br />
+
+									    161.            $sOriginalFileName = $sFileName ;
+<br />
+
+									    162.            // Security fix by truzone 01-15-2006
+<br />
+
+									    163.            //$sExtension = substr( $sFileName, ( strrpos($sFileName, &#39;.&#39;) + 1 ) ) ;
+<br />
+
+									    164.            //$sExtension = strtolower( $sExtension ) ;
+<br />
+
+									    165.    
+<br />
+
+									    166.            if(extension_loaded(&quot;mime_magic&quot;)){
+<br />
+
+									    167.            $sExtension = mime_content_type($oFile[&#39;tmp_name&#39;]);
+<br />
+
+									    168.            }else{
+<br />
+
+									    169.            $sExtension = $oFile[&#39;type&#39;];
+<br />
+
+									    170.            }
+<br />
+
+									    171.            // en of security fix by truzone 01-15-2006
+<br />
+
+									    172.            global $Config ;
+<br />
+
+									    173.    
+<br />
+
+									    174.            $arAllowed    = $Config[&#39;AllowedExtensions&#39;][$resourceType] ;
+<br />
+
+									    175.            $arDenied    = $Config[&#39;DeniedExtensions&#39;][$resourceType] ;
+<br />
+
+<br />
+
+									由于166-170行仅检查了MIME类型的上传请求，因此远程攻击者可以通过pht扩展名向Web服务器上传恶意脚本。
+<br />
+
+<br />
+
+									&lt;*来源：EgiX （n0b0d13s@gmail.com）
+<br />
+
+<br />
+
+									  链接：http://secunia.com/advisories/33973/
+<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									FCKeditor
+<br />
+
+									---------
+<br />
+
+									目前厂商已提供补丁或者升级程序，我们建议使用此软件的用户访问厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://www.fckeditor.net/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2008-10-18</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-11-20</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-6178" target="_blank">CVE-2008-6178</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/31812" target="_blank">31812</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=12966" target="_blank">12966</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200902-412&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20086185&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-12967&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

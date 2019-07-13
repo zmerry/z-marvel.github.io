@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">MyBB论坛口令重置功能弱随机数漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									MyBB是一款流行的Web论坛程序。
+<br />
+
+<br />
+
+									MyBB的口令重置实现在生成口令重置令牌和随机口令时使用了弱随机数，如果Web服务器重新使用了PHP进程的话攻击者就可以破解口令入侵任意账号。
+<br />
+
+<br />
+
+									MyBB在多处使用了mt_srand()函数对随机数生成器提供种子：
+<br />
+
+<br />
+
+									    // Setup a unique posthash for attachment management
+<br />
+
+									    if(!$mybb-&gt;input[&#39;posthash&#39;] &amp;&amp; $mybb-&gt;input[&#39;action&#39;] != &quot;editdraft&quot;)
+<br />
+
+									    {
+<br />
+
+									       mt_srand((double) microtime() * 1000000);
+<br />
+
+									       $posthash = md5($mybb-&gt;user[&#39;uid&#39;].mt_rand());
+<br />
+
+									    }
+<br />
+
+<br />
+
+									这种方式所提供的随机数种子只有100万个不同的种子值；此外第一个生成的随机数还会以posthash的形式泄露给用户。由于用户知道了自己的uid，就可以通过暴力猜测100万种可能性找到种子。普通的桌面PC可在一秒钟内完成这种攻击。
+<br />
+
+<br />
+
+									由于随机数生成器的状态被同一PHP进程所处理的请求所共享，因此之后的口令重置就会使用攻击者已知的状态。
+<br />
+
+<br />
+
+									口令重置首先会创建发送给用户的随机口令重置令牌。如果使用了这个令牌，口令重置的第二步就会生成新的随机口令，这两个随机字符串都是由以下函数生成的：
+<br />
+
+<br />
+
+									     function random_str($length=&quot;8&quot;)
+<br />
+
+									     {
+<br />
+
+									        $set =array(&quot;a&quot;,&quot;A&quot;,&quot;b&quot;,&quot;B&quot;,&quot;c&quot;,&quot;C&quot;,&quot;d&quot;,&quot;D&quot;,&quot;e&quot;,&quot;E&quot;,&quot;f&quot;,&quot;F&quot;,
+<br />
+
+									                    &quot;g&quot;,&quot;G&quot;,&quot;h&quot;,&quot;H&quot;,&quot;i&quot;,&quot;I&quot;,&quot;j&quot;,&quot;J&quot;,&quot;k&quot;,&quot;K&quot;,&quot;l&quot;,&quot;L&quot;,
+<br />
+
+									                    &quot;m&quot;,&quot;M&quot;,&quot;n&quot;,&quot;N&quot;,&quot;o&quot;,&quot;O&quot;,&quot;p&quot;,&quot;P&quot;,&quot;q&quot;,&quot;Q&quot;,&quot;r&quot;,&quot;R&quot;,
+<br />
+
+									                    &quot;s&quot;,&quot;S&quot;,&quot;t&quot;,&quot;T&quot;,&quot;u&quot;,&quot;U&quot;,&quot;v&quot;,&quot;V&quot;,&quot;w&quot;,&quot;W&quot;,&quot;x&quot;,&quot;X&quot;,
+<br />
+
+									                &quot;y&quot;,&quot;Y&quot;,&quot;z&quot;,&quot;Z&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;,&quot;9&quot;);
+<br />
+
+									        $str = &#39;&#39;;
+<br />
+
+<br />
+
+									        for($i = 1; $i &lt;= $length; ++$i)
+<br />
+
+									        {
+<br />
+
+									           $ch = mt_rand(0, count($set)-1);
+<br />
+
+									           $str .= $set[$ch];
+<br />
+
+									        }
+<br />
+
+<br />
+
+									        return $str;
+<br />
+
+									     }
+<br />
+
+<br />
+
+									这段代码的问题是使用了mt_rand()生成随机字符串且mt_rand()随机数生成器的状态是攻击者已知的，因此可以预测出所生成的口令重置令牌和新的口令。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									MyBB
+<br />
+
+									----
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://blog.mybboard.net/2010/04/13/mybb-1-4-12-released-security-maintenance-update/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-04-13</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-04-19</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/39404" target="_blank">39404</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14830" target="_blank">14830</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

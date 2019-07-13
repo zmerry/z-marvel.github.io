@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="tcpdump 是一个很常用的网络包分析工具，可以用来显示通过网络传输到本系统的 TCP/IP 以及其他网络的数据包。tcpdump 使用 libpcap 库来抓取网络报，这个库在几乎在所有的 Linux/Unix 中都有。 tcpdump 可以从网卡或之前创建的数据包文件中读取内容，也可以将包写入文件中以供后续使用。必须是 root 用户或者使用 sudo 特权来运行 tcpdump。">
+<meta name="keywords" content="Tools,原创,Network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过实例学习tcpdump命令">
+<meta property="og:url" content="http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="tcpdump 是一个很常用的网络包分析工具，可以用来显示通过网络传输到本系统的 TCP/IP 以及其他网络的数据包。tcpdump 使用 libpcap 库来抓取网络报，这个库在几乎在所有的 Linux/Unix 中都有。 tcpdump 可以从网卡或之前创建的数据包文件中读取内容，也可以将包写入文件中以供后续使用。必须是 root 用户或者使用 sudo 特权来运行 tcpdump。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-01-10T13:38:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通过实例学习tcpdump命令">
+<meta name="twitter:description" content="tcpdump 是一个很常用的网络包分析工具，可以用来显示通过网络传输到本系统的 TCP/IP 以及其他网络的数据包。tcpdump 使用 libpcap 库来抓取网络报，这个库在几乎在所有的 Linux/Unix 中都有。 tcpdump 可以从网卡或之前创建的数据包文件中读取内容，也可以将包写入文件中以供后续使用。必须是 root 用户或者使用 sudo 特权来运行 tcpdump。">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>通过实例学习tcpdump命令</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/02/01/Hack-Tools-Box/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/12/27/Metasploit：Module-database-cache-not-built-yet-using-slow-search/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&text=通过实例学习tcpdump命令"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&title=通过实例学习tcpdump命令"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&is_video=false&description=通过实例学习tcpdump命令"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=通过实例学习tcpdump命令&body=Check out this article: http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&title=通过实例学习tcpdump命令"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&title=通过实例学习tcpdump命令"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&title=通过实例学习tcpdump命令"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&title=通过实例学习tcpdump命令"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&name=通过实例学习tcpdump命令&description=&lt;p&gt; tcpdump 是一个很常用的网络包分析工具，可以用来显示通过网络传输到本系统的 TCP/IP 以及其他网络的数据包。tcpdump 使用 libpcap 库来抓取网络报，这个库在几乎在所有的 Linux/Unix 中都有。&lt;/p&gt;
+&lt;p&gt;tcpdump 可以从网卡或之前创建的数据包文件中读取内容，也可以将包写入文件中以供后续使用。必须是 root 用户或者使用 sudo 特权来运行 tcpdump。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        通过实例学习tcpdump命令
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-01-10T13:38:42.000Z" itemprop="datePublished">2018-01-10</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全工具/">安全工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Network/">Network</a>, <a class="tag-link" href="/tags/Tools/">Tools</a>, <a class="tag-link" href="/tags/原创/">原创</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p> tcpdump 是一个很常用的网络包分析工具，可以用来显示通过网络传输到本系统的 TCP/IP 以及其他网络的数据包。tcpdump 使用 libpcap 库来抓取网络报，这个库在几乎在所有的 Linux/Unix 中都有。</p>
+<p>tcpdump 可以从网卡或之前创建的数据包文件中读取内容，也可以将包写入文件中以供后续使用。必须是 root 用户或者使用 sudo 特权来运行 tcpdump。</p>
+<a id="more"></a>
+<p>在本文中，我们将会通过一些实例来演示如何使用 tcpdump 命令，但首先让我们来看看在各种 Linux 操作系统中是如何安装 tcpdump 的。</p>
+<p>推荐阅读：使用 iftop 命令监控网络带宽<br>安装</p>
+<p>tcpdump 默认在几乎所有的 Linux 发行版中都可用，但若你的 Linux 上没有的话，使用下面方法进行安装。</p>
+<p>CentOS/RHEL</p>
+<p>使用下面命令在 CentOS 和 RHEL 上安装 tcpdump，</p>
+<p>$ sudo yum install tcpdump*</p>
+<p>Fedora</p>
+<p>使用下面命令在 Fedora 上安装 tcpdump：</p>
+<p>$ dnf install tcpdump</p>
+<p>Ubuntu/Debian/Linux Mint</p>
+<p>在 Ubuntu/Debain/Linux Mint 上使用下面命令安装 tcpdump：</p>
+<p>$ apt-get install tcpdump</p>
+<p>安装好 tcpdump 后，现在来看一些例子。</p>
+<p>案例演示</p>
+<p>从所有网卡中捕获数据包</p>
+<p>运行下面命令来从所有网卡中捕获数据包：</p>
+<p>$ tcpdump -i any</p>
+<p>从指定网卡中捕获数据包</p>
+<p>要从指定网卡中捕获数据包，运行：</p>
+<p>$ tcpdump -i eth0</p>
+<p>将捕获的包写入文件</p>
+<p>使用 -w 选项将所有捕获的包写入文件：</p>
+<p>$ tcpdump -i eth1 -w packets_file</p>
+<p>读取之前产生的 tcpdump 文件</p>
+<p>使用下面命令从之前创建的 tcpdump 文件中读取内容：</p>
+<p>$ tcpdump -r packets_file</p>
+<p>获取更多的包信息，并且以可读的形式显示时间戳</p>
+<p>要获取更多的包信息同时以可读的形式显示时间戳，使用：</p>
+<p>$ tcpdump -ttttnnvvS</p>
+<p>查看整个网络的数据包</p>
+<p>要获取整个网络的数据包，在终端执行下面命令：</p>
+<p>$ tcpdump net 192.168.1.0/24</p>
+<p>根据 IP 地址查看报文</p>
+<p>要获取指定 IP 的数据包，不管是作为源地址还是目的地址，使用下面命令：</p>
+<p>$ tcpdump host 192.168.1.100</p>
+<p>要指定 IP 地址是源地址或是目的地址则使用：</p>
+<p>$ tcpdump src 192.168.1.100<br>$ tcpdump dst 192.168.1.100</p>
+<p>查看某个协议或端口号的数据包</p>
+<p>要查看某个协议的数据包，运行下面命令：</p>
+<p>$ tcpdump ssh</p>
+<p>要捕获某个端口或一个范围的数据包，使用：</p>
+<p>$ tcpdump port 22<br>$ tcpdump portrange 22-125</p>
+<p>我们也可以与 src 和 dst 选项连用来捕获指定源端口或指定目的端口的报文。</p>
+<p>我们还可以使用“与” （and，&amp;&amp;）、“或” （or，|| ) 和“非”（not，!） 来将两个条件组合起来。当我们需要基于某些条件来分析网络报文是非常有用。</p>
+<p>使用“与”</p>
+<p>可以使用 and 或者符号 &amp;&amp; 来将两个或多个条件组合起来。比如：</p>
+<p>$ tcpdump src 192.168.1.100 &amp;&amp; port 22 -w ssh_packets</p>
+<p>使用“或”</p>
+<p>“或”会检查是否匹配命令所列条件中的其中一条，像这样：</p>
+<p>$ tcpdump src 192.168.1.100 or dst 192.168.1.50 &amp;&amp; port 22 -w ssh_packets<br>$ tcpdump port 443 or 80 -w http_packets</p>
+<p>使用“非”</p>
+<p>当我们想表达不匹配某项条件时可以使用“非”，像这样：</p>
+<p>$ tcpdump -i eth0 src port not 22</p>
+<p>这会捕获 eth0 上除了 22 号端口的所有通讯。</p>
+<p>编译自：<a href="http://linuxtechlab.com/learn-use-tcpdump-command-examples/作者：" target="_blank" rel="external">http://linuxtechlab.com/learn-use-tcpdump-command-examples/作者：</a> Shusain<br>原创：LCTT <a href="https://linux.cn/article-9210-1.html" target="_blank" rel="external">https://linux.cn/article-9210-1.html</a> 译者： DarkSun<br>本文地址：<a href="https://linux.cn/article-9210-1.html" target="_blank" rel="external">https://linux.cn/article-9210-1.html</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&text=通过实例学习tcpdump命令"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&title=通过实例学习tcpdump命令"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&is_video=false&description=通过实例学习tcpdump命令"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=通过实例学习tcpdump命令&body=Check out this article: http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&title=通过实例学习tcpdump命令"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&title=通过实例学习tcpdump命令"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&title=通过实例学习tcpdump命令"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&title=通过实例学习tcpdump命令"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2018/01/10/通过实例学习tcpdump命令/&name=通过实例学习tcpdump命令&description=&lt;p&gt; tcpdump 是一个很常用的网络包分析工具，可以用来显示通过网络传输到本系统的 TCP/IP 以及其他网络的数据包。tcpdump 使用 libpcap 库来抓取网络报，这个库在几乎在所有的 Linux/Unix 中都有。&lt;/p&gt;
+&lt;p&gt;tcpdump 可以从网卡或之前创建的数据包文件中读取内容，也可以将包写入文件中以供后续使用。必须是 root 用户或者使用 sudo 特权来运行 tcpdump。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

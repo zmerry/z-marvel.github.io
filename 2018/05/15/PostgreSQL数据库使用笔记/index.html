@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="PostgreSQL是以加州大学伯克利分校计算机系开发的 POSTGRES，现在已经更名为PostgreSQL，版本 4.2为基础的对象关系型数据库管理系统（ORDBMS）。PostgreSQL支持大部分 SQL标准并且提供了许多其他现代特性：复杂查询、外键、触发器、视图、事务完整性、MVCC。同样，PostgreSQL 可以用许多方法扩展，比如， 通过增加新的数据类型、函数、操作符、聚集函数、索">
+<meta name="keywords" content="原创,PostgreSQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PostgreSQL数据库使用笔记">
+<meta property="og:url" content="http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="PostgreSQL是以加州大学伯克利分校计算机系开发的 POSTGRES，现在已经更名为PostgreSQL，版本 4.2为基础的对象关系型数据库管理系统（ORDBMS）。PostgreSQL支持大部分 SQL标准并且提供了许多其他现代特性：复杂查询、外键、触发器、视图、事务完整性、MVCC。同样，PostgreSQL 可以用许多方法扩展，比如， 通过增加新的数据类型、函数、操作符、聚集函数、索">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-05-15T01:46:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PostgreSQL数据库使用笔记">
+<meta name="twitter:description" content="PostgreSQL是以加州大学伯克利分校计算机系开发的 POSTGRES，现在已经更名为PostgreSQL，版本 4.2为基础的对象关系型数据库管理系统（ORDBMS）。PostgreSQL支持大部分 SQL标准并且提供了许多其他现代特性：复杂查询、外键、触发器、视图、事务完整性、MVCC。同样，PostgreSQL 可以用许多方法扩展，比如， 通过增加新的数据类型、函数、操作符、聚集函数、索">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>PostgreSQL数据库使用笔记</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/05/15/Metasploit-PostgreSQL使用笔记/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/05/07/MOVIES电影推荐/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&text=PostgreSQL数据库使用笔记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&title=PostgreSQL数据库使用笔记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&is_video=false&description=PostgreSQL数据库使用笔记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PostgreSQL数据库使用笔记&body=Check out this article: http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&title=PostgreSQL数据库使用笔记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&title=PostgreSQL数据库使用笔记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&title=PostgreSQL数据库使用笔记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&title=PostgreSQL数据库使用笔记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&name=PostgreSQL数据库使用笔记&description=&lt;p&gt;PostgreSQL是以加州大学伯克利分校计算机系开发的 POSTGRES，现在已经更名为PostgreSQL，版本 4.2为基础的对象关系型数据库管理系统（ORDBMS）。PostgreSQL支持大部分 SQL标准并且提供了许多其他现代特性：复杂查询、外键、触发器、视图、事务完整性、MVCC。同样，PostgreSQL 可以用许多方法扩展，比如， 通过增加新的数据类型、函数、操作符、聚集函数、索引。免费使用、修改、和分发 PostgreSQL，不管是私用、商用、还是学术研究使用。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#设置postgresql数据库默认用户密码："><span class="toc-number">1.</span> <span class="toc-text">设置postgresql数据库默认用户密码：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#登录数据库："><span class="toc-number">2.</span> <span class="toc-text">登录数据库：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用的控制台命令"><span class="toc-number">3.</span> <span class="toc-text">常用的控制台命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#远程访问数据库"><span class="toc-number">4.</span> <span class="toc-text">远程访问数据库</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TYPE-DATABASE-USER-ADDRESS-METHOD"><span class="toc-number"></span> <span class="toc-text">TYPE  DATABASE        USER            ADDRESS                 METHOD</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TYPE-DATABASE-USER-ADDRESS-METHOD-1"><span class="toc-number"></span> <span class="toc-text">TYPE  DATABASE        USER            ADDRESS                 METHOD</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TYPE-DATABASE-USER-ADDRESS-METHOD-2"><span class="toc-number"></span> <span class="toc-text">TYPE  DATABASE        USER            ADDRESS                 METHOD</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TYPE-DATABASE-USER-ADDRESS-METHOD-3"><span class="toc-number"></span> <span class="toc-text">TYPE  DATABASE        USER            ADDRESS                 METHOD</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        PostgreSQL数据库使用笔记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-05-15T01:46:33.000Z" itemprop="datePublished">2018-05-15</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/软件工具/">软件工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/PostgreSQL/">PostgreSQL</a>, <a class="tag-link" href="/tags/原创/">原创</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>PostgreSQL是以加州大学伯克利分校计算机系开发的 POSTGRES，现在已经更名为PostgreSQL，版本 4.2为基础的对象关系型数据库管理系统（ORDBMS）。PostgreSQL支持大部分 SQL标准并且提供了许多其他现代特性：复杂查询、外键、触发器、视图、事务完整性、MVCC。同样，PostgreSQL 可以用许多方法扩展，比如， 通过增加新的数据类型、函数、操作符、聚集函数、索引。免费使用、修改、和分发 PostgreSQL，不管是私用、商用、还是学术研究使用。</p>
+<a id="more"></a>
+<h2 id="设置postgresql数据库默认用户密码："><a href="#设置postgresql数据库默认用户密码：" class="headerlink" title="设置postgresql数据库默认用户密码："></a>设置postgresql数据库默认用户密码：</h2><p>启动服务：               service postgresql start<br>kali切换到postgres用户：sudo su postgres<br>登录默认数据库：            psql postgres<br>修改密码：              alter user postgres with password ‘xxx’;<br>或者运行命令：              \password postgres</p>
+<p>可以简化为：sudo -u postgres psql postgres<br>            alter user postgres with password ‘xxx’;</p>
+<h2 id="登录数据库："><a href="#登录数据库：" class="headerlink" title="登录数据库："></a>登录数据库：</h2><p>psql -U postgres -h 127.0.0.1</p>
+<h2 id="常用的控制台命令"><a href="#常用的控制台命令" class="headerlink" title="常用的控制台命令"></a>常用的控制台命令</h2><p>\password           设置密码<br>\q                  退出<br>\h                  查看SQL命令的解释，比如\h select<br>\?                  查看psql命令列表<br>\l                  列出所有数据库<br>\c [database_name]  连接其他数据库<br>\d                  列出当前数据库的所有表格<br>\d [table_name]     列出某一张表格的结构<br>\x                  对数据做展开操作<br>\du                 列出所有用户</p>
+<h2 id="远程访问数据库"><a href="#远程访问数据库" class="headerlink" title="远程访问数据库"></a>远程访问数据库</h2><p>修改监听地址：<br>    编辑：/etc/postgresql/10/main/postgresql.conf : listen_address = “<em>“<br>配置IP入口：<br>    编辑：/etc/postgresql/10/main/pg_hba.conf<br>pg_hba.conf 配置详解<br>该文件位于初始化安装的数据库目录下<br>编辑 pg_hba.conf 配置文件<br>postgres@clw-db1:/pgdata/9.6/poc/data&gt; vi pg_hba.conf<br>1<br>TYPE 参数设置<br>TYPE 表示主机类型，值可能为：<br>若为 <code>local</code> 表示是unix-domain的socket连接，<br>若为 <code>host</code> 是TCP/IP socket<br>若为 <code>hostssl</code> 是SSL加密的TCP/IP socket<br>1<br>2<br>3<br>4<br>DATABASE 参数设置<br>DATABASE 表示数据库名称,值可能为：<br><code>all</code> ,<code>sameuser</code>,<code>samerole</code>,<code>replication</code>,<code>数据库名称</code> ,或者多个<br>数据库名称用 <code>逗号</code>，注意ALL不匹配 replication<br>1<br>2<br>3<br>USER 参数设置<br> USER 表示用户名称，值可以为：<br> <code>all</code>,<code>一个用户名</code>，<code>一组用户名</code> ，多个用户时，可以用 <code>,</code>逗号隔开，<br> 或者在用户名称前缀 <code>+</code> ;在USER和DATABASE字段，也可以写一个单独的<br> 文件名称用 <code>@</code> 前缀，该文件包含数据库名称或用户名称<br>1<br>2<br>3<br>4<br>ADDRESS 参数设置<br>该参数可以为 <code>主机名称</code> 或者<code>IP/32(IPV4)</code>或 <code>IP/128(IPV6)</code>，主机<br>名称以 <code>.</code>开头，<code>samehost</code>或<code>samenet</code> 匹配任意Ip地址<br>1<br>2<br>METHOD 参数设置<br>该值可以为”trust”, “reject”, “md5”, “password”, “scram-sha-256”,<br>“gss”, “sspi”, “ident”, “peer”, “pam”, “ldap”, “radius” or “cert”<br>注意 若为<code>password</code>则发送的为明文密码<br>1<br>2<br>3<br>注意<br>修改该配置文件中的参数，必须重启 <code>postgreSql</code>服务,若要允许其它IP地址访问<br>该主机数据库，则必须修改 <code>postgresql.conf</code> 中的参数 <code>listen_addresses</code> 为 `</em>`<br>重启：pg_ctl reload 或者 执行 SELECT pg_reload_conf()<br>1<br>2<br>3<br>配置以下参数 </p>
+<h1 id="TYPE-DATABASE-USER-ADDRESS-METHOD"><a href="#TYPE-DATABASE-USER-ADDRESS-METHOD" class="headerlink" title="TYPE  DATABASE        USER            ADDRESS                 METHOD"></a>TYPE  DATABASE        USER            ADDRESS                 METHOD</h1><p>host    all            all             10.10.56.17/32             md5</p>
+<p>“pg_hba.conf” 99L, 4720C<br>1<br>2<br>3<br>4<br>参数说明<br>host   参数表示安装PostgreSQL的主机<br>all    第一个all 表示该主机上的所有数据库实例<br>all    第二个all 表示所有用户<br>10.10.56.17/32  表示需要连接到主机的IP地址，32表示IPV4<br>md5    表示验证方式<br>1<br>2<br>3<br>4<br>5<br>即上述表示允许IP地址为10.10.56.17的所有用户可以通过MD5的密码验证方式连接主机上所有的数据库<br>也可以指定具体的数据库名称和 用户</p>
+<h1 id="TYPE-DATABASE-USER-ADDRESS-METHOD-1"><a href="#TYPE-DATABASE-USER-ADDRESS-METHOD-1" class="headerlink" title="TYPE  DATABASE        USER            ADDRESS                 METHOD"></a>TYPE  DATABASE        USER            ADDRESS                 METHOD</h1><p>host    test            pgtest           10.10.56.17/32             md5<br>1<br>2<br>即表示允许地址为 10.10.56.17 的用户 pgtest通过 MD5方式 加密的密码方式连接主机上的 test 数据库<br>也可以指定整个网段</p>
+<h1 id="TYPE-DATABASE-USER-ADDRESS-METHOD-2"><a href="#TYPE-DATABASE-USER-ADDRESS-METHOD-2" class="headerlink" title="TYPE  DATABASE        USER            ADDRESS                 METHOD"></a>TYPE  DATABASE        USER            ADDRESS                 METHOD</h1><p>host    test            pgtest           0.0.0.0/0               md5<br>1<br>2<br>即表示允许 任意iP 通过用户名为 pgtest 和md5的 密码 验证方式连接主机上 test 的数据库<br>不进行密码验证</p>
+<h1 id="TYPE-DATABASE-USER-ADDRESS-METHOD-3"><a href="#TYPE-DATABASE-USER-ADDRESS-METHOD-3" class="headerlink" title="TYPE  DATABASE        USER            ADDRESS                 METHOD"></a>TYPE  DATABASE        USER            ADDRESS                 METHOD</h1><p>host    test            pgtest           0.0.0.0/0               trust<br>1<br>2<br>表示任意IP地址的用户 pgtest 无需密码验证可直接连接访问该主机的 test 数据库 </p>
+<p>来源：<a href="https://blog.csdn.net/yaoqiancuo3276/article/details/80404883" target="_blank" rel="external">https://blog.csdn.net/yaoqiancuo3276/article/details/80404883</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#设置postgresql数据库默认用户密码："><span class="toc-number">1.</span> <span class="toc-text">设置postgresql数据库默认用户密码：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#登录数据库："><span class="toc-number">2.</span> <span class="toc-text">登录数据库：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用的控制台命令"><span class="toc-number">3.</span> <span class="toc-text">常用的控制台命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#远程访问数据库"><span class="toc-number">4.</span> <span class="toc-text">远程访问数据库</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TYPE-DATABASE-USER-ADDRESS-METHOD"><span class="toc-number"></span> <span class="toc-text">TYPE  DATABASE        USER            ADDRESS                 METHOD</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TYPE-DATABASE-USER-ADDRESS-METHOD-1"><span class="toc-number"></span> <span class="toc-text">TYPE  DATABASE        USER            ADDRESS                 METHOD</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TYPE-DATABASE-USER-ADDRESS-METHOD-2"><span class="toc-number"></span> <span class="toc-text">TYPE  DATABASE        USER            ADDRESS                 METHOD</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TYPE-DATABASE-USER-ADDRESS-METHOD-3"><span class="toc-number"></span> <span class="toc-text">TYPE  DATABASE        USER            ADDRESS                 METHOD</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&text=PostgreSQL数据库使用笔记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&title=PostgreSQL数据库使用笔记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&is_video=false&description=PostgreSQL数据库使用笔记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PostgreSQL数据库使用笔记&body=Check out this article: http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&title=PostgreSQL数据库使用笔记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&title=PostgreSQL数据库使用笔记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&title=PostgreSQL数据库使用笔记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&title=PostgreSQL数据库使用笔记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2018/05/15/PostgreSQL数据库使用笔记/&name=PostgreSQL数据库使用笔记&description=&lt;p&gt;PostgreSQL是以加州大学伯克利分校计算机系开发的 POSTGRES，现在已经更名为PostgreSQL，版本 4.2为基础的对象关系型数据库管理系统（ORDBMS）。PostgreSQL支持大部分 SQL标准并且提供了许多其他现代特性：复杂查询、外键、触发器、视图、事务完整性、MVCC。同样，PostgreSQL 可以用许多方法扩展，比如， 通过增加新的数据类型、函数、操作符、聚集函数、索引。免费使用、修改、和分发 PostgreSQL，不管是私用、商用、还是学术研究使用。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

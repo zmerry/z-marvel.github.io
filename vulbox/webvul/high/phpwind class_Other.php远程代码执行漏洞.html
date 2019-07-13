@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">phpwind class_Other.php远程代码执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHPWind是一款国内比较流行的基于PHP的Web论坛程序。
+<br />
+
+<br />
+
+									PHPWind实现上存在输入验证漏洞，远程攻击者可能利用此漏洞非授权获取论坛的管理员权限。
+<br />
+
+<br />
+
+									PHPWind的class_Other.php脚本对待处理的数据未作充分的过滤检查即用来构造php代码，远程攻击者可以通过向pw_api脚本的params变量传递序列化的数组，通过调用class_Other.php中的threadscateGory函数，将注入的php代码写到缓冲文件data/bbscache/info_class.php中。攻击者进而访问data/bbscache/info_class.php，可以执行任意代码。
+<br />
+
+<br />
+
+									   存在漏洞的脚本如下：
+<br />
+
+									    function threadscateGory($classdb) {//生成帖子交换分类
+<br />
+
+<br />
+
+									        $classcache = &quot;&lt;?php\r\n\$info_class=array(\r\n&quot;;
+<br />
+
+<br />
+
+									        foreach ($classdb as $key =&gt; $class) {
+<br />
+
+<br />
+
+									            !$class[&#39;ifshow&#39;] &amp;&amp; $class[&#39;ifshow&#39;] = &#39;0&#39;;
+<br />
+
+									            $flag &amp;&amp; $info_class[$class[&#39;cid&#39;]][&#39;ifshow&#39;] &amp;&amp; $class[&#39;ifshow&#39;] = &#39;1&#39;;
+<br />
+
+<br />
+
+									            $class[&#39;name&#39;] = str_replace(array(&#39;&quot;&#39;,&quot;&#39;&quot;),array(&quot;&amp;quot;&quot;,&quot;&amp;#39;&quot;),$class[&#39;name&#39;]);
+<br />
+
+									            $classcache .= &quot;&#39;$class[cid]&#39;=&gt;&quot;.pw_var_export($class).&quot;,\r\n\r\n&quot;;
+<br />
+
+									        }
+<br />
+
+									        $classcache .= &quot;);\r\n?&gt;&quot;;
+<br />
+
+									        writeover(D_P.&quot;data/bbscache/info_class.php&quot;,$classcache);<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									phpwind
+<br />
+
+									----
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.phpwind.net/index.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-09-06</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-12-27</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标URL存在COOKIE注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本漏洞属于Web应用安全中的常见漏洞，属于OWASP TOP 10 （2007）中的注入类漏洞。
+<br />
+
+<br />
+
+									很多WEB应用中都存在SQL注入漏洞。根据注入点的不同，分为来自Cookie，Header，Get,Post的注入类型，Cookie属于sql注入的一种，攻击很大程度上取决于攻击者使用从错误消息所获得信息。但是，即使没有显示错误消息应用程序仍可能受COOKIE注入的影响。
+<br />
+
+<br />
+
+									总体上讲，COOKIE注入是对web应用而不是对web服务器或操作系统本身的攻击。正如其名称所示，COOKIE注入是对查询添加非预期SQL命令从而以数据库管理员或开发人员非预期的方式操控数据库的行为。如果成功的话，就可以获得、修改、注入或删除有漏洞web应用所使用数据库服务器的数据。在某些环境下，可利用COOKIE注入完全控制系统。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									防护建议包括部署分层安全措施（包括在接受用户输入时使用参数化的查询）、确保应用程序仅使用预期的数据、加固数据库服务器防止不恰当的访问数据。
+<br />
+
+<br />
+
+									建议使用以下措施防范COOKIE注入漏洞：
+<br />
+
+<br />
+
+									对于开发
+<br />
+
+									========
+<br />
+
+<br />
+
+									使用以下建议编写不受COOKIE注入攻击影响的web应用。 
+<br />
+
+<br />
+
+									参数化查询：COOKIE注入源于攻击者控制查询数据以修改查询逻辑，因此防范SQL注入攻击的最佳方式就是将查询的逻辑与其数据分隔，这可以防止执行从用户输入所注入的命令。这种方式的缺陷是可能对性能产生影响（但影响很小），且必须以这种方式构建站点上的每个查询才能完全有效。只要无意中绕过了一个查询，就足以导致应用受COOKIE注入的影响。以下代码显示的是可以进行COOKIE注入的COOKIE语句示例:
+<br />
+
+									$name=$_COOKIE[&#39;name&#39;];
+<br />
+
+									$sql=&quot;select * from tables where name=&#39;$name&#39;&quot;;
+<br />
+
+									下面的例子使用了参数化的查询，不受SQL注入攻击的影响
+<br />
+
+									$name=$_COOKIE[&#39;name&#39;];
+<br />
+
+									$mysqli=new mysqli(&quot;localhost&quot;, &quot;user&quot;, &quot;pass&quot;, &quot;database&quot;);
+<br />
+
+									$stmt=$mysqli-&gt;prepare(&quot;select * from tables where name=?&quot;);
+<br />
+
+									$stmt-&gt;bind_param(&quot;s&quot;, $name);
+<br />
+
+									$stmt-&gt;execute();<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-07-31</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

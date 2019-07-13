@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到会话cookie中缺少HttpOnly属性</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									会话cookie中缺少HttpOnly属性会导致攻击者可以通过程序(JS脚本、Applet等)获取到用户的cookie信息，造成用户cookie信息泄露，增加攻击者的跨站脚本攻击威胁。
+<br />
+
+<br />
+
+									HttpOnly是微软对cookie做的扩展，该值指定cookie是否可通过客户端脚本访问。Microsoft Internet Explorer 版本 6 Service Pack 1 和更高版本支持cookie属性HttpOnly。
+<br />
+
+<br />
+
+									如果在Cookie中没有设置HttpOnly属性为true，可能导致Cookie被窃取。窃取的Cookie可以包含标识站点用户的敏感信息，如ASP.NET会话ID或Forms身份验证票证，攻击者可以重播窃取的Cookie，以便伪装成用户或获取敏感信息，进行跨站脚本攻击等。
+<br />
+
+<br />
+
+									如果在Cookie中设置HttpOnly属性为true，兼容浏览器接收到HttpOnly cookie，那么客户端通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这将有助于缓解跨站点脚本威胁。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									向所有会话cookie中添加“HttpOnly”属性。
+<br />
+
+<br />
+
+									Java示例：
+<br />
+
+									HttpServletResponse response2 = (HttpServletResponse)response;
+<br />
+
+									response2.setHeader( &quot;Set-Cookie&quot;, &quot;name=value; HttpOnly&quot;); 
+<br />
+
+<br />
+
+									C#示例：
+<br />
+
+									HttpCookie myCookie = new HttpCookie(&quot;myCookie&quot;);   
+<br />
+
+									myCookie.HttpOnly = true;  
+<br />
+
+									Response.AppendCookie(myCookie);
+<br />
+
+<br />
+
+									VB.NET示例：
+<br />
+
+									Dim myCookie As HttpCookie = new HttpCookie(&quot;myCookie&quot;)  
+<br />
+
+									myCookie.HttpOnly = True  
+<br />
+
+									Response.AppendCookie(myCookie)<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-01-15</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-06-14</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									0.0(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

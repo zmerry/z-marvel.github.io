@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标web应用登录表单中存在用户名或者密码信息</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									检测到目标站点的登录form表单中存在用户名或者密码此类的敏感信息，从而造成站点的敏感信息泄露。攻击者利用此信息可对目标站点进行进一步有效的攻击。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									清除掉登录form表单中的用户名或者密码数据。
+<br />
+
+<br />
+
+									示例：
+<br />
+
+<br />
+
+									若含有用户名、密码数据的登陆form表单为：
+<br />
+
+<br />
+
+									&lt;form id=&quot;1&quot; name=&quot;login&quot; method=&quot;get&quot; action=&quot;login.php&quot;&gt;
+<br />
+
+									    &lt;p&gt;Username: &lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;admin&quot; /&gt;&lt;/p&gt;
+<br />
+
+									    &lt;p&gt;Password: &lt;input type=&quot;password&quot; name=&quot;password&quot; value=&quot;admin&quot; /&gt;&lt;/p&gt;
+<br />
+
+									    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+<br />
+
+									 &lt;/form&gt;
+<br />
+
+<br />
+
+									则清除掉用户名、密码数据后的登录form表单为：
+<br />
+
+<br />
+
+									&lt;form id=&quot;1&quot; name=&quot;login&quot; method=&quot;post&quot; action=&quot;login.php&quot;&gt;
+<br />
+
+									    &lt;p&gt;Username: &lt;input type=&quot;text&quot; name=&quot;username&quot; /&gt;&lt;/p&gt;
+<br />
+
+									    &lt;p&gt;Password: &lt;input type=&quot;password&quot; name=&quot;password&quot; /&gt;&lt;/p&gt;
+<br />
+
+									    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+<br />
+
+									 &lt;/form&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2014-11-17</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

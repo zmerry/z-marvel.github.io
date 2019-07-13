@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Mahara用户名参数SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Mahara是一个开源的电子文件夹、网络日志、履历表生成器和社会联网系统。
+<br />
+
+<br />
+
+									远程攻击者可以通过向Mahara的lib/user.php页面提交恶意用户名执行SQL注入攻击。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Debian
+<br />
+
+									------
+<br />
+
+									Debian已经为此发布了一个安全公告（DSA-2030-1）以及相应补丁:
+<br />
+
+									DSA-2030-1：New mahara packages fix sql injection
+<br />
+
+									链接：http://www.debian.org/security/2010/dsa-2030
+<br />
+
+<br />
+
+									补丁下载：
+<br />
+
+<br />
+
+									Source archives:
+<br />
+
+<br />
+
+									http://security.debian.org/pool/updates/main/m/mahara/mahara_1.0.4-4+lenny5.diff.gz
+<br />
+
+									Size/MD5 checksum:    40648 cd057351de5462d5e1df2d75bf3f2247
+<br />
+
+									http://security.debian.org/pool/updates/main/m/mahara/mahara_1.0.4-4+lenny5.dsc
+<br />
+
+									Size/MD5 checksum:     1304 e87fa2a0e67a71eef479be5a5da65894
+<br />
+
+									http://security.debian.org/pool/updates/main/m/mahara/mahara_1.0.4.orig.tar.gz
+<br />
+
+									Size/MD5 checksum:  2383079 cf1158e4fe3cdba14fb1b71657bf8cc9
+<br />
+
+<br />
+
+									Architecture independent packages:
+<br />
+
+<br />
+
+									http://security.debian.org/pool/updates/main/m/mahara/mahara-apache2_1.0.4-4+lenny5_all.deb
+<br />
+
+									Size/MD5 checksum:     8106 5b0910999a1bfdfbce8740219d9549dc
+<br />
+
+									http://security.debian.org/pool/updates/main/m/mahara/mahara_1.0.4-4+lenny5_all.deb
+<br />
+
+									Size/MD5 checksum:  1662742 289da5fba44237ff1c17a462cb6cd9f7
+<br />
+
+<br />
+
+									补丁安装方法：
+<br />
+
+<br />
+
+									1. 手工安装补丁包：
+<br />
+
+<br />
+
+									  首先，使用下面的命令来下载补丁软件：
+<br />
+
+									  # wget url  (url是补丁下载链接地址)
+<br />
+
+<br />
+
+									  然后，使用下面的命令来安装补丁：  
+<br />
+
+									  # dpkg -i file.deb (file是相应的补丁名)
+<br />
+
+<br />
+
+									2. 使用apt-get自动安装补丁包：
+<br />
+
+<br />
+
+									   首先，使用下面的命令更新内部数据库：
+<br />
+
+									   # apt-get update
+<br />
+
+<br />
+
+									   然后，使用下面的命令安装更新软件包：
+<br />
+
+									   # apt-get upgrade
+<br />
+
+<br />
+
+									Eduforge.org
+<br />
+
+									------------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://mahara.org/interaction/forum/topic.php?id=1714<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-04-06</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-04-12</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-0400" target="_blank">CVE-2010-0400</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/39253" target="_blank">39253</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14761" target="_blank">14761</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201004-109&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20100400&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标站点存在php代码注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									&quot;PHP代码注入&quot;是泛指允许攻击者直接对服务器脚本php引擎提供代码的代码注入攻击。
+<br />
+
+									实际上，PHP代码注入是“动态赋值安全隐患”、“包含文件注入”、或者类似代码注入的安全隐患。
+<br />
+
+<br />
+
+									最常见的注入方式有：
+<br />
+
+									eval函数，eval函数的参数将会视同PHP处理，所以额外的命令可被添加。例如：如果&quot;arg&quot;如果被设成&quot;10; system(&#39;/bin/echo uh-oh&#39;)&quot;，后面的&quot;system(&#39;/bin/echo uh-oh&#39;)&quot;代码将被运行，这等同在服务器上运行开发者意料外的程序。在这示例里头是&quot;/bin/echo&quot;。
+<br />
+
+									动态变量赋值，PHP支持 &quot;变量的变量&quot;，意指变量或者表达式可以对其他变量名赋值。这种特性可用来于程序运行时期动态改变哪个变量被访问或给值。这种特性是把双刃剑：强大、便利、同时也很危险。
+<br />
+
+									包含文件注入：
+<br />
+
+									主要是没有过滤../此类的字符以及%00及空的元字符<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									判断每次请求过程中传递的变量中是否包含有非法字符，如：$_POST、$_GET、eval等<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-11-05</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

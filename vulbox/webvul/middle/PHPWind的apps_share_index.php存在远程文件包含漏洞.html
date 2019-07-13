@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHPWind的apps/share/index.php存在远程文件包含漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									PHPWind是一款国内比较流行的基于PHP的Web论坛程序。
+<br />
+
+<br />
+
+									PHPWind的api/class_base.php、apps/share/index.php、apps/groups/index.php页面的多个本地和远程文件包含漏洞导致执行任意PHP代码。
+<br />
+
+									1.描叙
+<br />
+
+<br />
+
+									apps/share/index.php 里$route和$basePath变量没有初始化,导致远程包含或者本地包含php文件,导致执行任意php代码
+<br />
+
+<br />
+
+									2.具体分析
+<br />
+
+<br />
+
+									&lt;?php
+<br />
+
+									if ($route == &quot;share&quot;) {
+<br />
+
+										require_once $basePath . &#39;/action/m_share.php&#39;;
+<br />
+
+									} elseif ($route == &quot;sharelink&quot;) {
+<br />
+
+										require_once $basePath . &#39;/action/m_sharelink.php&#39;;
+<br />
+
+									}
+<br />
+
+									?&gt;
+<br />
+
+									3.POC/EXP
+<br />
+
+<br />
+
+									  缺
+<br />
+
+<br />
+
+									4.FIX
+<br />
+
+<br />
+
+									已经在这个补丁的同时&#39;修补&#39;了
+<br />
+
+									http://www.phpwind.net/read-htm-tid-914851.html
+<br />
+
+<br />
+
+									&lt;?php
+<br />
+
+									!function_exists(&#39;readover&#39;) &amp;&amp; exit(&#39;Forbidden&#39;);
+<br />
+
+									if ($route == &quot;share&quot;) {
+<br />
+
+										require_once $basePath . &#39;/action/m_share.php&#39;;
+<br />
+
+									} elseif ($route == &quot;sharelink&quot;) {
+<br />
+
+										require_once $basePath . &#39;/action/m_sharelink.php&#39;;
+<br />
+
+									}
+<br />
+
+									?&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									PHPWind
+<br />
+
+									-------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.phpwind.net/read-htm-tid-914851.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-01-11</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-03-30</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14317" target="_blank">14317</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

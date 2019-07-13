@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="A collection of Vi commands in a cheat sheet, handy reference document for learning / remembering Vi commands. I refer to Vim / Vi as the same thing in this document, but in most modern Linux distros">
+<meta name="keywords" content="Tools,转载,Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cheat Sheet VI">
+<meta property="og:url" content="http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="A collection of Vi commands in a cheat sheet, handy reference document for learning / remembering Vi commands. I refer to Vim / Vi as the same thing in this document, but in most modern Linux distros">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-03T04:09:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cheat Sheet VI">
+<meta name="twitter:description" content="A collection of Vi commands in a cheat sheet, handy reference document for learning / remembering Vi commands. I refer to Vim / Vi as the same thing in this document, but in most modern Linux distros">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Cheat Sheet VI</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/03/03/最好用的17个渗透测试工具/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&text=Cheat Sheet VI"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&title=Cheat Sheet VI"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&is_video=false&description=Cheat Sheet VI"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet VI&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&title=Cheat Sheet VI"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&title=Cheat Sheet VI"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&title=Cheat Sheet VI"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&title=Cheat Sheet VI"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&name=Cheat Sheet VI&description=&lt;p&gt;A collection of Vi commands in a cheat sheet, handy reference document for learning / remembering Vi commands. I refer to Vim / Vi as the same thing in this document, but in most modern Linux distros vi is often a symlink to vim.&lt;/p&gt;
+&lt;p&gt;It’s worth learning Vi as it’s installed on pretty much every Linux base system out there.&lt;/p&gt;
+&lt;p&gt;If you’re learning Vi, you might want to check out &lt;a href=&quot;http://vim-adventures.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Vim Adventures&lt;/a&gt; - an online adventure game that uses Vi commands.&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vim-Resources"><span class="toc-number">1.</span> <span class="toc-text">Vim Resources</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Insert-mode-amp-Command-Mode"><span class="toc-number">2.</span> <span class="toc-text">Vi Insert mode & Command Mode</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Insert-Mode"><span class="toc-number">2.0.1.</span> <span class="toc-text">Vi Insert Mode</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Vi-Command-Mode-Vi-Insert-Mode"><span class="toc-number">2.0.1.0.1.</span> <span class="toc-text">Vi Command Mode - Vi Insert Mode</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Command-Mode"><span class="toc-number">2.0.2.</span> <span class="toc-text">Vi Command Mode</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-File-Navigvation"><span class="toc-number">3.</span> <span class="toc-text">Vi File Navigvation</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Arrow-Keys"><span class="toc-number">3.0.0.0.1.</span> <span class="toc-text">Arrow Keys</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Move-up-down-left-and-right-in-Vim"><span class="toc-number">3.0.1.</span> <span class="toc-text">Move up, down, left and right in Vim</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Page-Down"><span class="toc-number">3.0.2.</span> <span class="toc-text">Vi Page Down</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Half-a-Page-Down"><span class="toc-number">3.0.3.</span> <span class="toc-text">Vi Half a Page Down</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Page-Up"><span class="toc-number">3.0.4.</span> <span class="toc-text">Vi Page Up</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Half-a-Page-Up"><span class="toc-number">3.0.5.</span> <span class="toc-text">Vi Half a Page Up</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#More-Advanced-Ways-of-Entering-Insert-Mode"><span class="toc-number">4.</span> <span class="toc-text">More Advanced Ways of Entering Insert Mode</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Insert-Text-at-Start-of-the-Line"><span class="toc-number">4.0.1.</span> <span class="toc-text">Vi Insert Text at Start of the Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Insert-Text-at-the-end-of-the-Line"><span class="toc-number">4.0.2.</span> <span class="toc-text">Vi Insert Text at the end of the Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Append-text-to-the-right-of-the-Cursor"><span class="toc-number">4.0.3.</span> <span class="toc-text">Vi Append text to the right of the Cursor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Begin-a-new-line-below"><span class="toc-number">4.0.4.</span> <span class="toc-text">Begin a new line below</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-replace-line"><span class="toc-number">4.0.5.</span> <span class="toc-text">Vi replace line</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Replace"><span class="toc-number">5.</span> <span class="toc-text">Vi Replace</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Change-a-Word-in-Vi"><span class="toc-number">5.0.1.</span> <span class="toc-text">Change a Word in Vi</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace-line-but-not-wrapped-text"><span class="toc-number">5.0.2.</span> <span class="toc-text">Replace line, but not wrapped text</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Replace-Character"><span class="toc-number">5.0.3.</span> <span class="toc-text">Vi Replace Character</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Replace-1"><span class="toc-number">5.0.4.</span> <span class="toc-text">Vi Replace</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Delete"><span class="toc-number">6.</span> <span class="toc-text">Vi Delete</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-Single-Character-After-the-Cursor"><span class="toc-number">6.0.1.</span> <span class="toc-text">Vi Delete Single Character After the Cursor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-Character-before-the-Cursor"><span class="toc-number">6.0.2.</span> <span class="toc-text">Vi Delete Character before the Cursor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-Word"><span class="toc-number">6.0.3.</span> <span class="toc-text">Vi Delete Word</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Delete-Line-commands"><span class="toc-number">7.</span> <span class="toc-text">Vi Delete Line commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-Line"><span class="toc-number">7.0.1.</span> <span class="toc-text">Vi Delete Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-until-end-of-Line"><span class="toc-number">7.0.2.</span> <span class="toc-text">Vi Delete until end of Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Delete-to-end-of-screen"><span class="toc-number">7.0.3.</span> <span class="toc-text">Delete to end of screen</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Delete-to-end-of-file"><span class="toc-number">7.0.4.</span> <span class="toc-text">Delete to end of file</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-From-Cursor-To-Start-of-Line"><span class="toc-number">7.0.5.</span> <span class="toc-text">Vi Delete From Cursor To Start of Line</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Copy-and-Paste"><span class="toc-number">8.</span> <span class="toc-text">Vi Copy and Paste</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Copy-Line"><span class="toc-number">8.0.1.</span> <span class="toc-text">Vi Copy Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Copy-3-Lines-of-Text"><span class="toc-number">8.0.2.</span> <span class="toc-text">Vi Copy 3 Lines of Text</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Copy-Word"><span class="toc-number">8.0.3.</span> <span class="toc-text">Vi Copy Word</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Copy-3-Words"><span class="toc-number">8.0.4.</span> <span class="toc-text">Vi Copy 3 Words</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Paste-Commands"><span class="toc-number">8.0.5.</span> <span class="toc-text">Vi Paste Commands</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Search-Commands"><span class="toc-number">9.</span> <span class="toc-text">Vi Search Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-forward"><span class="toc-number">9.0.1.</span> <span class="toc-text">Vi Search forward</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-Back"><span class="toc-number">9.0.2.</span> <span class="toc-text">Vi Search Back</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Search-and-Replace-Commands"><span class="toc-number">10.</span> <span class="toc-text">Vi Search and Replace Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-and-Replace-First-Instance"><span class="toc-number">10.0.1.</span> <span class="toc-text">Vi Search and Replace First Instance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-and-Replace-on-a-Single-Line"><span class="toc-number">10.0.2.</span> <span class="toc-text">Vi Search and Replace on a Single Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-and-Replace-Entire-File"><span class="toc-number">10.0.3.</span> <span class="toc-text">Vi Search and Replace Entire File</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-for-part-of-a-Word"><span class="toc-number">10.0.4.</span> <span class="toc-text">Vi Search for part of a Word</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-for-words-ending-with-string"><span class="toc-number">10.0.5.</span> <span class="toc-text">Vi Search for words ending with $string</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-for-Metacharacters"><span class="toc-number">10.0.6.</span> <span class="toc-text">Vi Search for Metacharacters</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Exact-Match-Search-Only"><span class="toc-number">10.0.7.</span> <span class="toc-text">Vi Exact Match Search Only</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-for-a-range-of-Strings"><span class="toc-number">10.0.8.</span> <span class="toc-text">Vi Search for a range of Strings</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-for-Upper-and-Lowercase"><span class="toc-number">10.0.9.</span> <span class="toc-text">Vi Search for Upper and Lowercase</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Advanced-Vi-commands"><span class="toc-number">11.</span> <span class="toc-text">Advanced Vi commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-View-Options"><span class="toc-number">11.0.1.</span> <span class="toc-text">Vi View Options</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Run-Shell-Commands"><span class="toc-number">11.0.2.</span> <span class="toc-text">Vi Run Shell Commands</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Joining-Lines"><span class="toc-number">11.0.3.</span> <span class="toc-text">Vi Joining Lines</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Split-Windows"><span class="toc-number">11.0.4.</span> <span class="toc-text">Vi Split Windows</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Vi-Split-Window-Horizontally"><span class="toc-number">11.0.4.1.</span> <span class="toc-text">Vi Split Window Horizontally</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Vi-Split-Window-Virtically"><span class="toc-number">11.0.4.2.</span> <span class="toc-text">Vi Split Window Virtically</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Close-All-Split-Windows"><span class="toc-number">11.0.5.</span> <span class="toc-text">Vi Close All Split Windows</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Save-commands"><span class="toc-number">12.</span> <span class="toc-text">Vi Save commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#How-to-Save-in-Vi"><span class="toc-number">12.0.1.</span> <span class="toc-text">How to Save in Vi</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Save-and-Exit"><span class="toc-number">12.0.2.</span> <span class="toc-text">Vi Save and Exit</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Misc-Vi-Commands"><span class="toc-number">13.</span> <span class="toc-text">Misc Vi Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Undo-Command"><span class="toc-number">13.0.1.</span> <span class="toc-text">Vi Undo Command</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Undo-All"><span class="toc-number">13.0.2.</span> <span class="toc-text">Vi Undo All</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Show-File-Name"><span class="toc-number">14.</span> <span class="toc-text">Vi Show File Name</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Multipliers"><span class="toc-number">15.</span> <span class="toc-text">Vi Multipliers</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Cheat Sheet VI
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-03T04:09:11.000Z" itemprop="datePublished">2019-03-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/软件工具/">软件工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Linux/">Linux</a>, <a class="tag-link" href="/tags/Tools/">Tools</a>, <a class="tag-link" href="/tags/转载/">转载</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>A collection of Vi commands in a cheat sheet, handy reference document for learning / remembering Vi commands. I refer to Vim / Vi as the same thing in this document, but in most modern Linux distros vi is often a symlink to vim.</p>
+<p>It’s worth learning Vi as it’s installed on pretty much every Linux base system out there.</p>
+<p>If you’re learning Vi, you might want to check out <a href="http://vim-adventures.com" target="_blank" rel="external">Vim Adventures</a> - an online adventure game that uses Vi commands.</p>
+<a id="more"></a>
+<h2 id="Vim-Resources"><a href="#Vim-Resources" class="headerlink" title="Vim Resources"></a>Vim Resources</h2><ul>
+<li><a href="https://highon.coffee/blog/vi-cheat-sheet" target="_blank" rel="external">Vi Cheat Sheet</a></li>
+<li><a href="http://themebow.com" target="_blank" rel="external">Good looking Vim Themes</a></li>
+<li><a href="https://github.com/NullMode/vim" target="_blank" rel="external">NullMode’s personal Vim Settings</a></li>
+<li><a href="http://vimcasts.org" target="_blank" rel="external">Vim Casts</a></li>
+</ul>
+<p>Enjoy the cheat sheet :)</p>
+<h2 id="Vi-Insert-mode-amp-Command-Mode"><a href="#Vi-Insert-mode-amp-Command-Mode" class="headerlink" title="Vi Insert mode &amp; Command Mode"></a>Vi Insert mode &amp; Command Mode</h2><p>Vi has two basic modes, <strong>insert mode</strong> - used for entering text and <strong>command mode</strong>, used for entering commands. See the tip section below for switching between each mode.</p>
+<h4 id="Vi-Insert-Mode"><a href="#Vi-Insert-Mode" class="headerlink" title="Vi Insert Mode"></a>Vi Insert Mode</h4><p>Enter vi insert mode, insert mode is used for inserting text.</p>
+<table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>i</code></td>
+<td>Enter insert mode from command mode.</td>
+</tr>
+</tbody>
+</table>
+<h6 id="Vi-Command-Mode-Vi-Insert-Mode"><a href="#Vi-Command-Mode-Vi-Insert-Mode" class="headerlink" title="Vi Command Mode - Vi Insert Mode"></a>Vi Command Mode - Vi Insert Mode</h6><p>Vi has two modes, <b>insert mode</b> for inserting text and <b>command mode</b> a common mistake is attempting to edit in command mode. If you are unsure on what mode Vi is using double tap escape (enters command mode) and then hit “i” if you wish to enter insert mode.</p>
+<h4 id="Vi-Command-Mode"><a href="#Vi-Command-Mode" class="headerlink" title="Vi Command Mode"></a>Vi Command Mode</h4><table>
+<thead>
+<tr>
+<th>Vim Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Esc</code></td>
+<td>Hit escape to enter command mode.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Vi-File-Navigvation"><a href="#Vi-File-Navigvation" class="headerlink" title="Vi File Navigvation"></a>Vi File Navigvation</h2><p>Basic file navigation, how to move up, down, left and right.</p>
+<h6 id="Arrow-Keys"><a href="#Arrow-Keys" class="headerlink" title="Arrow Keys"></a>Arrow Keys</h6><p>Modern Vi / Vim editors will allow you to use the arrow keys, but it’s worth learning the correct way to navigate vi without using the arrow keys in case you come across Vi command line or a shell that doesn’t like arrow keys.</p>
+<h4 id="Move-up-down-left-and-right-in-Vim"><a href="#Move-up-down-left-and-right-in-Vim" class="headerlink" title="Move up, down, left and right in Vim"></a>Move up, down, left and right in Vim</h4><p>You’ll need to be in command mode for these commands, navigation in vi uses <strong>h</strong> <strong>j</strong> <strong>k</strong> <strong>l</strong></p>
+<table>
+<thead>
+<tr>
+<th>Vim Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>h</code></td>
+<td>Move left - easy to remember h key is on the left</td>
+</tr>
+<tr>
+<td><code>j</code></td>
+<td>Move down - I remember it with j(d)own for down</td>
+</tr>
+<tr>
+<td><code>k</code></td>
+<td>Move up - k for up - I remember it with (k)up</td>
+</tr>
+<tr>
+<td><code>l</code></td>
+<td>Move right - l is on the right side of hjkl and moves you right</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Page-Down"><a href="#Vi-Page-Down" class="headerlink" title="Vi Page Down"></a>Vi Page Down</h4><table>
+<thead>
+<tr>
+<th>Vim Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+F</code></td>
+<td>Vi move forward a page</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Half-a-Page-Down"><a href="#Vi-Half-a-Page-Down" class="headerlink" title="Vi Half a Page Down"></a>Vi Half a Page Down</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+D</code></td>
+<td>Vi move half a page down</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Page-Up"><a href="#Vi-Page-Up" class="headerlink" title="Vi Page Up"></a>Vi Page Up</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+B</code></td>
+<td>Vi move up a page</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Half-a-Page-Up"><a href="#Vi-Half-a-Page-Up" class="headerlink" title="Vi Half a Page Up"></a>Vi Half a Page Up</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+U</code></td>
+<td>Vi move up half a page</td>
+</tr>
+</tbody>
+</table>
+<h2 id="More-Advanced-Ways-of-Entering-Insert-Mode"><a href="#More-Advanced-Ways-of-Entering-Insert-Mode" class="headerlink" title="More Advanced Ways of Entering Insert Mode"></a>More Advanced Ways of Entering Insert Mode</h2><h4 id="Vi-Insert-Text-at-Start-of-the-Line"><a href="#Vi-Insert-Text-at-Start-of-the-Line" class="headerlink" title="Vi Insert Text at Start of the Line"></a>Vi Insert Text at Start of the Line</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>I</code></td>
+<td>Insert text at the beginning of the line</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Insert-Text-at-the-end-of-the-Line"><a href="#Vi-Insert-Text-at-the-end-of-the-Line" class="headerlink" title="Vi Insert Text at the end of the Line"></a>Vi Insert Text at the end of the Line</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>A</code></td>
+<td>Appends text at the end of the line</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Append-text-to-the-right-of-the-Cursor"><a href="#Vi-Append-text-to-the-right-of-the-Cursor" class="headerlink" title="Vi Append text to the right of the Cursor"></a>Vi Append text to the right of the Cursor</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a</code></td>
+<td>Appends text to the right of the cursor</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Begin-a-new-line-below"><a href="#Begin-a-new-line-below" class="headerlink" title="Begin a new line below"></a>Begin a new line below</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>o</code></td>
+<td>Begin a new line, below the current line</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-replace-line"><a href="#Vi-replace-line" class="headerlink" title="Vi replace line"></a>Vi replace line</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>O</code></td>
+<td>Removes line, and allows you to type a new line in it’s place</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Vi-Replace"><a href="#Vi-Replace" class="headerlink" title="Vi Replace"></a>Vi Replace</h2><h4 id="Change-a-Word-in-Vi"><a href="#Change-a-Word-in-Vi" class="headerlink" title="Change a Word in Vi"></a>Change a Word in Vi</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cw</code></td>
+<td>Replaces a single word, place cursor on first letter and hit cw (Change Word)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Replace-line-but-not-wrapped-text"><a href="#Replace-line-but-not-wrapped-text" class="headerlink" title="Replace line, but not wrapped text"></a>Replace line, but not wrapped text</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>c$</code></td>
+<td>Replaces the current line but doesn’t extend to change the rest of a wrapped sentence on the screen</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Replace-Character"><a href="#Vi-Replace-Character" class="headerlink" title="Vi Replace Character"></a>Vi Replace Character</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>r</code></td>
+<td>Replaces only the character under the cursor</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Replace-1"><a href="#Vi-Replace-1" class="headerlink" title="Vi Replace"></a>Vi Replace</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>R</code></td>
+<td>Replaces over the top of existing text, until the user hits return.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Vi-Delete"><a href="#Vi-Delete" class="headerlink" title="Vi Delete"></a>Vi Delete</h2><h4 id="Vi-Delete-Single-Character-After-the-Cursor"><a href="#Vi-Delete-Single-Character-After-the-Cursor" class="headerlink" title="Vi Delete Single Character After the Cursor"></a>Vi Delete Single Character After the Cursor</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code></td>
+<td>Vi deletes single character after the cursor</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Delete-Character-before-the-Cursor"><a href="#Vi-Delete-Character-before-the-Cursor" class="headerlink" title="Vi Delete Character before the Cursor"></a>Vi Delete Character before the Cursor</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>X</code></td>
+<td>Vi deletes character before the cursor.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Delete-Word"><a href="#Vi-Delete-Word" class="headerlink" title="Vi Delete Word"></a>Vi Delete Word</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dw</code></td>
+<td>Vi Delete Word, deleted the word under the cursor, from the curosr position onward</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Vi-Delete-Line-commands"><a href="#Vi-Delete-Line-commands" class="headerlink" title="Vi Delete Line commands"></a>Vi Delete Line commands</h2><h4 id="Vi-Delete-Line"><a href="#Vi-Delete-Line" class="headerlink" title="Vi Delete Line"></a>Vi Delete Line</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dd</code></td>
+<td>Delete the current line in Vi</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Delete-until-end-of-Line"><a href="#Vi-Delete-until-end-of-Line" class="headerlink" title="Vi Delete until end of Line"></a>Vi Delete until end of Line</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D</code></td>
+<td>Deletes from cursor to end of line</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Delete-to-end-of-screen"><a href="#Delete-to-end-of-screen" class="headerlink" title="Delete to end of screen"></a>Delete to end of screen</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dL</code></td>
+<td>Deletes from cursor to end of screen</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Delete-to-end-of-file"><a href="#Delete-to-end-of-file" class="headerlink" title="Delete to end of file"></a>Delete to end of file</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dG</code></td>
+<td>Deletes from cursor to end of file</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Delete-From-Cursor-To-Start-of-Line"><a href="#Vi-Delete-From-Cursor-To-Start-of-Line" class="headerlink" title="Vi Delete From Cursor To Start of Line"></a>Vi Delete From Cursor To Start of Line</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>d^</code></td>
+<td>Deletes from cursor to start of line</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Vi-Copy-and-Paste"><a href="#Vi-Copy-and-Paste" class="headerlink" title="Vi Copy and Paste"></a>Vi Copy and Paste</h2><h4 id="Vi-Copy-Line"><a href="#Vi-Copy-Line" class="headerlink" title="Vi Copy Line"></a>Vi Copy Line</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>yy</code></td>
+<td>Copies current line into unnamed buffer</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Copy-3-Lines-of-Text"><a href="#Vi-Copy-3-Lines-of-Text" class="headerlink" title="Vi Copy 3 Lines of Text"></a>Vi Copy 3 Lines of Text</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>3yy</code></td>
+<td>Copy 3 lines of text into unnamed buffer</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Copy-Word"><a href="#Vi-Copy-Word" class="headerlink" title="Vi Copy Word"></a>Vi Copy Word</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>yw</code></td>
+<td>Copy word under cursor into unnamed buffer</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Copy-3-Words"><a href="#Vi-Copy-3-Words" class="headerlink" title="Vi Copy 3 Words"></a>Vi Copy 3 Words</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>3yw</code></td>
+<td>Copy 3 words into unnamed buffer</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Paste-Commands"><a href="#Vi-Paste-Commands" class="headerlink" title="Vi Paste Commands"></a>Vi Paste Commands</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>P</code></td>
+<td>Copy contents of unamed buffer to right of cursor</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>p</code></td>
+<td>Copy contents of unamed buffer to left of cursor</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Vi-Search-Commands"><a href="#Vi-Search-Commands" class="headerlink" title="Vi Search Commands"></a>Vi Search Commands</h2><h4 id="Vi-Search-forward"><a href="#Vi-Search-forward" class="headerlink" title="Vi Search forward"></a>Vi Search forward</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>N</code></td>
+<td>Vi search forward in file</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Search-Back"><a href="#Vi-Search-Back" class="headerlink" title="Vi Search Back"></a>Vi Search Back</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SHIFT+N</code></td>
+<td>Vi search backward in file</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Vi-Search-and-Replace-Commands"><a href="#Vi-Search-and-Replace-Commands" class="headerlink" title="Vi Search and Replace Commands"></a>Vi Search and Replace Commands</h2><h4 id="Vi-Search-and-Replace-First-Instance"><a href="#Vi-Search-and-Replace-First-Instance" class="headerlink" title="Vi Search and Replace First Instance"></a>Vi Search and Replace First Instance</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:s/find-string/replace-string/</code></td>
+<td>Vi search and replace first instance of specified string</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Search-and-Replace-on-a-Single-Line"><a href="#Vi-Search-and-Replace-on-a-Single-Line" class="headerlink" title="Vi Search and Replace on a Single Line"></a>Vi Search and Replace on a Single Line</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:s/find-string/replace-string/g</code></td>
+<td>Vi search and replace all instances of specified string on current line</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Search-and-Replace-Entire-File"><a href="#Vi-Search-and-Replace-Entire-File" class="headerlink" title="Vi Search and Replace Entire File"></a>Vi Search and Replace Entire File</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:%s/find-string/replace-string/g</code></td>
+<td>Vi search and replace all instances of specified string for entire file</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Search-for-part-of-a-Word"><a href="#Vi-Search-for-part-of-a-Word" class="headerlink" title="Vi Search for part of a Word"></a>Vi Search for part of a Word</h4><p>A fuzzy search allows you to find something that you only know part of, for example if you wanted to find all instances of lines starting with the word “Picard” you would use the following:</p>
+<table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/^Picard</code></td>
+<td>Vi search within file words starting with Picard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Search-for-words-ending-with-string"><a href="#Vi-Search-for-words-ending-with-string" class="headerlink" title="Vi Search for words ending with $string"></a>Vi Search for words ending with $string</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/worf$</code></td>
+<td>Vi search within file for word engine with worf</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Search-for-Metacharacters"><a href="#Vi-Search-for-Metacharacters" class="headerlink" title="Vi Search for Metacharacters"></a>Vi Search for Metacharacters</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/\*</code></td>
+<td>Vi search within file for metacharacters like, *</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Exact-Match-Search-Only"><a href="#Vi-Exact-Match-Search-Only" class="headerlink" title="Vi Exact Match Search Only"></a>Vi Exact Match Search Only</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/star\.</code></td>
+<td>Vi exact search only, will return instances of “star only”, not starfleet or star-trek</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Search-for-a-range-of-Strings"><a href="#Vi-Search-for-a-range-of-Strings" class="headerlink" title="Vi Search for a range of Strings"></a>Vi Search for a range of Strings</h4><p>Helpful for finding version numbers in text files.</p>
+<table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/v2.[1-9]</code></td>
+<td>Vi search for a range, this example would return all v2.1-9 instances within the file, e.g. v2.4 v2.7 etc</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Search-for-Upper-and-Lowercase"><a href="#Vi-Search-for-Upper-and-Lowercase" class="headerlink" title="Vi Search for Upper and Lowercase"></a>Vi Search for Upper and Lowercase</h4><p>Search for upper and lowercase strings in Vi.</p>
+<table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/ [tT] [hH [eE]</code></td>
+<td>Vi search upper or lowercase strings, this example would return any instance of the word ‘the’. e.g. The, THE, tHE, tHe</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Advanced-Vi-commands"><a href="#Advanced-Vi-commands" class="headerlink" title="Advanced Vi commands"></a>Advanced Vi commands</h2><h4 id="Vi-View-Options"><a href="#Vi-View-Options" class="headerlink" title="Vi View Options"></a>Vi View Options</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:set all</code></td>
+<td>Lists all Vi options</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Run-Shell-Commands"><a href="#Vi-Run-Shell-Commands" class="headerlink" title="Vi Run Shell Commands"></a>Vi Run Shell Commands</h4><p>Run shell commands from Vi.</p>
+<table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:! ls -l</code></td>
+<td>Run shell command from Vi, in this example ls -l is executed</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Joining-Lines"><a href="#Vi-Joining-Lines" class="headerlink" title="Vi Joining Lines"></a>Vi Joining Lines</h4><p>Backspace doesn’t always work…</p>
+<table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SHIFT+J</code></td>
+<td>Position the cursor in either line you wish to join, and press <code>SHIFT+J</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Split-Windows"><a href="#Vi-Split-Windows" class="headerlink" title="Vi Split Windows"></a>Vi Split Windows</h4><p>Useful for comparing files, to switch between windows press <code>SHIFT+W</code></p>
+<h5 id="Vi-Split-Window-Horizontally"><a href="#Vi-Split-Window-Horizontally" class="headerlink" title="Vi Split Window Horizontally"></a>Vi Split Window Horizontally</h5><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:split</code></td>
+<td>Split window Horizontally in Vi</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Vi-Split-Window-Virtically"><a href="#Vi-Split-Window-Virtically" class="headerlink" title="Vi Split Window Virtically"></a>Vi Split Window Virtically</h5><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:vsplit</code></td>
+<td>Split window Virtically in Vi</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Close-All-Split-Windows"><a href="#Vi-Close-All-Split-Windows" class="headerlink" title="Vi Close All Split Windows"></a>Vi Close All Split Windows</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:only</code></td>
+<td>Closes all split windows and focuses on the primary window</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Vi-Save-commands"><a href="#Vi-Save-commands" class="headerlink" title="Vi Save commands"></a>Vi Save commands</h2><h4 id="How-to-Save-in-Vi"><a href="#How-to-Save-in-Vi" class="headerlink" title="How to Save in Vi"></a>How to Save in Vi</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:w</code></td>
+<td>Writes the file to disk</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Save-and-Exit"><a href="#Vi-Save-and-Exit" class="headerlink" title="Vi Save and Exit"></a>Vi Save and Exit</h4><p>How to save and exit Vi, personally I use <code>:wq</code></p>
+<table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:wq</code></td>
+<td>Save and exit Vi</td>
+</tr>
+</tbody>
+</table>
+<p>| <code>:x</code> | Exit - Vi will prompt and ask if you wish to save |<br>| <code>SHIFT+ZZ</code> | Another way to Save and Exit Vi |<br>| <code>wq!</code> | Forces save on read only files, and exits |</p>
+<h2 id="Misc-Vi-Commands"><a href="#Misc-Vi-Commands" class="headerlink" title="Misc Vi Commands"></a>Misc Vi Commands</h2><h4 id="Vi-Undo-Command"><a href="#Vi-Undo-Command" class="headerlink" title="Vi Undo Command"></a>Vi Undo Command</h4><table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>U</code></td>
+<td>Press <code>SHIFT+U</code>to undo in Vi</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vi-Undo-All"><a href="#Vi-Undo-All" class="headerlink" title="Vi Undo All"></a>Vi Undo All</h4><p>Vi undo all since last write.</p>
+<table>
+<thead>
+<tr>
+<th>Vi Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:+X+!</code></td>
+<td>Undo everything since last write</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Vi-Show-File-Name"><a href="#Vi-Show-File-Name" class="headerlink" title="Vi Show File Name"></a>Vi Show File Name</h2><p><code>SHIFT+G</code> shows the file name, number of lines and current position.</p>
+<h2 id="Vi-Multipliers"><a href="#Vi-Multipliers" class="headerlink" title="Vi Multipliers"></a>Vi Multipliers</h2><p>Almost every command in Vi can leverage multipliers, typically it’s a case of prefixing the command with a numnber. Example: <code>10W</code> would move 10 words to the right.</p>
+<p>原文链接：<a href="http://highon.coffee/" target="_blank" rel="external">HighOn.Coffee</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vim-Resources"><span class="toc-number">1.</span> <span class="toc-text">Vim Resources</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Insert-mode-amp-Command-Mode"><span class="toc-number">2.</span> <span class="toc-text">Vi Insert mode & Command Mode</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Insert-Mode"><span class="toc-number">2.0.1.</span> <span class="toc-text">Vi Insert Mode</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Vi-Command-Mode-Vi-Insert-Mode"><span class="toc-number">2.0.1.0.1.</span> <span class="toc-text">Vi Command Mode - Vi Insert Mode</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Command-Mode"><span class="toc-number">2.0.2.</span> <span class="toc-text">Vi Command Mode</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-File-Navigvation"><span class="toc-number">3.</span> <span class="toc-text">Vi File Navigvation</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Arrow-Keys"><span class="toc-number">3.0.0.0.1.</span> <span class="toc-text">Arrow Keys</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Move-up-down-left-and-right-in-Vim"><span class="toc-number">3.0.1.</span> <span class="toc-text">Move up, down, left and right in Vim</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Page-Down"><span class="toc-number">3.0.2.</span> <span class="toc-text">Vi Page Down</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Half-a-Page-Down"><span class="toc-number">3.0.3.</span> <span class="toc-text">Vi Half a Page Down</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Page-Up"><span class="toc-number">3.0.4.</span> <span class="toc-text">Vi Page Up</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Half-a-Page-Up"><span class="toc-number">3.0.5.</span> <span class="toc-text">Vi Half a Page Up</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#More-Advanced-Ways-of-Entering-Insert-Mode"><span class="toc-number">4.</span> <span class="toc-text">More Advanced Ways of Entering Insert Mode</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Insert-Text-at-Start-of-the-Line"><span class="toc-number">4.0.1.</span> <span class="toc-text">Vi Insert Text at Start of the Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Insert-Text-at-the-end-of-the-Line"><span class="toc-number">4.0.2.</span> <span class="toc-text">Vi Insert Text at the end of the Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Append-text-to-the-right-of-the-Cursor"><span class="toc-number">4.0.3.</span> <span class="toc-text">Vi Append text to the right of the Cursor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Begin-a-new-line-below"><span class="toc-number">4.0.4.</span> <span class="toc-text">Begin a new line below</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-replace-line"><span class="toc-number">4.0.5.</span> <span class="toc-text">Vi replace line</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Replace"><span class="toc-number">5.</span> <span class="toc-text">Vi Replace</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Change-a-Word-in-Vi"><span class="toc-number">5.0.1.</span> <span class="toc-text">Change a Word in Vi</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace-line-but-not-wrapped-text"><span class="toc-number">5.0.2.</span> <span class="toc-text">Replace line, but not wrapped text</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Replace-Character"><span class="toc-number">5.0.3.</span> <span class="toc-text">Vi Replace Character</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Replace-1"><span class="toc-number">5.0.4.</span> <span class="toc-text">Vi Replace</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Delete"><span class="toc-number">6.</span> <span class="toc-text">Vi Delete</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-Single-Character-After-the-Cursor"><span class="toc-number">6.0.1.</span> <span class="toc-text">Vi Delete Single Character After the Cursor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-Character-before-the-Cursor"><span class="toc-number">6.0.2.</span> <span class="toc-text">Vi Delete Character before the Cursor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-Word"><span class="toc-number">6.0.3.</span> <span class="toc-text">Vi Delete Word</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Delete-Line-commands"><span class="toc-number">7.</span> <span class="toc-text">Vi Delete Line commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-Line"><span class="toc-number">7.0.1.</span> <span class="toc-text">Vi Delete Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-until-end-of-Line"><span class="toc-number">7.0.2.</span> <span class="toc-text">Vi Delete until end of Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Delete-to-end-of-screen"><span class="toc-number">7.0.3.</span> <span class="toc-text">Delete to end of screen</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Delete-to-end-of-file"><span class="toc-number">7.0.4.</span> <span class="toc-text">Delete to end of file</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Delete-From-Cursor-To-Start-of-Line"><span class="toc-number">7.0.5.</span> <span class="toc-text">Vi Delete From Cursor To Start of Line</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Copy-and-Paste"><span class="toc-number">8.</span> <span class="toc-text">Vi Copy and Paste</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Copy-Line"><span class="toc-number">8.0.1.</span> <span class="toc-text">Vi Copy Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Copy-3-Lines-of-Text"><span class="toc-number">8.0.2.</span> <span class="toc-text">Vi Copy 3 Lines of Text</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Copy-Word"><span class="toc-number">8.0.3.</span> <span class="toc-text">Vi Copy Word</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Copy-3-Words"><span class="toc-number">8.0.4.</span> <span class="toc-text">Vi Copy 3 Words</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Paste-Commands"><span class="toc-number">8.0.5.</span> <span class="toc-text">Vi Paste Commands</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Search-Commands"><span class="toc-number">9.</span> <span class="toc-text">Vi Search Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-forward"><span class="toc-number">9.0.1.</span> <span class="toc-text">Vi Search forward</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-Back"><span class="toc-number">9.0.2.</span> <span class="toc-text">Vi Search Back</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Search-and-Replace-Commands"><span class="toc-number">10.</span> <span class="toc-text">Vi Search and Replace Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-and-Replace-First-Instance"><span class="toc-number">10.0.1.</span> <span class="toc-text">Vi Search and Replace First Instance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-and-Replace-on-a-Single-Line"><span class="toc-number">10.0.2.</span> <span class="toc-text">Vi Search and Replace on a Single Line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-and-Replace-Entire-File"><span class="toc-number">10.0.3.</span> <span class="toc-text">Vi Search and Replace Entire File</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-for-part-of-a-Word"><span class="toc-number">10.0.4.</span> <span class="toc-text">Vi Search for part of a Word</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-for-words-ending-with-string"><span class="toc-number">10.0.5.</span> <span class="toc-text">Vi Search for words ending with $string</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-for-Metacharacters"><span class="toc-number">10.0.6.</span> <span class="toc-text">Vi Search for Metacharacters</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Exact-Match-Search-Only"><span class="toc-number">10.0.7.</span> <span class="toc-text">Vi Exact Match Search Only</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-for-a-range-of-Strings"><span class="toc-number">10.0.8.</span> <span class="toc-text">Vi Search for a range of Strings</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Search-for-Upper-and-Lowercase"><span class="toc-number">10.0.9.</span> <span class="toc-text">Vi Search for Upper and Lowercase</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Advanced-Vi-commands"><span class="toc-number">11.</span> <span class="toc-text">Advanced Vi commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-View-Options"><span class="toc-number">11.0.1.</span> <span class="toc-text">Vi View Options</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Run-Shell-Commands"><span class="toc-number">11.0.2.</span> <span class="toc-text">Vi Run Shell Commands</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Joining-Lines"><span class="toc-number">11.0.3.</span> <span class="toc-text">Vi Joining Lines</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Split-Windows"><span class="toc-number">11.0.4.</span> <span class="toc-text">Vi Split Windows</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Vi-Split-Window-Horizontally"><span class="toc-number">11.0.4.1.</span> <span class="toc-text">Vi Split Window Horizontally</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Vi-Split-Window-Virtically"><span class="toc-number">11.0.4.2.</span> <span class="toc-text">Vi Split Window Virtically</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Close-All-Split-Windows"><span class="toc-number">11.0.5.</span> <span class="toc-text">Vi Close All Split Windows</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Save-commands"><span class="toc-number">12.</span> <span class="toc-text">Vi Save commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#How-to-Save-in-Vi"><span class="toc-number">12.0.1.</span> <span class="toc-text">How to Save in Vi</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Save-and-Exit"><span class="toc-number">12.0.2.</span> <span class="toc-text">Vi Save and Exit</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Misc-Vi-Commands"><span class="toc-number">13.</span> <span class="toc-text">Misc Vi Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Undo-Command"><span class="toc-number">13.0.1.</span> <span class="toc-text">Vi Undo Command</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vi-Undo-All"><span class="toc-number">13.0.2.</span> <span class="toc-text">Vi Undo All</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Show-File-Name"><span class="toc-number">14.</span> <span class="toc-text">Vi Show File Name</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vi-Multipliers"><span class="toc-number">15.</span> <span class="toc-text">Vi Multipliers</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&text=Cheat Sheet VI"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&title=Cheat Sheet VI"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&is_video=false&description=Cheat Sheet VI"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet VI&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&title=Cheat Sheet VI"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&title=Cheat Sheet VI"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&title=Cheat Sheet VI"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&title=Cheat Sheet VI"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-VI/&name=Cheat Sheet VI&description=&lt;p&gt;A collection of Vi commands in a cheat sheet, handy reference document for learning / remembering Vi commands. I refer to Vim / Vi as the same thing in this document, but in most modern Linux distros vi is often a symlink to vim.&lt;/p&gt;
+&lt;p&gt;It’s worth learning Vi as it’s installed on pretty much every Linux base system out there.&lt;/p&gt;
+&lt;p&gt;If you’re learning Vi, you might want to check out &lt;a href=&quot;http://vim-adventures.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Vim Adventures&lt;/a&gt; - an online adventure game that uses Vi commands.&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

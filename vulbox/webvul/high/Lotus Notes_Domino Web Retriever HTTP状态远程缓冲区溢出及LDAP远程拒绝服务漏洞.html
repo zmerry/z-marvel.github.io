@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Lotus Notes/Domino Web Retriever HTTP状态远程缓冲区溢出及LDAP远程拒绝服务漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Lotus Domino/Notes服务器是一款基于WEB合作的应用程序架构，运行在Linux/Unix和Microsoft Windows操作系统平台下。<br />
+
+									<br />
+
+									Lotus Notes/Domino Web Retriever在处理超长HTTP状态信息时不正确 ，远程攻击者利用这个漏洞进行缓冲区溢出攻击，可能以当前进程权限在系统上执行任意指令。<br />
+
+									<br />
+
+									Lotus Notes/Domino Web Retriever task是用于接收来自WEB服务器上的信息，如果远程WEB服务器应答的HTTP状态行超长的情况下可导致Web Retriever程序崩溃。如果Web Retriever以服务器任务方式运行，会导致服务器产生拒绝服务。<br />
+
+									<br />
+
+									服务器返回的应答行中如果包含标准HTTP版本和超过6000字节的状态消息，并最后附加两个回车/换行对，就可以导致Web Retriever崩溃。<br />
+
+									<br />
+
+									注意，如果客户端使用Notes Web浏览器代替外部浏览器程序，也会存在此漏洞。<br />
+
+									<br />
+
+									Rapid7 Security Advisories （advisory@rapid7.com）提供了如下测试方法：<br />
+
+									<br />
+
+									HTTP/1.1 200 Ax6000&lt;crlf&gt;&lt;crlf&gt;<br />
+
+									<br />
+
+									Lotus Domino处理LDAP协议时存在漏洞，远程攻击者利用这个漏洞进行拒绝服务攻击。<br />
+
+									<br />
+
+									2001年7月，芬兰Oulu大学的PROTOS协议测试小组发现多个供应商的LDAP实现存在漏洞。Lotus Domino R5.0.7和早期版本也受PROTOS LDAP问题的影响，可导致缓冲区溢出和拒绝服务攻击。另外Lotus Domino R6 Beta和pre-release也存在此漏洞。<br />
+
+									<br />
+
+									此次扫描依赖Banner信息判断漏洞存在，可能出现误报。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：<br />
+
+									<br />
+
+									如果您不能立刻安装补丁或者升级，NSFOCUS建议您采取以下措施以降低威胁：<br />
+
+									<br />
+
+									* 可以进行如下操作在服务器中关闭Web Retriever task：<br />
+
+									<br />
+
+									在NOTES.INI文件中删除ServerTasks行中的&#39;Web&#39;字段，然后在服务器控制台发送&#39;tell web quit&#39;命令。<br />
+
+									<br />
+
+									* 可以考虑Web Retrieval数据库(一般为/WEB.NSF)，或者使用ACL控制用户访问此数据库。<br />
+
+									<br />
+
+									厂商补丁：<br />
+
+									<br />
+
+									Lotus<br />
+
+									-----<br />
+
+									运行Lotus Domino R6 pre-Gold releases的用户可升级到R6.0 Gold或更高的版本。由于R6.0 Gold存在其他漏洞，建议用户升级到2003-02之后发布的R6.0.1版本。<br />
+
+									<br />
+
+									运行R5版本的用户应该升级到Notes R5.0.12版本。<br />
+
+									<br />
+
+									Domino incremental installers可从如下地址获?<br />
+
+									<br />
+
+									http://www14.software.ibm.com/webapp/download/search.jsp?go=y&amp;rs=ESD-DMNTSRVRi&amp;sb=r<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>7</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2003-03-06</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2003-03-18</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2003-0123" target="_blank">CVE-2003-0123</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2001-1311" target="_blank">CVE-2001-1311</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/7038" target="_blank">7038</a>
+
+									<a href="http://www.securityfocus.com/bid/7039" target="_blank">7039</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=4544" target="_blank">4544</a>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=4543" target="_blank">4543</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200303-059&nbsp;&nbsp;
+
+									CNNVD-200107-101&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20030123&nbsp;&nbsp;
+
+									CNCVE-20011311&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.5&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-04544&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

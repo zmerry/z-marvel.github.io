@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">vBulletin 3.0.x PHP远程任意代码执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									vBulletin Forum是一款基于PHP的WEB论坛程序。
+<br />
+
+<br />
+
+									vBulletin forumdisplay.php脚本存在安全问题，远程攻击者可以利用这个漏洞以进程权限执行任意命令。
+<br />
+
+<br />
+
+									问题代码如下：
+<br />
+
+<br />
+
+									#############################################################
+<br />
+
+									 if ($vboptions[&#39;showforumusers&#39;])
+<br />
+
+									 {
+<br />
+
+									    .
+<br />
+
+									    .
+<br />
+
+									    .
+<br />
+
+									    .
+<br />
+
+<br />
+
+									 if ($bbuserinfo[&#39;userid&#39;])
+<br />
+
+									 {
+<br />
+
+									    .
+<br />
+
+									    .
+<br />
+
+									    .
+<br />
+
+									    .
+<br />
+
+									    $comma = &#39;, &#39;;
+<br />
+
+									  }
+<br />
+
+									 .
+<br />
+
+									 .
+<br />
+
+									 .
+<br />
+
+									 .
+<br />
+
+									 while ($loggedin = $DB_site-&gt;fetch_array($forumusers))
+<br />
+
+									 {
+<br />
+
+									    .
+<br />
+
+									    .
+<br />
+
+									    .
+<br />
+
+									    eval(&#39;$activeusers .= &quot;&#39; . $comma . fetch_template(&#39;forumdisplay_loggedinuser&#39;) . \
+<br />
+
+									&#39;&quot;;&#39;);     &lt;&lt;==== (Vuln)  $comma = &#39;, &#39;;
+<br />
+
+									    .
+<br />
+
+									    .
+<br />
+
+									  }
+<br />
+
+									 .
+<br />
+
+									 .
+<br />
+
+									 }
+<br />
+
+<br />
+
+									 #############################################################
+<br />
+
+<br />
+
+									在当管理员设置showforumusers为ON，magic_quotes_gpc设置为OFF的情况下，攻击者可通过设置secret array为GLOBALS[]=1绕过init.php脚本中的unset($GLOBALS[&quot;$_arrykey&quot;])代码，以WEB进程权限执行任意命令。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.vbulletin.com/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2005-02-13</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2005-02-21</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2005-0429" target="_blank">CVE-2005-0429</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/12542" target="_blank">12542</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=7423" target="_blank">7423</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200505-246&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20050429&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									8.8(CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-07423&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

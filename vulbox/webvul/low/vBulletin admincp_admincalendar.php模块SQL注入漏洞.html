@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">vBulletin admincp/admincalendar.php模块SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									vBulletin是一款开放源代码的PHP论坛程序。
+<br />
+
+<br />
+
+									vBulletin论坛的admincp/admincalendar.php文件没有正确地验证用户提交参数：
+<br />
+
+<br />
+
+									-------------------[original source code]------------------
+<br />
+
+<br />
+
+									if($_POST[&#39;do&#39;] == &#39;saveholiday&#39;)
+<br />
+
+									{
+<br />
+
+										$vbulletin-&gt;input-&gt;clean_array_gpc(&#39;p&#39;, array(
+<br />
+
+											&#39;holidayid&#39;   =&gt; TYPE_INT,
+<br />
+
+											&#39;holidayinfo&#39; =&gt; TYPE_ARRAY,
+<br />
+
+											&#39;month1&#39;      =&gt; TYPE_INT,
+<br />
+
+											&#39;day1&#39;        =&gt; TYPE_INT,
+<br />
+
+											&#39;month2&#39;      =&gt; TYPE_INT,
+<br />
+
+											&#39;day2&#39;        =&gt; TYPE_INT,
+<br />
+
+											&#39;period&#39;      =&gt; TYPE_INT,
+<br />
+
+											&#39;title&#39;       =&gt; TYPE_STR,
+<br />
+
+											&#39;description&#39; =&gt; TYPE_STR,
+<br />
+
+										));
+<br />
+
+									..
+<br />
+
+									$db-&gt;query_write(&quot;
+<br />
+
+											UPDATE &quot; . TABLE_PREFIX . &quot;holiday
+<br />
+
+											SET allowsmilies = &quot; . $vbulletin-&gt;GPC[&#39;holidayinfo&#39;][&#39;allowsmilies&#39;] . &quot;,
+<br />
+
+											recuroption = &#39;&quot; . $vbulletin-&gt;GPC[&#39;holidayinfo&#39;][&#39;recuroption&#39;] . &quot;&#39;,
+<br />
+
+											recurring = &quot; . $vbulletin-&gt;GPC[&#39;holidayinfo&#39;][&#39;recurring&#39;] . &quot;
+<br />
+
+											WHERE holidayid = &quot; . $vbulletin-&gt;GPC[&#39;holidayid&#39;]
+<br />
+
+										);
+<br />
+
+<br />
+
+									------------------[/original source code]------------------
+<br />
+
+<br />
+
+									可见未经任何过滤便在UPDATE查询中使用了来自$_POST的数组类型变量holidayinfo，这允许远程攻击者通过提交恶意请求执行SQL注入攻击。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://www.vbulletin.com/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2008-11-17</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-01-28</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/32348" target="_blank">32348</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=12628" target="_blank">12628</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

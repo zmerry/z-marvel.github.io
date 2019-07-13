@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Apache Web Server分块(chunked)编码远程溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描根据版本进行，可能存在误报。<br />
+
+									<br />
+
+									Apache Web Server是一款非常流行的开放源码、功能强大的Web服务器程序，由Apache Software Foundation开发和维护。它可以运行在多种操作系统平台下，例如Linux,UNIX,BSD系统以及Windows系统。<br />
+
+									<br />
+
+									Apache在处理以分块(chunked)方式传输数据的HTTP请求时存在设计漏洞，远程攻击者可能利用此漏洞在某些Apache服务器上以Web服务器进程的权限执行任意指令或进行拒绝服务攻击。<br />
+
+									<br />
+
+									分块编码(chunked encoding)传输方式是HTTP 1.1协议中定义的Web用户向服务器提交数据的一种方法，当服务器收到chunked编码方式的数据时会分配一个缓冲区存放之，如果提交的数据大小未知，客户端会以一个协商好的分块大小向服务器提交数据。<br />
+
+									<br />
+
+									Apache服务器缺省也提供了对分块编码(chunked encoding)支持。Apache使用了一个有符号变量储存分块长度，同时分配了一个固定大小的堆栈缓冲区来储存分块数据。出于安全考虑，在将分块数据拷贝到缓冲区之前，Apache会对分块长度进行检查，如果分块长度大于缓冲区长度，Apache将最多只拷贝缓冲区长度的数据，否则，则根据分块长度进行数据拷贝。然而在进行上述检查时，没有将分块长度转换为无符号型进行比较，因此，如果攻击者将分块长度设置成一个负值，就会绕过上述安全检查，Apache会将一个超长(至少&gt;0x80000000字节)的分块数据拷贝到缓冲区中，这会造成一个缓冲区溢出。<br />
+
+									<br />
+
+									对于1.3到1.3.24(含1.3.24)版本的Apache，现在已经证实在Win32系统下, 远程攻击者可能利用这一漏洞执行任意代码。在UNIX系统下，也已经证实至少在OpenBSD系统下可以利用这一漏洞执行代码。据报告称下列系统也可以成功的利用：<br />
+
+									*      Sun Solaris 6-8 (sparc/x86)<br />
+
+									*      FreeBSD 4.3-4.5 (x86)<br />
+
+									*      OpenBSD 2.6-3.1 (x86)<br />
+
+									*      Linux (GNU) 2.4 (x86)<br />
+
+									<br />
+
+									对于Apache 2.0到2.0.36(含2.0.36)，尽管存在同样的问题代码，但它会检测错误出现的条件并使子进程退出。<br />
+
+									<br />
+
+									根据不同因素，包括受影响系统支持的线程模式的影响，本漏洞可导致各种操作系统下运行的Apache Web服务器拒绝服务。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：<br />
+
+									<br />
+
+									此安全漏洞没有好的临时解决方案，由于已经有一个有效的攻击代码被发布，我们建议您立刻升级到Apache最新版本。<br />
+
+									<br />
+
+									<br />
+
+									<br />
+
+									厂商解决方案：<br />
+
+									<br />
+
+									Apache<br />
+
+									----------<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.apache.org/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>7</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2002-07-03</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2002-07-18</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2002-0392" target="_blank">CVE-2002-0392</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/20005" target="_blank">20005</a>
+
+									<a href="http://www.securityfocus.com/bid/5033" target="_blank">5033</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=2975" target="_blank">2975</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200207-041&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20020392&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.5&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-02975&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

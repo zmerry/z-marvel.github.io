@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP会话序列化程序数据注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									默认的会话还原序列化程序知道两个特殊字符：PS_DELIMITER和PS_UNDEF_MARKER。前者用于分隔所存储的会话变量，后者用于标记未定义的会话变量。以下代码实现上述功能：<br />
+
+									<br />
+
+									    while (p &lt; endptr) {<br />
+
+									        zval **tmp;<br />
+
+									        q = p;<br />
+
+									        while (*q != PS_DELIMITER) {<br />
+
+									            if (++q &gt;= endptr) goto break_outer_loop;<br />
+
+									        }<br />
+
+									        if (p[0] == PS_UNDEF_MARKER) {<br />
+
+									            p++;<br />
+
+									            has_value = 0;<br />
+
+									        } else {<br />
+
+									            has_value = 1;<br />
+
+									        }<br />
+
+									<br />
+
+									        namelen = q - p;<br />
+
+									        name = estrndup(p, namelen);<br />
+
+									        q++;<br />
+
+									<br />
+
+									        if (zend_hash_find(&amp;EG(symbol_table), name, namelen + 1, (void **) &amp;tmp) == SUCCESS) {<br />
+
+									            if ((Z_TYPE_PP(tmp) == IS_ARRAY &amp;&amp; Z_ARRVAL_PP(tmp) == &amp;EG(symbol_table)) || *tmp == PS(http_session_vars)) {<br />
+
+									                goto skip;<br />
+
+									            }<br />
+
+									        }<br />
+
+									<br />
+
+									        if (has_value) {<br />
+
+									            ALLOC_INIT_ZVAL(current);<br />
+
+									            if (php_var_unserialize(&amp;current, (const unsigned char **) &amp;q, (const unsigned char *) endptr, &amp;var_hash TSRMLS_CC)) {<br />
+
+									                php_set_session_var(name, namelen, current, &amp;var_hash  TSRMLS_CC);<br />
+
+									            }<br />
+
+									            zval_ptr_dtor(&amp;current);<br />
+
+									        }<br />
+
+									        PS_ADD_VARL(name, namelen);<br />
+
+									skip:<br />
+
+									        efree(name);<br />
+
+									<br />
+
+									        p = q;<br />
+
+									    }<br />
+
+									<br />
+
+									问题是会话序列化程序仅正确处理了PS_DELIMITER，根本没有处理PS_UNDEF_MARKER：<br />
+
+									<br />
+
+									PS_ENCODE_LOOP(<br />
+
+									        smart_str_appendl(&amp;buf, key, key_length);<br />
+
+									        if (memchr(key, PS_DELIMITER, key_length)) {<br />
+
+									            PHP_VAR_SERIALIZE_DESTROY(var_hash);<br />
+
+									            smart_str_free(&amp;buf);<br />
+
+									            return FAILURE;<br />
+
+									        }<br />
+
+									        smart_str_appendc(&amp;buf, PS_DELIMITER);<br />
+
+									<br />
+
+									        php_var_serialize(&amp;buf, struc, &amp;var_hash TSRMLS_CC);<br />
+
+									    } else {<br />
+
+									        smart_str_appendc(&amp;buf, PS_UNDEF_MARKER);<br />
+
+									        smart_str_appendl(&amp;buf, key, key_length);<br />
+
+									        smart_str_appendc(&amp;buf, PS_DELIMITER);<br />
+
+									);<br />
+
+									<br />
+
+									以PS_UNDEF_MARKER开始的会话变量名称会迷惑会话还原序列化程序。也就是任何允许向会话中写入任意变量的PHP代码可以向会话中注入任意序列化的值，且类似于以下的代码等同于还原序列化用户输入。<br />
+
+									<br />
+
+									&lt;?php<br />
+
+									   session_start();<br />
+
+									   $_SESSION[$_POST[&#39;prefix&#39;] . &#39;bla&#39;] = $_POST[&#39;data&#39;];<br />
+
+									?&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-08-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-06-04</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-3065" target="_blank">CVE-2010-3065</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15155" target="_blank">15155</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201008-232&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20103065&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">IIS5.0网络打印协议ISAPI缓冲区溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Microsoft Windows 2000 IIS 5.0的打印ISAPI扩展接口建立了.printer扩展名到msw3prt.dll的映射关系，默认情况下该映射存在。该接口可以通过WEB远程调用打印机。
+<br />
+
+<br />
+
+									处理.printer映射的msw3prt.dll存在一个缓冲区溢出漏洞，远程攻击者可以利用此漏洞通过溢出攻击在主机上以Local System的权限执行任意指令。
+<br />
+
+<br />
+
+									当远程用户提交对.printer的URL请求时，IIS 5.0调用msw3prt.dll解释该请求。由于msw3prt.dll缺乏缓冲区边界检查，远程用户可以提交一个精心构造的针对.printer的 URL请求，其&quot;Host:&quot;域包含大约420字节的数据，此时在msw3prt.dll中发生典型的缓冲区溢出，潜在允许执行任意指令。溢出发生后，WEB服务停止响应，Windows 2000可以检查到WEB服务停止响应，从而自动重启它，因此系统管理员很难意识到发生过攻击。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：
+<br />
+
+<br />
+
+									如果您不能立刻安装补丁或者升级，NSFOCUS建议您采取以下措施以降低威胁：
+<br />
+
+<br />
+
+									* 除非确实需要printer脚本，否则我们建议您删除printer的脚本映射。
+<br />
+
+<br />
+
+									具体步骤为：
+<br />
+
+									1、打开&quot;Internet 服务管理器&quot;
+<br />
+
+									2、在选中的服务器上按鼠标右键，选择&quot;属性&quot;，然后选择&quot;主属性&quot;中的&quot;WWW 服务&quot;
+<br />
+
+									3、选择&quot;编辑...&quot;，然后选择&quot;主目录&quot;，点击&quot;配置...&quot;
+<br />
+
+									4、从&quot;应用程序映射&quot;栏中删除&quot;.printer&quot;项
+<br />
+
+<br />
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Microsoft
+<br />
+
+									---------
+<br />
+
+									Microsoft已经为此发布了一个安全公告（MS01-023）以及相应补丁:
+<br />
+
+									MS01-023：Unchecked Buffer in ISAPI Extension Could Enable Compromise of IIS 5.0 Server
+<br />
+
+									链接：http://www.microsoft.com/technet/security/bulletin/ms01-023.asp
+<br />
+
+<br />
+
+									补丁下载：
+<br />
+
+<br />
+
+									   。Microsoft Windows 2000:
+<br />
+
+									     http://www.microsoft.com/Downloads/Release.asp?ReleaseID=29321
+<br />
+
+<br />
+
+									   。Microsoft Windows 2000 Datacenter Server:
+<br />
+
+									     Windows 2000数据中心服务器的补丁因硬件不同，须向原设备制造商索取。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>2</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-05-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-07-03</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2001-0241" target="_blank">CVE-2001-0241</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/2674" target="_blank">2674</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=1417" target="_blank">1417</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200106-123&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20010241&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									9.8(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-01417&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

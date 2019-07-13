@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="简介Scanners-BoxScanners-Box是一个集合github平台上的安全行业从业人员自研开源扫描器的仓库，包括子域名枚举、数据库漏洞扫描、弱口令或信息泄漏扫描、端口扫描、指纹识别以及其他大型扫描器或模块化扫描器；该仓库只收录各位网友自己编写的一般性开源扫描器，类似nmap、w3af、brakeman等知名扫描工具不收录。 非常欢迎大家贡献commit！">
+<meta name="keywords" content="Tools,转载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scanners-Box开源扫描器仓库">
+<meta property="og:url" content="http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="简介Scanners-BoxScanners-Box是一个集合github平台上的安全行业从业人员自研开源扫描器的仓库，包括子域名枚举、数据库漏洞扫描、弱口令或信息泄漏扫描、端口扫描、指纹识别以及其他大型扫描器或模块化扫描器；该仓库只收录各位网友自己编写的一般性开源扫描器，类似nmap、w3af、brakeman等知名扫描工具不收录。 非常欢迎大家贡献commit！">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-04-28T01:18:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scanners-Box开源扫描器仓库">
+<meta name="twitter:description" content="简介Scanners-BoxScanners-Box是一个集合github平台上的安全行业从业人员自研开源扫描器的仓库，包括子域名枚举、数据库漏洞扫描、弱口令或信息泄漏扫描、端口扫描、指纹识别以及其他大型扫描器或模块化扫描器；该仓库只收录各位网友自己编写的一般性开源扫描器，类似nmap、w3af、brakeman等知名扫描工具不收录。 非常欢迎大家贡献commit！">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Scanners-Box开源扫描器仓库</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/04/28/ShadowBrokers公开的方程式组织工具包分析/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/04/14/2017网络空间安全资料/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&text=Scanners-Box开源扫描器仓库"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&title=Scanners-Box开源扫描器仓库"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&is_video=false&description=Scanners-Box开源扫描器仓库"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Scanners-Box开源扫描器仓库&body=Check out this article: http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&title=Scanners-Box开源扫描器仓库"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&title=Scanners-Box开源扫描器仓库"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&title=Scanners-Box开源扫描器仓库"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&title=Scanners-Box开源扫描器仓库"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&name=Scanners-Box开源扫描器仓库&description=&lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/We5ter/Scanners-Box&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Scanners-Box&lt;/a&gt;&lt;br&gt;Scanners-Box是一个集合github平台上的安全行业从业人员自研开源扫描器的仓库，包括子域名枚举、数据库漏洞扫描、弱口令或信息泄漏扫描、端口扫描、指纹识别以及其他大型扫描器或模块化扫描器；&lt;strong&gt;该仓库只收录各位网友自己编写的一般性开源扫描器，类似nmap、w3af、brakeman等知名扫描工具不收录&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;非常欢迎大家贡献commit！&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#子域名枚举"><span class="toc-number">1.1.</span> <span class="toc-text">子域名枚举</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据库扫描"><span class="toc-number">1.2.</span> <span class="toc-text">数据库扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#弱口令或信息泄漏扫描"><span class="toc-number">1.3.</span> <span class="toc-text">弱口令或信息泄漏扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#物联网设备扫描"><span class="toc-number">1.4.</span> <span class="toc-text">物联网设备扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#XSS扫描"><span class="toc-number">1.5.</span> <span class="toc-text">XSS扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#企业网络自检"><span class="toc-number">1.6.</span> <span class="toc-text">企业网络自检</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#webshell检测以及病毒分析工具"><span class="toc-number">1.7.</span> <span class="toc-text">webshell检测以及病毒分析工具</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内网渗透"><span class="toc-number">1.8.</span> <span class="toc-text">内网渗透</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#端口扫描、指纹识别以及中间件扫描"><span class="toc-number">1.9.</span> <span class="toc-text">端口扫描、指纹识别以及中间件扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#专用扫描器"><span class="toc-number">1.10.</span> <span class="toc-text">专用扫描器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#无线网络渗透、扫描"><span class="toc-number">1.11.</span> <span class="toc-text">无线网络渗透、扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码静态扫描、代码运行栈跟踪"><span class="toc-number">1.12.</span> <span class="toc-text">代码静态扫描、代码运行栈跟踪</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模块化扫描、综合扫描器"><span class="toc-number">1.13.</span> <span class="toc-text">模块化扫描、综合扫描器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#APT"><span class="toc-number">1.14.</span> <span class="toc-text">APT</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#收集目的"><span class="toc-number">2.</span> <span class="toc-text">收集目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目维护"><span class="toc-number">3.</span> <span class="toc-text">项目维护</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#免责说明"><span class="toc-number">4.</span> <span class="toc-text">免责说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#转载"><span class="toc-number">5.</span> <span class="toc-text">转载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#致谢"><span class="toc-number">6.</span> <span class="toc-text">致谢</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Scanners-Box开源扫描器仓库
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-04-28T01:18:44.000Z" itemprop="datePublished">2017-04-28</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全工具/">安全工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Tools/">Tools</a>, <a class="tag-link" href="/tags/转载/">转载</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><a href="https://github.com/We5ter/Scanners-Box" target="_blank" rel="external">Scanners-Box</a><br>Scanners-Box是一个集合github平台上的安全行业从业人员自研开源扫描器的仓库，包括子域名枚举、数据库漏洞扫描、弱口令或信息泄漏扫描、端口扫描、指纹识别以及其他大型扫描器或模块化扫描器；<strong>该仓库只收录各位网友自己编写的一般性开源扫描器，类似nmap、w3af、brakeman等知名扫描工具不收录</strong>。</p>
+<p><strong>非常欢迎大家贡献commit！</strong></p>
+<hr>
+<a id="more"></a>
+<h4 id="子域名枚举"><a href="#子域名枚举" class="headerlink" title="子域名枚举"></a>子域名枚举</h4><ul>
+<li><a href="https://github.com/lijiejie/subDomainsBrute" target="_blank" rel="external">https://github.com/lijiejie/subDomainsBrute</a> (经典的子域名爆破枚举脚本)</li>
+<li><a href="https://github.com/ring04h/wydomain" target="_blank" rel="external">https://github.com/ring04h/wydomain</a> (子域名字典穷举)</li>
+<li><a href="https://github.com/le4f/dnsmaper" target="_blank" rel="external">https://github.com/le4f/dnsmaper</a> (子域名枚举与地图标记)</li>
+<li><a href="https://github.com/0xbug/orangescan" target="_blank" rel="external">https://github.com/0xbug/orangescan</a> (在线子域名信息收集工具)</li>
+<li><a href="https://github.com/TheRook/subbrute" target="_blank" rel="external">https://github.com/TheRook/subbrute</a> （根据DNS记录查询子域名)</li>
+<li><a href="https://github.com/We5ter/GSDF" target="_blank" rel="external">https://github.com/We5ter/GSDF</a> (基于谷歌SSL透明证书的子域名查询脚本)</li>
+<li><a href="https://github.com/mandatoryprogrammer/cloudflare_enum" target="_blank" rel="external">https://github.com/mandatoryprogrammer/cloudflare_enum</a> （使用CloudFlare进行子域名枚举的脚本）</li>
+<li><a href="https://github.com/guelfoweb/knock" target="_blank" rel="external">https://github.com/guelfoweb/knock</a> (Knock子域名获取，可用于查找子域名接管漏洞)</li>
+<li><a href="https://github.com/Evi1CLAY/CoolPool/tree/master/Python/DomainSeeker" target="_blank" rel="external">https://github.com/Evi1CLAY/CoolPool/tree/master/Python/DomainSeeker</a> （多方式收集目标子域名信息）</li>
+<li><a href="https://github.com/code-scan/BroDomain" target="_blank" rel="external">https://github.com/code-scan/BroDomain</a> (兄弟域名查询）</li>
+<li><a href="https://github.com/chuhades/dnsbrute" target="_blank" rel="external">https://github.com/chuhades/dnsbrute</a> (高效的子域名爆破工具)</li>
+</ul>
+<h4 id="数据库扫描"><a href="#数据库扫描" class="headerlink" title="数据库扫描"></a>数据库扫描</h4><ul>
+<li><a href="https://github.com/0xbug/SQLiScanner" target="_blank" rel="external">https://github.com/0xbug/SQLiScanner</a> (一款基于SQLMAP和Charles的被动SQL注入漏洞扫描工具)</li>
+<li><a href="https://github.com/stamparm/DSSS" target="_blank" rel="external">https://github.com/stamparm/DSSS</a> (99行代码实现的sql注入漏洞扫描器)</li>
+<li><a href="https://github.com/LoRexxar/Feigong" target="_blank" rel="external">https://github.com/LoRexxar/Feigong</a> （针对各种情况自由变化的MySQL注入脚本）</li>
+<li><a href="https://github.com/youngyangyang04/NoSQLAttack" target="_blank" rel="external">https://github.com/youngyangyang04/NoSQLAttack</a> (一款针对mongoDB的攻击工具)</li>
+<li><a href="https://github.com/Neohapsis/bbqsql" target="_blank" rel="external">https://github.com/Neohapsis/bbqsql</a> （SQL盲注利用框架）</li>
+<li><a href="https://github.com/NetSPI/PowerUpSQL" target="_blank" rel="external">https://github.com/NetSPI/PowerUpSQL</a> （攻击SQLSERVER的Powershell脚本框架）</li>
+<li><a href="https://github.com/WhitewidowScanner/whitewidow" target="_blank" rel="external">https://github.com/WhitewidowScanner/whitewidow</a> (又一款数据库扫描器)</li>
+<li><a href="https://github.com/stampery/mongoaudit" target="_blank" rel="external">https://github.com/stampery/mongoaudit</a> (MongoDB审计及渗透工具）</li>
+<li><a href="https://github.com/torque59/Nosql-Exploitation-Framework" target="_blank" rel="external">https://github.com/torque59/Nosql-Exploitation-Framework</a> (NoSQL扫描/爆破工具）</li>
+<li><a href="https://github.com/missDronio/blindy" target="_blank" rel="external">https://github.com/missDronio/blindy</a> (MySQL盲注爆破工具）</li>
+</ul>
+<h4 id="弱口令或信息泄漏扫描"><a href="#弱口令或信息泄漏扫描" class="headerlink" title="弱口令或信息泄漏扫描"></a>弱口令或信息泄漏扫描</h4><ul>
+<li><a href="https://github.com/lijiejie/htpwdScan" target="_blank" rel="external">https://github.com/lijiejie/htpwdScan</a> (一个简单的HTTP暴力破解、撞库攻击脚本)</li>
+<li><a href="https://github.com/lijiejie/BBScan" target="_blank" rel="external">https://github.com/lijiejie/BBScan</a> (一个迷你的信息泄漏批量扫描脚本)</li>
+<li><a href="https://github.com/lijiejie/GitHack" target="_blank" rel="external">https://github.com/lijiejie/GitHack</a> (.git文件夹泄漏利用工具) </li>
+<li><a href="https://github.com/wilson9x1/fenghuangscanner_v3" target="_blank" rel="external">https://github.com/wilson9x1/fenghuangscanner_v3</a> (端口及弱口令检测)</li>
+<li><a href="https://github.com/ysrc/F-Scrack" target="_blank" rel="external">https://github.com/ysrc/F-Scrack</a> （对各类服务进行弱口令检测的脚本)</li>
+<li><a href="https://github.com/Mebus/cupp" target="_blank" rel="external">https://github.com/Mebus/cupp</a> （根据用户习惯生成弱口令探测字典脚本）</li>
+<li><a href="https://github.com/RicterZ/genpAss" target="_blank" rel="external">https://github.com/RicterZ/genpAss</a> （中国特色的弱口令生成器）</li>
+<li><a href="https://github.com/netxfly/crack_ssh" target="_blank" rel="external">https://github.com/netxfly/crack_ssh</a> （go写的协程版的ssh\redis\mongodb弱口令破解工具）</li>
+<li><a href="https://github.com/n0tr00t/Sreg" target="_blank" rel="external">https://github.com/n0tr00t/Sreg</a> (通过输入email、phone、username的返回用户注册的所有互联网护照信息)</li>
+<li><a href="https://github.com/repoog/GitPrey" target="_blank" rel="external">https://github.com/repoog/GitPrey</a> (GitHub敏感信息扫描工具)</li>
+<li><a href="https://github.com/dxa4481/truffleHog" target="_blank" rel="external">https://github.com/dxa4481/truffleHog</a> (GitHub敏感信息扫描工具,包括检测commit等)</li>
+<li><a href="https://github.com/LandGrey/pydictor" target="_blank" rel="external">https://github.com/LandGrey/pydictor</a> (暴力破解字典建立工具)</li>
+</ul>
+<h4 id="物联网设备扫描"><a href="#物联网设备扫描" class="headerlink" title="物联网设备扫描"></a>物联网设备扫描</h4><ul>
+<li><a href="https://github.com/rapid7/IoTSeeker" target="_blank" rel="external">https://github.com/rapid7/IoTSeeker</a> （物联网设备默认密码扫描检测工具)</li>
+<li><a href="https://github.com/shodan-labs/iotdb" target="_blank" rel="external">https://github.com/shodan-labs/iotdb</a> (使用nmap扫描IoT设备)</li>
+<li><a href="https://github.com/jh00nbr/Routerhunter-2.0" target="_blank" rel="external">https://github.com/jh00nbr/Routerhunter-2.0</a> （路由器设备漏洞扫描利用)</li>
+<li><a href="https://github.com/scu-igroup/telnet-scanner" target="_blank" rel="external">https://github.com/scu-igroup/telnet-scanner</a> (telnet服务密码撞库)</li>
+</ul>
+<h4 id="XSS扫描"><a href="#XSS扫描" class="headerlink" title="XSS扫描"></a>XSS扫描</h4><ul>
+<li><a href="https://github.com/shawarkhanethicalhacker/BruteXSS" target="_blank" rel="external">https://github.com/shawarkhanethicalhacker/BruteXSS</a> （Cross-Site Scripting Bruteforcer）</li>
+<li><a href="https://github.com/1N3/XSSTracer" target="_blank" rel="external">https://github.com/1N3/XSSTracer</a> (A small python script to check for Cross-Site Tracing)</li>
+<li><a href="https://github.com/0x584A/fuzzXssPHP" target="_blank" rel="external">https://github.com/0x584A/fuzzXssPHP</a> (PHP版本的反射型xss扫描)</li>
+<li><a href="https://github.com/chuhades/xss_scan" target="_blank" rel="external">https://github.com/chuhades/xss_scan</a> (批量扫描xss的python脚本）</li>
+<li><a href="https://github.com/BlackHole1/autoFindXssAndCsrf" target="_blank" rel="external">https://github.com/BlackHole1/autoFindXssAndCsrf</a> (自动化检测页面是否存在XSS和CSRF漏洞的浏览器插件）</li>
+<li><a href="https://github.com/UltimateHackers/XSSight" target="_blank" rel="external">https://github.com/UltimateHackers/XSSight</a> (自动化XSS扫描）</li>
+</ul>
+<h4 id="企业网络自检"><a href="#企业网络自检" class="headerlink" title="企业网络自检"></a>企业网络自检</h4><ul>
+<li><a href="https://github.com/sowish/LNScan" target="_blank" rel="external">https://github.com/sowish/LNScan</a> （详细的内部网络信息扫描器）</li>
+<li><a href="https://github.com/SkyLined/LocalNetworkScanner" target="_blank" rel="external">https://github.com/SkyLined/LocalNetworkScanner</a> (javascript实现的本地网络扫描器)</li>
+<li><a href="https://github.com/ysrc/xunfeng" target="_blank" rel="external">https://github.com/ysrc/xunfeng</a> (网络资产识别引擎，漏洞检测引擎）</li>
+<li><a href="https://github.com/laramies/theHarvester" target="_blank" rel="external">https://github.com/laramies/theHarvester</a> （企业被搜索引擎收录敏感资产信息监控脚本：员工邮箱、子域名、Hosts）</li>
+<li><a href="https://github.com/x0day/Multisearch-v2" target="_blank" rel="external">https://github.com/x0day/Multisearch-v2</a>  (bing、google、360、zoomeye等搜索引擎聚合搜索，可用于发现企业被搜索引擎收录的敏感资产信息）</li>
+</ul>
+<h4 id="webshell检测以及病毒分析工具"><a href="#webshell检测以及病毒分析工具" class="headerlink" title="webshell检测以及病毒分析工具"></a>webshell检测以及病毒分析工具</h4><ul>
+<li><a href="https://github.com/We5ter/Scanners-Box/tree/master/webshell/" target="_blank" rel="external">https://github.com/We5ter/Scanners-Box/tree/master/webshell/</a> （简单的php后门检测工具以及webshell样本库）</li>
+<li><a href="https://github.com/ym2011/ScanBackdoor" target="_blank" rel="external">https://github.com/ym2011/ScanBackdoor</a> （Webshell扫描工具）</li>
+<li><a href="https://github.com/yassineaddi/BackdoorMan" target="_blank" rel="external">https://github.com/yassineaddi/BackdoorMan</a> （A toolkit find malicious, hidden and suspicious PHP scripts and shells in a chosen destination）</li>
+<li><a href="https://github.com/he1m4n6a/findWebshell" target="_blank" rel="external">https://github.com/he1m4n6a/findWebshell</a> （又一款webshell检测工具)</li>
+<li><a href="https://github.com/Tencent/HaboMalHunter" target="_blank" rel="external">https://github.com/Tencent/HaboMalHunter</a> （哈勃分析系统，linux系统病毒分析及安全检测）</li>
+<li><a href="https://github.com/PlagueScanner/PlagueScanner" target="_blank" rel="external">https://github.com/PlagueScanner/PlagueScanner</a> (使用python实现的集成ClamAV、ESET、Bitdefender的反病毒引擎)</li>
+<li><a href="https://github.com/nbs-system/php-malware-finder" target="_blank" rel="external">https://github.com/nbs-system/php-malware-finder</a> (一款高效率PHP-webshell扫描工具)</li>
+<li><a href="https://github.com/emposha/PHP-Shell-Detector/" target="_blank" rel="external">https://github.com/emposha/PHP-Shell-Detector/</a> (测试效率高达99%的webshell检测工具)</li>
+</ul>
+<h4 id="内网渗透"><a href="#内网渗透" class="headerlink" title="内网渗透"></a>内网渗透</h4><ul>
+<li><a href="https://github.com/0xwindows/VulScritp" target="_blank" rel="external">https://github.com/0xwindows/VulScritp</a> （企业内网渗透脚本，包括banner扫描、端口扫描；phpmyadmin、jenkins等通用漏洞利用等）</li>
+<li><a href="https://github.com/lcatro/network_backdoor_scanner" target="_blank" rel="external">https://github.com/lcatro/network_backdoor_scanner</a> （基于网络流量的内网探测框架）</li>
+<li><a href="https://github.com/fdiskyou/hunter" target="_blank" rel="external">https://github.com/fdiskyou/hunter</a> （调用 Windows API 枚举用户登录信息）</li>
+<li><a href="https://github.com/BlackHole1/WebRtcXSS" target="_blank" rel="external">https://github.com/BlackHole1/WebRtcXSS</a> （自动化利用XSS入侵内网）</li>
+</ul>
+<h4 id="端口扫描、指纹识别以及中间件扫描"><a href="#端口扫描、指纹识别以及中间件扫描" class="headerlink" title="端口扫描、指纹识别以及中间件扫描"></a>端口扫描、指纹识别以及中间件扫描</h4><ul>
+<li><a href="https://github.com/ring04h/wyportmap" target="_blank" rel="external">https://github.com/ring04h/wyportmap</a> (目标端口扫描+系统服务指纹识别)</li>
+<li><a href="https://github.com/ring04h/weakfilescan" target="_blank" rel="external">https://github.com/ring04h/weakfilescan</a> (动态多线程敏感信息泄露检测工具)</li>
+<li><a href="https://github.com/EnableSecurity/wafw00f" target="_blank" rel="external">https://github.com/EnableSecurity/wafw00f</a> (WAF产品指纹识别)</li>
+<li><a href="https://github.com/rbsec/sslscan" target="_blank" rel="external">https://github.com/rbsec/sslscan</a> （ssl类型识别)</li>
+<li><a href="https://github.com/urbanadventurer/whatweb" target="_blank" rel="external">https://github.com/urbanadventurer/whatweb</a> (web指纹识别)</li>
+<li><a href="https://github.com/tanjiti/FingerPrint" target="_blank" rel="external">https://github.com/tanjiti/FingerPrint</a> (web应用指纹识别)</li>
+<li><a href="https://github.com/nanshihui/Scan-T" target="_blank" rel="external">https://github.com/nanshihui/Scan-T</a> （网络爬虫式指纹识别)</li>
+<li><a href="https://github.com/OffensivePython/Nscan" target="_blank" rel="external">https://github.com/OffensivePython/Nscan</a> (a fast Network scanner inspired by Masscan and Zmap)</li>
+<li><a href="https://github.com/ywolf/F-NAScan" target="_blank" rel="external">https://github.com/ywolf/F-NAScan</a> (网络资产信息扫描, ICMP存活探测,端口扫描，端口指纹服务识别）</li>
+<li><a href="https://github.com/ywolf/F-MiddlewareScan" target="_blank" rel="external">https://github.com/ywolf/F-MiddlewareScan</a> （中间件扫描）</li>
+<li><a href="https://github.com/maurosoria/dirsearch" target="_blank" rel="external">https://github.com/maurosoria/dirsearch</a> (Web path scanner)</li>
+<li><a href="https://github.com/x0day/bannerscan" target="_blank" rel="external">https://github.com/x0day/bannerscan</a> （C段Banner与路径扫描）</li>
+<li><a href="https://github.com/RASSec/RASscan" target="_blank" rel="external">https://github.com/RASSec/RASscan</a> (端口服务扫描)</li>
+<li><a href="https://github.com/3xp10it/bypass_waf" target="_blank" rel="external">https://github.com/3xp10it/bypass_waf</a> （waf自动暴破）</li>
+<li><a href="https://github.com/3xp10it/xcdn" target="_blank" rel="external">https://github.com/3xp10it/xcdn</a> (尝试找出cdn背后的真实ip)  </li>
+<li><a href="https://github.com/Xyntax/BingC" target="_blank" rel="external">https://github.com/Xyntax/BingC</a> （基于Bing搜索引擎的C段/旁站查询，多线程，支持API）</li>
+<li><a href="https://github.com/Xyntax/DirBrute" target="_blank" rel="external">https://github.com/Xyntax/DirBrute</a> （多线程WEB目录爆破工具）</li>
+<li><a href="https://github.com/zer0h/httpscan" target="_blank" rel="external">https://github.com/zer0h/httpscan</a> （一个爬虫式的网段Web主机发现小工具）</li>
+<li><a href="https://github.com/lietdai/doom" target="_blank" rel="external">https://github.com/lietdai/doom</a> （thorn上实现的分布式任务分发的ip端口漏洞扫描器）</li>
+<li><a href="https://github.com/chichou/grab.js" target="_blank" rel="external">https://github.com/chichou/grab.js</a> (类似 zgrab 的快速 TCP 指纹抓取解析工具，支持更多协议)</li>
+<li><a href="https://github.com/Nitr4x/whichCDN" target="_blank" rel="external">https://github.com/Nitr4x/whichCDN</a> (CDN识别、检测）</li>
+<li><a href="https://github.com/secfree/bcrpscan" target="_blank" rel="external">https://github.com/secfree/bcrpscan</a> (基于爬虫的web路径扫描器)</li>
+<li><a href="https://github.com/mozilla/ssh_scan" target="_blank" rel="external">https://github.com/mozilla/ssh_scan</a> (服务器ssh配置信息扫描）</li>
+</ul>
+<h4 id="专用扫描器"><a href="#专用扫描器" class="headerlink" title="专用扫描器"></a>专用扫描器</h4><ul>
+<li><a href="https://github.com/blackye/Jenkins" target="_blank" rel="external">https://github.com/blackye/Jenkins</a> (Jenkins漏洞探测、用户抓取爆破)</li>
+<li><a href="https://github.com/code-scan/dzscan" target="_blank" rel="external">https://github.com/code-scan/dzscan</a> (discuz扫描)</li>
+<li><a href="https://github.com/chuhades/CMS-Exploit-Framework" target="_blank" rel="external">https://github.com/chuhades/CMS-Exploit-Framework</a> (CMS攻击框架)</li>
+<li><a href="https://github.com/lijiejie/IIS_shortname_Scanner" target="_blank" rel="external">https://github.com/lijiejie/IIS_shortname_Scanner</a> (an IIS shortname Scanner)</li>
+<li><a href="https://github.com/riusksk/FlashScanner" target="_blank" rel="external">https://github.com/riusksk/FlashScanner</a> (flashxss扫描)</li>
+<li><a href="https://github.com/coffeehb/SSTIF" target="_blank" rel="external">https://github.com/coffeehb/SSTIF</a> （一个Fuzzing服务器端模板注入漏洞的半自动化工具）</li>
+<li><a href="https://github.com/epinna/tplmap" target="_blank" rel="external">https://github.com/epinna/tplmap</a> (服务器端模板注入漏洞检测与利用工具)</li>
+<li><a href="https://github.com/cr0hn/dockerscan" target="_blank" rel="external">https://github.com/cr0hn/dockerscan</a> (docker扫描工具)</li>
+<li><a href="https://github.com/m4ll0k/WPSeku" target="_blank" rel="external">https://github.com/m4ll0k/WPSeku</a> (一款精简的wordpress扫描工具)</li>
+</ul>
+<h4 id="无线网络渗透、扫描"><a href="#无线网络渗透、扫描" class="headerlink" title="无线网络渗透、扫描"></a>无线网络渗透、扫描</h4><ul>
+<li><a href="https://github.com/savio-code/fern-wifi-cracker/" target="_blank" rel="external">https://github.com/savio-code/fern-wifi-cracker/</a> (无线安全审计工具)</li>
+<li><a href="https://github.com/m4n3dw0lf/PytheM" target="_blank" rel="external">https://github.com/m4n3dw0lf/PytheM</a> （Python网络/渗透测试工具）</li>
+<li><a href="https://github.com/P0cL4bs/WiFi-Pumpkin" target="_blank" rel="external">https://github.com/P0cL4bs/WiFi-Pumpkin</a> （无线安全渗透测试套件）</li>
+</ul>
+<h4 id="代码静态扫描、代码运行栈跟踪"><a href="#代码静态扫描、代码运行栈跟踪" class="headerlink" title="代码静态扫描、代码运行栈跟踪"></a>代码静态扫描、代码运行栈跟踪</h4><ul>
+<li><a href="https://github.com/wufeifei/cobra" target="_blank" rel="external">https://github.com/wufeifei/cobra</a> (白盒代码安全审计系统)</li>
+<li><a href="https://github.com/OneSourceCat/phpvulhunter" target="_blank" rel="external">https://github.com/OneSourceCat/phpvulhunter</a> (静态php代码审计)</li>
+<li><a href="https://github.com/Qihoo360/phptrace" target="_blank" rel="external">https://github.com/Qihoo360/phptrace</a> (跟踪、分析PHP运行情况的工具）</li>
+<li><a href="https://github.com/ajinabraham/NodeJsScan" target="_blank" rel="external">https://github.com/ajinabraham/NodeJsScan</a> (NodeJS应用代码审计）</li>
+</ul>
+<h4 id="模块化扫描、综合扫描器"><a href="#模块化扫描、综合扫描器" class="headerlink" title="模块化扫描、综合扫描器"></a>模块化扫描、综合扫描器</h4><ul>
+<li><a href="https://github.com/az0ne/AZScanner" target="_blank" rel="external">https://github.com/az0ne/AZScanner</a> (自动漏洞扫描器，子域名爆破，端口扫描，目录爆破，常用框架漏洞检测)</li>
+<li><a href="https://github.com/blackye/lalascan" target="_blank" rel="external">https://github.com/blackye/lalascan</a> (自主开发的分布式web漏洞扫描框架，集合owasp top10漏洞扫描和边界资产发现能力)</li>
+<li><a href="https://github.com/blackye/BkScanner" target="_blank" rel="external">https://github.com/blackye/BkScanner</a> (BkScanner 分布式、插件化web漏洞扫描器)</li>
+<li><a href="https://github.com/ysrc/GourdScanV2" target="_blank" rel="external">https://github.com/ysrc/GourdScanV2</a> （被动式漏洞扫描)</li>
+<li><a href="https://github.com/alpha1e0/pentestdb" target="_blank" rel="external">https://github.com/alpha1e0/pentestdb</a> (WEB渗透测试数据库)</li>
+<li><a href="https://github.com/netxfly/passive_scan" target="_blank" rel="external">https://github.com/netxfly/passive_scan</a> (基于http代理的web漏洞扫描器)</li>
+<li><a href="https://github.com/1N3/Sn1per" target="_blank" rel="external">https://github.com/1N3/Sn1per</a> (自动化扫描器，包括中间件扫描以及设备指纹识别)</li>
+<li><a href="https://github.com/RASSec/pentestEr_Fully-automatic-scanner" target="_blank" rel="external">https://github.com/RASSec/pentestEr_Fully-automatic-scanner</a> （定向全自动化渗透测试工具）</li>
+<li><a href="https://github.com/3xp10it/3xp10it" target="_blank" rel="external">https://github.com/3xp10it/3xp10it</a> （自动化渗透测试框架)</li>
+<li><a href="https://github.com/Lcys/lcyscan" target="_blank" rel="external">https://github.com/Lcys/lcyscan</a> (扫描效果未验证）</li>
+<li><a href="https://github.com/Xyntax/POC-T" target="_blank" rel="external">https://github.com/Xyntax/POC-T</a> （渗透测试插件化并发框架）</li>
+<li><a href="https://github.com/v3n0m-Scanner/V3n0M-Scanner" target="_blank" rel="external">https://github.com/v3n0m-Scanner/V3n0M-Scanner</a> （Scanner in Python3.5 for SQLi/XSS/LFI/RFI and other Vulns）</li>
+<li><a href="https://github.com/Skycrab/leakScan" target="_blank" rel="external">https://github.com/Skycrab/leakScan</a> （web端的在线漏洞扫描）</li>
+<li><a href="https://github.com/zhangzhenfeng/AnyScan" target="_blank" rel="external">https://github.com/zhangzhenfeng/AnyScan</a> (开发中…)</li>
+</ul>
+<h4 id="APT"><a href="#APT" class="headerlink" title="APT"></a>APT</h4><ul>
+<li><a href="https://github.com/Neo23x0/Loki" target="_blank" rel="external">https://github.com/Neo23x0/Loki</a> (一款APT入侵痕迹扫描器)</li>
+</ul>
+<hr>
+<h3 id="收集目的"><a href="#收集目的" class="headerlink" title="收集目的"></a>收集目的</h3><p>本仓库收集的初衷是为向各类企业安全从业人员提供在企业信息安全防护体系建设过程中可以参考的开源安全扫描工具，以期望企业能够利用这些扫描器对自身业务进行自检，从而提高自身业务安全性</p>
+<h3 id="项目维护"><a href="#项目维护" class="headerlink" title="项目维护"></a>项目维护</h3><p><strong>Wester</strong>(sina weibo <a href="http://weibo.com/zzyme/" target="_blank" rel="external">@西风微雨_Wester</a>) &amp;&amp; <strong>Martin</strong>(sina weibo <a href="http://weibo.com/u/1312149403" target="_blank" rel="external">@Mart1n_ZHOU</a>)</p>
+<h3 id="免责说明"><a href="#免责说明" class="headerlink" title="免责说明"></a>免责说明</h3><p>请勿用于非法的用途，否则造成的严重后果与本项目无关。</p>
+<h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p>转载请注明来自<a href="https://github.com/We5ter/Scanners-Box" target="_blank" rel="external">https://github.com/We5ter/Scanners-Box</a></p>
+<h3 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h3><ul>
+<li><strong>@0c0c0f</strong>     </li>
+<li><strong>@藏形匿影(挖财网)</strong></li>
+<li><strong>Mottoin团队</strong></li>
+<li><strong>@BlackHole</strong></li>
+<li><strong>@CodeColorist</strong></li>
+<li><strong>@3xp10it</strong></li>
+<li><strong>@re4lity</strong></li>
+</ul>
+<p>&copy;<a href="https://github.com/CNSISMO" target="_blank">CNSISMO</a> 2016-2017</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#子域名枚举"><span class="toc-number">1.1.</span> <span class="toc-text">子域名枚举</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据库扫描"><span class="toc-number">1.2.</span> <span class="toc-text">数据库扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#弱口令或信息泄漏扫描"><span class="toc-number">1.3.</span> <span class="toc-text">弱口令或信息泄漏扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#物联网设备扫描"><span class="toc-number">1.4.</span> <span class="toc-text">物联网设备扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#XSS扫描"><span class="toc-number">1.5.</span> <span class="toc-text">XSS扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#企业网络自检"><span class="toc-number">1.6.</span> <span class="toc-text">企业网络自检</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#webshell检测以及病毒分析工具"><span class="toc-number">1.7.</span> <span class="toc-text">webshell检测以及病毒分析工具</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内网渗透"><span class="toc-number">1.8.</span> <span class="toc-text">内网渗透</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#端口扫描、指纹识别以及中间件扫描"><span class="toc-number">1.9.</span> <span class="toc-text">端口扫描、指纹识别以及中间件扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#专用扫描器"><span class="toc-number">1.10.</span> <span class="toc-text">专用扫描器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#无线网络渗透、扫描"><span class="toc-number">1.11.</span> <span class="toc-text">无线网络渗透、扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码静态扫描、代码运行栈跟踪"><span class="toc-number">1.12.</span> <span class="toc-text">代码静态扫描、代码运行栈跟踪</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模块化扫描、综合扫描器"><span class="toc-number">1.13.</span> <span class="toc-text">模块化扫描、综合扫描器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#APT"><span class="toc-number">1.14.</span> <span class="toc-text">APT</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#收集目的"><span class="toc-number">2.</span> <span class="toc-text">收集目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目维护"><span class="toc-number">3.</span> <span class="toc-text">项目维护</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#免责说明"><span class="toc-number">4.</span> <span class="toc-text">免责说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#转载"><span class="toc-number">5.</span> <span class="toc-text">转载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#致谢"><span class="toc-number">6.</span> <span class="toc-text">致谢</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&text=Scanners-Box开源扫描器仓库"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&title=Scanners-Box开源扫描器仓库"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&is_video=false&description=Scanners-Box开源扫描器仓库"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Scanners-Box开源扫描器仓库&body=Check out this article: http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&title=Scanners-Box开源扫描器仓库"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&title=Scanners-Box开源扫描器仓库"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&title=Scanners-Box开源扫描器仓库"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&title=Scanners-Box开源扫描器仓库"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2017/04/28/Scanners-Box开源扫描器仓库/&name=Scanners-Box开源扫描器仓库&description=&lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/We5ter/Scanners-Box&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Scanners-Box&lt;/a&gt;&lt;br&gt;Scanners-Box是一个集合github平台上的安全行业从业人员自研开源扫描器的仓库，包括子域名枚举、数据库漏洞扫描、弱口令或信息泄漏扫描、端口扫描、指纹识别以及其他大型扫描器或模块化扫描器；&lt;strong&gt;该仓库只收录各位网友自己编写的一般性开源扫描器，类似nmap、w3af、brakeman等知名扫描工具不收录&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;非常欢迎大家贡献commit！&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

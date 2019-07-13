@@ -1,0 +1,564 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">WordPress wp-admin/includes/file.php任意文件上传漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									WordPress是一款免费的论坛Blog系统。
+<br />
+
+<br />
+
+									WordPress中负责上传文件的代码如下：
+<br />
+
+<br />
+
+									wp-admin/includes/file.php:
+<br />
+
+<br />
+
+									---[cut]---
+<br />
+
+									line 217:
+<br />
+
+									function wp_handle_upload( &amp;$file, $overrides = false, $time = null ) {
+<br />
+
+									---[cut]---
+<br />
+
+									// All tests are on by default. Most can be turned off by $override[{test_name}] = \
+<br />
+
+									false; $test_form = true;
+<br />
+
+									$test_size = true;
+<br />
+
+<br />
+
+									// If you override this, you must provide $ext and $type!!!!
+<br />
+
+									$test_type = true;
+<br />
+
+									$mimes = false;
+<br />
+
+									---[cut]---
+<br />
+
+<br />
+
+									// A properly uploaded file will pass this test. There should be no reason to \
+<br />
+
+									override this one. if (! @ is_uploaded_file( $file[&#39;tmp_name&#39;] ) )
+<br />
+
+									        return $upload_error_handler( $file, __( &#39;Specified file failed upload test.&#39; \
+<br />
+
+									));
+<br />
+
+<br />
+
+									// A correct MIME type will pass this test. Override $mimes or use the upload_mimes \
+<br />
+
+									filter. if ( $test_type ) {
+<br />
+
+									        $wp_filetype = wp_check_filetype( $file[&#39;name&#39;], $mimes );
+<br />
+
+<br />
+
+									        extract( $wp_filetype );
+<br />
+
+<br />
+
+									        if ( ( !$type || !$ext ) &amp;&amp; !current_user_can( &#39;unfiltered_upload&#39; ) )
+<br />
+
+									                return $upload_error_handler( $file,
+<br />
+
+									                           __( &#39;File type does not meet security guidelines. Try another.&#39; ));
+<br />
+
+<br />
+
+									        if ( !$ext )
+<br />
+
+									                $ext = ltrim(strrchr($file[&#39;name&#39;], &#39;.&#39;), &#39;.&#39;);
+<br />
+
+<br />
+
+									        if ( !$type )
+<br />
+
+									                $type = $file[&#39;type&#39;];
+<br />
+
+									} else {
+<br />
+
+									        $type = &#39;&#39;;
+<br />
+
+									}
+<br />
+
+<br />
+
+									// A writable uploads dir will pass this test. Again, there&#39;s no point overriding \
+<br />
+
+									this one. if ( ! ( ( $uploads = wp_upload_dir($time) ) &amp;&amp; false === $uploads[&#39;error&#39;] \
+<br />
+
+									) )  return $upload_error_handler( $file, $uploads[&#39;error&#39;] );
+<br />
+
+<br />
+
+									$filename = wp_unique_filename( $uploads[&#39;path&#39;], $file[&#39;name&#39;], \
+<br />
+
+									$unique_filename_callback );
+<br />
+
+<br />
+
+									// Move the file to the uploads dir
+<br />
+
+									$new_file = $uploads[&#39;path&#39;] . &quot;/$filename&quot;;
+<br />
+
+									if ( false === @ move_uploaded_file( $file[&#39;tmp_name&#39;], $new_file ) ) {
+<br />
+
+									        return $upload_error_handler( $file,
+<br />
+
+									           sprintf( __(&#39;The uploaded file could not be moved to %s.&#39; ), $uploads[&#39;path&#39;] ) \
+<br />
+
+									); }
+<br />
+
+									---[cut ]---
+<br />
+
+<br />
+
+									从上面代码可见所提供的文件名由$wp_filetype = wp_check_filetype( $file[&#39;name&#39;], $mimes );执行检查。以下是wp_check_filetype()函数：
+<br />
+
+<br />
+
+									wp-includes/functions.php:
+<br />
+
+<br />
+
+									---[cut]---
+<br />
+
+									line 2228:
+<br />
+
+<br />
+
+									function wp_check_filetype( $filename, $mimes = null ) {
+<br />
+
+									        // Accepted MIME types are set here as PCRE unless provided.
+<br />
+
+									        $mimes = ( is_array( $mimes ) ) ? $mimes : apply_filters( &#39;upload_mimes&#39;, \
+<br />
+
+									array(  &#39;jpg|jpeg|jpe&#39; =&gt; &#39;image/jpeg&#39;,
+<br />
+
+									                &#39;gif&#39; =&gt; &#39;image/gif&#39;,
+<br />
+
+									                &#39;png&#39; =&gt; &#39;image/png&#39;,
+<br />
+
+									                &#39;bmp&#39; =&gt; &#39;image/bmp&#39;,
+<br />
+
+									                &#39;tif|tiff&#39; =&gt; &#39;image/tiff&#39;,
+<br />
+
+									                &#39;ico&#39; =&gt; &#39;image/x-icon&#39;,
+<br />
+
+									                &#39;asf|asx|wax|wmv|wmx&#39; =&gt; &#39;video/asf&#39;,
+<br />
+
+									                &#39;avi&#39; =&gt; &#39;video/avi&#39;,
+<br />
+
+<br />
+
+									                ---[cut, more mime types]---
+<br />
+
+									line 2279:
+<br />
+
+<br />
+
+									        $type = false;
+<br />
+
+									        $ext = false;
+<br />
+
+<br />
+
+									        foreach ( $mimes as $ext_preg =&gt; $mime_match ) {
+<br />
+
+									                $ext_preg = &#39;!\.(&#39; . $ext_preg . &#39;)$!i&#39;;
+<br />
+
+									                if ( preg_match( $ext_preg, $filename, $ext_matches ) ) {
+<br />
+
+									                        $type = $mime_match;
+<br />
+
+									                        $ext = $ext_matches[1];
+<br />
+
+									                        break;
+<br />
+
+									                }
+<br />
+
+									        }
+<br />
+
+<br />
+
+									        return compact( &#39;ext&#39;, &#39;type&#39; );
+<br />
+
+									}
+<br />
+
+<br />
+
+									文件的类型被设置为匹配所提供扩展名的预定义MIME类型，扩展名是从匹配最后一个句号后mime ext.字符串的正则表达式获得的。如果$type列表中没有扩展名，$ext就会被设置为FALSE，wordpress会生成以下出错消息：“File type does not meet security guidelines. Try another”。
+<br />
+
+<br />
+
+									以下函数在文件上传之前对文件名执行了其他一些检查：
+<br />
+
+<br />
+
+									$filename = wp_unique_filename( $uploads[&#39;path&#39;], $file[&#39;name&#39;], $unique_filename_callback );
+<br />
+
+<br />
+
+									wp-includes/functions.php:
+<br />
+
+<br />
+
+									line 2096:
+<br />
+
+									function wp_unique_filename( $dir, $filename, $unique_filename_callback = null ) {
+<br />
+
+									        // sanitize the file name before we begin processing
+<br />
+
+									        $filename = sanitize_file_name($filename);
+<br />
+
+<br />
+
+									        ---[cut, code that only matters if uploaded file already exists]---
+<br />
+
+<br />
+
+									line 2126:
+<br />
+
+									        return $filename;
+<br />
+
+									}
+<br />
+
+<br />
+
+									如果要完全了解wordpress所执行的文件过滤，还要了解sanitize_file_name()函数：
+<br />
+
+<br />
+
+									wp-includes/formatting.php:
+<br />
+
+<br />
+
+									line 601:
+<br />
+
+									function sanitize_file_name( $filename ) {
+<br />
+
+									        $filename_raw = $filename;
+<br />
+
+									        $special_chars = array(&quot;?&quot;, &quot;[&quot;, &quot;]&quot;, &quot;/&quot;, &quot;\\\\&quot;, &quot;=&quot;, &quot;&lt;&quot;, &quot;&gt;&quot;, &quot;:&quot;, &quot;;&quot;, \
+<br />
+
+									&quot;,&quot;, &quot;&#39;&quot;, &quot;\\&quot;&quot;,   &quot;&amp;&quot;, &quot;$&quot;, &quot;#&quot;, &quot;*&quot;, &quot;(&quot;, &quot;)&quot;, &quot;|&quot;, &quot;~&quot;, &quot;`&quot;, &quot;!&quot;, &quot;{&quot;, &quot;}&quot;, \
+<br />
+
+									                chr(0));
+<br />
+
+									        $special_chars = apply_filters(&#39;sanitize_file_name_chars&#39;, $special_chars, $filename_raw);  $filename = str_replace($special_chars, &#39;&#39;, $filename);
+<br />
+
+									        $filename = preg_replace(&#39;/[\s-]+/&#39;, &#39;-&#39;, $filename);
+<br />
+
+									        $filename = trim($filename, &#39;.-_&#39;);
+<br />
+
+									        return apply_filters(&#39;sanitize_file_name&#39;, $filename, $filename_raw);
+<br />
+
+									}
+<br />
+
+<br />
+
+									过滤过程没有考虑到带有多个扩展名的文件，用户可以上传带有.php.jpg扩展名的任意PHP脚本，并通过直接请求上传的文件来执行恶意脚本。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									WordPress
+<br />
+
+									---------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://core.trac.wordpress.org/ticket/11122<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-11-11</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-08-27</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3890" target="_blank">CVE-2009-3890</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/37005" target="_blank">37005</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14072" target="_blank">14072</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200911-175&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20093890&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									8.8(CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

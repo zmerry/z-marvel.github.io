@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">snmp弱口令导致敏感信息泄露</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									snmp协议即简单网络管理协议（SNMP，Simple Network Management Protocol）。目前一共有3个版本：V1,V2c，V3。V3是最新的版本，在安全的设计上有了很大改进。不过目前广泛应用的还是存在较多安全问题的V1和V2c版本。
+<br />
+
+									snmp协议工作的原理就是管理主机向被管理的主机或设备发送一个请求，这个请求包含一个community和一个oid。oid就是一个代号，代表管理主机这个请求想要的信息。被管理的主机收到这个请求后，先看请求的community是否和自己保存的一致，如果一致，则把相关信息返回给管理主机。如果不一致，就不会返回任何信息。所以community相当与一个认证的口令。
+<br />
+
+									管理主机通过snmp协议除了可以获取被管理主机的信息，还可以修改被管理主机的一些配置信息。
+<br />
+
+									通过上面提到的snmp的应用原理，可以看出当snmp存在弱口令或者口令泄漏时将引起安全问题，导致信息泄漏，甚至设备的配置可能被修改或替换从而被他人控制，拿到设备权限。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									SNMP
+<br />
+
+									--------
+<br />
+
+									绿盟科技建议解决方案：
+<br />
+
+									1、SNMP目前一共有3个版本：V1,V2c，V3。V3是最新的版本，在安全的设计上有了很大改进，建议使用V3版本。
+<br />
+
+									2、建议使用较强口令进行认证，避免被攻击者猜解。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2016-03-31</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2016-03-31</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Discuz!论坛manyou插件SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Discuz!是一款华人地区非常流行的Web论坛程序。
+<br />
+
+<br />
+
+									最新的Discuz! 7.2版本中捆绑了新的应用程序插件manyou，而这个新插件没有对传入的参数进行检查，在GPC为off的情况下可能导致注入漏洞的产生。
+<br />
+
+<br />
+
+									/manyou/sources/notice.php
+<br />
+
+<br />
+
+									if($option == &#39;del&#39;) {
+<br />
+
+									$appid = intval($_GET[&#39;appid&#39;]);
+<br />
+
+									$db-&gt;query(&quot;DELETE FROM {$tablepre}myinvite WHERE appid=&#39;$appid&#39; AND touid=&#39;$discuz_uid&#39;&quot;);
+<br />
+
+									showmessage(&#39;manyou:done&#39;, &#39;userapp.php?script=notice&amp;action=invite&#39;);
+<br />
+
+									} elseif($option == &#39;deluserapp&#39;) {
+<br />
+
+									$hash = trim($_GET[&#39;hash&#39;]);    //此处并没有进行过滤，直接导致注入的产生
+<br />
+
+									if($action == &#39;invite&#39;) {  
+<br />
+
+									$query = $db-&gt;query(&quot;SELECT * FROM {$tablepre}myinvite WHERE hash=&#39;$hash&#39; AND touid=&#39;$discuz_uid&#39;&quot;);
+<br />
+
+									if($value = $db-&gt;fetch_array($query)) {
+<br />
+
+									$db-&gt;query(&quot;DELETE FROM {$tablepre}myinvite WHERE hash=&#39;$hash&#39; AND touid=&#39;$discuz_uid&#39;&quot;);
+<br />
+
+									showmessage(&#39;manyou:done&#39;, &#39;userapp.php?script=notice&amp;action=invite&#39;);
+<br />
+
+									} else {
+<br />
+
+									showmessage(&#39;manyou:noperm&#39;);
+<br />
+
+									}
+<br />
+
+									} else {
+<br />
+
+									$db-&gt;query(&quot;DELETE FROM {$tablepre}mynotice WHERE id=&#39;$hash&#39; AND uid=&#39;$discuz_uid&#39;&quot;);
+<br />
+
+									showmessage(&#39;manyou:done&#39;, &#39;userapp.php?script=notice&#39;);
+<br />
+
+									}
+<br />
+
+									}
+<br />
+
+<br />
+
+									在没有查询结果返回的情况下只有采取盲注的方式，但如果当前数据库帐号有File_priv的话也可以直接into outfile。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：
+<br />
+
+<br />
+
+									* 对$hash取值进行过滤
+<br />
+
+<br />
+
+									$hash = trim($_GET[&#39;hash&#39;]);
+<br />
+
+<br />
+
+									替换为
+<br />
+
+<br />
+
+									$hash = htmlspecialchars(trim($_GET[&#39;hash&#39;]));<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-03-30</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-07-20</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14711" target="_blank">14711</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

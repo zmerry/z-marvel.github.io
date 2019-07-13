@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Apache Commons Daemon “jsvc”信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Apache Commons Daemon可以实现普通的Java 应用编程系统的后台服务。<br />
+
+									<br />
+
+									Apache Commons Daemon在实现上存在影响jsvc库的远程信息泄露漏洞，远程攻击者可利用此漏洞通过使用受影响库的应用程序获取超级用户的文件和目录的访问权限，获取敏感信息。<br />
+
+									<br />
+
+									此漏洞源于功能码中的Bug，在满足下列条件时可应用此漏洞：<br />
+
+									1）Tomcat运行在Linux操作系统上；<br />
+
+									2）jsvc是用libcap编译的；<br />
+
+									3）使用了-user参数。<br />
+
+									<br />
+
+									&lt;*来源：Wilfried Weissmann<br />
+
+									  <br />
+
+									  链接：3C4E45221D.1020306@apache.org3E&quot; target=&quot;_blank&quot;&gt;http://mail-archives.apache.org/mod_mbox/tomcat-announce/201108.mbox/3C4E45221D.1020306@apache.org3E<br />
+
+									        http://commons.apache.org/daemon/<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									Apache <br />
+
+									------------<br />
+
+									目前厂商已经发布升级补丁解决此安全问题，补丁获取链接：<br />
+
+									[1] http://tomcat.apache.org/security-5.html<br />
+
+									[2] http://tomcat.apache.org/security-6.html<br />
+
+									[3] http://tomcat.apache.org/security-7.html<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-08-15</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-12-14</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-2729" target="_blank">CVE-2011-2729</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/49143" target="_blank">49143</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=17532" target="_blank">17532</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201108-269&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20112729&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2011-3176&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

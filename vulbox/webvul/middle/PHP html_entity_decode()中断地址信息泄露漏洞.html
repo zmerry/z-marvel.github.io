@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP html_entity_decode()中断地址信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。
+<br />
+
+<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。
+<br />
+
+<br />
+
+									PHP的html_entity_decode()函数中存在信息泄露漏洞：
+<br />
+
+<br />
+
+									PHP_FUNCTION(html_entity_decode)
+<br />
+
+									{
+<br />
+
+									    char *str, *hint_charset = NULL;
+<br />
+
+									    int str_len, hint_charset_len = 0, len;
+<br />
+
+									    long quote_style = ENT_COMPAT;
+<br />
+
+									    char *replaced;
+<br />
+
+<br />
+
+									    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;s|ls&quot;, &amp;str, &amp;str_len,&amp;quote_style, &amp;hint_charset, &amp;hint_charset_len) == FAILURE) {
+<br />
+
+									        return;
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    replaced = php_unescape_html_entities(str, str_len, &amp;len, 1, quote_style, hint_charset TSRMLS_CC);
+<br />
+
+									    if (replaced) {
+<br />
+
+									        RETURN_STRINGL(replaced, len, 0);
+<br />
+
+									    }
+<br />
+
+									    RETURN_FALSE;
+<br />
+
+									}
+<br />
+
+<br />
+
+									zend_parse_parameters()函数将字符串指针、长度和ineger参数拷贝到了本地变量，放松了这些变量与原始ZVAL之间的联系。问题是任何对ZVAL的修改都不会反映在本地变量上，因此任何中断都可能修改ZVAL，导致本地变量指向已释放和重新使用的内存。此外由于 zend_parse_parameters()支持对象的__toString()方式，只要以html_entity_decode()第三个参数的形式传送对象就可以中断参数解析。由于PHP的call time pass by reference功能，之后攻击者可以从__toString()方式杀死html_entity_decode()的第一个参数并重新用于哈希表。这导致html_entity_decode()向php_unescape_html_entities()传送哈希表的内存而不是字符串的内存，攻击者可以泄露重要的内部内存偏移。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：
+<br />
+
+<br />
+
+									* 删除call time pass by reference功能。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-05-07</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-05-11</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-1860" target="_blank">CVE-2010-1860</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14979" target="_blank">14979</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201005-119&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20101860&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-0820&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

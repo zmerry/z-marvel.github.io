@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标URL存在基于DOM的跨站脚本漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									基于DOM的跨站脚本漏洞属于跨站漏洞的一种分类。造成跨站的原因是客户端脚本（一般是javascript）处理用户输入时，没有做充分的过滤，并且将用户的输入赋给DOM树中某些对象的属性，比如通过document.write，window.location等。这些操作支持执行javascript,造成用户的输入被执行。
+<br />
+
+									比如：
+<br />
+
+									&lt;HTML&gt;
+<br />
+
+									&lt;TITLE&gt;Welcome!&lt;/TITLE&gt;
+<br />
+
+									Hello, 
+<br />
+
+									&lt;SCRIPT&gt;
+<br />
+
+									var pos=document.URL.indexOf(&quot;name=&quot;)+5;
+<br />
+
+									document.write(document.URL.substring(pos,document.URL.length));
+<br />
+
+									&lt;/SCRIPT&gt;
+<br />
+
+									&lt;BR&gt;
+<br />
+
+									Welcome!!!
+<br />
+
+									&lt;/HTML&gt;
+<br />
+
+									这个HTML页面显示欢迎信息。
+<br />
+
+									当请求http://[SERVER]]/welcome.html?name=&lt;script&gt;alert(document.cookie)&lt;/script&gt;，服务器的响应内容并没有包含&lt;script&gt;alert(document.cookie)&lt;/script&gt;,但是通过document.write修改DOM树，导致用户的输入被执行，造成跨站脚本漏洞。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									请分析并加强客户端 (JavaScript) 代码。 处理攻击者所能影响的输入源，通常是url，例如：document.URL，document.URLUnencoded，document.location（及其许多属性），document.referrer ，window.location（及其许多属性）
+<br />
+
+<br />
+
+									检查页面中是否使用了以下代码作为输出：
+<br />
+
+									* document.write(...) 
+<br />
+
+									* document.writeln(...) 
+<br />
+
+									* document.body.innerHtml=... 
+<br />
+
+<br />
+
+									- 直接修改 DOM（包括 DHTML 事件），例如： 
+<br />
+
+									* document.forms[0].action=...（以及各种其他集合） * document.attachEvent(...) 
+<br />
+
+									* document.create...(...) 
+<br />
+
+									* document.execCommand(...) 
+<br />
+
+									* document.body. ...（通过主体对象访问 DOM）
+<br />
+
+									* window.attachEvent(...)
+<br />
+
+<br />
+
+<br />
+
+									- 替换页面URL，例如： 
+<br />
+
+									* document.location=...（以及指派给位置的 href、主机和主机名）
+<br />
+
+									* document.location.hostname=...
+<br />
+
+									* document.location.replace(...) 
+<br />
+
+									* document.location.assign(...) 
+<br />
+
+									* document.URL=...
+<br />
+
+									* window.navigate(...) 
+<br />
+
+<br />
+
+									- 打开/修改窗口，例如： 
+<br />
+
+									* document.open(...) 
+<br />
+
+									* window.open(...) 
+<br />
+
+									* window.location.href=... （以及指派给位置的 href、主机和主机名）
+<br />
+
+<br />
+
+									 - 直接执行脚本，例如： * eval(...)
+<br />
+
+									* window.execScript(...) 
+<br />
+
+									* window.setInterval(...) 
+<br />
+
+									* window.setTimeout(...)<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-10-27</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.1(CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

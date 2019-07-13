@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">目标站点允许查看web服务器访问控制文件内容</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									web服务器通常使用.htaccess作为目录的访问控制文件。
+<br />
+
+<br />
+
+									.htaccess可以对不同的目录定义不同的访问权限。.htaccess文件位于某个需要使用访问控制的目录下，.htaccess作用于当前目录及其子目录。.htaccess包含了当前目录访问控制的详细信息，通常不允许直接查看。
+<br />
+
+<br />
+
+									不正确的配置允许攻击者直接查看文件内容，获取敏感信息，为下一步攻击提供帮助。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									1. 尽量使用服务器的统一配置完成目录的访问控制。
+<br />
+
+									2. Apache使用AccessFileName指定访问控制文件，通过AccessFileName修改为非.htaccess名字的其他文件。
+<br />
+
+									3. 限制.htaccess的访问权限。
+<br />
+
+									   Apache:   &lt;Files ~ &quot;^\.ht&quot;&gt; 
+<br />
+
+									                  Order allow,deny
+<br />
+
+									                  Deny from all
+<br />
+
+									             &lt;/Files&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-07-16</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

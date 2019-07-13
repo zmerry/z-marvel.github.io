@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">交互式扫描-检测到当前链接存在SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本漏洞属于Web应用安全中的常见漏洞，属于OWASP TOP 10 （2007）中的注入类漏洞。<br />
+
+									<br />
+
+									很多WEB应用中都存在SQL注入漏洞。SQL注入是一种攻击者利用代码缺陷进行攻击的方式，可在任何能够影响数据库查询的应用程序参数中利用。例如url本身的参数、post数据或cookie值。<br />
+
+									<br />
+
+									正常的SQL注入攻击很大程度上取决于攻击者使用从错误消息所获得信息。但是，即使没有显示错误消息应用程序仍可能受SQL注入的影响。<br />
+
+									<br />
+
+									总体上讲，SQL注入是对web应用而不是对web服务器或操作系统本身的攻击。正如其名称所示，SQL注入是对查询添加非预期SQL命令从而以数据库管理员或开发人员非预期的方式操控数据库的行为。如果成功的话，就可以获得、修改、注入或删除有漏洞web应用所使用数据库服务器的数据。在某些环境下，可利用SQL注入完全控制系统。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									防护建议包括部署分层安全措施（包括在接受用户输入时使用参数化的查询）、确保应用程序仅使用预期的数据、加固数据库服务器防止不恰当的访问数据。<br />
+
+									<br />
+
+									建议使用以下措施防范SQL注入漏洞：<br />
+
+									<br />
+
+									对于开发<br />
+
+									========<br />
+
+									<br />
+
+									使用以下建议编写不受SQL注入攻击影响的web应用。 <br />
+
+									<br />
+
+									参数化查询：SQL注入源于攻击者控制查询数据以修改查询逻辑，因此防范SQL注入攻击的最佳方式就是将查询的逻辑与其数据分隔，这可以防止执行从用户输入所注入的命令。这种方式的缺陷是可能对性能产生影响（但影响很小），且必须以这种方式构建站点上的每个查询才能完全有效。只要无意中绕过了一个查询，就足以导致应用受SQL注入的影响。以下代码显示的是可以进行SQL注入的SQL语句示例。 <br />
+
+									<br />
+
+									sSql = &quot;SELECT LocationName FROM Locations &quot;; sSql = sSql + &quot; WHERE LocationID = &quot; + Request[&quot;LocationID&quot;]; oCmd.CommandText = sSql;<br />
+
+									<br />
+
+									下面的例子使用了参数化的查询，不受SQL注入攻击的影响。 <br />
+
+									<br />
+
+									sSql = &quot;SELECT * FROM Locations &quot;;<br />
+
+									sSql = sSql + &quot; WHERE LocationID = @LocationID&quot;; oCmd.CommandText = sSql; oCmd.Parameters.Add(&quot;@LocationID&quot;, Request[&quot;LocationID&quot;]); <br />
+
+									<br />
+
+									应用程序没有包含用户输入向服务器发送SQL语句，而是使用-@LocationID-参数替代该输入，这样用户输入就无法成为SQL执行的命令。这种方式可以有效的拒绝攻击者所注入的任何输入，尽管仍会生成错误，但仅为数据类型转换错误，而不是黑客可以利用的错误。 <br />
+
+									<br />
+
+									以下代码示例显示从HTTP查询字符串中获得产品ID并使用到SQL查询中。请注意传送给SqlCommand的包含有SELECT的字符串仅仅是个静态字符串，不是从输入中截取的。此外还请注意使用SqlParameter对象传送输入参数的方式，该对象的名称（@pid）匹配SQL查询中所使用的名称。<br />
+
+									<br />
+
+									C#示例：<br />
+
+									<br />
+
+									string connString = WebConfigurationManager.ConnectionStrings[&quot;myConn&quot;].ConnectionString;<br />
+
+									using (SqlConnection conn = new SqlConnection(connString)) <br />
+
+									        { <br />
+
+									            conn.Open();<br />
+
+									            SqlCommand cmd = new SqlCommand(&quot;SELECT Count(*) FROM Products WHERE ProdID=@pid&quot;, conn); <br />
+
+									            SqlParameter prm = new SqlParameter(&quot;@pid&quot;, SqlDbType.VarChar, 50); <br />
+
+									            prm.Value = Request.QueryString[&quot;pid&quot;]; <br />
+
+									            cmd.Parameters.Add(prm); <br />
+
+									            int recCount = (int)cmd.ExecuteScalar();<br />
+
+									        } <br />
+
+									<br />
+
+									VB.NET示例： <br />
+
+									<br />
+
+									Dim connString As String = WebConfigurationManager.ConnectionStrings(&quot;myConn&quot;).ConnectionString<br />
+
+									<br />
+
+									Using conn As New SqlConnection(connString) conn.Open()<br />
+
+									            Dim cmd As SqlCommand = New SqlCommand(&quot;SELECT Count(*) FROM Products WHERE ProdID=@pid&quot;, conn)<br />
+
+									            Dim prm As SqlParameter = New SqlParameter(&quot;@pid&quot;, SqlDbType.VarChar, 50) <br />
+
+									            prm.Value = Request.QueryString(&quot;pid&quot;) <br />
+
+									            cmd.Parameters.Add(prm) <br />
+
+									            Dim recCount As Integer = cmd.ExecuteScalar()<br />
+
+									        End Using<br />
+
+									<br />
+
+									验证输入：可通过正确验证用户输入的类型和格式防范大多数SQL注入攻击，最佳方式是通过白名单，定义方法为对于相关的字段只接受特定的帐号号码或帐号类型，或对于其他仅接受英文字母表的整数或字母。很多开发人员都试图使用黑名单字符或转义的方式验证输入。总体上讲，这种方式通过在恶意数据前添加转义字符来拒绝已知的恶意数据，如单引号，这样之后的项就可以用作文字值。这种方式没有白名单有效，因为不可能事先知道所有形式的恶意数据。 <br />
+
+									<br />
+
+									对于安全操作<br />
+
+									============<br />
+
+									<br />
+
+									使用以下建议帮助防范对web应用的SQL注入攻击。<br />
+
+									 <br />
+
+									限制应用程序权限：限制用户凭据，仅使用应用运行所必需权限的。任何成功的SQL注入攻击都会运行在用户凭据的环境中，尽管限制权限无法完全防范SQL注入攻击，但可以大大增加其难度。 <br />
+
+									<br />
+
+									强系统管理员口令策略：通常攻击者需要管理员帐号的功能才能使用特定的SQL命令，如果系统管理员口令较弱的话就比较容易暴力猜测，增加成功SQL注入攻击的可能性。另一个选项就是根本不使用系统管理员口令，而是为特定目的创建特定的帐号。<br />
+
+									<br />
+
+									一致的错误消息方案：确保在出现数据库错误时向用户提供尽可能少的信息。不要泄漏整个错误消息，要同时在web和应用服务器上处理错误消息。当web服务器遇到处理错误时，应使用通用的web页面响应，或将用户重新定向到标准的位置。绝不要泄漏调试信息或其他可能对攻击者有用的细节。 <br />
+
+									<br />
+
+									有关如何在IIS中关闭详细错误消息的说明请见：<br />
+
+									http://www.microsoft.com/windows2000/en/server/iis/default.asp?url= /windows2000/en/server/iis/htm/core/iierrcst.htm<br />
+
+									<br />
+
+									使用以下句法在Apache服务器上取缔错误消息:<br />
+
+									<br />
+
+									Syntax: ErrorDocument &lt;3-digit-code&gt;<br />
+
+									Example: ErrorDocument 500 /webserver_errors/server_error500.txt<br />
+
+									<br />
+
+									WebSphere之类的应用服务器通常默认安装启用了错误消息或调试设置。有关如何取缔这些错误消息的信息，请参考应用服务器文档。 <br />
+
+									<br />
+
+									存储过程：如果不使用的话，请删除master..Xp_cmdshell、xp_startmail、xp_sendmail、<br />
+
+									sp_makewebtask之类的SQL存储过程。<br />
+
+									<br />
+
+									SQL注入漏洞根本上还是取决于web应用程序的代码。尽管不是修复，但可以通过向IDS中添加结合了正则表达式的规则作为紧急措施检测SQL注入攻击。尽管这无法修复所有可能的SQL注入漏洞，但便于实施，并且要求攻击者必须要改进其方法才能实现成功的攻击。可如下使用正则表达式。<br />
+
+									<br />
+
+									删除SQL元字符的正则表达式：<br />
+
+									/(\%27)|(\&#39;)|(\-\-)|(\%23)|(#)/ix<br />
+
+									<br />
+
+									可如下将上述正则表达式添加到Snort规则：<br />
+
+									alert tcp $EXTERNAL_NET any -&gt; $HTTP_SERVERS $HTTP_PORTS (msg:&quot;SQL Injection- Paranoid&quot;;flow:to_server,established;uricontent:&quot;.pl&quot;;pcre:&quot;/(\%27)|(\&#39;)|(\-\-)|(%23)|(#)/i&quot;; classtype:Web-application-attack; sid:9099; rev:5;)<br />
+
+									<br />
+
+									传统SQL注入攻击的正则表达式：<br />
+
+									/\w*((\%27)|(\&#39;))((\%6F)|o|(\%4F))((\%72)|r|(\%52))/ix<br />
+
+									<br />
+
+									删除有UNION关键字的SQL注入攻击的正则表达式：<br />
+
+									/((\%27)|(\&#39;))union/ix<br />
+
+									(\%27)|(\&#39;)<br />
+
+									<br />
+
+									可为其他的SQL查询（如select、insert、update、delete、drop等）编写类似的正则表达式。<br />
+
+									<br />
+
+									在MS SQL服务器上检测SQL注入攻击的正则表达式：<br />
+
+									/exec(\s|\+)+(s|x)p\w+/ix<br />
+
+									<br />
+
+									对于质量保证<br />
+
+									============<br />
+
+									 <br />
+
+									解决SQL注入缺陷最终要求基于代码的修复，“对于开发”和“对于安全操作”部分所述的步骤提供了修复这些漏洞所必要的信息。以下步骤概述了如何对应用程序手动测试SQL注入。 <br />
+
+									<br />
+
+									如何对应用程序手动测试SQL注入：<br />
+
+									<br />
+
+									1. 在浏览器中打开希望测试SQL注入漏洞的web应用。 <br />
+
+									<br />
+
+									2. 将鼠标光标悬停在Web站点的链接上并注意底部的状态栏，可以看到链接所指向的URL。找到其中带有参数的URL，如http://www.site.com/articleid.asp?id=42 <br />
+
+									<br />
+
+									注释：如果没有在状态栏中看到任何URL，请点击链接然后查看地址栏，直到找到带有参数的URL。 <br />
+
+									<br />
+
+									3. 找到带有参数的URL后，点击链接进入网页，在地址栏中可以看到状态栏中的URL。 <br />
+
+									<br />
+
+									4. 有两种测试SQL注入脚本的方法，请使用全部两种方式依次测试每个参数值。 <br />
+
+									<br />
+
+									方法1. 在地址栏中点击光标，高亮显示参数值，如高亮显示name=value中的value并用单引号（&#39;）替换，这时应类似于name=&#39;。<br />
+
+									<br />
+
+									方法2. 在地址栏中点击光标，在value中间输入单引号（&#39;），这时应类似于name=val&#39;ue。 <br />
+
+									<br />
+
+									5. 点击GO键将请求发送到Web服务器。<br />
+
+									<br />
+
+									6. 分析Web服务器响应中的错误消息，大多数数据库错误消息都类似于以下示例： <br />
+
+									<br />
+
+									Example error 1:<br />
+
+									Microsoft OLE DB Provider for SQL Server error &#39;80040e14&#39; <br />
+
+									Unclosed quotation mark before the character string &#39;51 ORDER BY some_name&#39;. /some_directory/some_file.asp, line 5 <br />
+
+									<br />
+
+									Example error 2: <br />
+
+									ODBC Error Code = S1000 (General error)<br />
+
+									[Oracle][ODBC][Ora]ORA-00933: SQL command not properly ended <br />
+
+									<br />
+
+									Example error 3: <br />
+
+									Error: 1353 SQLSTATE: HY000 (ER_VIEW_WRONG_LIST)<br />
+
+									Message: View&#39;s SELECT and view&#39;s field list have different column counts <br />
+
+									<br />
+
+									7. 有时错误消息并不明显，隐藏在页面源码中。如果要查看这些消息，必须查看页面的HTML源码并搜索错误。如果要在Internet Explorer中实现这个操作，点击“查看”菜单，然后选择“源码”选项，这可以打开记事本显示页面的HTML源码。在记事本中，打开“编辑”菜单并选择“查找”。这时会出现一个对话框询问“查找内容”。输入Microsoft OLE DB或[ODBC]然后点击“查找下一个”。 <br />
+
+									<br />
+
+									8. 如果6或7步成功，则Web站点存在SQL注入漏洞。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2001-01-01</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2016-06-07</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">nginx ngx_http_process_request_headers()函数空指针引用拒绝服务漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									nginx是多平台的HTTP服务器和邮件代理服务器。 <br />
+
+									<br />
+
+									nginx服务器的src/http/ngx_http_parse.c文件的ngx_http_process_request_headers()函数中存在空指针引用错误，远程攻击者可以通过超长的URI来触发这个漏洞，导致worker进程崩溃。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									Debian<br />
+
+									------<br />
+
+									Debian已经为此发布了一个安全公告（DSA-1920-1）以及相应补丁:<br />
+
+									DSA-1920-1：New nginx packages fix denial of service<br />
+
+									链接：http://www.debian.org/security/2009/dsa-1920<br />
+
+									<br />
+
+									补丁下载：<br />
+
+									<br />
+
+									Source archives:<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13.orig.tar.gz<br />
+
+									Size/MD5 checksum:   436610 d385a1e7a23020d421531818d5606b5b<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3.dsc<br />
+
+									Size/MD5 checksum:      611 c4e1baf967a3dbb19a28bf2da8c32fdb<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3.diff.gz<br />
+
+									Size/MD5 checksum:     6822 794447a883501912bf6f448b9a561293<br />
+
+									<br />
+
+									alpha architecture (DEC Alpha)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_alpha.deb<br />
+
+									Size/MD5 checksum:   211432 14edf103968d05ed6b3f0149e790881c<br />
+
+									<br />
+
+									amd64 architecture (AMD x86_64 (AMD64))<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_amd64.deb<br />
+
+									Size/MD5 checksum:   196040 70ac342b4cf946ad70d9914c5bc54d38<br />
+
+									<br />
+
+									arm architecture (ARM)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_arm.deb<br />
+
+									Size/MD5 checksum:   187230 0caef4e2898e11690a49eb45a539ad37<br />
+
+									<br />
+
+									hppa architecture (HP PA RISC)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_hppa.deb<br />
+
+									Size/MD5 checksum:   205304 05e92ede05223ee00832a7fa22f8712f<br />
+
+									<br />
+
+									i386 architecture (Intel ia32)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_i386.deb<br />
+
+									Size/MD5 checksum:   184404 764b3c087859dcf45d888fe6c7f55176<br />
+
+									<br />
+
+									ia64 architecture (Intel ia64)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_ia64.deb<br />
+
+									Size/MD5 checksum:   278594 4ae16a2fe0a790a1eb567aa2a2c909ea<br />
+
+									<br />
+
+									mips architecture (MIPS (Big Endian))<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_mips.deb<br />
+
+									Size/MD5 checksum:   208380 a7408a0c1f14f235aec3c9f3a12d5694<br />
+
+									<br />
+
+									mipsel architecture (MIPS (Little Endian))<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_mipsel.deb<br />
+
+									Size/MD5 checksum:   207790 67255cb5b5848c714921d0a44abd449d<br />
+
+									<br />
+
+									powerpc architecture (PowerPC)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_powerpc.deb<br />
+
+									Size/MD5 checksum:   186666 a0a0505d498f51d2a63e615e8e3e8fe7<br />
+
+									<br />
+
+									s390 architecture (IBM S/390)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_s390.deb<br />
+
+									Size/MD5 checksum:   199838 b0d4f3cc9878b0280a8e56a0bd29bd53<br />
+
+									<br />
+
+									sparc architecture (Sun SPARC/UltraSPARC)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.4.13-2+etch3_sparc.deb<br />
+
+									Size/MD5 checksum:   185332 9fdd4b7725b4060a311d7f35f9266cfb<br />
+
+									<br />
+
+									<br />
+
+									Debian GNU/Linux 5.0 alias lenny<br />
+
+									- --------------------------------<br />
+
+									<br />
+
+									Stable updates are available for alpha, amd64, arm, armel, hppa, i386, ia64,<br />
+
+									mips, mipsel, powerpc, s390 and sparc.<br />
+
+									<br />
+
+									Source archives:<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32.orig.tar.gz<br />
+
+									Size/MD5 checksum:   522183 c09a2ace3c91f45dabbb608b11e48ed1<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3.dsc<br />
+
+									Size/MD5 checksum:     1231 0acea5f6912c80de2c6b54b16c7f008b<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3.diff.gz<br />
+
+									Size/MD5 checksum:    10814 a5c652551a6457c8ead36578a5ba59bb<br />
+
+									<br />
+
+									alpha architecture (DEC Alpha)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_alpha.deb<br />
+
+									Size/MD5 checksum:   297934 72777a5e04e324eef3f97d93623a4559<br />
+
+									<br />
+
+									amd64 architecture (AMD x86_64 (AMD64))<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_amd64.deb<br />
+
+									Size/MD5 checksum:   268654 8ba00b9fa72c1b6d92ba1f4af5b95e2d<br />
+
+									<br />
+
+									arm architecture (ARM)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_arm.deb<br />
+
+									Size/MD5 checksum:   252062 7de60e3654a0aff273d3340dd46e2cda<br />
+
+									<br />
+
+									armel architecture (ARM EABI)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_armel.deb<br />
+
+									Size/MD5 checksum:   252764 f0ba676c131f1fc992e27cf1c50440d7<br />
+
+									<br />
+
+									hppa architecture (HP PA RISC)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_hppa.deb<br />
+
+									Size/MD5 checksum:   282454 7d9299fcc9ca9201905790eea2357527<br />
+
+									<br />
+
+									i386 architecture (Intel ia32)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_i386.deb<br />
+
+									Size/MD5 checksum:   255294 c7e061bcc8d9272abd91c522e01e05dd<br />
+
+									<br />
+
+									ia64 architecture (Intel ia64)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_ia64.deb<br />
+
+									Size/MD5 checksum:   420106 3356229c7f62e64c19dd3c3853cb7a87<br />
+
+									<br />
+
+									mips architecture (MIPS (Big Endian))<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_mips.deb<br />
+
+									Size/MD5 checksum:   283362 9c97f75512a4665c60e20f8fcfff6556<br />
+
+									<br />
+
+									mipsel architecture (MIPS (Little Endian))<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_mipsel.deb<br />
+
+									Size/MD5 checksum:   283598 2ebafc8e613da6d28f09d91e1287055c<br />
+
+									<br />
+
+									powerpc architecture (PowerPC)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_powerpc.deb<br />
+
+									Size/MD5 checksum:   276188 9c4e725628b775d77aa3a5ccce16063a<br />
+
+									<br />
+
+									s390 architecture (IBM S/390)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_s390.deb<br />
+
+									Size/MD5 checksum:   274074 1bbc736cc9651bfd041042b29096bdfa<br />
+
+									<br />
+
+									sparc architecture (Sun SPARC/UltraSPARC)<br />
+
+									<br />
+
+									http://security.debian.org/pool/updates/main/n/nginx/nginx_0.6.32-3+lenny3_sparc.deb<br />
+
+									Size/MD5 checksum:   256738 eca03da76437d58f898a60c9cb5930d7<br />
+
+									<br />
+
+									补丁安装方法：<br />
+
+									<br />
+
+									1. 手工安装补丁包：<br />
+
+									<br />
+
+									  首先，使用下面的命令来下载补丁软件：<br />
+
+									  # wget url  (url是补丁下载链接地址)<br />
+
+									<br />
+
+									  然后，使用下面的命令来安装补丁：  <br />
+
+									  # dpkg -i file.deb (file是相应的补丁名)<br />
+
+									<br />
+
+									2. 使用apt-get自动安装补丁包：<br />
+
+									<br />
+
+									   首先，使用下面的命令更新内部数据库：<br />
+
+									   # apt-get update<br />
+
+									   <br />
+
+									   然后，使用下面的命令安装更新软件包：<br />
+
+									   # apt-get upgrade<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-11-24</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-10-28</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3896" target="_blank">CVE-2009-3896</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/36839" target="_blank">36839</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14132" target="_blank">14132</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200911-243&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20093896&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

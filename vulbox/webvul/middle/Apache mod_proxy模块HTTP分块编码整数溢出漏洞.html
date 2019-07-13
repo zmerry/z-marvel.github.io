@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Apache mod_proxy模块HTTP分块编码整数溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Apache HTTP Server是一款流行的Web服务器。<br />
+
+									<br />
+
+									Apache服务器的mod_proxy模块在执行字符类型转换时存在最终可导致堆溢出的整数溢出漏洞。以下是有漏洞的代码段：<br />
+
+									<br />
+
+									&quot;./src/modules/proxy/proxy_util.c&quot;<br />
+
+									long int ap_proxy_send_fb(BUFF *f, request_rec *r, cache_req *c, off_t len, int nowrite, int chunked, size_t recv_buffer_size)<br />
+
+									{<br />
+
+									<br />
+
+									...<br />
+
+									    size_t buf_size;<br />
+
+									    long remaining = 0;<br />
+
+									...<br />
+
+									<br />
+
+									    for (end_of_chunk = ok = 1; ok;) {<br />
+
+									...<br />
+
+									        if (chunked) {<br />
+
+									            long chunk_start = 0;<br />
+
+									            n = 0;<br />
+
+									<br />
+
+									            /* start of a new chunk */<br />
+
+									            if (end_of_chunk) {<br />
+
+									                end_of_chunk = 0;<br />
+
+									                /* get the chunk size from the stream */<br />
+
+									                chunk_start = ap_getline(buf, buf_size, f, 0);    &lt;----------------  [0] reading line from traffic (socket)<br />
+
+									                if ((chunk_start &lt;= 0) || ((size_t)chunk_start + 1 &gt;= buf_size) || !ap_isxdigit(*buf)) {<br />
+
+									                    n = -1;<br />
+
+									                }<br />
+
+									                /* parse the chunk size */<br />
+
+									                else {<br />
+
+									                    remaining = ap_get_chunk_size(buf);           &lt;----------------  [1] convert readed data to &#39;long&#39; size!<br />
+
+									                    if (remaining == 0) { /* Last chunk indicated, get footers */<br />
+
+									...<br />
+
+									...<br />
+
+									                        }<br />
+
+									                    }<br />
+
+									                    else if (remaining &lt; 0) {<br />
+
+									                        n = -1;<br />
+
+									                        ap_log_rerror(APLOG_MARK, APLOG_DEBUG|APLOG_NOERRNO, r,<br />
+
+									                                      &quot;proxy: remote protocol error, invalid chunk size&quot;);<br />
+
+									                    }<br />
+
+									                }<br />
+
+									            }<br />
+
+									<br />
+
+									            /* read the chunk */<br />
+
+									            if (remaining &gt; 0) {<br />
+
+									                n = ap_bread(f, buf, MIN((int)buf_size, (int)remaining));     &lt;------------- [2] convert &#39;long&#39; to &#39;int&#39; !!!!<br />
+
+									                if (n &gt; -1) {<br />
+
+									                    remaining -= n;<br />
+
+									                    end_of_chunk = (remaining == 0);<br />
+
+									                }<br />
+
+									            }<br />
+
+									...<br />
+
+									...<br />
+
+									}<br />
+
+									<br />
+
+									服务器在读取HTTP头时，如果是分块连接，在[0]处会等待并从套接字读取块大小的数据，在[1]处将所接收到的数据转换为long类型；如果存在正值的块大小，[2]处直接将long类型转换为int类型，这在amd64架构上可能触发整数溢出。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									Apache Group<br />
+
+									------------<br />
+
+									目前厂商已经发布了升级补丁以修复此安全问题，补丁获取链接：<br />
+
+									<br />
+
+									http://www.apache.org<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-02-02</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-02-24</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-0010" target="_blank">CVE-2010-0010</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/37966" target="_blank">37966</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14424" target="_blank">14424</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201002-005&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20100010&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.8&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-5293&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

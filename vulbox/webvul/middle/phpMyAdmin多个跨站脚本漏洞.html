@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">phpMyAdmin多个跨站脚本漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									phpMyAdmin是用PHP编写的工具，用于通过WEB管理MySQL。 
+<br />
+
+<br />
+
+									phpMyAdmin的多个模块没有正确地过滤用户所提交的请求参数，用户受骗跟随了恶意链接就可能导致跨站脚本攻击。以下是受影响的URL和参数：
+<br />
+
+<br />
+
+									URL：http://target/phpmyadmin/db_search.php
+<br />
+
+									受影响参数：field_str
+<br />
+
+<br />
+
+									URL：http://target/phpmyadmin/db_sql.php
+<br />
+
+									受影响参数：QUERY_STRING, delimiter
+<br />
+
+<br />
+
+									URL：http://target/phpmyadmin/db_structure.php
+<br />
+
+									受影响参数：sort
+<br />
+
+<br />
+
+									URL：http://target/phpmyadmin/js/messages.php
+<br />
+
+									受影响参数：db
+<br />
+
+<br />
+
+									URL：http://target/phpmyadmin/server_databases.php
+<br />
+
+									受影响参数：sort_by
+<br />
+
+<br />
+
+									URL：http://target/phpmyadmin/server_privileges.php
+<br />
+
+									受影响参数：QUERY_STRING, checkprivs, dbname, pred_tablename, selected_usr[], tablename , username
+<br />
+
+<br />
+
+									URL：http://target/phpmyadmin/setup/config.php
+<br />
+
+									受影响参数：DefaultLang
+<br />
+
+<br />
+
+									URL：http://target/phpmyadmin/sql.php
+<br />
+
+									受影响参数：QUERY_STRING, cpurge, goto,purge,purgekey,table,zero_rows
+<br />
+
+<br />
+
+									URL：http://target/phpmyadmin/tbl_replace.php
+<br />
+
+									受影响参数：fields[multi_edit][0][f7235a61fdc3adc78d866fd8085d44db], fields_name[multi_edit][0][349e686330723975502e9ef4f939a5ac]<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									phpMyAdmin
+<br />
+
+									----------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://www.phpmyadmin.net/home_page/security/PMASA-2010-5.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>6</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-08-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-08-24</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-3056" target="_blank">CVE-2010-3056</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/42584" target="_blank">42584</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15631" target="_blank">15631</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201008-262&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20103056&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									6.1(CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-01825&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

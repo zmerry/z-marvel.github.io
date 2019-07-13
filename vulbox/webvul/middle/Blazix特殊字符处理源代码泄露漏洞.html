@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Blazix特殊字符处理源代码泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Blazix是一款免费开放源代码的由JAVA编写的WEB服务程序，可使用在Linux和Microsoft Windows操作系统下。<br />
+
+									<br />
+
+									Blazix没有很正确的处理包含特殊字符的请求，远程攻击者可以利用这个漏洞获得.jsp脚本的源代码。<br />
+
+									<br />
+
+									Blazix的API在打开文件时对文件名中包含的特殊字符&#39;+&#39;和&#39;\&#39;(不是2b和5c)没有进行正确的解析，攻击者可以在请求的.jsp脚本文件名后追加&#39;+&#39;或者&#39;\&#39;字符，可导致获得脚本的源代码信息，其中可能包含部分密码等敏感信息。<br />
+
+									<br />
+
+									&lt;*来源：Auriemma Luigi （aluigi@pivx.com）<br />
+
+									  <br />
+
+									  链接：http://marc.theaimsgroup.com/?l=bugtraq&amp;m=103023247202089&amp;w=2<br />
+
+									*&gt;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：<br />
+
+									<br />
+
+									Desiderata Software<br />
+
+									-------------------<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，厂商发布了相关更新：<br />
+
+									<br />
+
+									http://www.blazix.com/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2002-08-24</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-05-21</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2002-1451" target="_blank">CVE-2002-1451</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/5566" target="_blank">5566</a>
+
+									<a href="http://www.securityfocus.com/bid/5567" target="_blank">5567</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=3368" target="_blank">3368</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200208-248
+&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20021451&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-03368&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

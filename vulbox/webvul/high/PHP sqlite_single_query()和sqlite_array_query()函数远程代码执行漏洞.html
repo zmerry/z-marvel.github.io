@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP sqlite_single_query()和sqlite_array_query()函数远程代码执行漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									如果对PHP的sqlite_single_query()和sqlite_array_query()函数使用了空的SQL查询的话，函数可能会使用未初始化的内存，这可能导致执行任意代码。以下是ext/sqlite/sqlite.c中的有漏洞代码段：<br />
+
+									<br />
+
+									/* {{{ proto array sqlite_single_query(resource db, string query [, bool<br />
+
+									first_row_only [, bool decode_binary]])<br />
+
+									Executes a query and returns either an array for one single column or the<br />
+
+									value of the first row. */<br />
+
+									<br />
+
+									PHP_FUNCTION(sqlite_single_query)<br />
+
+									{<br />
+
+									       ...<br />
+
+									   struct php_sqlite_result *rres;<br />
+
+									   ...<br />
+
+									       rres = (struct php_sqlite_result *)emalloc(sizeof(*rres)); [1]<br />
+
+									       sqlite_query(NULL, db, sql, sql_len, PHPSQLITE_NUM, 0, NULL, &amp;rres, NULL<br />
+
+									       TSRMLS_CC); [2]<br />
+
+									   ...<br />
+
+									       real_result_dtor(rres TSRMLS_CC); [3]<br />
+
+									}<br />
+
+									<br />
+
+									在[1]处所分配的资源rres没有在[2]处清零。如果查询为空，就可能在[3]传送给real_result_dtor内存。<br />
+
+									<br />
+
+									static void real_result_dtor(struct php_sqlite_result *res TSRMLS_DC)<br />
+
+									{<br />
+
+									       int i, j, base;<br />
+
+									<br />
+
+									       if (res-&gt;vm) {<br />
+
+									               sqlite_finalize(res-&gt;vm, NULL);<br />
+
+									       }<br />
+
+									<br />
+
+									       if (res-&gt;table) {<br />
+
+									               if (!res-&gt;buffered &amp;&amp; res-&gt;nrows) {<br />
+
+									                       res-&gt;nrows = 1; /* only one row is stored */<br />
+
+									               }<br />
+
+									               for (i = 0; i &lt; res-&gt;nrows; i++) {<br />
+
+									                       base = i * res-&gt;ncolumns;<br />
+
+									                       for (j = 0; j &lt; res-&gt;ncolumns; j++) {<br />
+
+									                               if (res-&gt;table[base + j] != NULL) {<br />
+
+									                                       efree(res-&gt;table[base + j]);<br />
+
+									                               }<br />
+
+									                       }<br />
+
+									               }<br />
+
+									               efree(res-&gt;table); [1]<br />
+
+									       }<br />
+
+									<br />
+
+									       if (res-&gt;col_names) {<br />
+
+									               for (j = 0; j &lt; res-&gt;ncolumns; j++) {<br />
+
+									                       efree(res-&gt;col_names[j]);<br />
+
+									               }<br />
+
+									               efree(res-&gt;col_names); [2]<br />
+
+									       }<br />
+
+									<br />
+
+									   ...<br />
+
+									<br />
+
+									       efree(res);<br />
+
+									}<br />
+
+									<br />
+
+									如果通过某种方式控制了传送给real_result_dtor的res，就可能触发双重释放。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>7</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-05-07</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-05-11</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-1868" target="_blank">CVE-2010-1868</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/40013" target="_blank">40013</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=14981" target="_blank">14981</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201005-127&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20101868&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.5&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-4593&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">OpenSSL TLS心跳扩展协议包远程信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									OpenSSL是一种开放源码的SSL实现，用来实现网络通信的高强度加密，现在被广泛地用于各种网络应用程序中。
+<br />
+
+<br />
+
+									OpenSSL TLS心跳扩展协议的实现上存在边界检查漏洞，远程无需验证的攻击者可以利用此漏洞导致泄漏64K的内存到连接的客户端或服务器，造成敏感信息的泄露。仅OpenSSL的1.0.1及1.0.2-beta版本受到影响，包括：1.0.1f及1.0.2-beta1版本。
+<br />
+
+<br />
+
+									TLS心跳由一个请求包组成，其中包括有效载荷（payload），通信的另一方将读取这个包并发送一个响应，其中包含同样的载荷。在处理心跳请求的代码中，载荷大小是从攻击者可控的包中读取的。由于OpenSSL并没有检查该载荷大小值，从而导致越界读，造成了敏感信息泄漏。泄漏的信息内容可能会包括加密的私钥和其他敏感信息例如用户名、口令等。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									OpenSSL Project
+<br />
+
+									---------------
+<br />
+
+									Openssl已经发布了Openssl 1.0.1g修复此问题。
+<br />
+
+<br />
+
+									对于OpenSSL 1.0.2 Releases, 厂商表示将会在1.0.2-beta2中修复。我们建议用户随时关注厂商主页以获取最新补丁或者最新版本程序：
+<br />
+
+									http://www.openssl.org/source/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2014-04-07</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2014-04-11</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-0160" target="_blank">CVE-2014-0160</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.5(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

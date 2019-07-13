@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标服务器启用了TRACE方法</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									TRACE方法是HTTP（超文本传输）协议定义的一种协议调试方法，该方法使得服务器原样返回任何客户端请求的内容。
+<br />
+
+									启用TRACE方法存在如下风险：
+<br />
+
+									1、恶意攻击者可以通过TRACE方法返回的信息了解到网站前端的某些信息，如缓存服务器等，从而为进一步的攻击提供便利。
+<br />
+
+									2、恶意攻击者可以通过TRACE方法进行XSS攻击。
+<br />
+
+									3、即使网站对关键页面启用了HttpOnly头标记和禁止脚本读取cookie信息，但是通过TRACE 方法恶意攻击者还是可以绕过这个限制读取到cookie信息。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									1、2.0.55以上的Apache服务器，在httpd.conf的尾部添加：TraceEnable off。
+<br />
+
+									2、如果使用的是Apache：
+<br />
+
+									- 确认rewrite模块激活（httpd.conf，下面一行前面没有#）：
+<br />
+
+									LoadModule rewrite_module modules/mod_rewrite.so
+<br />
+
+									- 在各虚拟主机的配置文件里添加如下语句：
+<br />
+
+									RewriteEngine On
+<br />
+
+									RewriteCond %{REQUEST_METHOD} ^TRACE
+<br />
+
+									RewriteRule .* - [F]<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>2</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2012-04-11</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-06-13</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									0.0(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="#数据库测评等保测评数据库测评命令： ###1、查看数据库用户：select username from dba_users; ###2、查看密码策略select * from dba_profiles;修改配置：ALTER PROFILE DEFAULT LIMIT FAILED_LOGIN_ATTEMPTS 3 PASSWORD_LIFE_TIME 90; 执行：密码策略通过VERIFY_F">
+<meta name="keywords" content="原创,等保">
+<meta property="og:type" content="article">
+<meta property="og:title" content="等保测评笔记本">
+<meta property="og:url" content="http://www.okoksec.com/2018/07/19/等保测评笔记本/index.html">
+<meta property="og:site_name" content="ZMarvel">
+<meta property="og:description" content="#数据库测评等保测评数据库测评命令： ###1、查看数据库用户：select username from dba_users; ###2、查看密码策略select * from dba_profiles;修改配置：ALTER PROFILE DEFAULT LIMIT FAILED_LOGIN_ATTEMPTS 3 PASSWORD_LIFE_TIME 90; 执行：密码策略通过VERIFY_F">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-19T02:03:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="等保测评笔记本">
+<meta name="twitter:description" content="#数据库测评等保测评数据库测评命令： ###1、查看数据库用户：select username from dba_users; ###2、查看密码策略select * from dba_profiles;修改配置：ALTER PROFILE DEFAULT LIMIT FAILED_LOGIN_ATTEMPTS 3 PASSWORD_LIFE_TIME 90; 执行：密码策略通过VERIFY_F">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>等保测评笔记本</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/09/17/Nmap使用笔记/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/06/17/Ubuntu18.04-Tricks小技巧/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2018/07/19/等保测评笔记本/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&text=等保测评笔记本"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&title=等保测评笔记本"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&is_video=false&description=等保测评笔记本"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=等保测评笔记本&body=Check out this article: http://www.okoksec.com/2018/07/19/等保测评笔记本/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&title=等保测评笔记本"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&title=等保测评笔记本"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&title=等保测评笔记本"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&title=等保测评笔记本"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&name=等保测评笔记本&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        等保测评笔记本
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">ZMarvel</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-07-19T02:03:42.000Z" itemprop="datePublished">2018-07-19</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/安全合规/">安全合规</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/原创/">原创</a>, <a class="tag-link" href="/tags/等保/">等保</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <a id="more"></a>
+<p>#数据库测评<br>等保测评数据库测评命令：</p>
+<p>###1、查看数据库用户：<br>select username from dba_users;</p>
+<p>###2、查看密码策略<br>select * from dba_profiles;<br>修改配置：<br>ALTER PROFILE DEFAULT LIMIT FAILED_LOGIN_ATTEMPTS 3 PASSWORD_LIFE_TIME 90;</p>
+<p>执行：<br>密码策略通过VERIFY_FUNCTION定义<br>查询是否已经建立：<br>select limit from dba_profiles where profile=’DEFAULT’ and  resource_name=’PASSWORD_VERIFY_FUNCTION’;<br>如果为空需要执行以下命令：<br>文件位置：C:\oraclexe\app\oracle\product\11.2.0\server\rdbms\admin/utlpwdmg.sql<br>执行：conn sys/[密码] as sysdba  密码也可以留空，回车会提示输入<br>或者： conn /as sysdba<br>运行函数：@?/rdbms/admin/utlpwdmg.sql</p>
+<p>查看函数内容：<br>select object_name from user_objects where object_type=’FUNCTION’;  查看建立了哪些函数<br>select text from user_source where name=’VERIFY_FUNCTION’;   查看函数内容，引号内为你要查询的函数名，要大写</p>
+<p>超时锁定：<br>select limit from dba_profiles where profile=’DEFAULT’ and  resource_name=’IDLE_TIME’;</p>
+<p>登陆失败处理：<br>select limit from dba_profiles where profile=’DEFAULT’ and  resource_name=’FAILED_LOGIN_ATTEMPTS’;</p>
+<p>同时只允许一个账户在线：<br>select limit from dba_profiles where profile=’DEFAULT’ and  resource_name=’SESSIONS_PER_USER’;</p>
+<p>###3、审计策略<br>show parameter audit;<br>show parameter audit_trail;<br>show parameter audit_sys_operations;</p>
+<p>开启审计功能。<br>SQL&gt; alter system set audit_sys_operations=TRUE scope=spfile;<br>–审计管理用户(以sysdba/sysoper角色登陆)<br>SQL&gt; alter system set audit_trail=db,extended scope=spfile;<br>SQL&gt; startup force;</p>
+<p>###权限分配：<br>Oracle查询用户权限<br>– 确定角色的权限<br>select <em> from role_tab_privs ;      含了授予角色的对象权限<br>select </em> from role_role_privs ;     含了授予另一角色的角色<br>select * from role_sys_privs ;      含了授予角色的系统权限</p>
+<p>– 确定用户帐户所授予的权限<br>select <em> from DBA_tab_privs ;     直接授予用户帐户的对象权限<br>select </em> from DBA_role_privs ;    授予用户帐户的角色<br>select * from DBA_sys_privs ;     授予用户帐户的系统权限</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://www.okoksec.com/2018/07/19/等保测评笔记本/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&text=等保测评笔记本"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&title=等保测评笔记本"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&is_video=false&description=等保测评笔记本"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=等保测评笔记本&body=Check out this article: http://www.okoksec.com/2018/07/19/等保测评笔记本/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&title=等保测评笔记本"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&title=等保测评笔记本"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&title=等保测评笔记本"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&title=等保测评笔记本"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://www.okoksec.com/2018/07/19/等保测评笔记本/&name=等保测评笔记本&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵猛
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/project/">项目</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?e1a5545e21e47c2e4f88aba69902c5c6";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

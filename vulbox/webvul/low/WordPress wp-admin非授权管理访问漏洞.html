@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">WordPress wp-admin非授权管理访问漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									WordPress是一款免费的论坛Blog系统。
+<br />
+
+<br />
+
+									Wordpress没有检查用户对某些操作的权限，远程攻击者可以通过直接请求wp-admin/中的edit-comments.php、edit- pages.php、edit.php、edit-category-form.php、edit-link-category-form.php、 edit-tag-form.php、export.php、import.php或link-add.php执行非授权编辑或添加操作，或通过直接请求 admin-footer.php、edit-category-form.php、edit-form-advanced.php、edit- form-comment.php、edit-link-category-form.php、edit-link-form.php、edit- page-form.php或edit-tag-form.php获得管理权限提升。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									厂商补丁：
+<br />
+
+<br />
+
+									Debian
+<br />
+
+									------
+<br />
+
+									Debian已经为此发布了一个安全公告（DSA-1871-1）以及相应补丁:
+<br />
+
+									DSA-1871-1：New wordpress packages fix several vulnerabilities
+<br />
+
+									链接：http://www.debian.org/security/2009/dsa-1871
+<br />
+
+<br />
+
+									补丁下载：
+<br />
+
+<br />
+
+									Source archives:
+<br />
+
+<br />
+
+									http://security.debian.org/pool/updates/main/w/wordpress/wordpress_2.0.10-1etch4.diff.gz
+<br />
+
+									Size/MD5 checksum:    50984 45349b0822fc376b8cfef51b5cec3510
+<br />
+
+									http://security.debian.org/pool/updates/main/w/wordpress/wordpress_2.0.10.orig.tar.gz
+<br />
+
+									Size/MD5 checksum:   520314 e9d5373b3c6413791f864d56b473dd54
+<br />
+
+									http://security.debian.org/pool/updates/main/w/wordpress/wordpress_2.0.10-1etch4.dsc
+<br />
+
+									Size/MD5 checksum:      607 d9389cbc71eee6f08b15762a97c9d537
+<br />
+
+<br />
+
+									Architecture independent packages:
+<br />
+
+<br />
+
+									http://security.debian.org/pool/updates/main/w/wordpress/wordpress_2.0.10-1etch4_all.deb
+<br />
+
+									Size/MD5 checksum:   521060 71a6aea482d0e7afb9c82701bef336e9
+<br />
+
+<br />
+
+<br />
+
+									Debian GNU/Linux 5.0 alias lenny
+<br />
+
+									- --------------------------------
+<br />
+
+<br />
+
+									Debian (stable)
+<br />
+
+									- ---------------
+<br />
+
+<br />
+
+									Stable updates are available for alpha, amd64, arm, armel, hppa, i386, ia64, mips, mipsel, powerpc, s390 and sparc.
+<br />
+
+<br />
+
+									Source archives:
+<br />
+
+<br />
+
+									http://security.debian.org/pool/updates/main/w/wordpress/wordpress_2.5.1-11+lenny1.dsc
+<br />
+
+									Size/MD5 checksum:     1051 46d9daad717f36918e2709757523f6eb
+<br />
+
+									http://security.debian.org/pool/updates/main/w/wordpress/wordpress_2.5.1.orig.tar.gz
+<br />
+
+									Size/MD5 checksum:  1181886 b1a40387006e54dcbd963d0cb5da0df4
+<br />
+
+									http://security.debian.org/pool/updates/main/w/wordpress/wordpress_2.5.1-11+lenny1.diff.gz
+<br />
+
+									Size/MD5 checksum:   702119 07658ad36bed8829f58b1b6223eac294
+<br />
+
+<br />
+
+									Architecture independent packages:
+<br />
+
+<br />
+
+									http://security.debian.org/pool/updates/main/w/wordpress/wordpress_2.5.1-11+lenny1_all.deb
+<br />
+
+									Size/MD5 checksum:  1029028 2d30e38e22761f87e23d2c85120bb1ff
+<br />
+
+<br />
+
+									补丁安装方法：
+<br />
+
+<br />
+
+									1. 手工安装补丁包：
+<br />
+
+<br />
+
+									  首先，使用下面的命令来下载补丁软件：
+<br />
+
+									  # wget url  (url是补丁下载链接地址)
+<br />
+
+<br />
+
+									  然后，使用下面的命令来安装补丁：  
+<br />
+
+									  # dpkg -i file.deb (file是相应的补丁名)
+<br />
+
+<br />
+
+									2. 使用apt-get自动安装补丁包：
+<br />
+
+<br />
+
+									   首先，使用下面的命令更新内部数据库：
+<br />
+
+									   # apt-get update
+<br />
+
+<br />
+
+									   然后，使用下面的命令安装更新软件包：
+<br />
+
+									   # apt-get upgrade
+<br />
+
+<br />
+
+									WordPress
+<br />
+
+									---------
+<br />
+
+									目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载：
+<br />
+
+<br />
+
+									http://wordpress.org/development/2009/08/wordpress-2-8-3-security-release/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-08-04</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-08-27</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-2853" target="_blank">CVE-2009-2853</a>&nbsp;
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-2854" target="_blank">CVE-2009-2854</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/35935" target="_blank">35935</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=13780" target="_blank">13780</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-200908-220&nbsp;&nbsp;
+
+									CNNVD-200908-230&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20092853&nbsp;&nbsp;
+
+									CNCVE-20092854&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									9.8(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNVD编号</th>
+
+								<td>
+
+									CNVD-2009-13780&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

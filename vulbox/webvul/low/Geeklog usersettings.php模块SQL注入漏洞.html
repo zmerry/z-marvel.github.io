@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Geeklog usersettings.php模块SQL注入漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Geeklog是一个免费的、开放源码的Web应用程序。它可以使用户创建一个虚拟的社区，可以管理用户，张贴文章等。Geeklog采用PHP实现，以MySQL为后台数据库。
+<br />
+
+<br />
+
+									Geeklog的usersettings.php文件中的1467 - 1480行中存在SQL注入漏洞：
+<br />
+
+<br />
+
+									    ...
+<br />
+
+									    if (isset ($_USER[&#39;uid&#39;]) &amp;&amp; ($_USER[&#39;uid&#39;] &gt; 1)) {
+<br />
+
+									    switch ($mode) {
+<br />
+
+									    case &#39;saveuser&#39;:
+<br />
+
+									    savepreferences ($_POST);
+<br />
+
+									    $display .= saveuser($_POST);
+<br />
+
+									    PLG_profileExtrasSave ();
+<br />
+
+									    break;
+<br />
+
+<br />
+
+									    case &#39;savepreferences&#39;:
+<br />
+
+<br />
+
+									    savepreferences ($_POST);
+<br />
+
+									    $display .= COM_refresh ($_CONF[&#39;site_url&#39;]
+<br />
+
+									    . &#39;/usersettings.php?mode=preferences&amp;amp;msg=6&#39;);
+<br />
+
+									    break;
+<br />
+
+									    ...
+<br />
+
+<br />
+
+									所有的$_POST[]变量都直接传送给了savepreferences()函数：
+<br />
+
+<br />
+
+									    ...
+<br />
+
+									    function savepreferences($A) {
+<br />
+
+									    global $_CONF, $_TABLES, $_USER;
+<br />
+
+<br />
+
+									    if (isset ($A[&#39;noicons&#39;]) &amp;&amp; ($A[&#39;noicons&#39;] == &#39;on&#39;)) {
+<br />
+
+									    $A[&#39;noicons&#39;] = 1;
+<br />
+
+									    } else {
+<br />
+
+									    $A[&#39;noicons&#39;] = 0;
+<br />
+
+									    }
+<br />
+
+									    if (isset ($A[&#39;willing&#39;]) &amp;&amp; ($A[&#39;willing&#39;] == &#39;on&#39;)) {
+<br />
+
+									    $A[&#39;willing&#39;] = 1;
+<br />
+
+									    } else {
+<br />
+
+									    $A[&#39;willing&#39;] = 0;
+<br />
+
+									    }
+<br />
+
+									    if (isset ($A[&#39;noboxes&#39;]) &amp;&amp; ($A[&#39;noboxes&#39;] == &#39;on&#39;)) {
+<br />
+
+									    $A[&#39;noboxes&#39;] = 1;
+<br />
+
+									    } else {
+<br />
+
+									    $A[&#39;noboxes&#39;] = 0;
+<br />
+
+									    }
+<br />
+
+									    if (isset ($A[&#39;emailfromadmin&#39;]) &amp;&amp; ($A[&#39;emailfromadmin&#39;] == &#39;on&#39;)) {
+<br />
+
+									    $A[&#39;emailfromadmin&#39;] = 1;
+<br />
+
+									    } else {
+<br />
+
+									    $A[&#39;emailfromadmin&#39;] = 0;
+<br />
+
+									    }
+<br />
+
+									    if (isset ($A[&#39;emailfromuser&#39;]) &amp;&amp; ($A[&#39;emailfromuser&#39;] == &#39;on&#39;)) {
+<br />
+
+									    $A[&#39;emailfromuser&#39;] = 1;
+<br />
+
+									    } else {
+<br />
+
+									    $A[&#39;emailfromuser&#39;] = 0;
+<br />
+
+									    }
+<br />
+
+									    if (isset ($A[&#39;showonline&#39;]) &amp;&amp; ($A[&#39;showonline&#39;] == &#39;on&#39;)) {
+<br />
+
+									    $A[&#39;showonline&#39;] = 1;
+<br />
+
+									    } else {
+<br />
+
+									    $A[&#39;showonline&#39;] = 0;
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    $A[&#39;maxstories&#39;] = COM_applyFilter ($A[&#39;maxstories&#39;], true);
+<br />
+
+									    if (empty ($A[&#39;maxstories&#39;])) {
+<br />
+
+									    $A[&#39;maxstories&#39;] = 0;
+<br />
+
+									    } else if ($A[&#39;maxstories&#39;] &gt; 0) {
+<br />
+
+									    if ($A[&#39;maxstories&#39;] &lt; $_CONF[&#39;minnews&#39;]) {
+<br />
+
+									    $A[&#39;maxstories&#39;] = $_CONF[&#39;minnews&#39;];
+<br />
+
+									    }
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    $TIDS  = @array_values($A[$_TABLES[&#39;topics&#39;]]);
+<br />
+
+									    $AIDS  = @array_values($A[&#39;selauthors&#39;]);
+<br />
+
+									    $BOXES = @array_values($A[&quot;{$_TABLES[&#39;blocks&#39;]}&quot;]); //&lt;--------- this is $_POST[(prefix)blocks]  $ETIDS = @array_values($A[&#39;etids&#39;]);
+<br />
+
+<br />
+
+									    $tids = &#39;&#39;;
+<br />
+
+									    if (sizeof ($TIDS) &gt; 0) {
+<br />
+
+									    $tids = addslashes (implode (&#39; &#39;, $TIDS));
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    $aids = &#39;&#39;;
+<br />
+
+									    if (sizeof ($AIDS) &gt; 0) {
+<br />
+
+									    $aids = addslashes (implode (&#39; &#39;, $AIDS));
+<br />
+
+									    }
+<br />
+
+<br />
+
+									    $selectedblocks = &#39;&#39;;
+<br />
+
+									    if (count ($BOXES) &gt; 0) {
+<br />
+
+									    $boxes = addslashes (implode (&#39;,&#39;, $BOXES)); //&lt;---------- this addslashes() is totally unuseful  
+<br />
+
+									    //**** SQL INJECTION HERE *** $boxes is not surrounded by quotes!
+<br />
+
+									    $blockresult = DB_query(&quot;SELECT bid,name FROM {$_TABLES[&#39;blocks&#39;]} WHERE bid NOT IN ($boxes)&quot;);  
+<br />
+
+									    $numRows = DB_numRows($blockresult);
+<br />
+
+									    for ($x = 1; $x &lt;= $numRows; $x++) {
+<br />
+
+									    $row = DB_fetchArray ($blockresult);
+<br />
+
+									    if ($row[&#39;name&#39;] &lt;&gt; &#39;user_block&#39; AND $row[&#39;name&#39;] &lt;&gt; &#39;admin_block&#39; AND $row[&#39;name&#39;] &lt;&gt; &#39;section_block&#39;) {  $selectedblocks .= $row[&#39;bid&#39;];
+<br />
+
+									    if ($x &lt;&gt; $numRows) {
+<br />
+
+									    $selectedblocks .= &#39; &#39;;
+<br />
+
+									    }
+<br />
+
+									    }
+<br />
+
+									    }
+<br />
+
+									    }
+<br />
+
+									    ...<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									目前厂商还没有提供补丁或者升级程序，我们建议使用此软件的用户随时关注厂商的主页以获取最新版本：
+<br />
+
+<br />
+
+									http://geeklog.sourceforge.net/<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2009-04-16</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2009-04-26</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/34553" target="_blank">34553</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=13228" target="_blank">13228</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

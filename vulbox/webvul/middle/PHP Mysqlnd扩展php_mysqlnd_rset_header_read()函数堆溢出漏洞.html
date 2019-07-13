@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">PHP Mysqlnd扩展php_mysqlnd_rset_header_read()函数堆溢出漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									本次扫描方式是版本扫描，可能出现误报。<br />
+
+									<br />
+
+									PHP是广泛使用的通用目的脚本语言，特别适合于Web开发，可嵌入到HTML中。<br />
+
+									<br />
+
+									PHP所使用的Mysqlnd扩展用于处理与mysql服务器的通讯和实现mysql协议。该扩展的php_mysqlnd_rset_header_read()函数中存在堆溢出漏洞：<br />
+
+									<br />
+
+									if (packet-&gt;header.size  &gt; (size_t) (p - buf) &amp;&amp; (len = php_mysqlnd_net_field_length(&amp;p))) {<br />
+
+									    packet-&gt;info_or_local_file = mnd_emalloc(len + 1);<br />
+
+									    memcpy(packet-&gt;info_or_local_file, p, len);<br />
+
+									    packet-&gt;info_or_local_file[len] = &#39;\0&#39;;<br />
+
+									    packet-&gt;info_or_local_file_len = len;<br />
+
+									}<br />
+
+									<br />
+
+									上述代码从网络缓冲区读取字段长度并将消息拷贝到新分配的缓冲区中。如果php_mysqlnd_net_field_length()返回了-1，这个拷贝操作就会触发堆溢出。在这种情况下仅分配了0字节的内存，但最多拷贝了4G的数据。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时解决：<br />
+
+									<br />
+
+									PHP<br />
+
+									---<br />
+
+									目前厂商已经发布了更新SVN信息以修复此安全问题，获取链接： <br />
+
+									http://svn.php.net/viewvc?view=revision&amp;revision=298703：<br />
+
+									<br />
+
+									厂商补丁：<br />
+
+									PHP<br />
+
+									---<br />
+
+									目前厂商已经发布升级版本修复此安全问题，建议升级PHP产品至5.3.2版本或之后版本，请到厂商的官方页面下载升级版本：<br />
+
+									http://cn2.php.net/downloads.php<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>5</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2010-08-20</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2010-06-04</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-3062" target="_blank">CVE-2010-3062</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/40461" target="_blank">40461</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=15156" target="_blank">15156</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNNVD编号</th>
+
+								<td>
+
+									CNNVD-201008-229&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20103062&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									5.0&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

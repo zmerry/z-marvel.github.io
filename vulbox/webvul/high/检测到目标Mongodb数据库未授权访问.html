@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到目标Mongodb数据库未授权访问</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									MongoDB是一个基于分布式文件存储的数据库，由C++语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案，是一个介于关系数据库和非关系数据库之间的产品，是非关系数据库当中功能最丰富的数据库。
+<br />
+
+									MongoDB安装时不添加任何参数,默认是没有权限验证的,登录的用户可以对数据库任意操作而且可以远程访问数据库。当配置不当时，可导致攻击者未授权访问数据库并对数据库进行操作，导致信息泄露等严重问题。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									1. 安装的时候加--auth，并立即在admin数据库创建一个用户
+<br />
+
+									默认情况下MongoDB是无需验证的，所以这是至关重要的一步
+<br />
+
+									2. 可以考虑安装的时候修改端口和指定访问ip
+<br />
+
+									具体根据实际情况来设定，也可以直接在服务器防火墙上做
+<br />
+
+									3. 安装的时候建议加上--nohttpinterface取消默认的一个网页管理方式
+<br />
+
+									默认的web管理一般不会用，且很多人不知道，最好关闭
+<br />
+
+									4. 管理用户处理
+<br />
+
+									因需要在admin中建立一个管理账户用于管理，最好是设置强密码，但是不要给其他程序使用<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>10</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2014-12-04</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2014-12-04</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									7.3(CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

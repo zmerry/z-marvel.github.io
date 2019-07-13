@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/l.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">检测到会话cookie中缺少Secure属性</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									会话cookie中缺少Secure属性会导致攻击者可以通过非HTTPS页面窃取到用户的cookie信息，造成用户cookie信息的泄露。
+<br />
+
+<br />
+
+									cookie中的Secure指的是安全性。通过设定cookie中的Secure，可以指定cookie是否只能通过https协议访问。一般的cookie使用HTTP协议既可访问，如果启用Secure属性，则浏览器仅仅会在HTTPS请求中向服务端发送cookie内容。
+<br />
+
+<br />
+
+									在WEB应用中，对于敏感业务，如：登录或者付款，需要使用HTTPS来保证内容的传输安全，而在用户成功获得授权之后，获得的客户端身份cookie如果没有设置为Secure，那么很有可能会被非HTTPS页面拿到，从而造成重要的身份泄露。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									向所有会话cookie中添加“Secure”标识。
+<br />
+
+<br />
+
+									示例：
+<br />
+
+									未添加标识的cookie：
+<br />
+
+									Cookie: jsessionid=AS348AF929FK219CKA9FK3B79870H;
+<br />
+
+									添加secure标识：
+<br />
+
+									Cookie: jsessionid=AS348AF929FK219CKA9FK3B79870H; secure;<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>3</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2004-12-31</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-06-14</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>CVE</th>
+
+								<td>
+
+									<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2004-0462" target="_blank">CVE-2004-0462</a>&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CNCVE编号</th>
+
+								<td>
+
+									CNCVE-20040462&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>CVSS评分</th>
+
+								<td>
+
+									2.8(CVSS:3.0/AV:L/AC:L/PR:L/UI:R/S:U/C:L/I:N/A:N)&nbsp;&nbsp;
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

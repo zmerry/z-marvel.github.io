@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/m.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">Apache不存在的日志目录拒绝服务攻击漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									Apache是一个非常流行的Web服务器程序，可运行于各种平台。<br />
+
+									<br />
+
+									Apache对意外情况的处理存在问题，在某些特定的情况下会有不正常的表现，可能导致本地拒绝服务攻击。<br />
+
+									<br />
+
+									当Apache接到一个SIGHUP信号时，Apache会重新读取配置文件，正常情况下Apache进程会重新启动。而如果配置文件中指定的日志文件的储存目录不存在，Apache就不会再启动。如果非特权用户能够删除日志目录，则可能对Apache造成拒绝服务攻击。<br />
+
+									<br />
+
+									这个问题据信只影响到运行于Linux及其他Unix变种系统下的Apache。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									临时处理办法:<br />
+
+									<br />
+
+									如果您不能立刻安装补丁或者升级，NSFOCUS建议您采取以下措施以降低威胁：<br />
+
+									<br />
+
+									* 查看Apache日志目录的权限，确认只有可信的管理用户能够控制。<br />
+
+									<br />
+
+									厂商解决方案:<br />
+
+									<br />
+
+									Apache<br />
+
+									------<br />
+
+									建议升级Apache产品至最新版本，请到厂商的主页下载：<br />
+
+									<br />
+
+									http://www.apache.org<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>4</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2002-01-11</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2013-12-03</td>
+
+                            </tr>
+
+							<tr>
+
+								<th>BUGTRAQ</th>
+
+								<td>
+
+									<a href="http://www.securityfocus.com/bid/3790" target="_blank">3790</a>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>NSFOCUS</th>
+
+								<td>
+
+									<a href="http://www.nsfocus.net/index.php?act=sec_bug&do=view&bug_id=2130" target="_blank">2130</a>
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

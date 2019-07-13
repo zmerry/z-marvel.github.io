@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+        <link rel="stylesheet" href="/vulbox/source/table.css" />
+
+	</head>
+
+	<body class="dialog">
+
+		<div class="content">
+
+			<div class="wrap">
+
+				<div class="cont">
+
+					<table class="table table-hover table-mc-light-blue" style="margin-top: 0;">
+
+						<thead>
+
+							<tr class="first_title">
+
+								<th colspan="2">漏洞描述</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr>
+
+								<th width="70">漏洞名称</th>
+
+								<td>
+
+								    <img style="float:left;" src="/vulbox/source/h.gif" align="absmiddle"/>
+
+								<span style="float:left;margin-top:1px;margin-top:2px\9;">风讯dotNETCMS任意文件上传漏洞</span>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th valign="top">详细描述</th>
+
+								<td valign="top">
+
+									简要描述：文件上传
+<br />
+
+									详细说明：
+<br />
+
+									风汛dotNETCMS中Upload_user.aspx文件对文章管理中上传图片验证不严，导致可以以文件名不变方式上传类似文件名为1.asp;,jpg的文件，结合IIS6.0解析漏洞，通过访问该文件可以以.asp文件形式执行该文件
+<br />
+
+<br />
+
+									IIS6.0解析漏洞：
+<br />
+
+									文件解析路径的漏洞，当文件夹名为类似123.asp的时候（即文件夹名看起来像一个ASP文件的文件名），此时该文件夹下的文本类型的文件都可以在IIS6.0中被当做ASP程序来执行。
+<br />
+
+									构造特殊文件名为123.asp;123.jpg而不是123.jpg。因为在文件名中加入“;”这个符号，IIS6.0会将“;”符号之前的部分认为是一个文件夹，因此就恰好符合了触发漏洞的条件，这样图片中的ASP代码就可以被正常执行了。<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th  valign="top">解决方案</th>
+
+								<td valign="top">
+
+									<br />
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<th>威胁分值</th>
+
+								<td>9</td>
+
+							</tr>
+
+							<tr>
+
+								<th>危险插件</th>
+
+								<td>否</td>
+
+							</tr>
+
+							<tr>
+
+                                <th>发现日期</th>
+
+                                <td>2011-10-13</td>
+
+                            </tr>
+
+							<tr>
+
+                                <th>发布日期</th>
+
+                                <td>2011-10-28</td>
+
+                            </tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>
