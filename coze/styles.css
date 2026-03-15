@@ -1,0 +1,349 @@
+:root {
+  --bg: #efe4d2;
+  --bg-deep: #d6c3a5;
+  --panel: rgba(255, 250, 242, 0.88);
+  --panel-strong: rgba(255, 248, 236, 0.96);
+  --ink: #1f1a17;
+  --muted: #6e6255;
+  --accent: #8f3b28;
+  --accent-strong: #6d2111;
+  --line: rgba(83, 53, 35, 0.14);
+  --ok: #2d6a4f;
+  --warn: #9a3412;
+  --shadow: 0 24px 60px rgba(62, 39, 23, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Outfit", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.52), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(159, 72, 44, 0.18), transparent 24%),
+    linear-gradient(135deg, var(--bg) 0%, #f5ecdf 42%, var(--bg-deep) 100%);
+}
+
+.page-shell {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.control-panel,
+.chat-panel {
+  backdrop-filter: blur(16px);
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+
+.control-panel {
+  padding: 24px;
+}
+
+.chat-panel {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  min-height: calc(100vh - 40px);
+}
+
+.brand-block,
+.panel-section,
+.chat-header,
+.composer {
+  padding: 24px;
+}
+
+.panel-section + .panel-section,
+.chat-header + .status-bar,
+.status-bar + .chat-log,
+.chat-log + .composer {
+  border-top: 1px solid var(--line);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+.subtitle {
+  margin: 14px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.section-heading,
+.chat-header,
+.composer-actions,
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.panel-section {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.field span {
+  font-weight: 600;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid rgba(107, 82, 59, 0.18);
+  border-radius: 18px;
+  background: var(--panel-strong);
+  color: var(--ink);
+  padding: 14px 16px;
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(143, 59, 40, 0.45);
+  box-shadow: 0 0 0 4px rgba(143, 59, 40, 0.09);
+}
+
+select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--accent) 50%),
+    linear-gradient(135deg, var(--accent) 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) calc(50% - 3px),
+    calc(100% - 16px) calc(50% - 3px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 180ms ease, opacity 180ms ease, background 180ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+.primary-button {
+  padding: 14px 22px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+  color: #fff8f2;
+  font-weight: 700;
+}
+
+.ghost-button {
+  padding: 10px 16px;
+  background: rgba(143, 59, 40, 0.08);
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+.status-bar {
+  padding: 16px 24px;
+  font-weight: 600;
+}
+
+.status-bar.idle {
+  color: var(--muted);
+}
+
+.status-bar.running {
+  color: var(--accent-strong);
+}
+
+.status-bar.success {
+  color: var(--ok);
+}
+
+.status-bar.error {
+  color: var(--warn);
+}
+
+.chat-log {
+  overflow: auto;
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.message {
+  max-width: min(760px, 100%);
+  padding: 18px 20px;
+  border-radius: 24px;
+  background: rgba(255, 252, 247, 0.95);
+  border: 1px solid rgba(121, 86, 58, 0.12);
+  box-shadow: 0 10px 24px rgba(63, 42, 28, 0.08);
+  animation: rise 240ms ease;
+}
+
+.message.user {
+  justify-self: end;
+  background: linear-gradient(135deg, rgba(143, 59, 40, 0.12), rgba(143, 59, 40, 0.04));
+}
+
+.message.system {
+  border-style: dashed;
+}
+
+.message-meta {
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.message-body {
+  white-space: pre-wrap;
+  line-height: 1.72;
+  color: var(--ink);
+}
+
+.scenario-card {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(143, 59, 40, 0.06);
+  border: 1px solid rgba(143, 59, 40, 0.12);
+}
+
+.scenario-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-family: "Noto Serif SC", serif;
+}
+
+.scenario-summary,
+.scenario-prompt {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.scenario-prompt {
+  margin-top: 10px;
+  color: var(--ink);
+}
+
+.composer {
+  display: grid;
+  gap: 16px;
+}
+
+.composer .grow {
+  min-width: 0;
+}
+
+.composer-actions {
+  align-items: end;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 980px) {
+  .page-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-panel {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-shell {
+    padding: 12px;
+  }
+
+  .control-panel,
+  .chat-panel {
+    border-radius: 22px;
+  }
+
+  .brand-block,
+  .panel-section,
+  .chat-header,
+  .composer,
+  .status-bar,
+  .chat-log {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .section-heading,
+  .chat-header,
+  .composer-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .primary-button,
+  .ghost-button {
+    width: 100%;
+  }
+}
