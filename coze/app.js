@@ -315,8 +315,10 @@ function formatFallback(parsed) {
 
 function updateAssistantMessage(node, nextText, hasExistingStream) {
   const body = node.querySelector(".message-body");
-  body.textContent = hasExistingStream ? `${body.textContent}${nextText}` : nextText;
-  elements.chatLog.scrollTop = elements.chatLog.scrollHeight;
+  const rawText = hasExistingStream ? `${body.dataset.rawText ?? ""}${nextText}` : nextText;
+  body.dataset.rawText = rawText;
+  body.innerHTML = renderMarkdown(rawText);
+  scrollChatToBottom();
 }
 
 function appendMessage(role, text) {
@@ -326,9 +328,14 @@ function appendMessage(role, text) {
   const body = fragment.querySelector(".message-body");
   message.classList.add(role);
   meta.textContent = roleLabel(role);
-  body.textContent = text;
+  if (role === "assistant") {
+    body.dataset.rawText = text;
+    body.innerHTML = renderMarkdown(text);
+  } else {
+    body.textContent = text;
+  }
   elements.chatLog.appendChild(fragment);
-  elements.chatLog.scrollTop = elements.chatLog.scrollHeight;
+  scrollChatToBottom();
   return elements.chatLog.lastElementChild;
 }
 
@@ -341,4 +348,57 @@ function roleLabel(role) {
 function setStatus(text, mode) {
   elements.statusBar.textContent = text;
   elements.statusBar.className = `status-bar ${mode}`;
+}
+
+function scrollChatToBottom() {
+  elements.chatLog.scrollTop = elements.chatLog.scrollHeight;
+}
+
+function renderMarkdown(text) {
+  const escaped = escapeHtml(text).replace(/\r\n/g, "\n");
+  const blocks = escaped.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
+  return blocks.map(renderBlock).join("");
+}
+
+function renderBlock(block) {
+  if (block.startsWith(">")) {
+    const content = block
+      .split("\n")
+      .map((line) => line.replace(/^>\s?/, ""))
+      .join("<br>");
+    return `<blockquote>${renderInline(content)}</blockquote>`;
+  }
+
+  if (/^[-*]\s+/m.test(block)) {
+    const items = block
+      .split("\n")
+      .filter((line) => /^[-*]\s+/.test(line))
+      .map((line) => `<li>${renderInline(line.replace(/^[-*]\s+/, ""))}</li>`)
+      .join("");
+    return `<ul>${items}</ul>`;
+  }
+
+  if (/^\d+\.\s+/m.test(block)) {
+    const items = block
+      .split("\n")
+      .filter((line) => /^\d+\.\s+/.test(line))
+      .map((line) => `<li>${renderInline(line.replace(/^\d+\.\s+/, ""))}</li>`)
+      .join("");
+    return `<ol>${items}</ol>`;
+  }
+
+  return `<p>${renderInline(block).replace(/\n/g, "<br>")}</p>`;
+}
+
+function renderInline(text) {
+  return text
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
