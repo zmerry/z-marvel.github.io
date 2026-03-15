@@ -7,19 +7,14 @@ Published from the repository root for GitHub Pages branch deployment.
 ## What this does
 
 - Runs entirely as static files: `index.html`, `styles.css`, `app.js`
-- Sends browser-side `fetch()` requests to your Coze `stream_run` endpoint
+- Sends browser-side `fetch()` requests to a Cloudflare Worker proxy instead of calling Coze directly
 - Parses SSE-style `data:` blocks and renders the response incrementally
-- Keeps `Bearer Token`, `session_id`, `project_id`, and prompt in `localStorage`
+- Keeps `session_id`, `project_id`, Worker URL, and prompt in `localStorage`
 - Includes preset classroom scenarios so users can select a case and start interacting immediately
 
-## Important constraint
+## Proxy design
 
-If you publish this on GitHub Pages, do **not** hardcode a production bearer token into the repo. Anyone can read client-side code and extract it.
-
-Safer options:
-
-1. Enter the token manually in the UI each time, or let the browser remember it locally.
-2. Put a tiny proxy on your own server or Cloudflare Worker and keep the token there.
+This version is intended to call a Cloudflare Worker proxy. The Worker should hold the upstream Coze bearer token as a secret, so the browser never sends or stores that token.
 
 ## Local preview
 
@@ -42,7 +37,7 @@ This repo includes `.github/workflows/pages.yml`, so the recommended path is Git
 
 ## If the request fails
 
-- Confirm the Coze endpoint allows browser-origin requests from GitHub Pages or localhost.
-- Confirm the token is valid.
+- Confirm the Worker endpoint allows browser-origin requests from GitHub Pages or your custom domain.
+- Confirm the Worker secret token is valid.
 - Confirm `project_id` and `session_id` are correct.
 - Check the browser devtools `Network` tab for CORS or auth errors.

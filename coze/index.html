@@ -15,18 +15,18 @@
       <div class="brand-block">
         <p class="eyebrow">Github Pages Agent Console</p>
         <h1>道德批判思维激发助手</h1>
-        <p class="subtitle">公开托管前端，浏览器直连 Coze 流式接口。Token 不写进仓库，只保存在当前浏览器。</p>
+        <p class="subtitle">公开托管前端，通过 Cloudflare Worker 代理访问 Coze 流式接口。浏览器不再直接持有 Bearer Token。</p>
       </div>
 
       <section class="panel-section">
         <h2>连接配置</h2>
         <label class="field">
-          <span>Bearer Token</span>
-          <input id="tokenInput" type="password" placeholder="pat_..." autocomplete="off">
+          <span>代理状态</span>
+          <input id="tokenInput" type="text" value="Token handled by Worker" readonly>
         </label>
         <label class="field">
           <span>接口地址</span>
-          <input id="urlInput" type="url" value="https://mnh339jzys.coze.site/stream_run">
+          <input id="urlInput" type="url" value="https://sweet-hat-3d51.1123715535.workers.dev/">
         </label>
         <label class="field">
           <span>Project ID</span>

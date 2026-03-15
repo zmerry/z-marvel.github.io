@@ -127,7 +127,6 @@ const SCENARIOS = [
 ];
 
 const storageKeys = {
-  token: "coze_agent_token",
   url: "coze_agent_url",
   projectId: "coze_agent_project_id",
   sessionId: "coze_agent_session_id",
@@ -169,12 +168,11 @@ function bootstrap() {
   hydrateInputs();
   renderScenarioCard(getSelectedScenario());
   bindEvents();
-  appendMessage("system", "准备就绪。先填写 Token，或先从左侧选择一个预设情境填入对话框。");
+  appendMessage("system", "准备就绪。先确认 Worker 地址可用，再从左侧选择一个预设情境填入对话框。");
 }
 
 function hydrateInputs() {
-  elements.tokenInput.value = localStorage.getItem(storageKeys.token) ?? "";
-  elements.urlInput.value = localStorage.getItem(storageKeys.url) ?? elements.urlInput.value;
+  elements.urlInput.value = localStorage.getItem(storageKeys.url) ?? "https://sweet-hat-3d51.1123715535.workers.dev/";
   elements.projectIdInput.value = localStorage.getItem(storageKeys.projectId) ?? elements.projectIdInput.value;
   elements.sessionIdInput.value = localStorage.getItem(storageKeys.sessionId) ?? crypto.randomUUID();
   elements.systemPromptInput.value = localStorage.getItem(storageKeys.prompt) ?? DEFAULT_PROMPT;
@@ -184,7 +182,6 @@ function hydrateInputs() {
 
 function bindEvents() {
   const persistPairs = [
-    [elements.tokenInput, storageKeys.token],
     [elements.urlInput, storageKeys.url],
     [elements.projectIdInput, storageKeys.projectId],
     [elements.sessionIdInput, storageKeys.sessionId],
@@ -256,7 +253,6 @@ async function handleSubmit(event) {
     return;
   }
 
-  const token = elements.tokenInput.value.trim();
   const url = elements.urlInput.value.trim();
   const projectId = elements.projectIdInput.value.trim();
   const sessionId = elements.sessionIdInput.value.trim();
@@ -264,8 +260,8 @@ async function handleSubmit(event) {
   const message = elements.messageInput.value.trim();
   const streamEvent = elements.eventInput.value.trim() || "message";
 
-  if (!token || !url || !projectId || !sessionId || !prompt || !message) {
-    setStatus("请补全 Token、URL、Project ID、Session ID、Prompt 和消息内容", "error");
+  if (!url || !projectId || !sessionId || !prompt || !message) {
+    setStatus("请补全 Worker URL、Project ID、Session ID、Prompt 和消息内容", "error");
     return;
   }
 
@@ -276,13 +272,12 @@ async function handleSubmit(event) {
   state.assistantNode = assistantNode;
   state.isStreaming = true;
   elements.sendButton.disabled = true;
-  setStatus("连接 Coze 流式接口中...", "running");
+  setStatus("通过 Worker 连接 Coze 流式接口中...", "running");
 
   try {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
         Accept: "text/event-stream",
       },
@@ -319,7 +314,7 @@ async function handleSubmit(event) {
     setStatus("响应完成", "success");
   } catch (error) {
     assistantNode.querySelector(".message-body").textContent += `\n\n[请求失败]\n${error.message}`;
-    setStatus("请求失败，请检查 Token、CORS、接口地址或项目配置", "error");
+    setStatus("请求失败，请检查 Worker、CORS、接口地址或项目配置", "error");
   } finally {
     state.isStreaming = false;
     elements.sendButton.disabled = false;
