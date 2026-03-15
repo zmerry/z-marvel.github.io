@@ -2,6 +2,8 @@
 
 Static GitHub Pages frontend for your Coze-based "道德批判思维激发助手".
 
+Published from the repository root for GitHub Pages branch deployment.
+
 ## What this does
 
 - Runs entirely as static files: `index.html`, `styles.css`, `app.js`
