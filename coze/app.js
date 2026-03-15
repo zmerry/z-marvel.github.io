@@ -216,6 +216,9 @@ async function readEventStream(stream, assistantNode) {
       }
 
       const parsed = parsePayload(payload);
+      if (shouldIgnoreEvent(parsed)) {
+        return;
+      }
       const text = extractText(parsed);
 
       if (text) {
@@ -224,8 +227,11 @@ async function readEventStream(stream, assistantNode) {
         return;
       }
 
-      updateAssistantMessage(assistantNode, formatFallback(parsed), renderedAnything);
-      renderedAnything = true;
+      const fallback = formatFallback(parsed);
+      if (fallback) {
+        updateAssistantMessage(assistantNode, fallback, renderedAnything);
+        renderedAnything = true;
+      }
     });
   }
 
@@ -262,15 +268,15 @@ function extractText(parsed) {
   }
 
   const candidates = [
-    parsed.content,
     parsed.answer,
     parsed.message,
+    parsed.content?.answer,
+    parsed.content?.text,
     parsed.data?.content,
     parsed.data?.answer,
     parsed.data?.message,
     parsed.data?.delta,
     parsed.data?.tool_response?.content,
-    parsed.content?.text,
     parsed.data?.content?.text,
   ];
 
@@ -283,9 +289,25 @@ function extractText(parsed) {
   return "";
 }
 
+function shouldIgnoreEvent(parsed) {
+  if (!parsed || typeof parsed !== "object") {
+    return false;
+  }
+
+  return parsed.type === "message_start" || parsed.type === "message_end";
+}
+
 function formatFallback(parsed) {
   if (typeof parsed === "string") {
     return parsed;
+  }
+
+  if (parsed && typeof parsed === "object") {
+    const errorText = parsed.content?.error || parsed.data?.error || parsed.error;
+    if (typeof errorText === "string" && errorText.trim()) {
+      return `[错误]\n${errorText}`;
+    }
+    return "";
   }
 
   return `[事件]\n${JSON.stringify(parsed, null, 2)}`;
