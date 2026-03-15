@@ -93,6 +93,10 @@ const DEFAULT_PROMPT = `核心定位
 批判性思维是被激发出来的，不是被教出来的
 每一个"不满意"都是认知升级的契机`;
 
+const WORKER_URL = "https://sweet-hat-3d51.1123715535.workers.dev/";
+const PROJECT_ID = "7617105966936768566";
+const STREAM_EVENT = "message";
+
 const SCENARIOS = [
   {
     id: "homework-ai",
@@ -127,8 +131,6 @@ const SCENARIOS = [
 ];
 
 const storageKeys = {
-  url: "coze_agent_url",
-  projectId: "coze_agent_project_id",
   sessionId: "coze_agent_session_id",
   prompt: "coze_agent_prompt",
   scenarioId: "coze_agent_scenario_id",
@@ -137,15 +139,11 @@ const storageKeys = {
 const state = {
   assistantNode: null,
   isStreaming: false,
+  sessionId: "",
 };
 
 const elements = {
-  tokenInput: document.getElementById("tokenInput"),
-  urlInput: document.getElementById("urlInput"),
-  projectIdInput: document.getElementById("projectIdInput"),
-  sessionIdInput: document.getElementById("sessionIdInput"),
   systemPromptInput: document.getElementById("systemPromptInput"),
-  eventInput: document.getElementById("eventInput"),
   messageInput: document.getElementById("messageInput"),
   statusBar: document.getElementById("statusBar"),
   chatLog: document.getElementById("chatLog"),
@@ -168,23 +166,19 @@ function bootstrap() {
   hydrateInputs();
   renderScenarioCard(getSelectedScenario());
   bindEvents();
-  appendMessage("system", "准备就绪。先确认 Worker 地址可用，再从左侧选择一个预设情境填入对话框。");
+  appendMessage("system", "准备就绪。直接选择预设情境或输入问题即可开始对话。");
 }
 
 function hydrateInputs() {
-  elements.urlInput.value = localStorage.getItem(storageKeys.url) ?? "https://sweet-hat-3d51.1123715535.workers.dev/";
-  elements.projectIdInput.value = localStorage.getItem(storageKeys.projectId) ?? elements.projectIdInput.value;
-  elements.sessionIdInput.value = localStorage.getItem(storageKeys.sessionId) ?? crypto.randomUUID();
+  state.sessionId = localStorage.getItem(storageKeys.sessionId) ?? crypto.randomUUID();
   elements.systemPromptInput.value = localStorage.getItem(storageKeys.prompt) ?? DEFAULT_PROMPT;
   const savedScenarioId = localStorage.getItem(storageKeys.scenarioId) ?? SCENARIOS[0].id;
   elements.scenarioSelect.value = savedScenarioId;
+  localStorage.setItem(storageKeys.sessionId, state.sessionId);
 }
 
 function bindEvents() {
   const persistPairs = [
-    [elements.urlInput, storageKeys.url],
-    [elements.projectIdInput, storageKeys.projectId],
-    [elements.sessionIdInput, storageKeys.sessionId],
     [elements.systemPromptInput, storageKeys.prompt],
   ];
 
@@ -253,15 +247,11 @@ async function handleSubmit(event) {
     return;
   }
 
-  const url = elements.urlInput.value.trim();
-  const projectId = elements.projectIdInput.value.trim();
-  const sessionId = elements.sessionIdInput.value.trim();
   const prompt = elements.systemPromptInput.value.trim();
   const message = elements.messageInput.value.trim();
-  const streamEvent = elements.eventInput.value.trim() || "message";
 
-  if (!url || !projectId || !sessionId || !prompt || !message) {
-    setStatus("请补全 Worker URL、Project ID、Session ID、Prompt 和消息内容", "error");
+  if (!prompt || !message) {
+    setStatus("请填写系统提示词和消息内容", "error");
     return;
   }
 
@@ -272,17 +262,17 @@ async function handleSubmit(event) {
   state.assistantNode = assistantNode;
   state.isStreaming = true;
   elements.sendButton.disabled = true;
-  setStatus("通过 Worker 连接 Coze 流式接口中...", "running");
+  setStatus("正在连接智能体...", "running");
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(WORKER_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "text/event-stream",
       },
       body: JSON.stringify({
-        event: streamEvent,
+        event: STREAM_EVENT,
         content: {
           query: {
             prompt: [
@@ -296,8 +286,8 @@ async function handleSubmit(event) {
           },
         },
         type: "query",
-        session_id: sessionId,
-        project_id: projectId,
+        session_id: state.sessionId,
+        project_id: PROJECT_ID,
       }),
     });
 
@@ -314,7 +304,7 @@ async function handleSubmit(event) {
     setStatus("响应完成", "success");
   } catch (error) {
     assistantNode.querySelector(".message-body").textContent += `\n\n[请求失败]\n${error.message}`;
-    setStatus("请求失败，请检查 Worker、CORS、接口地址或项目配置", "error");
+    setStatus("请求失败，请检查 Worker 或项目配置", "error");
   } finally {
     state.isStreaming = false;
     elements.sendButton.disabled = false;
