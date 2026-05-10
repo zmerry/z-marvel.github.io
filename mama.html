@@ -1,0 +1,2454 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f6ebdc" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<title>致妈妈 · Per Te, Mamma</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Italiana&family=DM+Mono:wght@300;400&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Liu+Jian+Mao+Cao&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" />
+
+<style>
+  :root {
+    /* Default: Rose & Honey */
+    --bg-1: #f6ebdc;
+    --bg-2: #efd9c4;
+    --bg-3: #e5b89a;
+    --paper: #fbf3e4;
+    --paper-edge: #e9d6b6;
+    --ink: #4a2a2a;
+    --ink-soft: #7a4a44;
+    --accent: #b8546a;
+    --accent-soft: #d98a96;
+    --gold: #c69a5b;
+    --shadow: 60, 30, 30;
+    --particle-1: #e0a4ad;
+    --particle-2: #f3c6a9;
+    --particle-3: #c69a5b;
+    --vignette: 80, 40, 30;
+    --glow: 240, 200, 170;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    height: 100vh;
+    font-family: 'Noto Serif SC', 'Cormorant Garamond', 'Times New Roman', serif;
+    color: var(--ink);
+    background: var(--bg-1);
+    overflow: hidden; /* no scroll */
+    transition: background 1.4s ease, color 1.4s ease;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The breathing background gradient */
+  .stage {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 20%, var(--bg-2) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, var(--bg-3) 0%, transparent 55%),
+      linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    transition: background 1.4s ease;
+    animation: breathe 14s ease-in-out infinite;
+  }
+  .stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(var(--vignette), 0.35) 100%);
+    pointer-events: none;
+    transition: background 1.4s ease;
+  }
+  @keyframes breathe {
+    0%, 100% { filter: brightness(1) saturate(1); }
+    50% { filter: brightness(1.05) saturate(1.08); }
+  }
+
+  /* Subtle paper grain across whole page */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0 0.2 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* Floating particles container — above the ground so falls land in view */
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    will-change: transform, opacity;
+    opacity: 0;
+    animation-name: drift;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+  @keyframes drift {
+    /* fall from above the viewport and land at a per-particle random spot inside the grass-strip;
+       fill-mode:forwards on each particle keeps it parked there permanently */
+    0%   { transform: translate3d(var(--dx0,0), -10vh, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: var(--maxop, 0.85); }
+    55%  { transform: translate3d(calc(var(--dx0,0) + var(--sway,40px)), calc(var(--landY, 96vh) * 0.6), 0) rotate(180deg); opacity: var(--maxop, 0.85); }
+    100% { transform: translate3d(calc(var(--dx0,0) + var(--sway,40px) * 0.5), var(--landY, 96vh), 0) rotate(360deg); opacity: var(--maxop, 0.85); }
+  }
+
+  /* Theme switcher */
+  .switcher {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 999px;
+    box-shadow: 0 6px 28px rgba(var(--shadow), 0.18);
+    transition: background 1.2s ease, border-color 1.2s ease, box-shadow 1.2s ease;
+  }
+  .switcher .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-right: 4px;
+    opacity: 0.8;
+    transition: color 1s ease;
+  }
+  .swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.7);
+    box-shadow: 0 2px 10px rgba(var(--shadow), 0.18), inset 0 0 0 1px rgba(0,0,0,0.05);
+    transition: transform 0.4s cubic-bezier(.2,.9,.3,1.4), box-shadow 0.4s ease, border-color 0.4s ease;
+    position: relative;
+  }
+  .swatch:hover { transform: scale(1.18); }
+  .swatch.active {
+    transform: scale(1.25);
+    border-color: var(--paper);
+    box-shadow: 0 0 0 2px var(--accent), 0 4px 14px rgba(var(--shadow), 0.25);
+  }
+  .swatch[data-theme="rose"]      { background: linear-gradient(135deg, #f6ebdc 0%, #b8546a 100%); }
+  .swatch[data-theme="lavender"]  { background: linear-gradient(135deg, #e9def0 0%, #7a5b8f 100%); }
+  .swatch[data-theme="sakura"]    { background: linear-gradient(135deg, #fde6ec 0%, #e58aa6 100%); }
+  .swatch[data-theme="midnight"]  { background: linear-gradient(135deg, #1d243d 0%, #d4ad58 100%); }
+  .swatch[data-theme="sage"]      { background: linear-gradient(135deg, #e8eadd 0%, #8aa07a 100%); }
+
+  /* Top-right controls */
+  .top-right {
+    position: fixed;
+    top: 28px;
+    right: 28px;
+    z-index: 30;
+    display: flex;
+    gap: 10px;
+  }
+  .pill-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid rgba(255,255,255,0.45);
+    padding: 9px 13px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 6px 28px rgba(var(--shadow), 0.18);
+    transition: all 0.4s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pill-btn:hover { transform: translateY(-1px); color: var(--accent); }
+  .pill-btn .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    transition: background 0.4s ease;
+  }
+  .pill-btn.off .dot { background: var(--ink-soft); box-shadow: none; opacity: 0.5; }
+
+  /* Main scene — single screen, centered, no scroll */
+  .scene {
+    position: relative;
+    z-index: 5;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 72px 20px 160px; /* room for top switcher + bottom ground */
+    overflow: hidden;
+  }
+
+  /* === Envelope (cover) === */
+  .envelope-wrap {
+    perspective: 1400px;
+    width: min(520px, 86vw);
+    aspect-ratio: 7 / 5;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.7s cubic-bezier(.4,.1,.2,1), opacity 0.8s ease;
+  }
+  .envelope-wrap.hidden { opacity: 0; pointer-events: none; transform: scale(0.92) translateY(-30px); position: absolute; }
+  .envelope-wrap:hover .seal-hint { opacity: 1; transform: translate(-50%, 18px); }
+
+  .envelope {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+  .env-body {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, var(--paper) 0%, var(--paper-edge) 100%);
+    border: 1px solid color-mix(in oklab, var(--paper-edge), var(--ink) 18%);
+    border-radius: 4px;
+    box-shadow:
+      0 30px 60px -20px rgba(var(--shadow), 0.45),
+      0 12px 28px -10px rgba(var(--shadow), 0.3),
+      inset 0 0 0 8px var(--paper),
+      inset 0 0 0 9px color-mix(in oklab, var(--paper-edge), var(--ink) 25%);
+    overflow: hidden;
+  }
+  .env-body::before, .env-body::after {
+    content: "";
+    position: absolute;
+    background: color-mix(in oklab, var(--paper-edge), var(--ink) 8%);
+  }
+  .env-body::before {
+    inset: 0;
+    background:
+      linear-gradient(135deg, transparent calc(50% - 1px), color-mix(in oklab, var(--paper-edge), var(--ink) 22%) 50%, transparent calc(50% + 1px)) no-repeat,
+      linear-gradient(-135deg, transparent calc(50% - 1px), color-mix(in oklab, var(--paper-edge), var(--ink) 22%) 50%, transparent calc(50% + 1px)) no-repeat;
+    background-size: 100% 50%, 100% 50%;
+    background-position: top, top;
+  }
+  .env-body::after {
+    inset: 0;
+    background:
+      linear-gradient(45deg, transparent calc(50% - 1px), color-mix(in oklab, var(--paper-edge), var(--ink) 22%) 50%, transparent calc(50% + 1px)) no-repeat;
+    background-size: 100% 50%;
+    background-position: bottom;
+    opacity: 0.5;
+  }
+
+  .env-flap {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 50%;
+    background: linear-gradient(180deg, var(--paper) 0%, color-mix(in oklab, var(--paper-edge), var(--ink) 6%) 100%);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transform: rotateX(0deg);
+    transition: transform 1.2s cubic-bezier(.5,.05,.2,1);
+    box-shadow: 0 4px 8px rgba(var(--shadow), 0.1);
+    z-index: 4;
+  }
+  .envelope-wrap.opening .env-flap { transform: rotateX(-180deg); }
+  .envelope-wrap:hover .env-flap { transform: rotateX(-12deg); }
+  .envelope-wrap.opening:hover .env-flap { transform: rotateX(-180deg); }
+
+  .seal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--accent), white 30%) 0%, var(--accent) 45%, color-mix(in oklab, var(--accent), black 30%) 100%);
+    box-shadow:
+      0 6px 16px rgba(var(--shadow), 0.4),
+      inset 0 -3px 6px rgba(0,0,0,0.25),
+      inset 0 3px 6px rgba(255,255,255,0.25);
+    z-index: 6;
+    display: grid;
+    place-items: center;
+    font-family: 'Italiana', serif;
+    font-size: 30px;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 0.05em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    transition: transform 0.8s cubic-bezier(.4,.1,.2,1), opacity 0.6s ease;
+    cursor: pointer;
+  }
+  .envelope-wrap.opening .seal { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+  .seal::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    opacity: 0.5;
+    z-index: -1;
+    animation: sealPulse 3.5s ease-in-out infinite;
+  }
+  @keyframes sealPulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.3); opacity: 0.6; } }
+
+  .env-text {
+    position: absolute;
+    left: 50%;
+    top: 28%;
+    transform: translateX(-50%);
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: 26px;
+    color: var(--ink-soft);
+    z-index: 3;
+    opacity: 0.92;
+    white-space: nowrap;
+    letter-spacing: 0.08em;
+  }
+  .env-text small {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.32em;
+    margin-top: 6px;
+    opacity: 0.6;
+    text-transform: uppercase;
+  }
+
+  .seal-hint {
+    position: absolute;
+    left: 50%;
+    bottom: -24px;
+    transform: translate(-50%, 0);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+    transition: all 0.4s ease;
+  }
+
+  /* === Letter (centered, fits one screen) === */
+  .letter-wrap {
+    width: min(640px, 92vw);
+    max-height: calc(100vh - 200px);
+    opacity: 0;
+    transform: translateY(36px) scale(0.97);
+    transition: opacity 1.2s ease 0.4s, transform 1.2s cubic-bezier(.2,.7,.3,1) 0.4s;
+    pointer-events: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .letter-wrap.visible { opacity: 1; transform: none; pointer-events: auto; }
+
+  .letter {
+    width: 100%;
+    position: relative;
+    background:
+      repeating-linear-gradient(0deg, transparent 0 30px, rgba(var(--shadow),0.04) 30px 31px),
+      linear-gradient(180deg, var(--paper) 0%, color-mix(in oklab, var(--paper), var(--paper-edge) 35%) 100%);
+    border-radius: 3px;
+    padding: 34px 44px 26px;
+    box-shadow:
+      0 50px 80px -30px rgba(var(--shadow), 0.5),
+      0 20px 40px -15px rgba(var(--shadow), 0.3),
+      inset 0 0 0 1px color-mix(in oklab, var(--paper-edge), var(--ink) 12%);
+    color: var(--ink);
+    cursor: pointer;
+    user-select: none;
+  }
+  .letter-text, .letter-text-bottom {
+    transition: opacity 0.32s ease, transform 0.32s ease, filter 0.32s ease;
+  }
+  .letter.flipping .letter-text,
+  .letter.flipping .letter-text-bottom {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(2px);
+  }
+  .letter-counter {
+    font-family: 'DM Mono', monospace !important;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    opacity: 0.7;
+    text-transform: uppercase;
+  }
+  .letter::after,
+  .letter::before { pointer-events: none; }
+  /* torn/uneven top */
+  .letter::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: -1px;
+    height: 8px;
+    background: var(--paper);
+    clip-path: polygon(0 100%, 3% 30%, 7% 80%, 12% 20%, 17% 70%, 22% 30%, 28% 80%, 33% 20%, 39% 70%, 45% 25%, 51% 80%, 57% 25%, 63% 70%, 69% 30%, 75% 80%, 81% 25%, 87% 70%, 92% 30%, 97% 80%, 100% 30%, 100% 100%);
+  }
+  .letter::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 2px;
+    pointer-events: none;
+    box-shadow: inset 0 0 80px rgba(var(--glow), 0.25);
+  }
+
+  .letter .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    opacity: 0.75;
+  }
+  .letter .meta .from-tag {
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--accent);
+    opacity: 0.85;
+  }
+  .letter h1 {
+    font-family: 'Italiana', 'Ma Shan Zheng', serif;
+    font-weight: 400;
+    font-size: clamp(24px, 3vw, 32px);
+    margin: 0 0 2px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    text-align: center;
+  }
+  .letter h1 .zh {
+    display: block;
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: 0.62em;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    letter-spacing: 0.18em;
+    opacity: 0.8;
+  }
+  .letter .salutation {
+    font-family: 'Ma Shan Zheng', 'Liu Jian Mao Cao', cursive;
+    font-size: clamp(20px, 2.4vw, 24px);
+    color: var(--ink);
+    margin: 18px 0 12px;
+    line-height: 1.2;
+  }
+  .letter p {
+    font-family: 'Noto Serif SC', 'Cormorant Garamond', serif;
+    font-size: clamp(13px, 1.05vw, 15.5px);
+    line-height: 1.85;
+    margin: 0 0 10px;
+    color: var(--ink);
+    text-wrap: pretty;
+    text-indent: 2em;
+  }
+  .letter p.no-indent { text-indent: 0; }
+  .letter p .accent {
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .letter .question {
+    text-align: center;
+    margin: 18px 0 6px;
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: clamp(20px, 2.2vw, 26px);
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+  }
+  .letter .whisper {
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: clamp(15px, 1.3vw, 17px);
+    color: var(--ink-soft);
+    text-align: center;
+    margin: 4px 0 10px;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .letter .signoff {
+    margin-top: 14px;
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(13px, 1.05vw, 15px);
+    color: var(--ink-soft);
+    text-align: right;
+  }
+  .letter .signature {
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: clamp(28px, 3.2vw, 38px);
+    color: var(--accent);
+    line-height: 1;
+    margin-top: 4px;
+    transform: rotate(-3deg);
+    display: inline-block;
+  }
+
+  /* Music player slot — embedded inside the letter */
+  .music-slot {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed color-mix(in oklab, var(--paper-edge), var(--ink) 22%);
+    position: relative;
+  }
+  .music-slot::before {
+    content: "♪";
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--paper);
+    color: var(--accent);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-family: 'Italiana', serif;
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--paper-edge), var(--ink) 20%);
+  }
+
+  /* APlayer cosmetic overrides to match romantic aesthetic */
+  .music-slot .aplayer {
+    margin: 0;
+    border-radius: 10px !important;
+    overflow: hidden;
+    background: rgba(255,255,255,0.55) !important;
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    box-shadow: 0 8px 22px rgba(var(--shadow), 0.18) !important;
+    border: 1px solid color-mix(in oklab, var(--paper-edge), var(--ink) 8%);
+    font-family: 'Noto Serif SC', 'Cormorant Garamond', serif !important;
+  }
+  .music-slot .aplayer .aplayer-info { border-bottom: none !important; }
+  .music-slot .aplayer .aplayer-title { color: var(--ink) !important; }
+  .music-slot .aplayer .aplayer-author { color: var(--ink-soft) !important; }
+  .music-slot .aplayer .aplayer-bar { background: rgba(var(--shadow), 0.12) !important; }
+  /* Treat playlists as a single-song player: hide the list drawer entirely */
+  .music-slot .aplayer .aplayer-list,
+  .music-slot .aplayer .aplayer-list-wrap { display: none !important; height: 0 !important; }
+  .music-slot .aplayer .aplayer-icon-menu { display: none !important; }
+  .music-slot .aplayer.aplayer-withlist { padding-bottom: 0 !important; }
+
+  /* Custom "next" arrow tucked into the player on the right */
+  .music-next {
+    position: absolute;
+    right: 8px;
+    top: calc(50% + 7px); /* compensate for slot's padding-top so we center on the player */
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    color: var(--ink-soft);
+    background: rgba(255,255,255,0.65);
+    border: 1px solid color-mix(in oklab, var(--paper-edge), var(--ink) 18%);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 2px 8px rgba(var(--shadow), 0.18);
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
+  .music-next svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+    /* Optical centering — chevron pointing right reads better nudged a hair right */
+    transform: translateX(1px);
+  }
+  .music-next[hidden] { display: none; }
+  .music-next:hover {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+    transform: translateY(-50%) scale(1.08);
+  }
+  .music-next:active { transform: translateY(-50%) scale(0.94); }
+  body[data-theme="midnight"] .music-next {
+    background: rgba(255,255,255,0.12);
+    color: var(--accent-soft);
+    border-color: rgba(255,255,255,0.22);
+  }
+  body[data-theme="midnight"] .music-slot .aplayer {
+    background: rgba(20,20,40,0.55) !important;
+    color: var(--paper);
+  }
+  body[data-theme="midnight"] .music-slot .aplayer .aplayer-title { color: var(--paper) !important; }
+  body[data-theme="midnight"] .music-slot .aplayer .aplayer-author { color: var(--accent-soft) !important; }
+  body[data-theme="midnight"] .music-slot::before { background: #1d243d; }
+
+  /* Closing actions under letter */
+  .letter-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .ghost-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid color-mix(in oklab, var(--paper-edge), var(--ink) 22%);
+    padding: 9px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .ghost-btn:hover {
+    background: var(--paper);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .ghost-btn.primary {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+  }
+  .ghost-btn.primary:hover {
+    background: color-mix(in oklab, var(--accent), white 15%);
+    color: var(--paper);
+  }
+
+  /* Heart burst on demand */
+  .burst {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .burst span {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 16px; height: 16px;
+    color: var(--accent);
+    font-size: 22px;
+    transform: translate(-50%, -50%);
+    animation: burst 1.6s cubic-bezier(.2,.6,.3,1) forwards;
+  }
+  @keyframes burst {
+    0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+    20% { opacity: 1; }
+    100% {
+      transform: translate(calc(-50% + var(--bx)), calc(-50% + var(--by))) scale(1) rotate(var(--br));
+      opacity: 0;
+    }
+  }
+
+  /* "Yes" celebration overlay */
+  .yes-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at center, rgba(var(--glow), 0.4) 0%, rgba(var(--vignette), 0.5) 100%);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  .yes-overlay.visible { opacity: 1; pointer-events: auto; }
+  .yes-overlay .yes-card {
+    text-align: center;
+    transform: scale(0.85);
+    transition: transform 0.8s cubic-bezier(.2,.7,.3,1.4);
+  }
+  .yes-overlay.visible .yes-card { transform: scale(1); }
+  .yes-overlay .yes-card .big {
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: clamp(56px, 9vw, 120px);
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    line-height: 1;
+    text-shadow: 0 4px 20px rgba(var(--shadow), 0.3);
+  }
+  .yes-overlay .yes-card .sub {
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: clamp(18px, 2vw, 26px);
+    color: var(--ink);
+    margin-top: 14px;
+    opacity: 0.9;
+  }
+  .yes-overlay .yes-card .tiny {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 18px;
+    opacity: 0.7;
+    cursor: pointer;
+  }
+
+  /* ===== Living ground at bottom of viewport ===== */
+  .ground {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: 150px;
+    z-index: 3;
+    pointer-events: none;
+    transition: filter 1.4s ease, opacity 0.6s ease;
+  }
+  .ground .layer {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    width: 100%;
+    z-index: 0;
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+  .ground .hill {
+    bottom: 0;
+    height: 150px;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 100% at 20% 100%, var(--ground-2) 0%, transparent 70%),
+      radial-gradient(ellipse 70% 100% at 80% 100%, var(--ground-2) 0%, transparent 70%),
+      linear-gradient(180deg, transparent 0%, var(--ground-1) 30%, var(--ground-2) 100%);
+  }
+  .ground svg { display: block; width: 100%; height: 100%; }
+  .grass-strip {
+    position: absolute;                                                            
+    left: 0; right: 0; bottom: 0;                                                  
+    height: 60px;                                                                  
+    z-index: 1; 
+  }
+  .pile {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 56px;
+    opacity: 0;
+    z-index: 9;
+    pointer-events: none;
+    transition: opacity 1.4s ease;
+  }
+  body[data-season="spring"] .pile.petal-pile { opacity: 1; }
+  body[data-season="summer"] .pile.puddle-pile { opacity: 1; }
+  body[data-season="autumn"] .pile.leaf-pile { opacity: 1; }
+  body[data-season="winter"] .pile.snow-pile { opacity: 1; }
+
+  .critter {
+    position: absolute;
+    bottom: 22px;
+    z-index: 2;
+    transition: opacity 1.2s ease, transform 1s ease;
+    will-change: transform;
+  }
+  .bunny {
+    left: 14%;
+    width: 36px;
+    animation: hop 4.2s ease-in-out infinite;
+  }
+  body[data-season="winter"] .bunny { filter: brightness(1.15) saturate(0.6); }
+  @keyframes hop {
+    0%, 70%, 100% { transform: translateY(0) rotate(0deg); }
+    78% { transform: translateY(-12px) rotate(-2deg); }
+    86% { transform: translateY(0) rotate(0deg); }
+  }
+  .butterfly {
+    right: 22%;
+    bottom: 86px;
+    width: 26px;
+    animation: flutter 7s ease-in-out infinite;
+  }
+  body[data-season="autumn"] .butterfly,
+  body[data-season="winter"] .butterfly { opacity: 0; }
+  @keyframes flutter {
+    0%   { transform: translate(0,0) rotate(-4deg); }
+    25%  { transform: translate(40px,-22px) rotate(6deg); }
+    50%  { transform: translate(-20px,-10px) rotate(-8deg); }
+    75%  { transform: translate(30px,-30px) rotate(4deg); }
+    100% { transform: translate(0,0) rotate(-4deg); }
+  }
+  .birds {
+    position: absolute;
+    bottom: 110px;
+    left: 0; right: 0;
+    height: 60px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .birds svg {
+    position: absolute;
+    width: 22px;
+    color: var(--ink-soft);
+    opacity: 0.55;
+    animation: birdFly 22s linear infinite;
+  }
+  body[data-season="winter"] .birds { opacity: 0.4; }
+  @keyframes birdFly {
+    0%   { transform: translate(-10vw, 0); }
+    100% { transform: translate(110vw, -20px); }
+  }
+
+  /* Season switcher */
+  .season-switcher {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    z-index: 30;
+    display: flex;
+    gap: 4px;
+    padding: 6px 8px;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 999px;
+    box-shadow: 0 6px 28px rgba(var(--shadow), 0.18);
+  }
+  .season-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: transparent;
+    border: none;
+    padding: 7px 11px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .season-btn .ico { font-size: 13px; line-height: 1; }
+  .season-btn:hover { color: var(--accent); }
+  .season-btn.active {
+    background: var(--accent);
+    color: var(--paper);
+    box-shadow: 0 4px 14px rgba(var(--shadow), 0.3);
+  }
+  body[data-theme="midnight"] .season-switcher {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.18);
+  }
+  body[data-theme="midnight"] .season-btn { color: var(--accent-soft); }
+
+  /* Season ground tones */
+  body[data-season="spring"] { --ground-1: #b9d4a3; --ground-2: #6f9d5a; --grass-tip: #8db575; --bloom: #ec8aa8; }
+  body[data-season="summer"] { --ground-1: #87b674; --ground-2: #3f6b34; --grass-tip: #5a8d49; --bloom: #f0c44a; }
+  body[data-season="autumn"] { --ground-1: #d6a872; --ground-2: #8a5a30; --grass-tip: #b07a3a; --bloom: #c8602e; }
+  body[data-season="winter"] { --ground-1: #ecdcc4; --ground-2: #a88a68; --grass-tip: #d4b896; --bloom: #ffffff; }
+
+  /* Bottom theme name plate */
+  .theme-plate {
+    position: fixed;
+    bottom: 18px;
+    left: 24px;
+    z-index: 20;
+    font-family: 'Italiana', serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    pointer-events: none;
+    transition: color 1s ease, opacity 0.6s ease;
+    text-align: left;
+  }
+  .theme-plate .name {
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: 18px;
+    letter-spacing: normal;
+    color: var(--accent);
+    text-transform: none;
+    margin-top: 2px;
+    display: block;
+    transition: color 1s ease;
+  }
+
+  /* ==== Theme variations ==== */
+  body[data-theme="rose"] {
+    --bg-1: #f6ebdc; --bg-2: #efd9c4; --bg-3: #e5b89a;
+    --paper: #fbf3e4; --paper-edge: #e9d6b6;
+    --ink: #4a2a2a; --ink-soft: #7a4a44;
+    --accent: #b8546a; --accent-soft: #d98a96;
+    --gold: #c69a5b;
+    --shadow: 60, 30, 30;
+    --particle-1: #e0a4ad; --particle-2: #f3c6a9; --particle-3: #c69a5b;
+    --vignette: 80, 40, 30;
+    --glow: 240, 200, 170;
+  }
+  body[data-theme="lavender"] {
+    --bg-1: #ece4f1; --bg-2: #ddd0e8; --bg-3: #b9a4cf;
+    --paper: #f5eff8; --paper-edge: #d8c8e3;
+    --ink: #3a2c4a; --ink-soft: #6a567f;
+    --accent: #7a5b8f; --accent-soft: #b39bcb;
+    --gold: #c8a876;
+    --shadow: 60, 40, 80;
+    --particle-1: #c6aed8; --particle-2: #e9dff0; --particle-3: #9c83b6;
+    --vignette: 50, 30, 80;
+    --glow: 220, 200, 240;
+  }
+  body[data-theme="sakura"] {
+    --bg-1: #fbe7ec; --bg-2: #f6d2dc; --bg-3: #e8a8bb;
+    --paper: #fef3f6; --paper-edge: #f3cfd9;
+    --ink: #4a2433; --ink-soft: #874458;
+    --accent: #d56385; --accent-soft: #f0a3b9;
+    --gold: #d8a85a;
+    --shadow: 80, 30, 50;
+    --particle-1: #f4b5c6; --particle-2: #fde0e7; --particle-3: #e88aa6;
+    --vignette: 90, 40, 60;
+    --glow: 250, 210, 220;
+  }
+  body[data-theme="midnight"] {
+    --bg-1: #1d243d; --bg-2: #232c4d; --bg-3: #303a66;
+    --paper: #f1e7ce; --paper-edge: #d6c69a;
+    --ink: #2a2238; --ink-soft: #5b4f6e;
+    --accent: #d4ad58; --accent-soft: #ecd28c;
+    --gold: #e8c870;
+    --shadow: 10, 10, 30;
+    --particle-1: #f4e5a8; --particle-2: #ffffff; --particle-3: #d4ad58;
+    --vignette: 5, 5, 20;
+    --glow: 240, 210, 130;
+  }
+  body[data-theme="midnight"] .stage {
+    background:
+      radial-gradient(ellipse 70% 60% at 25% 25%, #2c3a6a 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 85%, #4a3a72 0%, transparent 55%),
+      linear-gradient(180deg, #161b30 0%, #1d243d 100%);
+  }
+  body[data-theme="midnight"] .switcher,
+  body[data-theme="midnight"] .pill-btn {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.18);
+    color: var(--accent-soft);
+  }
+  body[data-theme="midnight"] .label,
+  body[data-theme="midnight"] .pill-btn { color: var(--accent-soft); }
+  body[data-theme="midnight"] .theme-plate { color: var(--accent-soft); }
+
+  body[data-theme="sage"] {
+    --bg-1: #ebeadc; --bg-2: #dde0c9; --bg-3: #f0c8a8;
+    --paper: #f4f1de; --paper-edge: #d6d2b3;
+    --ink: #2f3a30; --ink-soft: #5a6a52;
+    --accent: #7a8f5b; --accent-soft: #b5c08b;
+    --gold: #c69a5b;
+    --shadow: 50, 60, 40;
+    --particle-1: #c4d0a4; --particle-2: #f4d8bf; --particle-3: #8aa07a;
+    --vignette: 60, 70, 40;
+    --glow: 220, 230, 190;
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    .stage, .seal::before, .particle, .letter-wrap { animation: none !important; transition-duration: 0.2s !important; }
+  }
+
+  /* Use dynamic viewport height where supported (handles iOS URL-bar resize) */
+  @supports (height: 100dvh) {
+    body, .scene { height: 100dvh; }
+    .letter-wrap { max-height: calc(100dvh - 200px); }
+  }
+
+  /* Respect iOS notch / Android gesture bar */
+  @supports (padding: max(0px)) {
+    .switcher  { top: max(24px, env(safe-area-inset-top)); }
+    .top-right { top: max(28px, env(safe-area-inset-top)); right: max(28px, env(safe-area-inset-right)); }
+    .season-switcher { bottom: max(22px, env(safe-area-inset-bottom)); right: max(22px, env(safe-area-inset-right)); }
+    .theme-plate     { bottom: max(18px, env(safe-area-inset-bottom)); left: max(24px, env(safe-area-inset-left)); }
+  }
+
+  /* ===== Mobile (≤ 600px wide) ===== */
+  @media (max-width: 600px) {
+    /* Top mood switcher */
+    .switcher { padding: 6px 10px; gap: 6px; top: 10px; }
+    .swatch { width: 18px; height: 18px; border-width: 1.5px; }
+    .switcher .label { display: none; }
+
+    /* Top-right pill toggles */
+    .top-right { top: 10px; right: 10px; gap: 6px; }
+    .pill-btn { padding: 6px 9px; font-size: 8px; letter-spacing: 0.12em; }
+
+    /* Scene padding leaves room for top switcher + bottom ground */
+    .scene { padding: 54px 10px 100px; }
+
+    /* Envelope cover */
+    .envelope-wrap { width: 86vw; }
+    .env-text { font-size: 18px; letter-spacing: 0.06em; }
+    .env-text small { font-size: 8px; letter-spacing: 0.22em; margin-top: 4px; }
+    .seal { width: 58px; height: 58px; font-size: 22px; }
+    .seal-hint { font-size: 9px; bottom: -22px; }
+
+    /* Letter wrap */
+    .letter-wrap { width: 94vw; max-height: calc(100vh - 160px); }
+    @supports (height: 100dvh) {
+      .letter-wrap { max-height: calc(100dvh - 160px); }
+    }
+
+    /* Letter card */
+    .letter { padding: 18px 18px 14px; }
+    .letter .meta { font-size: 9px; letter-spacing: 0.16em; margin-bottom: 10px; gap: 6px; }
+    .letter .meta .from-tag { font-size: 12px; }
+    .letter-counter { font-size: 8px !important; letter-spacing: 0.18em; }
+    .letter h1 { font-size: 22px; letter-spacing: 0.02em; }
+    .letter h1 .zh { font-size: 0.52em; letter-spacing: 0.12em; margin-top: 3px; }
+    .letter .salutation { font-size: 18px; margin: 8px 0 6px; }
+    .letter p { font-size: 12.8px; line-height: 1.68; margin-bottom: 7px; }
+    .letter .question { font-size: 16px; margin: 10px 0 4px; line-height: 1.45; }
+    .letter .whisper { font-size: 12.5px; margin: 4px 0 6px; line-height: 1.5; }
+    .letter .signoff { font-size: 12px; margin-top: 8px; }
+    .letter .signature { font-size: 24px; }
+
+    /* Music slot — compact */
+    .music-slot { margin-top: 8px; padding-top: 8px; }
+    .music-slot::before { width: 18px; height: 18px; font-size: 10px; top: -9px; }
+    .music-slot .aplayer .aplayer-pic { width: 50px !important; height: 50px !important; }
+    .music-slot .aplayer .aplayer-body { height: 50px !important; min-height: 50px !important; }
+    .music-slot .aplayer .aplayer-info { height: 50px !important; padding: 7px 5px 0 8px !important; margin-left: 50px !important; }
+    .music-slot .aplayer .aplayer-title { font-size: 12px !important; }
+    .music-slot .aplayer .aplayer-author { font-size: 11px !important; }
+    .music-slot .aplayer .aplayer-controller { padding: 0 7px !important; }
+    .music-slot .aplayer .aplayer-time { font-size: 10px !important; }
+
+    /* Compact next-song arrow on mobile */
+    .music-next { width: 26px; height: 26px; right: 6px; }
+    .music-next svg { width: 12px; height: 12px; }
+
+    /* Letter actions */
+    .letter-actions { margin-top: 12px; gap: 8px; }
+    .ghost-btn { padding: 7px 12px; font-size: 9px; letter-spacing: 0.18em; }
+
+    /* Bottom decorations */
+    .theme-plate { font-size: 8px; letter-spacing: 0.28em; bottom: 8px; left: 10px; }
+    .theme-plate .name { font-size: 14px; }
+    .season-switcher { bottom: 12px; right: 10px; padding: 4px 5px; gap: 2px; }
+    .season-btn { padding: 5px 8px; font-size: 8px; gap: 4px; }
+    .season-btn .ico { font-size: 11px; }
+    .ground { height: 90px; }
+    .grass-strip { height: 48px; }
+    .birds { bottom: 78px; }
+    .butterfly { bottom: 58px; width: 22px; }
+    .bunny { width: 30px; }
+
+    /* Yes overlay */
+    .yes-overlay .yes-card .big { font-size: 56px; letter-spacing: 0.14em; }
+    .yes-overlay .yes-card .sub { font-size: 16px; padding: 0 24px; }
+    .yes-overlay .yes-card .tiny { font-size: 9px; letter-spacing: 0.22em; }
+  }
+
+  /* Very small phones (≤ 380px) — squeeze a bit more */
+  @media (max-width: 380px) {
+    .scene { padding: 50px 8px 92px; }
+    .letter { padding: 14px 14px 12px; }
+    .letter h1 { font-size: 20px; }
+    .letter p { font-size: 12.4px; line-height: 1.62; margin-bottom: 6px; }
+    .letter .salutation { font-size: 16px; }
+    .letter .question { font-size: 15px; }
+    .letter .whisper { font-size: 12px; }
+    .theme-plate { display: none; }
+    .ground { height: 80px; }
+  }
+
+  /* Short / landscape phones — keep everything inside the viewport */
+  @media (max-height: 720px) {
+    .letter { padding: 22px 36px 18px; }
+    .letter p { line-height: 1.7; }
+    .letter .salutation { margin: 12px 0 8px; }
+    .music-slot { margin-top: 12px; padding-top: 10px; }
+  }
+  @media (max-height: 560px) {
+    .scene { padding: 46px 10px 70px; }
+    .letter-wrap { max-height: calc(100vh - 100px); }
+    @supports (height: 100dvh) { .letter-wrap { max-height: calc(100dvh - 100px); } }
+    .letter { padding: 12px 22px 10px; }
+    .letter .meta { margin-bottom: 6px; }
+    .letter h1 { font-size: 20px; }
+    .letter .salutation { margin: 6px 0 4px; }
+    .letter p { font-size: 12.5px; line-height: 1.55; margin-bottom: 5px; }
+    .letter .question { font-size: 15px; margin: 6px 0 2px; }
+    .letter .whisper { font-size: 12px; margin: 2px 0 4px; }
+    .music-slot { margin-top: 6px; padding-top: 6px; }
+    .music-slot::before { display: none; }
+    .letter .signoff { margin-top: 4px; }
+    .ground { height: 60px; }
+    .grass-strip { height: 36px; }
+    .birds { bottom: 50px; }
+  }
+</style>
+</head>
+<body data-theme="rose" data-season="spring">
+
+  <div class="stage" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <!-- Theme switcher -->
+  <nav class="switcher" role="tablist" aria-label="Choose a mood">
+    <span class="label">Mood</span>
+    <button class="swatch active" data-theme="rose"     aria-label="Rose & Honey"></button>
+    <button class="swatch"        data-theme="lavender" aria-label="Lavender Dusk"></button>
+    <button class="swatch"        data-theme="sakura"   aria-label="Sakura Mist"></button>
+    <button class="swatch"        data-theme="midnight" aria-label="Midnight Garden"></button>
+    <button class="swatch"        data-theme="sage"     aria-label="Morning Sage"></button>
+  </nav>
+
+  <!-- Top-right: ambience toggles -->
+  <div class="top-right">
+    <button class="pill-btn off" id="petalsBtn" aria-pressed="true" title="Toggle ambient particles">
+      <span class="dot"></span> Petals
+    </button>
+    <button class="pill-btn off" id="muteBtn" aria-pressed="false" title="Toggle ambient hum">
+      <span class="dot"></span> Hum
+    </button>
+  </div>
+
+  <!-- Scene -->
+  <main class="scene">
+
+    <!-- ENVELOPE COVER -->
+    <div class="envelope-wrap" id="envelope" role="button" tabindex="0" aria-label="Open the letter">
+      <div class="envelope">
+        <div class="env-body"></div>
+        <div class="env-text">
+          <span id="envTextLine">致 <span id="toNameEnv">妈妈</span> · 此心唯你</span>
+          <small id="envTextSmall">For Mom · With All My Love</small>
+        </div>
+        <div class="env-flap"></div>
+        <div class="seal" id="sealLetter" aria-hidden="true">M</div>
+      </div>
+      <div class="seal-hint" id="sealHint">轻触印章 · 启信</div>
+    </div>
+
+    <!-- LETTER -->
+    <article class="letter-wrap" id="letterWrap" aria-hidden="true">
+      <div class="letter" id="letterCard" role="button" tabindex="0" aria-label="Click the letter to read another">
+        <div class="letter-text" id="letterText">
+          <div class="meta">
+            <span id="metaLeft">写于母亲节这一天 · 轻触翻页</span>
+            <span class="letter-counter" id="letterIndex">01 / 15</span>
+            <span class="from-tag"><span id="fromTagPrefix">From</span> <span id="fromNameTag">我</span></span>
+          </div>
+          <h1>
+            <span id="fancyTitle">Per Te, Mamma</span>
+            <span class="zh" id="letterSubtitle">— 致 · 一生最爱我的人 —</span>
+          </h1>
+          <div class="salutation"><span id="salutationPrefix">我最爱的</span> <span id="toName">妈妈</span><span id="salutationSuffix">：</span></div>
+
+          <div id="letterBody"></div>
+
+          <div class="question" id="letterQuestion"></div>
+          <div class="whisper" id="letterWhisper"></div>
+        </div>
+
+        <!-- Music slot persists across letter switches -->
+        <div class="music-slot" id="musicSlot" aria-label="A song for you">
+          <button class="music-next" id="nextSongBtn" type="button" aria-label="下一首" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M9 5 L16 12 L9 19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="signoff letter-text-bottom" id="letterTextBottom">
+          <span id="signoffLine1">愿你健康，愿你欢喜，</span><br/>
+          <span class="signature"><span id="signoffLine2">永远是你的孩子 ·</span> <span id="fromNameSig">我</span></span>
+        </div>
+      </div>
+
+      <div class="letter-actions">
+        <button class="ghost-btn" id="closeBtn">合上信封</button>
+        <button class="ghost-btn primary" id="yesBtn">送 上 祝 福 ♡</button>
+      </div>
+    </article>
+
+  </main>
+
+  <div class="burst" id="burst" aria-hidden="true"></div>
+
+  <!-- Yes overlay -->
+  <div class="yes-overlay" id="yesOverlay" aria-hidden="true">
+    <div class="yes-card">
+      <div class="big" id="yesBig">母 亲 节 快 乐</div>
+      <div class="sub" id="yesSub">愿你被这世界温柔以待，岁岁皆安，年年欢喜。</div>
+      <div class="tiny" id="yesClose">轻触任意处 · 回到信里</div>
+    </div>
+  </div>
+
+  <!-- Living ground -->
+  <div class="ground" id="ground" aria-hidden="true">
+    <div class="layer hill"></div>
+
+    <div class="birds" id="birds">
+      <svg style="top:8px;animation-delay:-3s;animation-duration:26s" viewBox="0 0 24 12"><path d="M1 8 Q 6 2 12 6 Q 18 2 23 8" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <svg style="top:24px;animation-delay:-12s;animation-duration:32s" viewBox="0 0 24 12"><path d="M1 8 Q 6 2 12 6 Q 18 2 23 8" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+      <svg style="top:38px;animation-delay:-18s;animation-duration:30s" viewBox="0 0 24 12"><path d="M1 8 Q 6 2 12 6 Q 18 2 23 8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/></svg>
+    </div>
+
+    <div class="critter bunny" aria-hidden="true">
+      <svg viewBox="0 0 60 64" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="22" cy="14" rx="4" ry="14" fill="var(--ink)" opacity="0.9"/>
+        <ellipse cx="34" cy="12" rx="4" ry="15" fill="var(--ink)" opacity="0.9"/>
+        <ellipse cx="22" cy="15" rx="1.6" ry="8" fill="var(--accent-soft)" opacity="0.7"/>
+        <ellipse cx="34" cy="13" rx="1.6" ry="9" fill="var(--accent-soft)" opacity="0.7"/>
+        <circle cx="28" cy="34" r="12" fill="var(--ink)"/>
+        <ellipse cx="34" cy="52" rx="16" ry="11" fill="var(--ink)"/>
+        <circle cx="50" cy="50" r="4" fill="var(--paper)" opacity="0.85"/>
+        <circle cx="24" cy="32" r="1.4" fill="var(--paper)"/>
+      </svg>
+    </div>
+
+    <div class="critter butterfly" aria-hidden="true">
+      <svg viewBox="0 0 40 30" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="12" cy="12" rx="9" ry="7" fill="var(--accent)" opacity="0.85"/>
+        <ellipse cx="28" cy="12" rx="9" ry="7" fill="var(--accent)" opacity="0.85"/>
+        <ellipse cx="13" cy="22" rx="6" ry="5" fill="var(--accent-soft)" opacity="0.85"/>
+        <ellipse cx="27" cy="22" rx="6" ry="5" fill="var(--accent-soft)" opacity="0.85"/>
+        <ellipse cx="20" cy="15" rx="1.4" ry="10" fill="var(--ink)"/>
+      </svg>
+    </div>
+
+    <div class="grass-strip" id="grassStrip"></div>
+    <div class="pile petal-pile" id="petalPile"></div>
+    <div class="pile puddle-pile" id="puddlePile"></div>
+    <div class="pile leaf-pile" id="leafPile"></div>
+    <div class="pile snow-pile" id="snowPile" aria-hidden="true"></div>
+  </div>
+
+  <!-- Season switcher -->
+  <nav class="season-switcher" aria-label="Choose a season">
+    <button class="season-btn active" data-season="spring"><span class="ico">❀</span> Spring</button>
+    <button class="season-btn" data-season="summer"><span class="ico">☀</span> Summer</button>
+    <button class="season-btn" data-season="autumn"><span class="ico">☘</span> Autumn</button>
+    <button class="season-btn" data-season="winter"><span class="ico">❄</span> Winter</button>
+  </nav>
+
+  <div class="theme-plate" id="themePlate">
+    <span>Mood</span>
+    <span class="name" id="themeName">Rose &amp; Honey</span>
+  </div>
+
+  <!-- MetingJS / APlayer -->
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+
+<script>
+  /* ===== URL params: lang / letter / from / to / title / content / music ======
+     ?lang=zh|en   — language (default: zh)
+     ?letter=N     — show only letter N (1-based); disables click-to-flip
+     ?only=N       — alias for ?letter=N
+     ?from=...     — signature on the letter (default: 我 / Me)
+     ?to=...       — addressee (default: 妈妈 / Mom)
+     ?title=...    — override the title of the first letter
+     ?content=...  — user-defined letters, replacing the built-in set.
+                     Separators (all URL-encode safely):
+                       ~~~  between whole letters
+                       ::   between fields inside a letter, in this order:
+                              title :: subtitle :: paragraphs :: bridge :: question :: whisper
+                       ||   between paragraphs inside the paragraphs field
+                              (newline / %0A also works)
+                     Any field can be blank; missing trailing fields are fine.
+                     Shortcut — if content has NO "::", the whole value is used
+                     as paragraphs for a single letter (split by || or newline).
+                     `question` and `whisper` accept simple HTML like <br/>.
+                     Example (one letter, title + 2 paragraphs + question):
+                       ?content=My%20Title::::First%20para.||Second%20para.::::Will%20you%3F
+     ?musicapp=... — meting server (default: netease)
+     ?musicid=...  — meting id (default: 2795657629, a netease playlist)
+     ?musictype=...— meting type (default: playlist)
+     ?autoplay=false to disable autoplay
+  ============================================================================ */
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const lang = (() => {
+    const l = (urlParams.get('lang') || 'zh').trim().toLowerCase();
+    return (l === 'en' || l === 'english') ? 'en' : 'zh';
+  })();
+
+  const I18N = {
+    zh: {
+      docTitle:        (title, to) => `${title} · 致 ${to}`,
+      envLine:         () => `致 <span id="toNameEnv"></span> · 此心唯你`,
+      envSmall:        '献给妈妈 · 满心温柔',
+      sealLetter:      'M',
+      sealHint:        '轻触印章 · 启信',
+      metaLeft:        '写于母亲节这一天 · 轻触翻页',
+      metaLeftSingle:  '写于母亲节这一天',
+      fromTagPrefix:   'From',
+      salutationPrefix:'我最爱的',
+      salutationSuffix:'：',
+      signoffLine1:    '愿你健康，愿你欢喜，',
+      signoffLine2:    '永远是你的孩子 ·',
+      closeBtn:        '合上信封',
+      blessBtn:        '送 上 祝 福 ♡',
+      yesBig:          '母 亲 节 快 乐',
+      yesSub:          '愿你被这世界温柔以待，岁岁皆安，年年欢喜。',
+      yesTiny:         '轻触任意处 · 回到信里',
+      defaultTo:       '妈妈',
+      defaultFrom:     '我',
+      htmlLang:        'zh-CN'
+    },
+    en: {
+      docTitle:        (title, to) => `${title} · For ${to}`,
+      envLine:         () => `For <span id="toNameEnv"></span> · With All My Heart`,
+      envSmall:        'For Mom · With All My Love',
+      sealLetter:      'M',
+      sealHint:        'Tap the seal · open the letter',
+      metaLeft:        'Written on Mother’s Day · tap to turn',
+      metaLeftSingle:  'Written on Mother’s Day',
+      fromTagPrefix:   'From',
+      salutationPrefix:'My dearest',
+      salutationSuffix:',',
+      signoffLine1:    'Wishing you health, joy, and ease,',
+      signoffLine2:    'Always your child ·',
+      closeBtn:        'Close envelope',
+      blessBtn:        'Send Blessing ♡',
+      yesBig:          'Happy Mother’s Day',
+      yesSub:          'May the world be gentle with you. May every season ahead bloom kindly.',
+      yesTiny:         'Tap anywhere · back to the letter',
+      defaultTo:       'Mom',
+      defaultFrom:     'Me',
+      htmlLang:        'en'
+    }
+  };
+  const T = I18N[lang];
+
+  const fromName = (urlParams.get('from') || T.defaultFrom).trim();
+  const toName   = (urlParams.get('to')   || T.defaultTo).trim();
+  const userTitle = urlParams.get('title');
+  const musicApp = (urlParams.get('musicapp') || urlParams.get('server') || 'netease').trim();
+  const musicId  = (urlParams.get('musicid')  || urlParams.get('id')     || '2795657629').trim();
+  const musicType = (urlParams.get('musictype') || urlParams.get('type') || 'playlist').trim();
+  const autoplay = urlParams.get('autoplay') !== 'false';
+
+  // Single-letter mode: ?letter=N or ?only=N (1-based)
+  const _letterParam = urlParams.get('letter') || urlParams.get('only');
+  const singleLetterIndex = _letterParam !== null
+    ? Math.max(0, (parseInt(_letterParam, 10) || 1) - 1)
+    : null;
+
+  // Apply i18n to static text
+  document.documentElement.setAttribute('lang', T.htmlLang);
+  document.getElementById('envTextLine').innerHTML = T.envLine();
+  document.getElementById('toNameEnv').textContent = toName;
+  document.getElementById('envTextSmall').textContent = T.envSmall;
+  document.getElementById('sealLetter').textContent = T.sealLetter;
+  document.getElementById('sealHint').textContent = T.sealHint;
+  document.getElementById('metaLeft').textContent = (singleLetterIndex !== null) ? T.metaLeftSingle : T.metaLeft;
+  document.getElementById('fromTagPrefix').textContent = T.fromTagPrefix;
+  document.getElementById('salutationPrefix').textContent = T.salutationPrefix;
+  document.getElementById('salutationSuffix').textContent = T.salutationSuffix;
+  document.getElementById('signoffLine1').textContent = T.signoffLine1;
+  document.getElementById('signoffLine2').textContent = T.signoffLine2;
+  document.getElementById('closeBtn').textContent = T.closeBtn;
+  document.getElementById('yesBtn').textContent = T.blessBtn;
+  document.getElementById('yesBig').textContent = T.yesBig;
+  document.getElementById('yesSub').textContent = T.yesSub;
+  document.getElementById('yesClose').textContent = T.yesTiny;
+
+  // Inject names
+  document.getElementById('toName').textContent = toName;
+  document.getElementById('fromNameTag').textContent = fromName;
+  document.getElementById('fromNameSig').textContent = fromName;
+
+  /* ===== Mother's Day letters · 母亲节家书 (zh + en). Click to flip between letters. ===== */
+  const LETTERS = {
+    zh: [
+      { title: 'Per Te, Mamma', subtitle: '— 致 · 一生最爱我的人 —',
+        paragraphs: [
+          '妈妈，今天是母亲节。我没有什么贵重的礼物送你——只想认真地、慢慢地，把心里那些一直说不出口的话，写下来给你看。',
+          '我们这一代人，常常话到嘴边就咽回去；那些"我爱你""谢谢你""你辛苦了"，明明每天都想说，却总是过了又过。今天，我把它们一并交给你。'
+        ], bridge: '所以——妈妈，',
+        question: '请你收下这一封信，<br/>当作今天我亲口对你说的话，好吗？',
+        whisper: '从今往后，<br/>我会一年比一年说得勤一点。' },
+
+      { title: 'Il Primo Amore', subtitle: '— 致 · 第一个认出我的人 —',
+        paragraphs: [
+          '在我还来不及看清这个世界之前，是你先认出了我。是你的心跳替我打了第一个节拍，是你的呼吸替我吸入了人世第一口空气。',
+          '后来我学会走、学会说、学会爱。可我所有的"开始"，最早的源头都在你那里。我从你身体里走出来，一辈子都走不出你的爱。'
+        ], bridge: '所以——妈妈，',
+        question: '今生这第一份爱，<br/>请你允许我一辈子来还，好吗？',
+        whisper: '一点一点地还，<br/>慢慢地还，认真地还。' },
+
+      { title: 'Le Tue Mani', subtitle: '— 致 · 那双温柔了我一辈子的手 —',
+        paragraphs: [
+          '我从前以为，世界上最有力气的手是英雄的手。长大之后我才明白——其实是你的手。那双手抱过我、喂过我、给我系过千百次鞋带，把一个不会说话的婴儿，一寸一寸地，养成今天的我。',
+          '它们也许不再像从前那样光滑了，可它们仍是这世上对我最温柔的那一双——因为它们摸过我所有的眼泪，也牵过我所有的明天。'
+        ], bridge: '所以——妈妈，',
+        question: '从今往后，<br/>这双手，让我来牵，好吗？',
+        whisper: '你以前牵着我过马路，<br/>现在换我牵你回家。' },
+
+      { title: 'La Casa', subtitle: '— 致 · 我心里那个永远叫"家"的地方 —',
+        paragraphs: [
+          '我走过很多城市，吃过很多家饭，可没有一桌饭，比得上你做的那一桌。锅气、油烟、你嘴里那一句"再吃一口"——是我一辈子都戒不掉的味道。',
+          '原来"家"这个字，从来不是房子，不是地图上的一个坐标。它是你做的菜、你的唠叨、你打开门时那一句"回来啦"。'
+        ], bridge: '所以——妈妈，',
+        question: '哪怕我走得再远，你愿意，<br/>永远是我心里那盏不灭的灯吗？',
+        whisper: '不必担心我饿，<br/>我心里一直坐在你的厨房里。' },
+
+      { title: 'Dietro di Me', subtitle: '— 致 · 永远站在我身后的那个人 —',
+        paragraphs: [
+          '小时候我敢跑得很快，因为我知道身后有你。我摔倒了，你来扶；我跌跌撞撞，你不怪我；我做错事，你心疼我比骂我多。',
+          '长大以后我才明白，能让一个人在世界面前不慌的，从来不是勇气，是身后的那个人——是你。'
+        ], bridge: '所以——妈妈，',
+        question: '我此生所有的"勇敢"，<br/>背后都站着你，你知道吗？',
+        whisper: '我会带着这份勇气，<br/>把日子一点一点过得让你放心。' },
+
+      { title: 'I Tuoi Capelli', subtitle: '— 致 · 那些为我而染上的白发 —',
+        paragraphs: [
+          '我每次回家，都偷偷数你又添了几根白发；我每次给你拍照，都假装没看见你眼角又多了一道纹。那些细细的、浅浅的痕迹，都是我换来的——是你为我熬过的夜，操过的心，还有那些没说出口的牵挂。',
+          '有时候我真希望时间能慢下来，慢一点，再慢一点。可时间从不答应。我能做的，就是把每一次回家、每一通电话、每一顿饭，都过得郑重一点。'
+        ], bridge: '所以——妈妈，',
+        question: '请允许我从今天起，<br/>把你为我操的心，一点一点替你接回来，好吗？',
+        whisper: '你已经为我熬过太多夜了，<br/>剩下的夜，让我来。' },
+
+      { title: 'Coraggio', subtitle: '— 致 · 把勇气一点一点喂给我的人 —',
+        paragraphs: [
+          '别人以为我天生胆大，其实不是。是你从小一句一句地告诉我"不要怕"——告诉我可以哭，但不能放弃；可以输，但不能不再试。',
+          '我能站在这个世界面前不慌不躁，是因为你站在我身后从不慌张。你的稳，是我所有底气的来源。'
+        ], bridge: '所以——妈妈，',
+        question: '我此生所有"敢做"的事，<br/>背后都站着你，你知道吗？',
+        whisper: '今后我也想替你"敢"一次——<br/>替你敢于歇一歇，敢于慢下来。' },
+
+      { title: 'Le Parole Non Dette', subtitle: '— 致 · 那些我从未亲口说出的话 —',
+        paragraphs: [
+          '我们家不太说"我爱你"。我们说的是"吃饱了吗""路上小心""到了报个平安"。这些朴素的话里，藏着一辈子的爱。',
+          '可今天，我想笨拙地、郑重地，把那些直接的话也说给你听——妈妈，我爱你；谢谢你；你辛苦了；这一生有你做我的妈妈，是我最幸运的事。'
+        ], bridge: '所以——妈妈，',
+        question: '请你今天，<br/>认真地把这几句话收下，好吗？',
+        whisper: '从今往后，<br/>这几句话，我会越来越敢说。' },
+
+      { title: 'Come Te', subtitle: '— 致 · 我越长越像的那个人 —',
+        paragraphs: [
+          '小时候我总不愿意承认自己像你。后来长大了，我做菜时切葱的样子像你；累了叹气的语气像你；对身边人那种"先把饭吃饱"的关心，也像你。',
+          '原来"长大"这件事，不是变成另一个人，而是慢慢变成你。慢慢地理解你当年的脾气、你的省吃俭用、你的"为什么这么操心"——原来你那时候也没人疼你，可你拼命疼了我。'
+        ], bridge: '所以——妈妈，',
+        question: '我越长越像你，<br/>这件事，你高兴吗？',
+        whisper: '我会把你给我的那份温柔，<br/>原原本本，再交还一些给你。' },
+
+      { title: 'Adesso Tocca a Me', subtitle: '— 致 · 现在让我也来宠你的妈妈 —',
+        paragraphs: [
+          '小时候你总把最好吃的那一块夹给我，最厚的那件衣服披在我身上，最热的那碗汤端到我面前。你把所有的"最好"都让给了我——而你自己，总说"我不饿""我不冷""我不要"。',
+          '现在我长大了，我想轮到我来"夹给你""披给你""端给你"。哪怕只是给你买一束花、煮一碗你最爱的面、陪你走一段你常走的路——也算我开始还你那一辈子的"最好"。'
+        ], bridge: '所以——妈妈，',
+        question: '从今天起，你愿意，<br/>让我也宠你一次、再一次、一辈子吗？',
+        whisper: '你以前说"我不要"的时候，<br/>请你以后改说"我要"。' },
+
+      { title: 'Salute', subtitle: '— 致 · 我最希望平安喜乐的人 —',
+        paragraphs: [
+          '妈妈，请你一定要好好的。要按时吃饭，要早点睡觉，要少操心，要多笑笑。不舒服的时候不要硬撑，不要瞒着我；难过的时候，请你打给我，让我也能为你做一点事。',
+          '我所有的努力、所有的奔波、所有的远行，最后都只是为了一句——希望你平安，希望你健康，希望你这一辈子，余下的每一天，都比昨天舒服一点点。'
+        ], bridge: '所以——妈妈，',
+        question: '请你答应我：<br/>从今往后，把"自己"排在第一位，好吗？',
+        whisper: '你好好的，<br/>就是我最大的福气。' },
+
+      { title: 'Per Te Stessa', subtitle: '— 致 · 也请你为自己活一次 —',
+        paragraphs: [
+          '你为我们省吃俭用了大半辈子。一件衣服穿了又穿，一双鞋补了又补，一句"省着点用"成了我们家的口头禅。你把所有都让给了我们——可妈妈，我也想求你：从今天开始，请你也给自己买一次想买的东西，吃一次想吃的菜，去一次想去的地方。',
+          '这不是奢侈，是你应得的。你把最好的年华都给了这个家，剩下的日子，请也分一些给自己。'
+        ], bridge: '所以——妈妈，',
+        question: '请你答应我，<br/>从今天起，也学会"宠自己"一点，好吗？',
+        whisper: '请慢慢把"舍不得"和"应该"，<br/>都换成"我想要"。' },
+
+      { title: 'La Strada di Casa', subtitle: '— 致 · 我心里那条永远清晰的回家路 —',
+        paragraphs: [
+          '我走得再远，心里都有一条最熟悉的路——那条回家的路。它不在地图上，它在我每一次想你的瞬间里。每当我累了、迷路了、不知道该往哪里走，那条路就会在心里悄悄亮起来，方向永远是一样的：回家。',
+          '原来这世上最稳的"导航"，不是手机、不是路牌，是妈妈在那一头等着。'
+        ], bridge: '所以——妈妈，',
+        question: '只要你在那一头，<br/>我就永远不会真的迷路，对吗？',
+        whisper: '我下次回去，<br/>请你给我做那一碗最熟悉的面。' },
+
+      { title: 'Mille Grazie', subtitle: '— 致 · 一千句"谢谢"也说不完的人 —',
+        paragraphs: [
+          '妈妈，今天我想说一千句"谢谢"。谢谢你把我带到这个世界；谢谢你在我哭的时候没嫌过我吵；谢谢你在我犯错的时候没放弃过我；谢谢你为这个家做过的所有看得见、和我永远不知道的事。',
+          '一千句"谢谢"还远远不够，可它是我今天能说出口的全部。'
+        ], bridge: '所以——妈妈，',
+        question: '这一千句"谢谢"，<br/>请你今天，一句一句地收下，好吗？',
+        whisper: '我会用一辈子的时间，<br/>把它一句一句，慢慢说完。' },
+
+      { title: 'Auguri', subtitle: '— 致 · 我此生最郑重的一份祝福 —',
+        paragraphs: [
+          '妈妈，母亲节快乐。愿你这一年身体康健，愿你少操心、多欢喜；愿你做的每一顿饭都被人珍惜，愿你打的每一通电话那一头都有人接；愿你被这世界温柔地对待，愿你余下的每一年，都比上一年更轻松一点。',
+          '愿岁月对你格外温柔；愿一切美好的事，都先来到你身边。'
+        ], bridge: '所以——妈妈，',
+        question: '这一份祝福，<br/>你愿意收下吗？',
+        whisper: '一年又一年，<br/>我都会再说给你听。' }
+    ],
+
+    en: [
+      { title: 'Per Te, Mamma', subtitle: '— To · the one who loved me first —',
+        paragraphs: [
+          'Mom, today is Mother’s Day. I don’t have any grand gift for you — only this: I want to slow down, sit quietly with my heart, and put down all the words I have never quite known how to say.',
+          'In our family we don’t say "I love you" easily. The "thank you," the "you must be tired," the "I miss you" — they live inside my chest all year, and the day always passes before I let them out. Today, I’m handing them all over to you at once.'
+        ], bridge: 'So — Mom,',
+        question: 'Will you take this letter today<br/>as the words I should have said in person?',
+        whisper: 'From this year on,<br/>I’ll say them more — a little more, every year.' },
+
+      { title: 'Il Primo Amore', subtitle: '— To · the very first heart that knew mine —',
+        paragraphs: [
+          'Before I had any idea what the world was, you already knew me. Your heartbeat kept time for mine before I had one of my own; your breath drew in the very first air I would ever borrow.',
+          'Later I learned to walk, to speak, to love — but every "first" I have ever had began somewhere inside you. I came out of your body, and I have spent a whole life never quite walking out of your love.'
+        ], bridge: 'So — Mom,',
+        question: 'Will you let me spend this whole life<br/>slowly, gently paying that first love back?',
+        whisper: 'A little at a time.<br/>Carefully. Faithfully.' },
+
+      { title: 'Le Tue Mani', subtitle: '— To · the hands that have been kind to me my whole life —',
+        paragraphs: [
+          'When I was little I thought the strongest hands in the world belonged to heroes. It took me years to understand — they are yours. Those hands held me, fed me, tied my shoelaces a thousand times, and somehow turned a small, helpless thing into the person I am today.',
+          'They may not be as smooth as they once were. But they are still the most tender pair of hands in this world, because they have wiped away all my tears and held all my tomorrows.'
+        ], bridge: 'So — Mom,',
+        question: 'From now on, will you let me<br/>be the one who holds your hand?',
+        whisper: 'You used to walk me across the road.<br/>Now let me walk you home.' },
+
+      { title: 'La Casa', subtitle: '— To · the place I will always call home —',
+        paragraphs: [
+          'I have lived in many cities and eaten in many kitchens, but no table has ever come close to yours. The smoke, the warmth, the way you say "have one more bite" — that taste is mine for life.',
+          'It took me a long time to understand: home is not a house, not a dot on a map. It is the food you cook, the small worries you fuss about, and the way the door opens with a soft "you’re back."'
+        ], bridge: 'So — Mom,',
+        question: 'However far I go, will you<br/>always be that lit window in my heart?',
+        whisper: 'Don’t worry that I’m hungry.<br/>Inside, I am still sitting at your kitchen table.' },
+
+      { title: 'Dietro di Me', subtitle: '— To · the one who has always stood behind me —',
+        paragraphs: [
+          'When I was small, I dared to run fast — because I knew you were behind me. When I fell, you came; when I stumbled, you didn’t blame me; when I was wrong, you ached for me more than you scolded me.',
+          'Only as a grown-up did I see it clearly: what makes a person calm in the world is rarely courage on its own. It is the person standing behind them. For me, that has always been you.'
+        ], bridge: 'So — Mom,',
+        question: 'Did you know — half of all the courage I will ever have<br/>came quietly from you?',
+        whisper: 'I’ll carry that gift carefully,<br/>and live a life you can rest easy about.' },
+
+      { title: 'I Tuoi Capelli', subtitle: '— To · the silver hairs that came because of me —',
+        paragraphs: [
+          'Every time I come home, I quietly count how many more silver hairs you have grown. Every time I take your photo, I pretend not to see another fine line at the corner of your eye. Each tiny mark on you was paid for by me — by every night you stayed up, every worry you swallowed, every concern you never told me about.',
+          'Sometimes I wish time would slow down — slower, slower still. Time refuses. So all I can do is make every visit, every phone call, every meal feel a little more like it matters.'
+        ], bridge: 'So — Mom,',
+        question: 'Starting today, will you let me<br/>carry back, piece by piece, the worries you have carried for me?',
+        whisper: 'You have lost too many nights of sleep for me.<br/>The ones still to come, please let me take.' },
+
+      { title: 'Coraggio', subtitle: '— To · the one who fed me courage, spoonful by spoonful —',
+        paragraphs: [
+          'People sometimes say I’m brave by nature. The truth is otherwise. It was you who told me, again and again, "don’t be afraid" — that I was allowed to cry, but not to give up; that I was allowed to lose, but not to stop trying.',
+          'I can stand calmly in front of the world because you stood, calmly, behind me. Your steadiness is the soil that all my confidence grew out of.'
+        ], bridge: 'So — Mom,',
+        question: 'Did you know — every brave thing I have ever done<br/>has had you, quietly, standing behind it?',
+        whisper: 'Now let me be brave for you, too —<br/>brave enough to make you finally rest.' },
+
+      { title: 'Le Parole Non Dette', subtitle: '— To · all the words I have never said out loud —',
+        paragraphs: [
+          'In our family, we don’t really say "I love you." We say "have you eaten?", "be careful on the road," "let me know when you arrive." Inside those plain little phrases is a whole life of love.',
+          'But today, awkwardly and carefully, I want to say the direct words too — Mom, I love you; thank you; you have worked so hard; having you as my mother is the luckiest thing in my life.'
+        ], bridge: 'So — Mom,',
+        question: 'Today, will you let those few sentences<br/>land properly in your heart?',
+        whisper: 'From now on, I’ll grow braver<br/>about saying them, year by year.' },
+
+      { title: 'Come Te', subtitle: '— To · the person I am slowly turning into —',
+        paragraphs: [
+          'When I was young I didn’t want to admit I looked like you. Now, the way I chop onions in the kitchen looks like yours; the small sigh I let out when I’m tired sounds like yours; the way I tell the people around me to "eat first, then talk" — that is pure you.',
+          'It turns out growing up isn’t becoming someone new — it is slowly becoming you. I understand now your old impatience, your frugality, your endless worrying. No one had been gentle with you back then, and yet you were endlessly gentle with me.'
+        ], bridge: 'So — Mom,',
+        question: 'I keep growing into you —<br/>does it make you happy to see?',
+        whisper: 'I’ll take some of the gentleness you gave me,<br/>and slowly hand it back to you.' },
+
+      { title: 'Adesso Tocca a Me', subtitle: '— To · the mother I would love to spoil now —',
+        paragraphs: [
+          'When I was small, you always saved me the best piece of food, the warmest jacket, the hottest bowl of soup. You handed me every "best" — and for yourself, you said, again and again, "I’m not hungry," "I’m not cold," "I don’t need it."',
+          'Now I am grown. Let it be my turn — to save the best piece for you, to drape something warm over your shoulders, to bring the soup. Even if it’s only flowers, or your favorite noodles, or a slow walk along a road you know — let me start paying back a lifetime of "best."'
+        ], bridge: 'So — Mom,',
+        question: 'From today, will you let me spoil you,<br/>once, twice, and for the rest of our lives?',
+        whisper: 'For all the times you used to say "I don’t need it,"<br/>please, now, say "I’d like that."' },
+
+      { title: 'Salute', subtitle: '— To · the one I most want to be safe and well —',
+        paragraphs: [
+          'Mom, please be well. Eat on time, sleep early, worry less, smile more. When you’re unwell, don’t tough it out alone, don’t hide it from me; when something breaks your heart, please call me, so that I can finally do something for you.',
+          'All my work, all my running around, all the distance I have ever traveled — in the end is for one quiet wish: that you stay safe, stay healthy, and that every day still ahead is a little easier than the one before.'
+        ], bridge: 'So — Mom,',
+        question: 'Promise me one thing:<br/>in everything from now on, put yourself first?',
+        whisper: 'You being well<br/>is the greatest blessing I have.' },
+
+      { title: 'Per Te Stessa', subtitle: '— To · the woman I want you to live for, too —',
+        paragraphs: [
+          'You have scrimped and saved for us most of your life. The same shirt worn and worn, shoes mended and mended, "be careful with money" turned into a household phrase. You handed everything over to us. So today I am asking, gently — please, from now on, also buy yourself something you actually want, eat something you actually crave, go somewhere you actually wish to see.',
+          'It isn’t indulgence. It is simply what you have always deserved. You gave the best of your years to this family — please, with the years that are still yours, keep some of them for yourself.'
+        ], bridge: 'So — Mom,',
+        question: 'Promise me — from today,<br/>will you start spoiling yourself, just a little?',
+        whisper: 'Let your "I shouldn’t" and "no need"<br/>turn, slowly, into "I’d like to."' },
+
+      { title: 'La Strada di Casa', subtitle: '— To · the road back to you that I know by heart —',
+        paragraphs: [
+          'However far I go, there is one road I always know — the road home. It isn’t on any map; it lives inside every moment I miss you. When I am exhausted, lost, unsure where to turn — that road lights up quietly inside me, and the direction is always the same: home.',
+          'Of all the navigation in this world, the most reliable isn’t a phone or a sign. It is knowing that on the other end, Mom is still there, waiting.'
+        ], bridge: 'So — Mom,',
+        question: 'As long as you are at the other end,<br/>I will never really be lost — will I?',
+        whisper: 'Next time I come back,<br/>please make me that bowl of noodles I have known forever.' },
+
+      { title: 'Mille Grazie', subtitle: '— To · the one a thousand "thank yous" cannot reach —',
+        paragraphs: [
+          'Mom, today I want to say a thousand "thank yous." Thank you for bringing me into this world. Thank you for never resenting my crying. Thank you for never giving up on me when I was wrong. Thank you for everything you have done for this family — what I saw, and the far more I will never know.',
+          'A thousand isn’t nearly enough. But it is everything I am able to say today.'
+        ], bridge: 'So — Mom,',
+        question: 'Will you accept these thousand "thank yous,"<br/>one slow sentence at a time?',
+        whisper: 'I will spend the rest of my life<br/>saying them — slowly, carefully, all the way through.' },
+
+      { title: 'Auguri', subtitle: '— To · the most sincere wish of my life —',
+        paragraphs: [
+          'Mom, happy Mother’s Day. I wish you health this year, and many years more. I wish you fewer worries and more laughter. I wish every meal you cook to be cherished; I wish every call you make to be answered. I wish the world treats you gently, and I wish every year still ahead is a little lighter than the one before.',
+          'May time be especially soft with you. May every good thing find you first.'
+        ], bridge: 'So — Mom,',
+        question: 'Will you accept this wish<br/>from me, today?',
+        whisper: 'And next year, and the year after,<br/>I will be saying it all over again.' }
+    ]
+  };
+
+  // ?title=... overrides letter 0's title (in current language)
+  if (userTitle) LETTERS[lang][0].title = userTitle.trim();
+
+  /* ===== Custom content via ?content=... ========================================
+     Separators:
+       ~~~  between letters
+       ::   between fields:  title :: subtitle :: paragraphs :: bridge :: question :: whisper
+       ||   between paragraphs (newline also works)
+     All fields are optional; trailing ones may be omitted.
+     If the content contains no "::", the whole value is treated as a single
+     letter's body (paragraphs split by || / newline). This makes the short form
+     ?content=Hello%20Mom%20||I%20love%20you just work.
+  ============================================================================== */
+  const rawContent = urlParams.get('content');
+  function parseCustomLetters(raw) {
+    if (!raw) return null;
+    const letters = raw.split('~~~').map(s => s.trim()).filter(Boolean);
+    if (!letters.length) return null;
+
+    const splitParas = str => (str || '')
+      .split(/\|\||\r?\n/)
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    return letters.map(letterStr => {
+      // Short form: no "::" → treat whole string as paragraphs of one letter.
+      if (!letterStr.includes('::')) {
+        return {
+          title: (userTitle || LETTERS[lang][0].title),
+          subtitle: '',
+          paragraphs: splitParas(letterStr),
+          bridge: '',
+          question: '',
+          whisper: ''
+        };
+      }
+      const [title = '', subtitle = '', paragraphs = '', bridge = '', question = '', whisper = ''] =
+        letterStr.split('::');
+      return {
+        title: title.trim() || 'Per Te, Mamma',
+        subtitle: subtitle.trim(),
+        paragraphs: splitParas(paragraphs),
+        bridge: bridge.trim(),
+        question: question.trim(),
+        whisper: whisper.trim()
+      };
+    }).filter(L => L.paragraphs.length || L.question || L.whisper || L.subtitle);
+  }
+  const customLetters = parseCustomLetters(rawContent);
+  if (customLetters && customLetters.length) {
+    LETTERS[lang] = customLetters;
+  }
+
+  /* ===== Letter renderer + click-to-flip ===== */
+  const SET = LETTERS[lang];
+  const TOTAL = SET.length;
+  let currentLetterIdx = (singleLetterIndex !== null)
+    ? Math.min(singleLetterIndex, TOTAL - 1)
+    : 0;
+  const pad2 = n => String(n).padStart(2, '0');
+
+  function renderLetter(idx) {
+    const L = SET[idx];
+    document.getElementById('fancyTitle').textContent = L.title;
+    const subtitleEl = document.getElementById('letterSubtitle');
+    subtitleEl.textContent = L.subtitle || '';
+    subtitleEl.style.display = L.subtitle ? '' : 'none';
+
+    const body = document.getElementById('letterBody');
+    body.innerHTML = '';
+    L.paragraphs.forEach(t => {
+      const p = document.createElement('p');
+      p.textContent = t;
+      body.appendChild(p);
+    });
+    if (L.bridge) {
+      const p = document.createElement('p');
+      p.className = 'no-indent';
+      p.textContent = L.bridge;
+      body.appendChild(p);
+    }
+    const qEl = document.getElementById('letterQuestion');
+    qEl.innerHTML = L.question || '';
+    qEl.style.display = L.question ? '' : 'none';
+    const wEl = document.getElementById('letterWhisper');
+    wEl.innerHTML = L.whisper || '';
+    wEl.style.display = L.whisper ? '' : 'none';
+    document.getElementById('letterIndex').textContent = `${pad2(idx + 1)} / ${pad2(TOTAL)}`;
+    document.title = T.docTitle(L.title, toName);
+  }
+
+  renderLetter(currentLetterIdx);
+
+  const letterCard = document.getElementById('letterCard');
+  let flipping = false;
+  function flipLetter(direction = 1) {
+    if (singleLetterIndex !== null) return;  // locked to a single letter
+    if (flipping) return;
+    flipping = true;
+    letterCard.classList.add('flipping');
+    setTimeout(() => {
+      currentLetterIdx = (currentLetterIdx + direction + TOTAL) % TOTAL;
+      renderLetter(currentLetterIdx);
+      letterCard.classList.remove('flipping');
+      flipping = false;
+    }, 320);
+  }
+
+  if (singleLetterIndex !== null) {
+    letterCard.style.cursor = 'default';
+    letterCard.removeAttribute('role');
+    letterCard.removeAttribute('tabindex');
+    letterCard.setAttribute('aria-label', 'Mother’s Day letter');
+  } else {
+    letterCard.addEventListener('click', (e) => {
+      if (e.target.closest('button, a, input, textarea, .music-slot, .music-controls, meting-js, .aplayer')) return;
+      flipLetter(1);
+    });
+    letterCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipLetter(1); }
+    });
+  }
+
+  /* ===== Build the music player (just the player, no surrounding text) ===== */
+  let metingEl = null;
+  function buildMusicPlayer() {
+    const slot = document.getElementById('musicSlot');
+    if (!slot) return;
+    // Remove only existing meting-js elements; keep the right-side next-arrow button alive.
+    slot.querySelectorAll('meting-js').forEach(el => el.remove());
+
+    const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#b8546a';
+
+    metingEl = document.createElement('meting-js');
+    metingEl.setAttribute('id', musicId);
+    metingEl.setAttribute('server', musicApp);
+    metingEl.setAttribute('type', musicType);
+    if (autoplay) metingEl.setAttribute('autoplay', 'true');
+    metingEl.setAttribute('fixed', 'false');
+    metingEl.setAttribute('mini', 'false');
+    metingEl.setAttribute('loop', 'all');
+    metingEl.setAttribute('order', 'list');
+    metingEl.setAttribute('preload', 'auto');
+    metingEl.setAttribute('theme', accent);
+    // Treat playlists like a single-song display; we expose a custom "next" arrow instead.
+    metingEl.setAttribute('list-folded', 'true');
+    metingEl.setAttribute('list-max-height', '0');
+    // Insert the player as the first child so the absolutely-positioned button overlays it on the right.
+    slot.insertBefore(metingEl, slot.firstChild);
+
+    // Reveal the next-arrow only when the source is a multi-track type.
+    const isMulti = /^(playlist|album|artist|search)$/i.test(musicType);
+    const nextBtn = document.getElementById('nextSongBtn');
+    if (nextBtn && isMulti) nextBtn.hidden = false;
+  }
+
+  /* ===== Custom "next song" button ===== */
+  const nextSongBtn = document.getElementById('nextSongBtn');
+  if (nextSongBtn) {
+    nextSongBtn.addEventListener('click', () => {
+      const ap = metingEl && metingEl.aplayer;
+      if (ap && typeof ap.skipForward === 'function') {
+        ap.skipForward();
+        if (ap.audio && ap.audio.paused && typeof ap.play === 'function') {
+          ap.play();
+        }
+      }
+    });
+  }
+
+  /* ===== Theme switching ===== */
+  const THEMES = {
+    rose:     { name: "Rose & Honey"      },
+    lavender: { name: "Lavender Dusk"     },
+    sakura:   { name: "Sakura Mist"       },
+    midnight: { name: "Midnight Garden"   },
+    sage:     { name: "Morning Sage"      }
+  };
+
+  const SEASONS = {
+    spring: { particle: "blossom", grassDensity: 1.0, name: "Spring" },
+    summer: { particle: "rain",    grassDensity: 1.2, name: "Summer" },
+    autumn: { particle: "leaf",    grassDensity: 0.7, name: "Autumn" },
+    winter: { particle: "snow",    grassDensity: 0.4, name: "Winter" }
+  };
+  function currentSeason() { return body.getAttribute('data-season') || 'spring'; }
+  function currentParticleKind() { return SEASONS[currentSeason()].particle; }
+
+  const body = document.body;
+  const swatches = document.querySelectorAll('.swatch');
+  const themeNameEl = document.getElementById('themeName');
+
+  function setTheme(name) {
+    body.setAttribute('data-theme', name);
+    swatches.forEach(s => s.classList.toggle('active', s.dataset.theme === name));
+    themeNameEl.textContent = THEMES[name].name;
+    rebuildParticles();
+    try { localStorage.setItem('letter-theme', name); } catch(e){}
+  }
+  swatches.forEach(s => s.addEventListener('click', () => setTheme(s.dataset.theme)));
+
+  try {
+    const saved = localStorage.getItem('letter-theme');
+    if (saved && THEMES[saved]) setTheme(saved);
+  } catch(e){}
+
+  /* ===== Envelope opening ===== */
+  const envelope = document.getElementById('envelope');
+  const letterWrap = document.getElementById('letterWrap');
+  const closeBtn = document.getElementById('closeBtn');
+
+  let playerBuilt = false;
+  function openEnvelope() {
+    if (envelope.classList.contains('opening')) return;
+    envelope.classList.add('opening');
+    setTimeout(() => {
+      envelope.classList.add('hidden');
+      letterWrap.classList.add('visible');
+      letterWrap.setAttribute('aria-hidden','false');
+      if (!playerBuilt) {
+        buildMusicPlayer();
+        playerBuilt = true;
+      }
+    }, 900);
+  }
+  envelope.addEventListener('click', openEnvelope);
+  envelope.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    letterWrap.classList.remove('visible');
+    letterWrap.setAttribute('aria-hidden','true');
+    setTimeout(() => {
+      envelope.classList.remove('hidden','opening');
+    }, 600);
+  });
+
+  /* ===== Particles ===== */
+  const particlesEl = document.getElementById('particles');
+  const petalsBtn = document.getElementById('petalsBtn');
+  let particlesOn = true;
+  petalsBtn.classList.remove('off');
+
+  function blossomSVG(color) {
+    return `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <g transform="translate(12 12)">
+        ${[0,72,144,216,288].map(a => `<ellipse cx="0" cy="-6" rx="3.4" ry="5.2" fill="${color}" opacity="0.92" transform="rotate(${a})"/>`).join('')}
+        <circle r="1.6" fill="#fff3a8" opacity="0.95"/>
+      </g>
+    </svg>`;
+  }
+  // Real 6-fold snowflakes — three variants (detailed dendrite, simple star, tiny crystal)
+  function snowSVG(color, variant) {
+    const v = (variant == null) ? Math.floor(Math.random() * 3) : variant;
+    if (v === 0) {
+      // detailed dendrite: 6 main arms + side branches at 1/3 and 2/3
+      const arms = [0, 60, 120].map(a => `
+        <g transform="rotate(${a})">
+          <line x1="-10" y1="0" x2="10" y2="0"/>
+          <line x1="-7" y1="0" x2="-8.5" y2="-2.6"/>
+          <line x1="-7" y1="0" x2="-8.5" y2="2.6"/>
+          <line x1="7"  y1="0" x2="8.5"  y2="-2.6"/>
+          <line x1="7"  y1="0" x2="8.5"  y2="2.6"/>
+          <line x1="-3.5" y1="0" x2="-4.8" y2="-1.6"/>
+          <line x1="-3.5" y1="0" x2="-4.8" y2="1.6"/>
+          <line x1="3.5"  y1="0" x2="4.8"  y2="-1.6"/>
+          <line x1="3.5"  y1="0" x2="4.8"  y2="1.6"/>
+        </g>`).join('');
+      return `<svg viewBox="-12 -12 24 24" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <g stroke="${color}" stroke-width="1.1" fill="none" stroke-linecap="round" opacity="0.95">
+          ${arms}
+          <circle r="0.9" fill="${color}" stroke="none"/>
+        </g>
+      </svg>`;
+    } else if (v === 1) {
+      // simple stellar: 6 arms with arrowhead tips
+      const arms = [0, 60, 120].map(a => `
+        <g transform="rotate(${a})">
+          <line x1="-9" y1="0" x2="9" y2="0"/>
+          <line x1="-9" y1="0" x2="-7" y2="-2"/>
+          <line x1="-9" y1="0" x2="-7" y2="2"/>
+          <line x1="9"  y1="0" x2="7"  y2="-2"/>
+          <line x1="9"  y1="0" x2="7"  y2="2"/>
+        </g>`).join('');
+      return `<svg viewBox="-12 -12 24 24" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <g stroke="${color}" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0.9">
+          ${arms}
+        </g>
+      </svg>`;
+    } else {
+      // distant crystal — tiny soft point
+      return `<svg viewBox="-6 -6 12 12" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <circle r="2" fill="${color}" opacity="0.85"/>
+        <circle r="3.5" fill="${color}" opacity="0.18"/>
+      </svg>`;
+    }
+  }
+  function leafSVG(color) {
+    return `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <path d="M3 21 C 8 6, 18 4, 22 3 C 21 11, 17 19, 4 22 Z" fill="${color}" opacity="0.85"/>
+      <path d="M5 20 C 10 12, 16 7, 21 4" stroke="${color}" stroke-width="0.7" fill="none" opacity="0.5"/>
+    </svg>`;
+  }
+  // Soft romantic drizzle: thin, fading streaks with a glowing droplet at the tip
+  function rainSVG(color) {
+    const gid = 'rg' + Math.random().toString(36).slice(2, 8);
+    return `<svg viewBox="0 0 6 30" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${color}" stop-opacity="0"/>
+          <stop offset="55%" stop-color="${color}" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="${color}" stop-opacity="0.7"/>
+        </linearGradient>
+      </defs>
+      <line x1="3" y1="0" x2="3" y2="26" stroke="url(#${gid})" stroke-width="0.9" stroke-linecap="round"/>
+      <circle cx="3" cy="27" r="1.1" fill="${color}" opacity="0.7"/>
+    </svg>`;
+  }
+
+  function getThemeColors() {
+    const cs = getComputedStyle(document.body);
+    return [
+      cs.getPropertyValue('--particle-1').trim(),
+      cs.getPropertyValue('--particle-2').trim(),
+      cs.getPropertyValue('--particle-3').trim()
+    ];
+  }
+
+  let spawnTimer = null;
+  function rebuildParticles() {
+    particlesEl.innerHTML = '';
+    if (spawnTimer) { clearInterval(spawnTimer); spawnTimer = null; }
+    if (!particlesOn) return;
+
+    const kind = currentParticleKind();
+    const seasonPalettes = {
+      spring: ['#f7c5d3','#fde0ea','#ffd9e4','#f4a3b6','#ffe7c2'],
+      summer: ['#e9eef7','#dbe6f2','#f4d7dc','#f6c7d0','#fce4d6','#e8d4e0','#cfe0ef'],
+      autumn: ['#c8602e','#e08a3a','#a84a22','#d97a2e','#e8a84a'],
+      winter: ['#ffffff','#fafafa','#ffffff','#fcfcfc','#ffffff']
+    };
+    const summerPetalPalette = ['#f4a3b6','#f6c7d0','#fde0ea','#f7c5d3','#fce4d6'];
+    const palette = seasonPalettes[currentSeason()] || getThemeColors();
+
+    function makeOne(initial) {
+      const el = document.createElement('div');
+      el.className = 'particle';
+
+      const isPetalInRain = (kind === 'rain') && (Math.random() < 0.12);
+      let snowVariant = null;
+      if (kind === 'snow') {
+        const r = Math.random();
+        snowVariant = r < 0.45 ? 0 : r < 0.8 ? 1 : 2;
+      }
+
+      const w = (kind === 'rain' && !isPetalInRain) ? 1.6 + Math.random() * 1.0 : 0;
+      const h = (kind === 'rain' && !isPetalInRain) ? 22 + Math.random() * 24 : 0;
+      const size = isPetalInRain      ? 10 + Math.random() * 8
+                  : kind === 'rain'   ? 0
+                  : kind === 'snow'   ? (snowVariant === 2 ? 5 + Math.random() * 4
+                                       : snowVariant === 1 ? 9 + Math.random() * 6
+                                       :                     12 + Math.random() * 8)
+                  : kind === 'leaf'   ? 18 + Math.random() * 22
+                  :                     14 + Math.random() * 18;
+
+      const color = isPetalInRain
+        ? summerPetalPalette[Math.floor(Math.random() * summerPetalPalette.length)]
+        : palette[Math.floor(Math.random() * palette.length)];
+
+      const svg = isPetalInRain    ? blossomSVG(color)
+                : kind === 'leaf'  ? leafSVG(color)
+                : kind === 'snow'  ? snowSVG(color, snowVariant)
+                : kind === 'rain'  ? null  // rain rendered via gradient div, no SVG
+                :                    blossomSVG(color);
+      if (svg) el.innerHTML = svg;
+
+      const left = Math.random() * 100;
+      const landYPx = 4 + Math.random() * 52;
+      const landY = `calc(100vh - ${landYPx.toFixed(1)}px)`;
+
+      const dur = isPetalInRain    ? 13 + Math.random() * 8
+                : kind === 'rain'  ? 3.6 + Math.random() * 2.4
+                : kind === 'leaf'  ? 14 + Math.random() * 10
+                : kind === 'snow'  ? (snowVariant === 0 ? 22 + Math.random() * 12
+                                    : snowVariant === 1 ? 18 + Math.random() * 10
+                                    :                     14 + Math.random() * 8)
+                :                    12 + Math.random() * 10;
+
+      // For initial burst, randomize delay across [-2*dur, 0] so the box opens
+      // already populated with both landed and in-flight particles. For ongoing
+      // spawns, start fresh from the top.
+      const startDelay = initial ? -Math.random() * dur * 2 : 0;
+
+      const sway = (kind === 'rain' && !isPetalInRain) ? '40px'
+                 : kind === 'snow'                     ? (Math.random() * 320 - 160) + 'px'
+                 :                                       (Math.random() * 240 - 120) + 'px';
+      const opacity = isPetalInRain    ? 0.6 + Math.random() * 0.3
+                    : kind === 'rain'  ? 0.55 + Math.random() * 0.35
+                    : kind === 'snow'  ? (snowVariant === 2 ? 0.5 + Math.random() * 0.3
+                                                            : 0.7 + Math.random() * 0.3)
+                    :                    0.55 + Math.random() * 0.4;
+
+      if (kind === 'rain' && !isPetalInRain) {
+        el.style.cssText = `
+          left:${left}vw;
+          top:0;
+          width:${w}px;
+          height:${h}px;
+          animation-name:rainfall;
+          animation-duration:${dur}s;
+          animation-delay:${startDelay}s;
+          animation-timing-function:linear;
+          animation-iteration-count:1;
+          animation-fill-mode:forwards;
+          --landY:${landY};
+          opacity:${opacity};
+          background: linear-gradient(180deg, transparent 0%, ${color} 70%, ${color} 100%);
+          border-radius: ${w}px;
+          box-shadow: 0 0 3px ${color};
+          transform: rotate(6deg);
+          filter: blur(0.25px);
+        `;
+      } else {
+        el.style.cssText = `
+          left:${left}vw;
+          top:0;
+          width:${size}px;
+          height:${size}px;
+          animation-duration:${dur}s;
+          animation-delay:${startDelay}s;
+          animation-iteration-count:1;
+          animation-fill-mode:forwards;
+          --sway:${sway};
+          --dx0:0px;
+          --landY:${landY};
+          --maxop:${opacity};
+        `;
+      }
+
+      // No eviction — landed particles stay forever. The spawner stops once the cap is hit.
+      particlesEl.appendChild(el);
+    }
+
+    // 1) Initial burst — opens with some landed and some still falling
+    const initialN = kind === 'rain' ? 70 : 40;
+    for (let i = 0; i < initialN; i++) makeOne(true);
+
+    // 2) Continuous spawn — keeps falling forever, particles pile up without limit.
+    const interval = kind === 'rain' ? 220 : 850;
+    spawnTimer = setInterval(() => makeOne(false), interval);
+  }
+
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+    @keyframes rainfall {
+      /* drops fall, then settle at a random landing Y inside the grass-strip box and stay there */
+      0%   { transform: translate(0, -10vh) rotate(6deg); opacity: 0; }
+      15%  { opacity: 1; }
+      100% { transform: translate(-4vw, var(--landY, 98vh)) rotate(6deg); opacity: 1; }
+    }
+  `;
+  document.head.appendChild(styleSheet);
+
+  petalsBtn.addEventListener('click', () => {
+    particlesOn = !particlesOn;
+    petalsBtn.classList.toggle('off', !particlesOn);
+    petalsBtn.setAttribute('aria-pressed', String(particlesOn));
+    rebuildParticles();
+  });
+
+  rebuildParticles();
+
+  /* ===== Grass blades + seasonal piles ===== */
+  const grassEl = document.getElementById('grassStrip');
+  const leafPileEl = document.getElementById('leafPile');
+  const petalPileEl = document.getElementById('petalPile');
+  const puddlePileEl = document.getElementById('puddlePile');
+  const snowPileEl  = document.getElementById('snowPile');
+
+  // Smoothly varying density profile across width — gives natural "this side is more piled than that"
+  function makeProfile(W) {
+    const peaks = 5 + Math.floor(Math.random() * 4);
+    const profile = [];
+    for (let i = 0; i < peaks; i++) {
+      profile.push({
+        x: (i + 0.4 + Math.random() * 0.4) * W / peaks,
+        h: 0.45 + Math.random() * 0.7
+      });
+    }
+    return profile;
+  }
+  function densityAt(profile, x) {
+    let w = 0, sum = 0;
+    for (const p of profile) {
+      const wi = 1 / (1 + Math.pow((x - p.x) / 100, 2));
+      w += wi;
+      sum += p.h * wi;
+    }
+    return sum / w;
+  }
+
+  function buildGrass() {
+    if (!grassEl) return;
+    const density = SEASONS[currentSeason()].grassDensity;
+    const W = window.innerWidth;
+    const N = Math.floor(W / 9 * density);
+    const cs = getComputedStyle(document.body);
+    const g1 = cs.getPropertyValue('--ground-1').trim() || '#7ba869';
+    const g2 = cs.getPropertyValue('--ground-2').trim() || '#3e6b32';
+    const tip = cs.getPropertyValue('--grass-tip').trim() || g1;
+    const bloom = cs.getPropertyValue('--bloom').trim() || '#ec8aa8';
+    const season = currentSeason();
+
+    let svg = `<svg viewBox="0 0 ${W} 70" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">`;
+    for (let i = 0; i < N; i++) {
+      const x = Math.random() * W;
+      const h = 18 + Math.random() * 34;
+      const lean = (Math.random() - 0.5) * 12;
+      const fill = Math.random() < 0.4 ? g1 : g2;
+      svg += `<path d="M ${x} 70 Q ${x + lean*0.5} ${70-h*0.6} ${x + lean} ${70-h} Q ${x + lean - 1} ${70-h*0.6} ${x-1.6} 70 Z" fill="${fill}"/>`;
+      if (Math.random() < 0.35) {
+        svg += `<path d="M ${x + lean*0.7} ${70-h*0.7} L ${x+lean} ${70-h}" stroke="${tip}" stroke-width="0.8" fill="none" opacity="0.6"/>`;
+      }
+      if ((season === 'spring' || season === 'summer') && Math.random() < 0.04) {
+        const fy = 70 - h - 2;
+        svg += `<g transform="translate(${x+lean} ${fy})">`;
+        for (let p = 0; p < 5; p++) {
+          svg += `<circle cx="${Math.cos(p*1.2566)*2.2}" cy="${Math.sin(p*1.2566)*2.2}" r="1.6" fill="${bloom}" opacity="0.95"/>`;
+        }
+        svg += `<circle r="1" fill="#fff3a8"/></g>`;
+      }
+    }
+    svg += `</svg>`;
+    grassEl.innerHTML = svg;
+  }
+
+  function buildLeafPile() {
+    if (!leafPileEl) return;
+    const W = window.innerWidth;
+    const colors = ['#c8602e','#e08a3a','#a84a22','#d97a2e','#8a4520','#e8a84a'];
+    const profile = makeProfile(W);
+    let svg = `<svg viewBox="0 0 ${W} 60" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">`;
+
+    // 1) Pre-piled base — leaves carpet the bottom
+    for (let i = 0; i < W / 6; i++) {
+      const x = Math.random() * W;
+      const y = 50 + Math.random() * 8;
+      const r = 5 + Math.random() * 8;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<g transform="translate(${x} ${y}) rotate(${rot})"><ellipse cx="0" cy="0" rx="${r*1.3}" ry="${r*0.65}" fill="${c}"/><line x1="${-r*1.2}" y1="0" x2="${r*1.2}" y2="0" stroke="rgba(0,0,0,0.25)" stroke-width="0.7"/></g>`;
+    }
+    // 2) Accumulated layer — heavier where the profile peaks
+    for (let i = 0; i < W / 10; i++) {
+      const x = Math.random() * W;
+      const dens = densityAt(profile, x);
+      if (Math.random() > dens) continue;
+      const y = 44 - 12 * dens + Math.random() * 6;
+      const r = 5 + Math.random() * 7;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<g transform="translate(${x} ${y}) rotate(${rot})"><ellipse cx="0" cy="0" rx="${r*1.3}" ry="${r*0.6}" fill="${c}" opacity="0.9"/><line x1="${-r*1.2}" y1="0" x2="${r*1.2}" y2="0" stroke="rgba(0,0,0,0.2)" stroke-width="0.6"/></g>`;
+    }
+    // 3) Random leaves caught on grass blades
+    for (let i = 0; i < W / 26; i++) {
+      const x = Math.random() * W;
+      const y = 10 + Math.random() * 24;
+      const r = 4 + Math.random() * 5;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<g transform="translate(${x} ${y}) rotate(${rot})"><ellipse cx="0" cy="0" rx="${r*1.3}" ry="${r*0.55}" fill="${c}" opacity="0.85"/><line x1="${-r*1.2}" y1="0" x2="${r*1.2}" y2="0" stroke="rgba(0,0,0,0.2)" stroke-width="0.5"/></g>`;
+    }
+
+    svg += `</svg>`;
+    leafPileEl.innerHTML = svg;
+  }
+
+  function buildPetalPile() {
+    if (!petalPileEl) return;
+    const W = window.innerWidth;
+    const colors = ['#f7c5d3','#fde0ea','#ffd9e4','#f4a3b6','#e88aa6','#ffe0e8','#ffc0cb'];
+    const profile = makeProfile(W);
+    let svg = `<svg viewBox="0 0 ${W} 60" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">`;
+
+    // 1) Pre-piled base — always present at the very bottom
+    for (let i = 0; i < W / 5; i++) {
+      const x = Math.random() * W;
+      const y = 50 + Math.random() * 8;
+      const r = 2.5 + Math.random() * 3;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<ellipse cx="${x}" cy="${y}" rx="${r * 1.6}" ry="${r * 0.55}" fill="${c}" opacity="${0.8 + Math.random() * 0.2}" transform="rotate(${rot} ${x} ${y})"/>`;
+    }
+    // 2) Accumulated layer — drifts higher where the profile peaks (looks like falls piled there)
+    for (let i = 0; i < W / 8; i++) {
+      const x = Math.random() * W;
+      const dens = densityAt(profile, x);
+      if (Math.random() > dens) continue;
+      const y = 44 - 12 * dens + Math.random() * 6;
+      const r = 3 + Math.random() * 3;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<ellipse cx="${x}" cy="${y}" rx="${r * 1.5}" ry="${r * 0.55}" fill="${c}" opacity="${0.75 + Math.random() * 0.2}" transform="rotate(${rot} ${x} ${y})"/>`;
+    }
+    // 3) Hanging on grass — random petals stuck mid-grass
+    for (let i = 0; i < W / 26; i++) {
+      const x = Math.random() * W;
+      const y = 10 + Math.random() * 22;
+      const r = 2 + Math.random() * 2;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<ellipse cx="${x}" cy="${y}" rx="${r * 1.4}" ry="${r * 0.5}" fill="${c}" opacity="${0.7 + Math.random() * 0.25}" transform="rotate(${rot} ${x} ${y})"/>`;
+    }
+    // 4) A few intact 5-petal blossoms scattered on top
+    for (let i = 0; i < W / 40; i++) {
+      const cx = Math.random() * W;
+      const cy = 32 + Math.random() * 18;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<g transform="translate(${cx} ${cy}) rotate(${rot})">`;
+      for (let p = 0; p < 5; p++) {
+        svg += `<ellipse cx="0" cy="-2.6" rx="1.9" ry="2.9" fill="${c}" opacity="0.95" transform="rotate(${p * 72})"/>`;
+      }
+      svg += `<circle r="0.9" fill="#fff3a8"/></g>`;
+    }
+
+    svg += `</svg>`;
+    petalPileEl.innerHTML = svg;
+  }
+
+  function buildPuddlePile() {
+    if (!puddlePileEl) return;
+    const W = window.innerWidth;
+    let svg = `<svg viewBox="0 0 ${W} 60" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="puddle-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="#a8c8e8" stop-opacity="0"/>
+          <stop offset="55%" stop-color="#7ba2c4" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#4f7ea0" stop-opacity="0.85"/>
+        </linearGradient>
+      </defs>`;
+    // Pre-piled wet sheen across the whole strip
+    svg += `<rect x="0" y="42" width="${W}" height="18" fill="url(#puddle-grad)" opacity="0.35"/>`;
+    // Naturally spaced puddles where rain has collected
+    const N = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < N; i++) {
+      const cx = (i + 0.5) * W / N + (Math.random() - 0.5) * (W / N) * 0.4;
+      const cy = 44 + Math.random() * 10;
+      const rx = 70 + Math.random() * 110;
+      const ry = 5 + Math.random() * 4;
+      svg += `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#puddle-grad)" opacity="0.9"/>`;
+      svg += `<ellipse cx="${cx - rx * 0.3}" cy="${cy - ry * 0.4}" rx="${rx * 0.4}" ry="${ry * 0.25}" fill="#ffffff" opacity="0.55"/>`;
+      svg += `<ellipse cx="${cx + rx * 0.18}" cy="${cy}" rx="${rx * 0.65}" ry="${ry * 0.7}" fill="none" stroke="#ffffff" stroke-width="0.6" opacity="0.35"/>`;
+    }
+    // Droplets clinging to grass blades — random "hanging" rain
+    for (let i = 0; i < W / 16; i++) {
+      const x = Math.random() * W;
+      const y = 12 + Math.random() * 26;
+      const r = 1.4 + Math.random() * 1.6;
+      svg += `<circle cx="${x}" cy="${y}" r="${r}" fill="#7ba2c4" opacity="0.72"/>`;
+      svg += `<circle cx="${x - r * 0.3}" cy="${y - r * 0.3}" r="${r * 0.4}" fill="#ffffff" opacity="0.9"/>`;
+    }
+    svg += `</svg>`;
+    puddlePileEl.innerHTML = svg;
+  }
+
+  function buildSnowPile() {
+    if (!snowPileEl) return;
+    const W = window.innerWidth;
+    let svg = `<svg viewBox="0 0 ${W} 60" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">`;
+
+    // Just snow caps clinging to grass blades — no bulk drift, so the warm earth shows through
+    for (let i = 0; i < W / 12; i++) {
+      const x = Math.random() * W;
+      const y = 6 + Math.random() * 28;
+      const r = 1.6 + Math.random() * 2.2;
+      svg += `<ellipse cx="${x}" cy="${y}" rx="${r * 1.3}" ry="${r * 0.7}" fill="#ffffff" opacity="${0.7 + Math.random() * 0.3}"/>`;
+    }
+
+    svg += `</svg>`;
+    snowPileEl.innerHTML = svg;
+  }
+
+  buildGrass();
+  buildLeafPile();
+  buildPetalPile();
+  buildPuddlePile();
+  buildSnowPile();
+  let _resizeTO;
+  window.addEventListener('resize', () => {
+    clearTimeout(_resizeTO);
+    _resizeTO = setTimeout(() => {
+      buildGrass();
+      buildLeafPile();
+      buildPetalPile();
+      buildPuddlePile();
+      buildSnowPile();
+    }, 200);
+  });
+
+  /* ===== Season switching ===== */
+  const seasonBtns = document.querySelectorAll('.season-btn');
+  function setSeason(s) {
+    if (!SEASONS[s]) return;
+    body.setAttribute('data-season', s);
+    seasonBtns.forEach(b => b.classList.toggle('active', b.dataset.season === s));
+    rebuildParticles();
+    requestAnimationFrame(() => buildGrass());
+    try { localStorage.setItem('letter-season', s); } catch(e){}
+  }
+  seasonBtns.forEach(b => b.addEventListener('click', () => setSeason(b.dataset.season)));
+  try {
+    const savedS = localStorage.getItem('letter-season');
+    if (savedS && SEASONS[savedS]) setSeason(savedS);
+    else setSeason('spring');
+  } catch(e){ setSeason('spring'); }
+
+  /* ===== Ambient hum ===== */
+  const muteBtn = document.getElementById('muteBtn');
+  let audioCtx = null;
+  let masterGain = null;
+  let humOn = false;
+  let oscNodes = [];
+
+  function startHum() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0;
+      masterGain.connect(audioCtx.destination);
+      const freqs = [110, 164.81, 220];
+      oscNodes = freqs.map((f, i) => {
+        const o = audioCtx.createOscillator();
+        o.type = 'sine';
+        o.frequency.value = f;
+        const g = audioCtx.createGain();
+        g.gain.value = 0.06 - i * 0.015;
+        o.connect(g).connect(masterGain);
+        const lfo = audioCtx.createOscillator();
+        lfo.frequency.value = 0.05 + i * 0.03;
+        const lfoG = audioCtx.createGain();
+        lfoG.gain.value = 1.2;
+        lfo.connect(lfoG).connect(o.frequency);
+        o.start(); lfo.start();
+        return { o, lfo, g };
+      });
+      masterGain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 2.2);
+      humOn = true;
+    } catch(e) { console.warn('audio failed', e); }
+  }
+
+  function stopHum() {
+    if (!audioCtx || !humOn) return;
+    masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+    setTimeout(() => {
+      oscNodes.forEach(n => { try{ n.o.stop(); n.lfo.stop(); }catch(e){} });
+      oscNodes = [];
+      humOn = false;
+    }, 850);
+  }
+
+  muteBtn.addEventListener('click', () => {
+    if (humOn) {
+      stopHum();
+      muteBtn.classList.add('off');
+      muteBtn.setAttribute('aria-pressed','false');
+    } else {
+      startHum();
+      muteBtn.classList.remove('off');
+      muteBtn.setAttribute('aria-pressed','true');
+    }
+  });
+
+  /* ===== Heart burst ===== */
+  const burstEl = document.getElementById('burst');
+  function heartBurst() {
+    const SHAPES = ['♡','✦','❀','❤'];
+    for (let i = 0; i < 32; i++) {
+      const s = document.createElement('span');
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 140 + Math.random() * 320;
+      s.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
+      s.style.setProperty('--by', Math.sin(angle) * dist + 'px');
+      s.style.setProperty('--br', (Math.random() * 360) + 'deg');
+      s.style.fontSize = (16 + Math.random() * 24) + 'px';
+      s.style.color = getThemeColors()[Math.floor(Math.random()*3)] || 'currentColor';
+      s.textContent = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+      burstEl.appendChild(s);
+      setTimeout(() => s.remove(), 1700);
+    }
+  }
+
+  /* ===== "Yes" overlay ===== */
+  const yesBtn = document.getElementById('yesBtn');
+  const yesOverlay = document.getElementById('yesOverlay');
+  const yesClose = document.getElementById('yesClose');
+  yesBtn.addEventListener('click', () => {
+    heartBurst();
+    yesOverlay.classList.add('visible');
+    yesOverlay.setAttribute('aria-hidden', 'false');
+    setTimeout(heartBurst, 600);
+    setTimeout(heartBurst, 1200);
+  });
+  function closeYes() {
+    yesOverlay.classList.remove('visible');
+    yesOverlay.setAttribute('aria-hidden', 'true');
+  }
+  yesOverlay.addEventListener('click', closeYes);
+  yesClose.addEventListener('click', (e) => { e.stopPropagation(); closeYes(); });
+
+  /* ===== Keyboard: arrow keys cycle themes ===== */
+  const order = ['rose','lavender','sakura','midnight','sage'];
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'Escape' && yesOverlay.classList.contains('visible')) { closeYes(); return; }
+    const cur = body.getAttribute('data-theme');
+    const idx = order.indexOf(cur);
+    if (e.key === 'ArrowRight') setTheme(order[(idx+1) % order.length]);
+    else if (e.key === 'ArrowLeft') setTheme(order[(idx-1+order.length) % order.length]);
+  });
+</script>
+</body>
+</html>
