@@ -623,38 +623,71 @@ var _hmt = _hmt || [];
     return q ? `${BASE_URL}?${q}` : BASE_URL;
   }
 
-  /* ===== Auto-shorten (silent, debounced) =====
-     When the user has written custom letter content, swap the long #c= URL
-     for a short ?b=<binId> URL via JSONBin — without any UI feedback. The
-     long URL is always shown first so the textarea never goes blank.
-     A monotonic sequence id guards against races: if the user edits again
-     while an upload is in flight, the stale response is ignored. */
+  /* ===== Auto-shorten (debounced) =====
+     When the user has written custom letter content:
+       - the textarea immediately shows a "creating short URL…" placeholder
+         (NOT the long URL), so the user never copies a stale long link;
+       - a debounced upload to JSONBin runs; on success the textarea is
+         replaced with the short ?b=<id> URL;
+       - on failure we fall back to the long URL so something usable is shown.
+     A monotonic sequence id + a tracked promise let the Preview/Copy buttons
+     await the latest upload deterministically. */
+  const SHORTEN_PLACEHOLDER = '⏳ 短链接生成中… · creating short URL, please wait…';
   let _shortenSeq = 0;
   let _shortenTimer = null;
+  let _shortenResolve = () => {};
+  // Always resolves to a final URL string for the *latest* schedule
+  // (the short URL on success, or the long URL on failure / stale).
+  let _shortenPromise = Promise.resolve(null);
 
   function scheduleShorten() {
+    // Unblock any awaiter on the previous promise with null (stale signal).
+    _shortenResolve(null);
     clearTimeout(_shortenTimer);
     const mySeq = ++_shortenSeq;
+    _shortenPromise = new Promise((res) => { _shortenResolve = res; });
+    const myResolve = _shortenResolve;
     _shortenTimer = setTimeout(async () => {
       try {
         const url = await uploadToJsonBin();
-        if (mySeq === _shortenSeq) outEl.value = url;
+        if (mySeq !== _shortenSeq) { myResolve(null); return; }
+        outEl.value = url;
+        myResolve(url);
       } catch (e) {
         console.warn('silent shorten failed:', e);
+        if (mySeq === _shortenSeq) {
+          // Failure fallback so the user always has a working URL to copy.
+          outEl.value = build();
+        }
+        myResolve(null);
       }
     }, SHORTEN_DEBOUNCE_MS);
   }
 
   function cancelShorten() {
+    _shortenResolve(null);
     clearTimeout(_shortenTimer);
-    _shortenSeq++; // invalidates any in-flight response
+    _shortenSeq++;
+    _shortenPromise = Promise.resolve(null);
   }
 
   function update() {
     refreshLetterOptions();
-    outEl.value = build();
-    if (collectLetters().length > 0) scheduleShorten();
-    else cancelShorten();
+    if (collectLetters().length > 0) {
+      outEl.value = SHORTEN_PLACEHOLDER;
+      scheduleShorten();
+    } else {
+      outEl.value = build();
+      cancelShorten();
+    }
+  }
+
+  // Used by Copy and Preview to get the URL they should act on. Waits for the
+  // in-flight upload when letters are present; falls back to the long URL.
+  async function getResolvedUrl() {
+    if (collectLetters().length === 0) return build();
+    const url = await _shortenPromise;
+    return url || build();
   }
 
   /* ===== Buttons ===== */
@@ -749,19 +782,29 @@ var _hmt = _hmt || [];
   }
 
   $('copyBtn').addEventListener('click', async () => {
-    const v = outEl.value;
+    const url = await getResolvedUrl();
     try {
-      await navigator.clipboard.writeText(v);
+      await navigator.clipboard.writeText(url);
     } catch (e) {
-      outEl.select(); document.execCommand('copy');
+      // Fallback: drop the resolved URL into the textarea and use execCommand.
+      outEl.value = url;
+      outEl.select();
+      document.execCommand('copy');
     }
     toastEl.classList.add('show');
     setTimeout(() => toastEl.classList.remove('show'), 1400);
   });
 
   $('openBtn').addEventListener('click', () => {
-    const url = build();
-    window.open(url, '_blank', 'noopener');
+    // Open the popup synchronously inside the click handler so browsers
+    // don't block it; navigate it to the real URL once the upload returns.
+    // We drop `noopener` here because we need the handle to redirect — both
+    // pages are first-party so window.opener exposure is acceptable.
+    const popup = window.open('about:blank', '_blank');
+    getResolvedUrl().then(url => {
+      if (popup && !popup.closed) popup.location.href = url;
+      else window.open(url, '_blank', 'noopener'); // popup blocked: retry
+    });
   });
 
   $('resetBtn').addEventListener('click', () => {
