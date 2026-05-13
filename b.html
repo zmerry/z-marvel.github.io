@@ -639,6 +639,10 @@ var _hmt = _hmt || [];
   // Always resolves to a final URL string for the *latest* schedule
   // (the short URL on success, or the long URL on failure / stale).
   let _shortenPromise = Promise.resolve(null);
+  // Per-page-session bin: created on first upload, PUT-updated on every
+  // edit afterwards so one session = one bin id.
+  let _sessionBinId = null;
+  let _uploadInFlight = null;
 
   function scheduleShorten() {
     // Unblock any awaiter on the previous promise with null (stale signal).
@@ -753,32 +757,53 @@ var _hmt = _hmt || [];
   });
 
   /* ===== Upload payload to JSONBin =====
-     POST the current payload as a public bin; return the love.html?b=<id>
-     short URL. Public so love.html can GET it with no key. */
+     First call in a session POSTs a new public bin and caches its id.
+     Every later call PUTs the new payload onto that same bin, so the
+     ?b=<id> in the share URL never changes within one session. We
+     serialize through _uploadInFlight so two debounced uploads can't
+     race and both POST new bins before the id is cached. */
   async function uploadToJsonBin() {
-    const payload = buildPayload();
-    if (!payload || Object.keys(payload).length === 0) {
-      throw new Error('Nothing to shorten yet');
+    if (_uploadInFlight) {
+      try { await _uploadInFlight; } catch (_) { /* ignore */ }
     }
-    const res = await fetch(JSONBIN_API, {
-      method: 'POST',
-      headers: {
+    _uploadInFlight = (async () => {
+      const payload = buildPayload();
+      if (!payload || Object.keys(payload).length === 0) {
+        throw new Error('Nothing to shorten yet');
+      }
+      const isUpdate = !!_sessionBinId;
+      const apiUrl = isUpdate ? `${JSONBIN_API}/${_sessionBinId}` : JSONBIN_API;
+      const headers = {
         'Content-Type': 'application/json',
         'X-Access-Key': JSONBIN_ACCESS,
+      };
+      if (!isUpdate) {
         // Public so love.html can GET without any key on the recipient side.
-        'X-Bin-Private': 'false',
-        'X-Bin-Name': 'love-letter'
-      },
-      body: JSON.stringify(payload)
-    });
-    if (!res.ok) {
-      const txt = await res.text().catch(() => '');
-      throw new Error(`JSONBin ${res.status}: ${txt || res.statusText}`);
+        headers['X-Bin-Private'] = 'false';
+        headers['X-Bin-Name']    = 'love-letter';
+      }
+      const res = await fetch(apiUrl, {
+        method: isUpdate ? 'PUT' : 'POST',
+        headers,
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '');
+        throw new Error(`JSONBin ${res.status}: ${txt || res.statusText}`);
+      }
+      if (!isUpdate) {
+        const json = await res.json();
+        const id = json && json.metadata && json.metadata.id;
+        if (!id) throw new Error('JSONBin returned no bin id');
+        _sessionBinId = id;
+      }
+      return `${BASE_URL}?b=${_sessionBinId}`;
+    })();
+    try {
+      return await _uploadInFlight;
+    } finally {
+      _uploadInFlight = null;
     }
-    const json = await res.json();
-    const id = json && json.metadata && json.metadata.id;
-    if (!id) throw new Error('JSONBin returned no bin id');
-    return `${BASE_URL}?b=${id}`;
   }
 
   $('copyBtn').addEventListener('click', async () => {
