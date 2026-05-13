@@ -1274,6 +1274,11 @@ var _hmt = _hmt || [];
   <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
 
 <script>
+// Wrapped in an async IIFE so we can `await` a JSONBin fetch when ?b=<id> is
+// present (short-link path) before the rest of init reads urlParams. Nothing
+// outside this script references its locals, so the wrap is invisible to
+// the page.
+(async () => {
   /* ===== URL params: lang / from / to / title / letter / content / music =====
      ?lang=zh|en   — language (default: zh)
      ?from=...     — signature on the letter (default: 我 / Me)
@@ -1296,8 +1301,53 @@ var _hmt = _hmt || [];
      ?musicid=...  — meting id (default: 2221088484, a netease playlist)
      ?musictype=...— meting type (default: playlist)
      ?autoplay=false to disable autoplay
+
+     Short-link path (preferred for custom letters):
+       love.html?b=<binId>  — fetched anonymously from api.jsonbin.io/v3/b.
+       The bin's JSON record may carry the same fields above plus a structured
+       `letters: [...]` array that, when present, replaces the built-in set.
+       Precedence: ?b= > legacy ?content= > built-in defaults.
   ============================================================================ */
   const urlParams = new URLSearchParams(window.location.search);
+
+  // Set by the ?b= JSONBin fetch when the bin record carries a structured
+  // letters array. applyUserContent reads this and skips the legacy `~~~`/`::`
+  // string parser. (Variable name preserved for minimal diff.)
+  let HASH_LETTERS = null;
+
+  // ?b=<binId> short-link path: fetch the public bin from JSONBin and apply
+  // the same fields a long ?key=val URL would carry. No auth header needed —
+  // bins are created public by the builder.
+  const _binId = urlParams.get('b');
+  if (_binId) {
+    try {
+      const res = await fetch(
+        `https://api.jsonbin.io/v3/b/${encodeURIComponent(_binId)}/latest`,
+        { cache: 'no-store', headers: { 'X-Bin-Meta': 'false' } }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        // With X-Bin-Meta:false the response IS the record; some plans still
+        // wrap it as {record, metadata}. Handle both.
+        const payload = (data && typeof data === 'object' && 'record' in data)
+          ? data.record : data;
+        if (payload && typeof payload === 'object') {
+          ['lang','from','to','title','letter','only','musicapp','musictype','musicid','autoplay']
+            .forEach(k => {
+              if (payload[k] != null && payload[k] !== '') urlParams.set(k, String(payload[k]));
+            });
+          if (Array.isArray(payload.letters) && payload.letters.length) {
+            HASH_LETTERS = payload.letters;
+          }
+        }
+      } else {
+        console.warn('JSONBin fetch failed:', res.status);
+      }
+    } catch (e) {
+      console.warn('JSONBin fetch error:', e);
+      /* fall through — page renders with defaults if the bin is unreachable */
+    }
+  }
 
   const lang = (() => {
     const l = (urlParams.get('lang') || 'zh').trim().toLowerCase();
@@ -2030,8 +2080,26 @@ var _hmt = _hmt || [];
   let LETTERS = LETTERS_BY_LANG[lang];
 
   /* ===== ?content=... parser — replaces LETTERS entirely if provided =========
-     Format mirrors mama.html so the same builder shape works here too. */
+     Format mirrors mama.html so the same builder shape works here too.
+     If the ?b= bin fetch supplied a structured letters array, prefer that and
+     skip the string parser entirely. */
   (function applyUserContent() {
+    if (Array.isArray(HASH_LETTERS)) {
+      const cleaned = HASH_LETTERS.map(L => ({
+        title:      String(L.title || ''),
+        subtitle:   String(L.subtitle || ''),
+        paragraphs: Array.isArray(L.paragraphs)
+          ? L.paragraphs.map(p => String(p)).filter(Boolean)
+          : [],
+        bridge:     String(L.bridge || ''),
+        question:   String(L.question || ''),
+        whisper:    String(L.whisper || '')
+      })).filter(L =>
+        L.title || L.subtitle || L.paragraphs.length ||
+        L.bridge || L.question || L.whisper
+      );
+      if (cleaned.length) { LETTERS = cleaned; return; }
+    }
     const raw = urlParams.get('content');
     if (!raw) return;
     const decoded = raw; // URLSearchParams already decodes
@@ -2838,6 +2906,7 @@ var _hmt = _hmt || [];
     if (e.key === 'ArrowRight') setTheme(order[(idx+1) % order.length]);
     else if (e.key === 'ArrowLeft') setTheme(order[(idx-1+order.length) % order.length]);
   });
+})(); // end async init IIFE
 </script>
 </body>
 </html>
