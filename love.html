@@ -1,0 +1,2843 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f6ebdc" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<title>致你 · Solo per te</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Italiana&family=DM+Mono:wght@300;400&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Liu+Jian+Mao+Cao&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" />
+
+<style>
+  :root {
+    /* Default: Rose & Honey */
+    --bg-1: #f6ebdc;
+    --bg-2: #efd9c4;
+    --bg-3: #e5b89a;
+    --paper: #fbf3e4;
+    --paper-edge: #e9d6b6;
+    --ink: #4a2a2a;
+    --ink-soft: #7a4a44;
+    --accent: #b8546a;
+    --accent-soft: #d98a96;
+    --gold: #c69a5b;
+    --shadow: 60, 30, 30;
+    --particle-1: #e0a4ad;
+    --particle-2: #f3c6a9;
+    --particle-3: #c69a5b;
+    --vignette: 80, 40, 30;
+    --glow: 240, 200, 170;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    height: 100vh;
+    font-family: 'Noto Serif SC', 'Cormorant Garamond', 'Times New Roman', serif;
+    color: var(--ink);
+    background: var(--bg-1);
+    overflow: hidden; /* no scroll */
+    transition: background 1.4s ease, color 1.4s ease;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The breathing background gradient */
+  .stage {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 20%, var(--bg-2) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, var(--bg-3) 0%, transparent 55%),
+      linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    transition: background 1.4s ease;
+    animation: breathe 14s ease-in-out infinite;
+  }
+  .stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(var(--vignette), 0.35) 100%);
+    pointer-events: none;
+    transition: background 1.4s ease;
+  }
+  @keyframes breathe {
+    0%, 100% { filter: brightness(1) saturate(1); }
+    50% { filter: brightness(1.05) saturate(1.08); }
+  }
+
+  /* Subtle paper grain across whole page */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0 0.2 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* Floating particles container — above the ground so falls land in view */
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    will-change: transform, opacity;
+    opacity: 0;
+    animation-name: drift;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+  @keyframes drift {
+    /* fall from above the viewport and land at a per-particle random spot inside the grass-strip;
+       fill-mode:forwards on each particle keeps it parked there permanently */
+    0%   { transform: translate3d(var(--dx0,0), -10vh, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: var(--maxop, 0.85); }
+    55%  { transform: translate3d(calc(var(--dx0,0) + var(--sway,40px)), calc(var(--landY, 96vh) * 0.6), 0) rotate(180deg); opacity: var(--maxop, 0.85); }
+    100% { transform: translate3d(calc(var(--dx0,0) + var(--sway,40px) * 0.5), var(--landY, 96vh), 0) rotate(360deg); opacity: var(--maxop, 0.85); }
+  }
+
+  /* Theme switcher */
+  .switcher {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 999px;
+    box-shadow: 0 6px 28px rgba(var(--shadow), 0.18);
+    transition: background 1.2s ease, border-color 1.2s ease, box-shadow 1.2s ease;
+  }
+  .switcher .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-right: 4px;
+    opacity: 0.8;
+    transition: color 1s ease;
+  }
+  .swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.7);
+    box-shadow: 0 2px 10px rgba(var(--shadow), 0.18), inset 0 0 0 1px rgba(0,0,0,0.05);
+    transition: transform 0.4s cubic-bezier(.2,.9,.3,1.4), box-shadow 0.4s ease, border-color 0.4s ease;
+    position: relative;
+  }
+  .swatch:hover { transform: scale(1.18); }
+  .swatch.active {
+    transform: scale(1.25);
+    border-color: var(--paper);
+    box-shadow: 0 0 0 2px var(--accent), 0 4px 14px rgba(var(--shadow), 0.25);
+  }
+  .swatch[data-theme="rose"]      { background: linear-gradient(135deg, #f6ebdc 0%, #b8546a 100%); }
+  .swatch[data-theme="lavender"]  { background: linear-gradient(135deg, #e9def0 0%, #7a5b8f 100%); }
+  .swatch[data-theme="sakura"]    { background: linear-gradient(135deg, #fde6ec 0%, #e58aa6 100%); }
+  .swatch[data-theme="midnight"]  { background: linear-gradient(135deg, #1d243d 0%, #d4ad58 100%); }
+  .swatch[data-theme="sage"]      { background: linear-gradient(135deg, #e8eadd 0%, #8aa07a 100%); }
+
+  /* Top-right controls */
+  .top-right {
+    position: fixed;
+    top: 28px;
+    right: 28px;
+    z-index: 30;
+    display: flex;
+    gap: 10px;
+  }
+  .pill-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid rgba(255,255,255,0.45);
+    padding: 9px 13px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 6px 28px rgba(var(--shadow), 0.18);
+    transition: all 0.4s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pill-btn:hover { transform: translateY(-1px); color: var(--accent); }
+  .pill-btn .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    transition: background 0.4s ease;
+  }
+  .pill-btn.off .dot { background: var(--ink-soft); box-shadow: none; opacity: 0.5; }
+
+  /* Main scene — single screen, centered, no scroll */
+  .scene {
+    position: relative;
+    z-index: 5;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 72px 20px 160px; /* room for top switcher + bottom ground */
+    overflow: hidden;
+  }
+
+  /* === Envelope (cover) === */
+  .envelope-wrap {
+    perspective: 1400px;
+    width: min(520px, 86vw);
+    aspect-ratio: 7 / 5;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.7s cubic-bezier(.4,.1,.2,1), opacity 0.8s ease;
+  }
+  .envelope-wrap.hidden { opacity: 0; pointer-events: none; transform: scale(0.92) translateY(-30px); position: absolute; }
+  .envelope-wrap:hover .seal-hint { opacity: 1; transform: translate(-50%, 18px); }
+
+  .envelope {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+  .env-body {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, var(--paper) 0%, var(--paper-edge) 100%);
+    border: 1px solid color-mix(in oklab, var(--paper-edge), var(--ink) 18%);
+    border-radius: 4px;
+    box-shadow:
+      0 30px 60px -20px rgba(var(--shadow), 0.45),
+      0 12px 28px -10px rgba(var(--shadow), 0.3),
+      inset 0 0 0 8px var(--paper),
+      inset 0 0 0 9px color-mix(in oklab, var(--paper-edge), var(--ink) 25%);
+    overflow: hidden;
+  }
+  .env-body::before, .env-body::after {
+    content: "";
+    position: absolute;
+    background: color-mix(in oklab, var(--paper-edge), var(--ink) 8%);
+  }
+  .env-body::before {
+    inset: 0;
+    background:
+      linear-gradient(135deg, transparent calc(50% - 1px), color-mix(in oklab, var(--paper-edge), var(--ink) 22%) 50%, transparent calc(50% + 1px)) no-repeat,
+      linear-gradient(-135deg, transparent calc(50% - 1px), color-mix(in oklab, var(--paper-edge), var(--ink) 22%) 50%, transparent calc(50% + 1px)) no-repeat;
+    background-size: 100% 50%, 100% 50%;
+    background-position: top, top;
+  }
+  .env-body::after {
+    inset: 0;
+    background:
+      linear-gradient(45deg, transparent calc(50% - 1px), color-mix(in oklab, var(--paper-edge), var(--ink) 22%) 50%, transparent calc(50% + 1px)) no-repeat;
+    background-size: 100% 50%;
+    background-position: bottom;
+    opacity: 0.5;
+  }
+
+  .env-flap {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 50%;
+    background: linear-gradient(180deg, var(--paper) 0%, color-mix(in oklab, var(--paper-edge), var(--ink) 6%) 100%);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transform: rotateX(0deg);
+    transition: transform 1.2s cubic-bezier(.5,.05,.2,1);
+    box-shadow: 0 4px 8px rgba(var(--shadow), 0.1);
+    z-index: 4;
+  }
+  .envelope-wrap.opening .env-flap { transform: rotateX(-180deg); }
+  .envelope-wrap:hover .env-flap { transform: rotateX(-12deg); }
+  .envelope-wrap.opening:hover .env-flap { transform: rotateX(-180deg); }
+
+  .seal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--accent), white 30%) 0%, var(--accent) 45%, color-mix(in oklab, var(--accent), black 30%) 100%);
+    box-shadow:
+      0 6px 16px rgba(var(--shadow), 0.4),
+      inset 0 -3px 6px rgba(0,0,0,0.25),
+      inset 0 3px 6px rgba(255,255,255,0.25);
+    z-index: 6;
+    display: grid;
+    place-items: center;
+    font-family: 'Italiana', serif;
+    font-size: 30px;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 0.05em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    transition: transform 0.8s cubic-bezier(.4,.1,.2,1), opacity 0.6s ease;
+    cursor: pointer;
+  }
+  .envelope-wrap.opening .seal { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+  .seal::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    opacity: 0.5;
+    z-index: -1;
+    animation: sealPulse 3.5s ease-in-out infinite;
+  }
+  @keyframes sealPulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.3); opacity: 0.6; } }
+
+  .env-text {
+    position: absolute;
+    left: 50%;
+    top: 28%;
+    transform: translateX(-50%);
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: 26px;
+    color: var(--ink-soft);
+    z-index: 3;
+    opacity: 0.92;
+    white-space: nowrap;
+    letter-spacing: 0.08em;
+  }
+  .env-text small {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.32em;
+    margin-top: 6px;
+    opacity: 0.6;
+    text-transform: uppercase;
+  }
+
+  .seal-hint {
+    position: absolute;
+    left: 50%;
+    bottom: -24px;
+    transform: translate(-50%, 0);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+    transition: all 0.4s ease;
+  }
+
+  /* === Letter (centered, fits one screen) === */
+  .letter-wrap {
+    width: min(640px, 92vw);
+    max-height: calc(100vh - 200px);
+    opacity: 0;
+    transform: translateY(36px) scale(0.97);
+    transition: opacity 1.2s ease 0.4s, transform 1.2s cubic-bezier(.2,.7,.3,1) 0.4s;
+    pointer-events: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .letter-wrap.visible { opacity: 1; transform: none; pointer-events: auto; }
+
+  .letter {
+    width: 100%;
+    position: relative;
+    background:
+      repeating-linear-gradient(0deg, transparent 0 30px, rgba(var(--shadow),0.04) 30px 31px),
+      linear-gradient(180deg, var(--paper) 0%, color-mix(in oklab, var(--paper), var(--paper-edge) 35%) 100%);
+    border-radius: 3px;
+    padding: 34px 44px 26px;
+    box-shadow:
+      0 50px 80px -30px rgba(var(--shadow), 0.5),
+      0 20px 40px -15px rgba(var(--shadow), 0.3),
+      inset 0 0 0 1px color-mix(in oklab, var(--paper-edge), var(--ink) 12%);
+    color: var(--ink);
+    cursor: pointer;
+    user-select: none;
+  }
+  .letter-text, .letter-text-bottom {
+    transition: opacity 0.32s ease, transform 0.32s ease, filter 0.32s ease;
+  }
+  .letter.flipping .letter-text,
+  .letter.flipping .letter-text-bottom {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(2px);
+  }
+  .letter-counter {
+    font-family: 'DM Mono', monospace !important;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    opacity: 0.7;
+    text-transform: uppercase;
+  }
+  .letter::after,
+  .letter::before { pointer-events: none; }
+  /* torn/uneven top */
+  .letter::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: -1px;
+    height: 8px;
+    background: var(--paper);
+    clip-path: polygon(0 100%, 3% 30%, 7% 80%, 12% 20%, 17% 70%, 22% 30%, 28% 80%, 33% 20%, 39% 70%, 45% 25%, 51% 80%, 57% 25%, 63% 70%, 69% 30%, 75% 80%, 81% 25%, 87% 70%, 92% 30%, 97% 80%, 100% 30%, 100% 100%);
+  }
+  .letter::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 2px;
+    pointer-events: none;
+    box-shadow: inset 0 0 80px rgba(var(--glow), 0.25);
+  }
+
+  .letter .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    opacity: 0.75;
+  }
+  .letter .meta .from-tag {
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--accent);
+    opacity: 0.85;
+  }
+  .letter h1 {
+    font-family: 'Italiana', 'Ma Shan Zheng', serif;
+    font-weight: 400;
+    font-size: clamp(24px, 3vw, 32px);
+    margin: 0 0 2px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    text-align: center;
+  }
+  .letter h1 .zh {
+    display: block;
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: 0.62em;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    letter-spacing: 0.18em;
+    opacity: 0.8;
+  }
+  .letter .salutation {
+    font-family: 'Ma Shan Zheng', 'Liu Jian Mao Cao', cursive;
+    font-size: clamp(20px, 2.4vw, 24px);
+    color: var(--ink);
+    margin: 18px 0 12px;
+    line-height: 1.2;
+  }
+  .letter p {
+    font-family: 'Noto Serif SC', 'Cormorant Garamond', serif;
+    font-size: clamp(13px, 1.05vw, 15.5px);
+    line-height: 1.85;
+    margin: 0 0 10px;
+    color: var(--ink);
+    text-wrap: pretty;
+    text-indent: 2em;
+  }
+  .letter p.no-indent { text-indent: 0; }
+  .letter p .accent {
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .letter .question {
+    text-align: center;
+    margin: 18px 0 6px;
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: clamp(20px, 2.2vw, 26px);
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+  }
+  .letter .whisper {
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: clamp(15px, 1.3vw, 17px);
+    color: var(--ink-soft);
+    text-align: center;
+    margin: 4px 0 10px;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .letter .signoff {
+    margin-top: 14px;
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(13px, 1.05vw, 15px);
+    color: var(--ink-soft);
+    text-align: right;
+  }
+  .letter .signature {
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: clamp(28px, 3.2vw, 38px);
+    color: var(--accent);
+    line-height: 1;
+    margin-top: 4px;
+    transform: rotate(-3deg);
+    display: inline-block;
+  }
+
+  /* Music player slot — embedded inside the letter */
+  .music-slot {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed color-mix(in oklab, var(--paper-edge), var(--ink) 22%);
+    position: relative;
+  }
+  .music-slot::before {
+    content: "♪";
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--paper);
+    color: var(--accent);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-family: 'Italiana', serif;
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--paper-edge), var(--ink) 20%);
+  }
+
+  /* APlayer cosmetic overrides to match romantic aesthetic */
+  .music-slot .aplayer {
+    margin: 0;
+    border-radius: 10px !important;
+    overflow: hidden;
+    background: rgba(255,255,255,0.55) !important;
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    box-shadow: 0 8px 22px rgba(var(--shadow), 0.18) !important;
+    border: 1px solid color-mix(in oklab, var(--paper-edge), var(--ink) 8%);
+    font-family: 'Noto Serif SC', 'Cormorant Garamond', serif !important;
+  }
+  .music-slot .aplayer .aplayer-info { border-bottom: none !important; }
+  .music-slot .aplayer .aplayer-title { color: var(--ink) !important; }
+  .music-slot .aplayer .aplayer-author { color: var(--ink-soft) !important; }
+  .music-slot .aplayer .aplayer-bar { background: rgba(var(--shadow), 0.12) !important; }
+  /* Treat playlists as a single-song player: hide the list drawer entirely */
+  .music-slot .aplayer .aplayer-list,
+  .music-slot .aplayer .aplayer-list-wrap { display: none !important; height: 0 !important; }
+  .music-slot .aplayer .aplayer-icon-menu { display: none !important; }
+  .music-slot .aplayer.aplayer-withlist { padding-bottom: 0 !important; }
+
+  /* Custom "next" arrow tucked into the player on the right */
+  .music-next {
+    position: absolute;
+    right: 8px;
+    top: calc(50% + 7px); /* compensate for slot's padding-top so we center on the player */
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    color: var(--ink-soft);
+    background: rgba(255,255,255,0.65);
+    border: 1px solid color-mix(in oklab, var(--paper-edge), var(--ink) 18%);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 2px 8px rgba(var(--shadow), 0.18);
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
+  .music-next svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+    /* Optical centering — chevron pointing right reads better nudged a hair right */
+    transform: translateX(1px);
+  }
+  .music-next[hidden] { display: none; }
+  .music-next:hover {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+    transform: translateY(-50%) scale(1.08);
+  }
+  .music-next:active { transform: translateY(-50%) scale(0.94); }
+  body[data-theme="midnight"] .music-next {
+    background: rgba(255,255,255,0.12);
+    color: var(--accent-soft);
+    border-color: rgba(255,255,255,0.22);
+  }
+  body[data-theme="midnight"] .music-slot .aplayer {
+    background: rgba(20,20,40,0.55) !important;
+    color: var(--paper);
+  }
+  body[data-theme="midnight"] .music-slot .aplayer .aplayer-title { color: var(--paper) !important; }
+  body[data-theme="midnight"] .music-slot .aplayer .aplayer-author { color: var(--accent-soft) !important; }
+  body[data-theme="midnight"] .music-slot::before { background: #1d243d; }
+
+  /* Closing actions under letter */
+  .letter-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .ghost-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid color-mix(in oklab, var(--paper-edge), var(--ink) 22%);
+    padding: 9px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .ghost-btn:hover {
+    background: var(--paper);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .ghost-btn.primary {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+  }
+  .ghost-btn.primary:hover {
+    background: color-mix(in oklab, var(--accent), white 15%);
+    color: var(--paper);
+  }
+
+  /* Heart burst on demand */
+  .burst {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .burst span {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 16px; height: 16px;
+    color: var(--accent);
+    font-size: 22px;
+    transform: translate(-50%, -50%);
+    animation: burst 1.6s cubic-bezier(.2,.6,.3,1) forwards;
+  }
+  @keyframes burst {
+    0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+    20% { opacity: 1; }
+    100% {
+      transform: translate(calc(-50% + var(--bx)), calc(-50% + var(--by))) scale(1) rotate(var(--br));
+      opacity: 0;
+    }
+  }
+
+  /* "Yes" celebration overlay */
+  .yes-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at center, rgba(var(--glow), 0.4) 0%, rgba(var(--vignette), 0.5) 100%);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  .yes-overlay.visible { opacity: 1; pointer-events: auto; }
+  .yes-overlay .yes-card {
+    text-align: center;
+    transform: scale(0.85);
+    transition: transform 0.8s cubic-bezier(.2,.7,.3,1.4);
+  }
+  .yes-overlay.visible .yes-card { transform: scale(1); }
+  .yes-overlay .yes-card .big {
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: clamp(56px, 9vw, 120px);
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    line-height: 1;
+    text-shadow: 0 4px 20px rgba(var(--shadow), 0.3);
+  }
+  .yes-overlay .yes-card .sub {
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: clamp(18px, 2vw, 26px);
+    color: var(--ink);
+    margin-top: 14px;
+    opacity: 0.9;
+  }
+  .yes-overlay .yes-card .tiny {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 18px;
+    opacity: 0.7;
+    cursor: pointer;
+  }
+
+  /* ===== Living ground at bottom of viewport ===== */
+  .ground {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: 150px;
+    z-index: 3;
+    pointer-events: none;
+    transition: filter 1.4s ease, opacity 0.6s ease;
+  }
+  .ground .layer {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    width: 100%;
+    z-index: 0;
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+  .ground .hill {
+    bottom: 0;
+    height: 150px;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 100% at 20% 100%, var(--ground-2) 0%, transparent 70%),
+      radial-gradient(ellipse 70% 100% at 80% 100%, var(--ground-2) 0%, transparent 70%),
+      linear-gradient(180deg, transparent 0%, var(--ground-1) 30%, var(--ground-2) 100%);
+  }
+  .ground svg { display: block; width: 100%; height: 100%; }
+  .grass-strip {
+    position: absolute;                                                            
+    left: 0; right: 0; bottom: 0;                                                  
+    height: 60px;                                                                  
+    z-index: 1; 
+  }
+  .pile {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 56px;
+    opacity: 0;
+    z-index: 9;
+    pointer-events: none;
+    transition: opacity 1.4s ease;
+  }
+  body[data-season="spring"] .pile.petal-pile { opacity: 1; }
+  body[data-season="summer"] .pile.puddle-pile { opacity: 1; }
+  body[data-season="autumn"] .pile.leaf-pile { opacity: 1; }
+  body[data-season="winter"] .pile.snow-pile { opacity: 1; }
+
+  .critter {
+    position: absolute;
+    bottom: 22px;
+    z-index: 2;
+    transition: opacity 1.2s ease, transform 1s ease;
+    will-change: transform;
+  }
+  .bunny {
+    left: 14%;
+    width: 36px;
+    animation: hop 4.2s ease-in-out infinite;
+  }
+  body[data-season="winter"] .bunny { filter: brightness(1.15) saturate(0.6); }
+  @keyframes hop {
+    0%, 70%, 100% { transform: translateY(0) rotate(0deg); }
+    78% { transform: translateY(-12px) rotate(-2deg); }
+    86% { transform: translateY(0) rotate(0deg); }
+  }
+  .butterfly {
+    right: 22%;
+    bottom: 86px;
+    width: 26px;
+    animation: flutter 7s ease-in-out infinite;
+  }
+  body[data-season="autumn"] .butterfly,
+  body[data-season="winter"] .butterfly { opacity: 0; }
+  @keyframes flutter {
+    0%   { transform: translate(0,0) rotate(-4deg); }
+    25%  { transform: translate(40px,-22px) rotate(6deg); }
+    50%  { transform: translate(-20px,-10px) rotate(-8deg); }
+    75%  { transform: translate(30px,-30px) rotate(4deg); }
+    100% { transform: translate(0,0) rotate(-4deg); }
+  }
+  .birds {
+    position: absolute;
+    bottom: 110px;
+    left: 0; right: 0;
+    height: 60px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .birds svg {
+    position: absolute;
+    width: 22px;
+    color: var(--ink-soft);
+    opacity: 0.55;
+    animation: birdFly 22s linear infinite;
+  }
+  body[data-season="winter"] .birds { opacity: 0.4; }
+  @keyframes birdFly {
+    0%   { transform: translate(-10vw, 0); }
+    100% { transform: translate(110vw, -20px); }
+  }
+
+  /* Season switcher */
+  .season-switcher {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    z-index: 30;
+    display: flex;
+    gap: 4px;
+    padding: 6px 8px;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 999px;
+    box-shadow: 0 6px 28px rgba(var(--shadow), 0.18);
+  }
+  .season-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: transparent;
+    border: none;
+    padding: 7px 11px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .season-btn .ico { font-size: 13px; line-height: 1; }
+  .season-btn:hover { color: var(--accent); }
+  .season-btn.active {
+    background: var(--accent);
+    color: var(--paper);
+    box-shadow: 0 4px 14px rgba(var(--shadow), 0.3);
+  }
+  body[data-theme="midnight"] .season-switcher {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.18);
+  }
+  body[data-theme="midnight"] .season-btn { color: var(--accent-soft); }
+
+  /* Season ground tones */
+  body[data-season="spring"] { --ground-1: #b9d4a3; --ground-2: #6f9d5a; --grass-tip: #8db575; --bloom: #ec8aa8; }
+  body[data-season="summer"] { --ground-1: #87b674; --ground-2: #3f6b34; --grass-tip: #5a8d49; --bloom: #f0c44a; }
+  body[data-season="autumn"] { --ground-1: #d6a872; --ground-2: #8a5a30; --grass-tip: #b07a3a; --bloom: #c8602e; }
+  body[data-season="winter"] { --ground-1: #ecdcc4; --ground-2: #a88a68; --grass-tip: #d4b896; --bloom: #ffffff; }
+
+  /* Bottom theme name plate */
+  .theme-plate {
+    position: fixed;
+    bottom: 18px;
+    left: 24px;
+    z-index: 20;
+    font-family: 'Italiana', serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    pointer-events: none;
+    transition: color 1s ease, opacity 0.6s ease;
+    text-align: left;
+  }
+  .theme-plate .name {
+    font-family: 'Liu Jian Mao Cao', 'Caveat', cursive;
+    font-size: 18px;
+    letter-spacing: normal;
+    color: var(--accent);
+    text-transform: none;
+    margin-top: 2px;
+    display: block;
+    transition: color 1s ease;
+  }
+
+  /* ==== Theme variations ==== */
+  body[data-theme="rose"] {
+    --bg-1: #f6ebdc; --bg-2: #efd9c4; --bg-3: #e5b89a;
+    --paper: #fbf3e4; --paper-edge: #e9d6b6;
+    --ink: #4a2a2a; --ink-soft: #7a4a44;
+    --accent: #b8546a; --accent-soft: #d98a96;
+    --gold: #c69a5b;
+    --shadow: 60, 30, 30;
+    --particle-1: #e0a4ad; --particle-2: #f3c6a9; --particle-3: #c69a5b;
+    --vignette: 80, 40, 30;
+    --glow: 240, 200, 170;
+  }
+  body[data-theme="lavender"] {
+    --bg-1: #ece4f1; --bg-2: #ddd0e8; --bg-3: #b9a4cf;
+    --paper: #f5eff8; --paper-edge: #d8c8e3;
+    --ink: #3a2c4a; --ink-soft: #6a567f;
+    --accent: #7a5b8f; --accent-soft: #b39bcb;
+    --gold: #c8a876;
+    --shadow: 60, 40, 80;
+    --particle-1: #c6aed8; --particle-2: #e9dff0; --particle-3: #9c83b6;
+    --vignette: 50, 30, 80;
+    --glow: 220, 200, 240;
+  }
+  body[data-theme="sakura"] {
+    --bg-1: #fbe7ec; --bg-2: #f6d2dc; --bg-3: #e8a8bb;
+    --paper: #fef3f6; --paper-edge: #f3cfd9;
+    --ink: #4a2433; --ink-soft: #874458;
+    --accent: #d56385; --accent-soft: #f0a3b9;
+    --gold: #d8a85a;
+    --shadow: 80, 30, 50;
+    --particle-1: #f4b5c6; --particle-2: #fde0e7; --particle-3: #e88aa6;
+    --vignette: 90, 40, 60;
+    --glow: 250, 210, 220;
+  }
+  body[data-theme="midnight"] {
+    --bg-1: #1d243d; --bg-2: #232c4d; --bg-3: #303a66;
+    --paper: #f1e7ce; --paper-edge: #d6c69a;
+    --ink: #2a2238; --ink-soft: #5b4f6e;
+    --accent: #d4ad58; --accent-soft: #ecd28c;
+    --gold: #e8c870;
+    --shadow: 10, 10, 30;
+    --particle-1: #f4e5a8; --particle-2: #ffffff; --particle-3: #d4ad58;
+    --vignette: 5, 5, 20;
+    --glow: 240, 210, 130;
+  }
+  body[data-theme="midnight"] .stage {
+    background:
+      radial-gradient(ellipse 70% 60% at 25% 25%, #2c3a6a 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 85%, #4a3a72 0%, transparent 55%),
+      linear-gradient(180deg, #161b30 0%, #1d243d 100%);
+  }
+  body[data-theme="midnight"] .switcher,
+  body[data-theme="midnight"] .pill-btn {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.18);
+    color: var(--accent-soft);
+  }
+  body[data-theme="midnight"] .label,
+  body[data-theme="midnight"] .pill-btn { color: var(--accent-soft); }
+  body[data-theme="midnight"] .theme-plate { color: var(--accent-soft); }
+
+  body[data-theme="sage"] {
+    --bg-1: #ebeadc; --bg-2: #dde0c9; --bg-3: #f0c8a8;
+    --paper: #f4f1de; --paper-edge: #d6d2b3;
+    --ink: #2f3a30; --ink-soft: #5a6a52;
+    --accent: #7a8f5b; --accent-soft: #b5c08b;
+    --gold: #c69a5b;
+    --shadow: 50, 60, 40;
+    --particle-1: #c4d0a4; --particle-2: #f4d8bf; --particle-3: #8aa07a;
+    --vignette: 60, 70, 40;
+    --glow: 220, 230, 190;
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    .stage, .seal::before, .particle, .letter-wrap { animation: none !important; transition-duration: 0.2s !important; }
+  }
+
+  /* Use dynamic viewport height where supported (handles iOS URL-bar resize) */
+  @supports (height: 100dvh) {
+    body, .scene { height: 100dvh; }
+    .letter-wrap { max-height: calc(100dvh - 200px); }
+  }
+
+  /* Respect iOS notch / Android gesture bar */
+  @supports (padding: max(0px)) {
+    .switcher  { top: max(24px, env(safe-area-inset-top)); }
+    .top-right { top: max(28px, env(safe-area-inset-top)); right: max(28px, env(safe-area-inset-right)); }
+    .season-switcher { bottom: max(22px, env(safe-area-inset-bottom)); right: max(22px, env(safe-area-inset-right)); }
+    .theme-plate     { bottom: max(18px, env(safe-area-inset-bottom)); left: max(24px, env(safe-area-inset-left)); }
+  }
+
+  /* ===== Mobile (≤ 600px wide) ===== */
+  @media (max-width: 600px) {
+    /* Top mood switcher */
+    .switcher { padding: 6px 10px; gap: 6px; top: 10px; }
+    .swatch { width: 18px; height: 18px; border-width: 1.5px; }
+    .switcher .label { display: none; }
+
+    /* Top-right pill toggles */
+    .top-right { top: 10px; right: 10px; gap: 6px; }
+    .pill-btn { padding: 6px 9px; font-size: 8px; letter-spacing: 0.12em; }
+
+    /* Scene padding leaves room for top switcher + bottom ground */
+    .scene { padding: 54px 10px 100px; }
+
+    /* Envelope cover */
+    .envelope-wrap { width: 86vw; }
+    .env-text { font-size: 18px; letter-spacing: 0.06em; }
+    .env-text small { font-size: 8px; letter-spacing: 0.22em; margin-top: 4px; }
+    .seal { width: 58px; height: 58px; font-size: 22px; }
+    .seal-hint { font-size: 9px; bottom: -22px; }
+
+    /* Letter wrap */
+    .letter-wrap { width: 94vw; max-height: calc(100vh - 160px); }
+    @supports (height: 100dvh) {
+      .letter-wrap { max-height: calc(100dvh - 160px); }
+    }
+
+    /* Letter card */
+    .letter { padding: 18px 18px 14px; }
+    .letter .meta { font-size: 9px; letter-spacing: 0.16em; margin-bottom: 10px; gap: 6px; }
+    .letter .meta .from-tag { font-size: 12px; }
+    .letter-counter { font-size: 8px !important; letter-spacing: 0.18em; }
+    .letter h1 { font-size: 22px; letter-spacing: 0.02em; }
+    .letter h1 .zh { font-size: 0.52em; letter-spacing: 0.12em; margin-top: 3px; }
+    .letter .salutation { font-size: 18px; margin: 8px 0 6px; }
+    .letter p { font-size: 12.8px; line-height: 1.68; margin-bottom: 7px; }
+    .letter .question { font-size: 16px; margin: 10px 0 4px; line-height: 1.45; }
+    .letter .whisper { font-size: 12.5px; margin: 4px 0 6px; line-height: 1.5; }
+    .letter .signoff { font-size: 12px; margin-top: 8px; }
+    .letter .signature { font-size: 24px; }
+
+    /* Music slot — compact */
+    .music-slot { margin-top: 8px; padding-top: 8px; }
+    .music-slot::before { width: 18px; height: 18px; font-size: 10px; top: -9px; }
+    .music-slot .aplayer .aplayer-pic { width: 50px !important; height: 50px !important; }
+    .music-slot .aplayer .aplayer-body { height: 50px !important; min-height: 50px !important; }
+    .music-slot .aplayer .aplayer-info { height: 50px !important; padding: 7px 5px 0 8px !important; margin-left: 50px !important; }
+    .music-slot .aplayer .aplayer-title { font-size: 12px !important; }
+    .music-slot .aplayer .aplayer-author { font-size: 11px !important; }
+    .music-slot .aplayer .aplayer-controller { padding: 0 7px !important; }
+    .music-slot .aplayer .aplayer-time { font-size: 10px !important; }
+
+    /* Compact next-song arrow on mobile */
+    .music-next { width: 26px; height: 26px; right: 6px; }
+    .music-next svg { width: 12px; height: 12px; }
+
+    /* Letter actions */
+    .letter-actions { margin-top: 12px; gap: 8px; }
+    .ghost-btn { padding: 7px 12px; font-size: 9px; letter-spacing: 0.18em; }
+
+    /* Bottom decorations */
+    .theme-plate { font-size: 8px; letter-spacing: 0.28em; bottom: 8px; left: 10px; }
+    .theme-plate .name { font-size: 14px; }
+    .season-switcher { bottom: 12px; right: 10px; padding: 4px 5px; gap: 2px; }
+    .season-btn { padding: 5px 8px; font-size: 8px; gap: 4px; }
+    .season-btn .ico { font-size: 11px; }
+    .ground { height: 90px; }
+    .grass-strip { height: 48px; }
+    .birds { bottom: 78px; }
+    .butterfly { bottom: 58px; width: 22px; }
+    .bunny { width: 30px; }
+
+    /* Yes overlay */
+    .yes-overlay .yes-card .big { font-size: 56px; letter-spacing: 0.14em; }
+    .yes-overlay .yes-card .sub { font-size: 16px; padding: 0 24px; }
+    .yes-overlay .yes-card .tiny { font-size: 9px; letter-spacing: 0.22em; }
+  }
+
+  /* Very small phones (≤ 380px) — squeeze a bit more */
+  @media (max-width: 380px) {
+    .scene { padding: 50px 8px 92px; }
+    .letter { padding: 14px 14px 12px; }
+    .letter h1 { font-size: 20px; }
+    .letter p { font-size: 12.4px; line-height: 1.62; margin-bottom: 6px; }
+    .letter .salutation { font-size: 16px; }
+    .letter .question { font-size: 15px; }
+    .letter .whisper { font-size: 12px; }
+    .theme-plate { display: none; }
+    .ground { height: 80px; }
+  }
+
+  /* Short / landscape phones — keep everything inside the viewport */
+  @media (max-height: 720px) {
+    .letter { padding: 22px 36px 18px; }
+    .letter p { line-height: 1.7; }
+    .letter .salutation { margin: 12px 0 8px; }
+    .music-slot { margin-top: 12px; padding-top: 10px; }
+  }
+  @media (max-height: 560px) {
+    .scene { padding: 46px 10px 70px; }
+    .letter-wrap { max-height: calc(100vh - 100px); }
+    @supports (height: 100dvh) { .letter-wrap { max-height: calc(100dvh - 100px); } }
+    .letter { padding: 12px 22px 10px; }
+    .letter .meta { margin-bottom: 6px; }
+    .letter h1 { font-size: 20px; }
+    .letter .salutation { margin: 6px 0 4px; }
+    .letter p { font-size: 12.5px; line-height: 1.55; margin-bottom: 5px; }
+    .letter .question { font-size: 15px; margin: 6px 0 2px; }
+    .letter .whisper { font-size: 12px; margin: 2px 0 4px; }
+    .music-slot { margin-top: 6px; padding-top: 6px; }
+    .music-slot::before { display: none; }
+    .letter .signoff { margin-top: 4px; }
+    .ground { height: 60px; }
+    .grass-strip { height: 36px; }
+    .birds { bottom: 50px; }
+  }
+</style>
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b1e00bd32078b754d24b0bb5547eabdc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+<body data-theme="rose" data-season="spring">
+
+  <div class="stage" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <!-- Theme switcher -->
+  <nav class="switcher" role="tablist" aria-label="Choose a mood">
+    <span class="label">Mood</span>
+    <button class="swatch active" data-theme="rose"     aria-label="Rose & Honey"></button>
+    <button class="swatch"        data-theme="lavender" aria-label="Lavender Dusk"></button>
+    <button class="swatch"        data-theme="sakura"   aria-label="Sakura Mist"></button>
+    <button class="swatch"        data-theme="midnight" aria-label="Midnight Garden"></button>
+    <button class="swatch"        data-theme="sage"     aria-label="Morning Sage"></button>
+  </nav>
+
+  <!-- Top-right: ambience toggles -->
+  <div class="top-right">
+    <button class="pill-btn off" id="petalsBtn" aria-pressed="true" title="Toggle ambient particles">
+      <span class="dot"></span> Petals
+    </button>
+    <button class="pill-btn off" id="muteBtn" aria-pressed="false" title="Toggle ambient hum">
+      <span class="dot"></span> Hum
+    </button>
+  </div>
+
+  <!-- Scene -->
+  <main class="scene">
+
+    <!-- ENVELOPE COVER -->
+    <div class="envelope-wrap" id="envelope" role="button" tabindex="0" aria-label="Open the letter">
+      <div class="envelope">
+        <div class="env-body"></div>
+        <div class="env-text">
+          <span id="envTextLine">致 <span id="toNameEnv">你</span> · 此心唯你</span>
+          <small id="envTextSmall">For You · With All My Heart</small>
+        </div>
+        <div class="env-flap"></div>
+        <div class="seal" id="sealLetter" aria-hidden="true">L</div>
+      </div>
+      <div class="seal-hint" id="sealHint">轻触印章 · 启信</div>
+    </div>
+
+    <!-- LETTER -->
+    <article class="letter-wrap" id="letterWrap" aria-hidden="true">
+      <div class="letter" id="letterCard" role="button" tabindex="0" aria-label="Click the letter to read another">
+        <div class="letter-text" id="letterText">
+          <div class="meta">
+            <span id="metaLeft">写于一个想你的夜 · 轻触翻页</span>
+            <span class="letter-counter" id="letterIndex">01 / 67</span>
+            <span class="from-tag"><span id="fromTagPrefix">From</span> <span id="fromNameTag">我</span></span>
+          </div>
+          <h1>
+            <span id="fancyTitle">Solo per te</span>
+            <span class="zh" id="letterSubtitle">— 致我此生唯一的答案 —</span>
+          </h1>
+          <div class="salutation"><span id="salutationPrefix">我最爱的</span> <span id="toName">你</span><span id="salutationSuffix">：</span></div>
+
+          <div id="letterBody"></div>
+
+          <div class="question" id="letterQuestion"></div>
+          <div class="whisper" id="letterWhisper"></div>
+        </div>
+
+        <!-- Music slot persists across letter switches -->
+        <div class="music-slot" id="musicSlot" aria-label="A song for you">
+          <button class="music-next" id="nextSongBtn" type="button" aria-label="下一首" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M9 5 L16 12 L9 19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="signoff letter-text-bottom" id="letterTextBottom">
+          <span id="signoffLine1">余生请多指教，</span><br/>
+          <span class="signature"><span id="signoffLine2">永远是你的 ·</span> <span id="fromNameSig">我</span></span>
+        </div>
+      </div>
+
+      <div class="letter-actions">
+        <button class="ghost-btn" id="closeBtn">合上信封</button>
+        <button class="ghost-btn primary" id="yesBtn">我爱你 ♡</button>
+      </div>
+    </article>
+
+  </main>
+
+  <div class="burst" id="burst" aria-hidden="true"></div>
+
+  <!-- Yes overlay -->
+  <div class="yes-overlay" id="yesOverlay" aria-hidden="true">
+    <div class="yes-card">
+      <div class="big" id="yesBig">我爱你</div>
+      <div class="sub" id="yesSub">愿与你共度，山高水长，余生漫漫。</div>
+      <div class="tiny" id="yesClose">轻触任意处 · 回到信里</div>
+    </div>
+  </div>
+
+  <!-- Living ground -->
+  <div class="ground" id="ground" aria-hidden="true">
+    <div class="layer hill"></div>
+
+    <div class="birds" id="birds">
+      <svg style="top:8px;animation-delay:-3s;animation-duration:26s" viewBox="0 0 24 12"><path d="M1 8 Q 6 2 12 6 Q 18 2 23 8" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <svg style="top:24px;animation-delay:-12s;animation-duration:32s" viewBox="0 0 24 12"><path d="M1 8 Q 6 2 12 6 Q 18 2 23 8" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+      <svg style="top:38px;animation-delay:-18s;animation-duration:30s" viewBox="0 0 24 12"><path d="M1 8 Q 6 2 12 6 Q 18 2 23 8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/></svg>
+    </div>
+
+    <div class="critter bunny" aria-hidden="true">
+      <svg viewBox="0 0 60 64" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="22" cy="14" rx="4" ry="14" fill="var(--ink)" opacity="0.9"/>
+        <ellipse cx="34" cy="12" rx="4" ry="15" fill="var(--ink)" opacity="0.9"/>
+        <ellipse cx="22" cy="15" rx="1.6" ry="8" fill="var(--accent-soft)" opacity="0.7"/>
+        <ellipse cx="34" cy="13" rx="1.6" ry="9" fill="var(--accent-soft)" opacity="0.7"/>
+        <circle cx="28" cy="34" r="12" fill="var(--ink)"/>
+        <ellipse cx="34" cy="52" rx="16" ry="11" fill="var(--ink)"/>
+        <circle cx="50" cy="50" r="4" fill="var(--paper)" opacity="0.85"/>
+        <circle cx="24" cy="32" r="1.4" fill="var(--paper)"/>
+      </svg>
+    </div>
+
+    <div class="critter butterfly" aria-hidden="true">
+      <svg viewBox="0 0 40 30" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="12" cy="12" rx="9" ry="7" fill="var(--accent)" opacity="0.85"/>
+        <ellipse cx="28" cy="12" rx="9" ry="7" fill="var(--accent)" opacity="0.85"/>
+        <ellipse cx="13" cy="22" rx="6" ry="5" fill="var(--accent-soft)" opacity="0.85"/>
+        <ellipse cx="27" cy="22" rx="6" ry="5" fill="var(--accent-soft)" opacity="0.85"/>
+        <ellipse cx="20" cy="15" rx="1.4" ry="10" fill="var(--ink)"/>
+      </svg>
+    </div>
+
+    <div class="grass-strip" id="grassStrip"></div>
+    <div class="pile petal-pile" id="petalPile"></div>
+    <div class="pile puddle-pile" id="puddlePile"></div>
+    <div class="pile leaf-pile" id="leafPile"></div>
+    <div class="pile snow-pile" id="snowPile" aria-hidden="true"></div>
+  </div>
+
+  <!-- Season switcher -->
+  <nav class="season-switcher" aria-label="Choose a season">
+    <button class="season-btn active" data-season="spring"><span class="ico">❀</span> Spring</button>
+    <button class="season-btn" data-season="summer"><span class="ico">☀</span> Summer</button>
+    <button class="season-btn" data-season="autumn"><span class="ico">☘</span> Autumn</button>
+    <button class="season-btn" data-season="winter"><span class="ico">❄</span> Winter</button>
+  </nav>
+
+  <div class="theme-plate" id="themePlate">
+    <span>Mood</span>
+    <span class="name" id="themeName">Rose &amp; Honey</span>
+  </div>
+
+  <!-- MetingJS / APlayer -->
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+
+<script>
+  /* ===== URL params: lang / from / to / title / letter / content / music =====
+     ?lang=zh|en   — language (default: zh)
+     ?from=...     — signature on the letter (default: 我 / Me)
+     ?to=...       — addressee (default: 你 / You)
+     ?title=...    — override the title of the first letter
+     ?letter=N     — show only letter N (1-based); disables click-to-flip
+     ?only=N       — alias for ?letter=N
+     ?content=...  — user-defined letters, replacing the built-in set.
+                     Separators (all URL-encode safely):
+                       ~~~  between whole letters
+                       ::   between fields inside a letter, in this order:
+                              title :: subtitle :: paragraphs :: bridge :: question :: whisper
+                       ||   between paragraphs inside the paragraphs field
+                              (newline / %0A also works)
+                     Any field can be blank; missing trailing fields are fine.
+                     Shortcut — if content has NO "::", the whole value is used
+                     as paragraphs for a single letter (split by || or newline).
+                     `question` and `whisper` accept simple HTML like <br/>.
+     ?musicapp=... — meting server (default: netease)
+     ?musicid=...  — meting id (default: 2221088484, a netease playlist)
+     ?musictype=...— meting type (default: playlist)
+     ?autoplay=false to disable autoplay
+  ============================================================================ */
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const lang = (() => {
+    const l = (urlParams.get('lang') || 'zh').trim().toLowerCase();
+    return (l === 'en' || l === 'english') ? 'en' : 'zh';
+  })();
+
+  const I18N = {
+    zh: {
+      docTitle:        (title, to) => `${title} · 致 ${to}`,
+      envLine:         () => `致 <span id="toNameEnv"></span> · 此心唯你`,
+      envSmall:        'For You · With All My Heart',
+      sealLetter:      'L',
+      sealHint:        '轻触印章 · 启信',
+      metaLeft:        '写于一个想你的夜 · 轻触翻页',
+      metaLeftSingle:  '写于一个想你的夜',
+      fromTagPrefix:   'From',
+      salutationPrefix:'我最爱的',
+      salutationSuffix:'：',
+      signoffLine1:    '余生请多指教，',
+      signoffLine2:    '永远是你的 ·',
+      closeBtn:        '合上信封',
+      yesBtn:          '我爱你 ♡',
+      yesBig:          '我爱你',
+      yesSub:          '愿与你共度，山高水长，余生漫漫。',
+      yesTiny:         '轻触任意处 · 回到信里',
+      defaultTo:       '你',
+      defaultFrom:     '我',
+      htmlLang:        'zh-CN'
+    },
+    en: {
+      docTitle:        (title, to) => `${title} · For ${to}`,
+      envLine:         () => `For <span id="toNameEnv"></span> · With All My Heart`,
+      envSmall:        'Solo per te · With All My Love',
+      sealLetter:      'L',
+      sealHint:        'Tap the seal · open the letter',
+      metaLeft:        'Written on a night I missed you · tap to turn',
+      metaLeftSingle:  'Written on a night I missed you',
+      fromTagPrefix:   'From',
+      salutationPrefix:'My dearest',
+      salutationSuffix:',',
+      signoffLine1:    'With all that I am, and all that I have,',
+      signoffLine2:    'Forever yours ·',
+      closeBtn:        'Close envelope',
+      yesBtn:          'I LOVE YOU ♡',
+      yesBig:          'I LOVE YOU',
+      yesSub:          'May we walk hand in hand — through mountains, seas, and quiet days.',
+      yesTiny:         'Tap anywhere · back to the letter',
+      defaultTo:       'You',
+      defaultFrom:     'Me',
+      htmlLang:        'en'
+    }
+  };
+  const T = I18N[lang];
+
+  const fromName = (urlParams.get('from') || T.defaultFrom).trim();
+  const toName   = (urlParams.get('to')   || T.defaultTo).trim();
+  const userTitle = urlParams.get('title');  // optional override for letter 0's title
+  const musicApp = (urlParams.get('musicapp') || urlParams.get('server') || 'netease').trim();
+  const musicId  = (urlParams.get('musicid')  || urlParams.get('id')     || '2221088484').trim();
+  const musicType = (urlParams.get('musictype') || urlParams.get('type') || 'playlist').trim();
+  const autoplay = urlParams.get('autoplay') !== 'false';
+
+  // Single-letter mode: ?letter=N or ?only=N (1-based)
+  const _letterParam = urlParams.get('letter') || urlParams.get('only');
+  const singleLetterIndex = _letterParam !== null
+    ? Math.max(0, (parseInt(_letterParam, 10) || 1) - 1)
+    : null;
+
+  // Apply i18n to static text
+  document.documentElement.setAttribute('lang', T.htmlLang);
+  document.getElementById('envTextLine').innerHTML = T.envLine();
+  document.getElementById('toNameEnv').textContent = toName;
+  document.getElementById('envTextSmall').textContent = T.envSmall;
+  document.getElementById('sealLetter').textContent = T.sealLetter;
+  document.getElementById('sealHint').textContent = T.sealHint;
+  document.getElementById('metaLeft').textContent = (singleLetterIndex !== null) ? T.metaLeftSingle : T.metaLeft;
+  document.getElementById('fromTagPrefix').textContent = T.fromTagPrefix;
+  document.getElementById('salutationPrefix').textContent = T.salutationPrefix;
+  document.getElementById('salutationSuffix').textContent = T.salutationSuffix;
+  document.getElementById('signoffLine1').textContent = T.signoffLine1;
+  document.getElementById('signoffLine2').textContent = T.signoffLine2;
+  document.getElementById('closeBtn').textContent = T.closeBtn;
+  document.getElementById('yesBtn').textContent = T.yesBtn;
+  document.getElementById('yesBig').textContent = T.yesBig;
+  document.getElementById('yesSub').textContent = T.yesSub;
+  document.getElementById('yesClose').textContent = T.yesTiny;
+
+  // Inject names
+  document.getElementById('toName').textContent = toName;
+  document.getElementById('fromNameTag').textContent = fromName;
+  document.getElementById('fromNameSig').textContent = fromName;
+
+  /* ===== Romantic letters (zh + en). Click the letter to flip. ===== */
+  const LETTERS_BY_LANG = {
+  zh: [
+    { title: 'Solo per te', subtitle: '— 致我此生唯一的答案 —',
+      paragraphs: [
+        '这世上有许多种喜欢，可以是一阵风、一场雨、一句路过的晚安。可我对你的喜欢，是想把所有的清晨与黄昏，都偷偷地标上你的名字。',
+        '你笑的时候，我才懂得什么叫"心动"；你沉默的时候，我学会了什么叫"温柔"。山川湖海、四时风物，皆不及你眉眼一弯；走过千万里路，我还是想，为你停下。'
+      ], bridge: '所以——亲爱的，',
+      question: '余生那么长，你愿意，<br/>做我故事里最长的那一章吗？',
+      whisper: '你只要轻轻点一下头，<br/>我便用一辈子，把你宠成我们故事里最幸福的人。' },
+
+    { title: 'La Vie en Rose', subtitle: '— 致 · 你眼里的整个春天 —',
+      paragraphs: [
+        '在遇见你之前，世界是黑白的，岁月像流水一样过去。直到那天你笑了一下，所有颜色才悄悄住进了我的眼睛。',
+        '我喜欢的不只是这个春天，而是你站在春天里的样子——风吹起你的发，整个四月都软了下来，连云也想多停一会儿。'
+      ], bridge: '所以——亲爱的，',
+      question: '此后所有的春天，<br/>你愿意，都让我陪你一起开吗？',
+      whisper: '你只要在那里，<br/>我心里那一朵花，就一直为你开着。' },
+
+    { title: 'Mon Étoile', subtitle: '— 致 · 我心里最亮的那一颗星 —',
+      paragraphs: [
+        '夜空很大，星星很多，可我抬头时，眼里始终只有一颗。它不是最亮的那颗，却是只为我亮的那颗——那就是你。',
+        '我想把你藏进口袋里，藏进心跳里，藏进我每一次呼吸里。这样，即使天再黑，我也不会怕。'
+      ], bridge: '所以——亲爱的，',
+      question: '余生这么长的夜，<br/>你愿意，做我抬头就能看见的那颗星吗？',
+      whisper: '你只要在那里，<br/>我就一直、一直地仰望。' },
+
+    { title: 'For Always', subtitle: '— 致 · 我所有"以后"里的人 —',
+      paragraphs: [
+        '我以前说"以后"，是空的，是浮的，是不知终点的。直到遇见你，"以后"才有了形状——那形状，就是你。',
+        '我想和你过的不只是今天，是接下来的每一个清晨、每一次黄昏、每一场雨、每一阵风。是平淡的、悠长的、不必言说的所有日子。'
+      ], bridge: '所以——亲爱的，',
+      question: '我所有的"以后"，<br/>你愿意，都让我说给你听吗？',
+      whisper: '哪怕只是日复一日的早安，<br/>我也想说给你听。' },
+
+    { title: 'Sotto le Stelle', subtitle: '— 致 · 那个让我抬头看星的人 —',
+      paragraphs: [
+        '从前我只看脚下的路，怕跌、怕错、怕慢。是你来了之后，我才学会抬头——天那么大，原来有人陪着，路再远也不怕。',
+        '你像月亮，不烈、不烫，可一夜一夜地照着我。我所有走得偏的方向，最后都因为你而走对。'
+      ], bridge: '所以——亲爱的，',
+      question: '这条路那么长，你愿意，<br/>和我一直走到老吗？',
+      whisper: '走得慢一点也没关系，<br/>只要你不松开我的手。' },
+
+    { title: 'Toi et Moi', subtitle: '— 致 · 此生最美的"我们" —',
+      paragraphs: [
+        '这个世界上有许多种人称——我、你、他。可我最爱的那个，是"我们"。它有你的一半，有我的一半，没有缝隙。',
+        '我喜欢"我们"一起吃的饭、一起看过的电影、一起听的歌；也喜欢"我们"什么都不做，只是各自坐着，呼吸着同一个房间的空气。'
+      ], bridge: '所以——亲爱的，',
+      question: '余生那么长，你愿意，<br/>让"我们"一直在一起吗？',
+      whisper: '不必惊天动地，<br/>只要每天都是平淡的我们就好。' },
+
+    { title: 'Eternally Yours', subtitle: '— 致 · 此心唯你 · 永不更改 —',
+      paragraphs: [
+        '我不擅长说情话，可我心里有许多话要对你说。它们说不出口，便变成了眼神，变成了沉默，变成了想拥抱你的那一瞬间。',
+        '喜欢一个人是收敛的，爱一个人是奋不顾身的。我想，从今往后，我都要笨拙地、勇敢地、毫无保留地——爱你。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我此生<br/>最郑重、最长久的那个承诺吗？',
+      whisper: '我愿意，把我的余生，<br/>都郑重地交给你。' },
+
+    { title: 'Cuore Mio', subtitle: '— 致 · 我心跳的全部理由 —',
+      paragraphs: [
+        '我现在才明白，所谓"心跳"，并不是一件平常的事——它要遇见对的那个人，才会变成一首歌。而你，就是我心里循环的那一首。',
+        '我喜欢你笑起来眼睛弯弯的样子，喜欢你说话时不自觉拉长的尾音，喜欢你随手一个动作就让我心里满了一整天。'
+      ], bridge: '所以——亲爱的，',
+      question: '我心里那首歌，你愿意，<br/>从此只为你而循环吗？',
+      whisper: '一辈子那么长，<br/>愿我的心跳，都用你的名字打拍子。' },
+
+    { title: 'Per Te, Sempre', subtitle: '— 致 · 一切只为你 —',
+      paragraphs: [
+        '山水有相逢，可有的人，是要等很久很久才会遇见的。我等过很多年，遇过很多人，最后只有你停下来——所以，我也愿意，从此只停在你这里。',
+        '你不必很完美，只需要是你；你不必很努力，只需要在我身边；你不必懂得所有的事，只需要懂得我。'
+      ], bridge: '所以——亲爱的，',
+      question: '余生不长不短，你愿意，<br/>把它给我，也让我把我的，都给你吗？',
+      whisper: '我愿意。<br/>无条件地。' },
+
+    { title: 'Amore Mio', subtitle: '— 致 · 此生最郑重的呼唤 —',
+      paragraphs: [
+        '我心里有一条很长的河，从没流到任何人面前。它静悄悄地，等了很多年。直到那一天你来了，它一下就涌出来——原来，它一直在等你。',
+        '我从前不相信永远，因为永远这个词太大、太重。可遇见你之后，我想试一试——把"永远"这两个字，认真地说给你一个人听。'
+      ], bridge: '所以——亲爱的，',
+      question: '我愿意把"永远"郑重地交给你，<br/>你愿意，接住它吗？',
+      whisper: '接住了，就请你不要再放下。' },
+
+    { title: 'Du Bist Mein', subtitle: '— 致 · 此生唯一的归处 —',
+      paragraphs: [
+        '我走过许多街，住过许多屋，可没有一个地方让我有"回家"的感觉——直到遇见你，我才知道，原来"家"这个字，从来不是房子，是人。',
+        '你笑着的样子，是我最熟悉的窗；你温柔的眼神，是我每晚都想点亮的那盏灯。'
+      ], bridge: '所以——亲爱的，',
+      question: '余生那么长，你愿意，<br/>做我永远的那个家吗？',
+      whisper: '我会在你身旁，<br/>把每一个明天，都过得像今天一样温暖。' },
+
+    { title: 'Toujours', subtitle: '— 致 · 想用一辈子说"我爱你"的人 —',
+      paragraphs: [
+        '我曾以为爱是惊心动魄的，是要轰轰烈烈、要昭告天下、要刻骨铭心。直到遇见你之后，我才明白——爱，是日复一日的甘心情愿。',
+        '是早上起床第一眼想看见你；是晚上睡前最后一句话想说给你听；是任何一件平凡的小事，因为有你而变得郑重。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，让我用一辈子，<br/>把"我爱你"重复给你听吗？',
+      whisper: '我会一句一句地说，<br/>直到我老到说不出口为止。' },
+
+    { title: 'Coup de Foudre', subtitle: '— 致 · 那一眼定格了一生的人 —',
+      paragraphs: [
+        '我曾以为"一见钟情"是诗里的话，是骗人的事。直到那天我看见你——心，确实重重地一下落下来。从此以后，再也没起来。',
+        '你转身的弧度，你说话的样子，你抬眼看我那一瞬间的光——像被什么击中，又像是终于回到本该属于的地方。'
+      ], bridge: '所以——亲爱的，',
+      question: '我心里那一下重重的落地声，<br/>你愿意，再让我听一万次吗？',
+      whisper: '你只要在我面前出现一次，<br/>我就要心动一辈子。' },
+
+    { title: 'Carpe Diem', subtitle: '— 致 · 我想认真过的每一个今天 —',
+      paragraphs: [
+        '时间总是很快，可遇见你之后，我希望它慢一点、再慢一点。慢到我可以仔细看清你的每一道眼神，慢到我可以记住你的每一个早晨。',
+        '我想把每一天都过得郑重——因为"明天"是不确定的，但只要"今天"有你在，我就比谁都幸福。'
+      ], bridge: '所以——从今天起，',
+      question: '你愿意，让每一个"今天"，<br/>都属于我们吗？',
+      whisper: '一个又一个的今天，加起来，<br/>就是一辈子。' },
+
+    { title: 'Stelle Cadenti', subtitle: '— 致 · 我偷偷许过千万次的那个愿望 —',
+      paragraphs: [
+        '小时候看见流星，要赶紧许愿。我许过的愿望有很多，可遇见你之后，我所有的愿望就只剩下一个——希望，遇见的是你；希望，留下的是你。',
+        '那一颗坠落的星光里，藏着我最不敢说出口的那句话——而它落下时，你恰好笑了。我便知道，原来天意，是站在我这一边的。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我此生<br/>不再许第二次的那个愿望吗？',
+      whisper: '我愿意，把所有流星<br/>都让给你来许愿。' },
+
+    { title: 'Nostalgie', subtitle: '— 致 · 未来回忆里最好的人 —',
+      paragraphs: [
+        '我希望多年以后回头看，今天的我们仍然手拉着手；我希望白发苍苍的时候，还能记得现在你看我的眼神。',
+        '时间会把所有人变老，但不会把心变旧。我想和你一起老，但不想和你一起冷淡——这一点，我会用一辈子来做到。'
+      ], bridge: '所以——亲爱的，',
+      question: '几十年之后回头看，你愿意，<br/>仍是我故事里的那个主角吗？',
+      whisper: '那时我们都老了，<br/>可你笑起来的样子，一定还和今天一样。' },
+
+    { title: 'Tendresse', subtitle: '— 致 · 心底最柔软的那一处 —',
+      paragraphs: [
+        '这世上有许多种感情，激烈的、滚烫的、轰轰烈烈的。可我想给你的，是另一种——是细水长流、是温柔托底、是你不必说我也懂。',
+        '是你冷的时候，我把外套递给你；是你累的时候，我什么都不问，只是把肩膀给你。'
+      ], bridge: '所以——亲爱的，',
+      question: '余生这种温柔，<br/>你愿意一直、一直地收下吗？',
+      whisper: '我会笨拙一点、慢一点，<br/>但绝不会让你独自挨任何一阵冷风。' },
+
+    { title: 'Soleil et Pluie', subtitle: '— 致 · 阳光与阴雨里的那个人 —',
+      paragraphs: [
+        '我喜欢你的不只是你笑的样子，我也喜欢你不笑的时候。喜欢你高兴时的明亮，喜欢你沮丧时的沉默；喜欢你的所有面，包括你自己都不喜欢的那一面。',
+        '阳光下我陪你笑，阴雨里我替你撑伞。无论是哪一种天气，只要是你，我都愿意。'
+      ], bridge: '所以——亲爱的，',
+      question: '以后所有的天气，<br/>你愿意，都和我一起过吗？',
+      whisper: '晴或雨，由天定；<br/>陪不陪你，由我定——我永远选陪。' },
+
+    { title: 'Un Café Avec Toi', subtitle: '— 致 · 一杯咖啡里都是你 —',
+      paragraphs: [
+        '我有时会突然想起你，比如早上喝下第一口咖啡的时候。明明苦苦的，可入口的瞬间心里却是甜的——大概，是因为想起了你。',
+        '我喜欢和你在一起的那些平淡时刻——什么都不说，只是各自捧一杯咖啡，看窗外的人来人往。生活很慢，可一点也不无聊。'
+      ], bridge: '所以——亲爱的，',
+      question: '这样平淡的早晨，<br/>你愿意，陪我过一辈子吗？',
+      whisper: '我每天都给你做<br/>你最喜欢的那一种。' },
+
+    { title: 'Mille Étoiles', subtitle: '— 致 · 我夜空里数不清的所有星星 —',
+      paragraphs: [
+        '我曾在很多个夜里，一个人抬头看星空。星星很多，可没有哪一颗是为我亮的。直到遇见你之后我才发现——那一整片星河，原来都是你给我的。',
+        '你不必发光，你本身就是光。我所有的迷路、所有的犹豫、所有的不确定，因为你的出现，都被照亮了。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一片星河，你愿意，<br/>永远落在我头顶吗？',
+      whisper: '即使天黑得再深，<br/>只要你抬头，我就一直在那里。' },
+
+    { title: 'Promesse', subtitle: '— 致 · 我用一生兑现的那个承诺 —',
+      paragraphs: [
+        '我不喜欢轻易许诺，因为承诺一旦说出口，就要用一辈子来兑现。可我愿意，对你说一次。',
+        '我承诺，会陪你走过所有平凡的早晨；会接住你所有的眼泪和欢笑；会在你需要的每一个瞬间，准时出现。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我此生<br/>唯一一次"承诺"的对象吗？',
+      whisper: '这一次，我不会再说第二次——<br/>因为你，就是终点。' },
+
+    { title: 'Petite Pluie', subtitle: '— 致 · 所有雨天里都在想的那个人 —',
+      paragraphs: [
+        '下雨的时候我就会想你。雨声敲在窗上，我听见的不是雨，是你笑的样子。',
+        '雨里走过的人很多，但能让我愿意把伞递过去的，只有你；雨里听过的歌很多，但能让我心头一软的，也只有你。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生这么多场雨，<br/>你愿意，都和我同撑一把伞吗？',
+      whisper: '雨不停，<br/>我也不会松开你的手。' },
+
+    { title: 'Nous Deux', subtitle: '— 致 · 我和你之间无声的默契 —',
+      paragraphs: [
+        '我喜欢"我和你"之间那种不必说就懂的默契——一个眼神，一句"嗯"，一个回头。这些细小的信号，是别人看不见的，可我们都懂。',
+        '这种默契是要时间养出来的——是日复一日的早安、晚安，是无数次"今天怎么样"的关心，是不轰烈但深的爱。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生，你愿意，<br/>让我们的默契越来越深吗？',
+      whisper: '我想我们老了之后，<br/>连呼吸的频率，都是一样的。' },
+
+    { title: 'Reflets', subtitle: '— 致 · 心里始终倒映着的那个人 —',
+      paragraphs: [
+        '我曾以为"心里有人"是夸张的说法。直到我心里真的住下了你——做什么事都会想到你，看什么风景都希望你也在。',
+        '你像水里的月亮，明明是倒影，却比真实的月亮还要让我着迷。我所有的看见、所有的忽略，最终都回到你的身上。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我心里<br/>永远倒映的那一弯月光吗？',
+      whisper: '即使我醒着，<br/>我心里都在梦你。' },
+
+    { title: 'Vœux', subtitle: '— 致 · 此生最郑重的誓言 —',
+      paragraphs: [
+        '我会陪你慢慢变老。我会在你皱纹爬上眼角时，仍然觉得你最美。我会在你忘记很多事的时候，仍然记得我们第一次相遇的样子。',
+        '我会一直走在你的身侧——不在前，也不在后。你快我快，你慢我慢。永远，永远不让你一个人。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，让我用一生时间，<br/>来兑现这一段誓言吗？',
+      whisper: '哪怕老到牵不动了，<br/>我也要握着你的小指。' },
+
+    { title: 'Ondes', subtitle: '— 致 · 心里翻涌着的那阵潮汐 —',
+      paragraphs: [
+        '你像潮水。你来的时候，我心里所有海岸都被淹没；你不来的时候，我便望着远处的海面，等。',
+        '我曾以为爱是平静的，可遇见你之后我才明白——爱也可以是涨潮，是奔涌，是所有平静之下汹涌的暗流。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我心里<br/>此起彼伏的那片海吗？',
+      whisper: '我所有的礁石、所有的沙、所有的退潮——<br/>只为你。' },
+
+    { title: 'Premier Regard', subtitle: '— 致 · 让我世界变安静的人 —',
+      paragraphs: [
+        '我至今记得遇见你的那一刻——周围所有的声音突然消了下去，时间像是被按了暂停键。世界很大，可我眼里只剩你。',
+        '你大概不知道，那一秒钟，我心里几个声音在说话——一个说"是她（他）"，一个说"别错过"，一个说"这一辈子，就她（他）了"。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我此生<br/>唯一让我"世界变安静"的人吗？',
+      whisper: '你来了之后，<br/>连我自己的呼吸都听得见了。' },
+
+    { title: 'La Mer', subtitle: '— 致 · 心底深得像海一样的那份爱 —',
+      paragraphs: [
+        '海是不会说话的，可它一直在那里。我对你的爱，像海——不喧哗，不夸张，可你只要看一眼，就知道它有多深。',
+        '我愿意做你身后那一片海，从来不抢你的光，只在你回头的时候，安静地涌着浪。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，让我做你身后<br/>永远翻涌的那片海吗？',
+      whisper: '我不要你时时刻刻看见我，<br/>只要你需要的时候，我都在。' },
+
+    { title: 'Sussurro', subtitle: '— 致 · 心底说了一千遍的那句话 —',
+      paragraphs: [
+        '我心里有一句话，已经说过一千遍了——只是每次都没敢说出口。它在我嘴边，又溜回我心里；它想出来，又怕惊扰你。',
+        '直到今晚，灯影微凉，我终于鼓起勇气，把它放在这里——'
+      ], bridge: '所以——',
+      question: '"我喜欢你。我爱你。我想嫁/娶你。"<br/>这三句话，你愿意，依次回我吗？',
+      whisper: '你只要点一下头，<br/>我就把这一千遍的等待，全部兑现给你。' },
+
+    { title: 'Aurore', subtitle: '— 致 · 每一个清晨我最先想到的人 —',
+      paragraphs: [
+        '我喜欢清晨。喜欢光从窗帘缝里钻进来的瞬间；喜欢一切都还没开始的那种安静。可我最喜欢的，是醒来时第一个想到的人——是你。',
+        '我不在意一天的开始有没有阳光，只在意，那一个清晨，有没有你。'
+      ], bridge: '所以——亲爱的，',
+      question: '余生那么多个清晨，<br/>你愿意，都让我在你身旁醒来吗？',
+      whisper: '我会比闹钟早一点，<br/>比阳光更轻一点，吻你的额头一下。' },
+
+    { title: 'Crépuscule', subtitle: '— 致 · 每一个黄昏都让我想牵手的人 —',
+      paragraphs: [
+        '我喜欢黄昏，因为黄昏会让人说真话。是云被夕阳镀成金色的那一刻，是世界温柔下来的那一刻，是想牵起你的手的那一刻。',
+        '我希望多年以后，每一个黄昏的窗前都还有你；都还有我们安静坐着的影子；都还有那一盏不必开就明亮的灯。'
+      ], bridge: '所以——亲爱的，',
+      question: '余生这么多个黄昏，<br/>你愿意，全都和我一起看吗？',
+      whisper: '我们什么都不必说，<br/>只要并肩坐着，就足够。' },
+
+    { title: 'Les Yeux Fermés', subtitle: '— 致 · 闭上眼也认得出来的那个人 —',
+      paragraphs: [
+        '我闭上眼，就能看见你——你笑的样子，你皱眉的样子，你熟睡时的呼吸。你的轮廓，刻在了我心底最深的地方。',
+        '闭着眼也能找到的人，只有你一个。我可以在人群里、在黑夜里、在世界的任何一个角落，仅凭一个手势认出你。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生，你愿意，<br/>做我闭上眼也舍不得放下的那个人吗？',
+      whisper: '我会用一辈子，<br/>把你的模样烙在心里。' },
+
+    { title: 'Bouquet', subtitle: '— 致 · 我想把所有春天送给的人 —',
+      paragraphs: [
+        '我想送你一束花。不是普通的花，是把整个春天剪下一小块，包上柔软的纸，递到你手心里——我希望你看到的那一瞬间，整个人都软成春天。',
+        '而我心里那一束最大的花，从遇见你的那天起，就一直为你开着——它不会枯，不会落，不会因为日子久了而淡。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一束永不凋谢的花，<br/>你愿意，让我送给你一辈子吗？',
+      whisper: '我会让你所有的春天，<br/>都开满。' },
+
+    { title: 'Sotto la Luna', subtitle: '— 致 · 月光下走过千百次的那个名字 —',
+      paragraphs: [
+        '月亮升起来的时候，我会想你。我心里默念你的名字，像一种温柔的咒语，一声一声，把夜安顿下来。',
+        '我心里那一轮月亮，从遇见你的那一夜起，就再没落下过。我想，它会一直挂着，直到我闭眼之前。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生这么多个夜晚，<br/>我月光下念的名字，<br/>都是你，好不好？',
+      whisper: '你不必听见，<br/>我也愿意一遍又一遍地念。' },
+
+    { title: 'Pour Toujours', subtitle: '— 致 · "永远"的最终答案 —',
+      paragraphs: [
+        '小时候我以为"永远"是骗小孩的话；长大了我以为"永远"是不可能的；直到遇见你，我才相信——原来"永远"，是一个具体的人。',
+        '你站在我面前的时候，"永远"才有了样子。你不是一个抽象的词，你是温度，是重量，是真实可触的怀抱。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，让我用余生，<br/>兑现"永远"这两个字吗？',
+      whisper: '一天一天地兑现，<br/>慢慢地兑现，认真地兑现。' },
+
+    { title: 'Casa Mia', subtitle: '— 致 · 我此生唯一的"家" —',
+      paragraphs: [
+        '家不是房子。我以前不懂这句话，现在我懂了——家是有你在的那一个地方。无论它在哪里，多大，多远，只要你在，那就是我的家。',
+        '我愿意为这个家做一切——煮饭、修灯、扛行李、半夜陪你看你最爱的电影。不是因为应该，而是因为，那是你和我的家。'
+      ], bridge: '所以——亲爱的，',
+      question: '从今往后，你愿意，<br/>让我们俩共同写下"家"这个字吗？',
+      whisper: '一笔一画，<br/>慢慢写，写一辈子。' },
+
+    { title: 'Il Pleut', subtitle: '— 致 · 雨里也想牵起的那只手 —',
+      paragraphs: [
+        '雨下得很大的那一天，我没带伞。可你跑过来撑住了我头顶的那一片天——从那一刻起，我就再也不怕任何雨了。',
+        '我希望从那以后，所有的雨都是我们一起淋的；所有的伞都是我们一起撑的；所有的雷声，都比不上我们一起笑出来的声音。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生这么多场雨，<br/>你愿意，都和我一起淋吗？',
+      whisper: '哪怕只剩一把伞，<br/>也够我们俩共撑。' },
+
+    { title: 'Le Premier Pas', subtitle: '— 致 · 让我鼓起勇气说"喜欢你"的人 —',
+      paragraphs: [
+        '我不是一个勇敢的人，常常话到嘴边就咽回去。可遇见你之后，我学会了一件事——把那句"我喜欢你"，认真地说出口。',
+        '这第一步，我走了很久，等了很久，犹豫了很久。可只要你抬头看我一眼，我所有的犹豫都变成了"是她（他）"。'
+      ], bridge: '所以——请允许我再认真地说一次：',
+      question: '你愿意，做让我此生<br/>迈出最勇敢一步的那个人吗？',
+      whisper: '第一步走出来了，<br/>剩下的路，我都和你一起走。' },
+
+    { title: 'Souvenir', subtitle: '— 致 · 以后回忆里最温暖的那一段 —',
+      paragraphs: [
+        '多年以后，当我老去，我会忘记很多事——忘记今天吃了什么，忘记我读过的书，忘记我去过的地方。可我不会忘记你。',
+        '我会记得你穿白裙子（白衬衫）的样子，你笑的时候眼角的弧度，你叫我的那一声温柔。这些记忆，会陪我走完这一生最长的路。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我此生<br/>最长、最温暖、最不愿忘记的那一段记忆吗？',
+      whisper: '哪怕我老到记不清自己，<br/>我也一定记得你。' },
+
+    { title: 'Senza Fine', subtitle: '— 致 · 没有结局的我们 —',
+      paragraphs: [
+        '别人的故事都有结局——开头、高潮、结尾。可我希望我们的故事，没有结局；希望它一直走下去，一年又一年，一页又一页。',
+        '不必有惊天动地的情节，只要每一页都有你的名字。我们的故事，就是最美的那一种。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，让我们的故事，<br/>一直没有结局吗？',
+      whisper: '一直写，一直写，<br/>写到老到合不上书为止。' },
+
+    { title: 'Échos', subtitle: '— 致 · 心底回响着的那一声"嗯" —',
+      paragraphs: [
+        '你说话的时候，我喜欢听你尾音那一声轻轻的"嗯"。它是你最不经意的一个字，可它在我心里反复地响——一整天，一整周，一整年。',
+        '我心里所有微小的振动，都是你的声音引起的。你不必说大事，只要你"嗯"了一下，我整个人就被你点亮了。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生，你愿意，<br/>让你那一声"嗯"，是我唯一的回响吗？',
+      whisper: '我会一直听着你，<br/>直到我老到听不见为止。' },
+
+    { title: 'Constellation', subtitle: '— 致 · 心里画下的那一片星图 —',
+      paragraphs: [
+        '我心里有一片星图，每一颗星上都写着你的某一刻——你笑的那一刻，你回头的那一刻，你说"我也是"的那一刻。',
+        '这一片星图越画越大，渐渐地，它就成了我的天。从此我抬头不再看真的星空，只看你。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我心底<br/>这一片永不熄灭的星图吗？',
+      whisper: '即使白天，<br/>我也能看见你。' },
+
+    { title: 'Chuchoter', subtitle: '— 致 · 我耳边低语千遍的那个名字 —',
+      paragraphs: [
+        '我会在很多个安静的瞬间，悄悄地念你的名字。不为什么——只是想念一下，就感觉你在身边了。',
+        '你的名字，是我心里最温柔的咒语；念一声，就能让满世界的喧嚣全都安静下来。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生这么多次低语，<br/>你愿意，让我念的名字，永远是你吗？',
+      whisper: '念到老，<br/>念到再也念不出声为止。' },
+
+    { title: 'Une Promesse', subtitle: '— 致 · 一个我会兑现一辈子的承诺 —',
+      paragraphs: [
+        '我不会承诺给你大富大贵，因为我做不到；我也不会承诺给你永远不吵架，因为太假。可我可以承诺一件事——无论发生什么，我都不会先松开你的手。',
+        '我会把日子过得用心一点，把饭做得好吃一点，把家收拾得温暖一点，把"我爱你"说得更频繁一点。这些小小的承诺，加起来，就是一辈子。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，让我把这些<br/>小小的承诺，一一兑现给你吗？',
+      whisper: '不必盛大，<br/>只要长久。' },
+
+    { title: 'Solo Tu', subtitle: '— 致 · 我所有"唯一"的人 —',
+      paragraphs: [
+        '这世界上有许多个"一"——第一杯茶、第一抹阳光、第一阵风。可在我心里，"唯一"只有一个，它的名字叫做你。',
+        '我不再寻找别的可能，因为已经没有更好的了。你就是我心里所有"最"——最亮、最暖、最深、最长。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我此生<br/>唯一的那个"唯一"吗？',
+      whisper: '我心里那一把锁，<br/>从今以后，只为你留一把钥匙。' },
+
+    { title: 'Le Petit Bonheur', subtitle: '— 致 · 给我所有微小幸福的人 —',
+      paragraphs: [
+        '我喜欢的不是惊天动地的浪漫，而是平淡日子里那些细小的幸福——你递来的那一杯水，你转身时的一笑，你晚上睡前那一句"晚安"。',
+        '这些细微的瞬间，加起来，就是我的整个人生。它们不耀眼，可它们温暖；不昂贵，可它们珍贵。'
+      ], bridge: '所以——亲爱的，',
+      question: '这些小小的幸福，<br/>你愿意，分我一辈子吗？',
+      whisper: '我也会把我的小幸福，<br/>一点一点地，全部给你。' },
+
+    { title: 'Avec Toi', subtitle: '— 致 · 因为有你才有意义的所有事 —',
+      paragraphs: [
+        '没有你之前，我吃饭只是为了活着；和你一起以后，每一顿饭都变成了仪式。没有你之前，旅行只是换个地方睡觉；和你一起以后，连无聊的航站楼都变得迷人。',
+        '不是这些事变了，而是因为是和你做的。所以，我希望以后做任何事，都是"和你一起"。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生那么多事要做，<br/>你愿意，全都和我一起做吗？',
+      whisper: '哪怕只是一起发呆，<br/>也好。' },
+
+    { title: 'Chiar di Luna', subtitle: '— 致 · 月光下我反复想到的那个人 —',
+      paragraphs: [
+        '我曾以为月光是冷的。可遇见你之后，月光变得温柔了——它落在你身上，便染上了你的颜色，像是你身上的余温被借给了夜晚。',
+        '每一个月圆的夜里，我都会想你。哪怕你不在身旁，月亮也仿佛是你站在我面前。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生这么多个月圆夜，<br/>你愿意，都和我一起仰望吗？',
+      whisper: '月光照亮的，<br/>从此都是我们的影子。' },
+
+    { title: 'Tâches de Soleil', subtitle: '— 致 · 让我心里有阳光的人 —',
+      paragraphs: [
+        '我以前的世界是阴天的——不下雨，但也没有光。直到遇见你，我心里才一寸一寸地亮了起来——像太阳缓慢爬过地平线，再也没下去过。',
+        '你不必很耀眼，你只要存在，我心里就明亮。这是别人给不了的，是你独有的，是你天然的本事。'
+      ], bridge: '所以——亲爱的，',
+      question: '这份阳光，你愿意，<br/>分我照一辈子吗？',
+      whisper: '我会用我的整个余生，<br/>来回报你。' },
+
+    { title: 'Memoria', subtitle: '— 致 · 记忆里反复回放的那一秒 —',
+      paragraphs: [
+        '我心里有一段录像，反复地回放——是我们第一次牵手的那一秒。你的手指有点凉，可我心里一下子就暖了起来。',
+        '我记得那一秒比记得任何一年都清楚。它像是定格了，从那之后，所有的事都和那一秒有关。'
+      ], bridge: '所以——亲爱的，',
+      question: '那一秒，你愿意，<br/>让它延伸成一辈子吗？',
+      whisper: '从那一秒开始，<br/>我就再也没松手过。' },
+
+    { title: 'Velluto', subtitle: '— 致 · 心底最柔软的那一寸 —',
+      paragraphs: [
+        '我心里有一寸地方，是为你留的。它柔软，温暖，几乎从来不被任何事触碰。但你一句话，一个眼神，一个微笑，都能轻易地走进去。',
+        '我从来没让任何人到过那里。你是第一个，也将是唯一的一个。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我心底<br/>那一寸柔软永久的住客吗？',
+      whisper: '这寸地方，<br/>从此只为你保留。' },
+
+    { title: 'Voyage', subtitle: '— 致 · 余生路上唯一的同行人 —',
+      paragraphs: [
+        '余生是一段很长很长的旅途。一个人走也行，可两个人走，路就突然短了一半，风景就突然多了一倍。',
+        '我希望那个走在我身侧的人，是你。山高水远不重要，路远天长不重要，只要回头一看，是你，那就是好旅程。'
+      ], bridge: '所以——亲爱的，',
+      question: '余生这条路，你愿意，<br/>做我唯一的同行人吗？',
+      whisper: '累了我们就歇一歇，<br/>慢一点也没关系。' },
+
+    { title: 'Saison', subtitle: '— 致 · 让我心里四季常温的人 —',
+      paragraphs: [
+        '我心里曾经有寒冬——所有事都灰，所有人都冷。直到你走进来，我心里就再没下过雪。从此春暖花开，从此四季常温。',
+        '你不是一个季节，你是我心里的整个气候。我所有的回暖、所有的开花、所有的明媚，都来源于你。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，让我心里<br/>这片春天，永远不结束吗？',
+      whisper: '我会用一辈子，<br/>把你存在我心里的每一寸都好好养着。' },
+
+    { title: 'Liturgia', subtitle: '— 致 · 心里最神圣的那一种感情 —',
+      paragraphs: [
+        '我对你的感情，是郑重的。它不是少年的冲动，不是寂寞的找寻，不是偶然的心动——它是经过岁月、经过判断、经过沉淀之后，我心里最郑重的那一种。',
+        '我愿意把它写进最重要的纸页里，最深的字句里，最长的时光里——它叫"爱"，叫"承诺"，叫"一辈子"。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我此生<br/>这份最郑重感情的唯一收件人吗？',
+      whisper: '我会用一生兑现，<br/>不轻浮，不变。' },
+
+    { title: 'Nido', subtitle: '— 致 · 我们将要共筑的那个小窝 —',
+      paragraphs: [
+        '我希望我们以后的家不大不小——刚好够放下两个人的笑声，一只猫的脚步，一架钢琴的旋律，几束花的芬芳。',
+        '不必豪华，但要温暖。不必时尚，但要舒服。最重要的是——回到那里，能让你松一口气。'
+      ], bridge: '所以——亲爱的，',
+      question: '这样一个小小的家，<br/>你愿意，和我一起亲手筑起来吗？',
+      whisper: '一砖一瓦，<br/>一杯一盏，慢慢来。' },
+
+    { title: 'Lacrime di Gioia', subtitle: '— 致 · 让我落下喜泪的人 —',
+      paragraphs: [
+        '我以为我是不会哭的人。可遇见你之后我才知道——有的眼泪不是悲伤，是太满，是装不下的高兴溢出来。',
+        '那一次你笑着说"我也喜欢你"的时候，我眼眶突然就热了——那不是难过，是我心里的一根线，被你温柔地解开。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一辈子，你愿意，<br/>让我喜泪盈眶的，永远是你吗？',
+      whisper: '我会把这一份感动好好藏着，<br/>不敢辜负。' },
+
+    { title: 'Confidence', subtitle: '— 致 · 让我相信"被爱也可以很简单"的人 —',
+      paragraphs: [
+        '我以前不太敢被爱。怕给不出对等的回应，怕辜负，怕承担，怕将来。可你来了之后，"被爱"忽然变得轻松——它不必计算，不必衡量，只是流动。',
+        '你让我相信：原来爱一个人和被爱，可以一样自然，一样不疲惫，一样像呼吸一样。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做让我此生<br/>再也不怕"被爱"的那个人吗？',
+      whisper: '我也会让你，<br/>永远不怕"爱我"。' },
+
+    { title: 'Petit à Petit', subtitle: '— 致 · 一点一点喜欢上的那个人 —',
+      paragraphs: [
+        '我对你的喜欢，不是雷霆万钧的那种，是一点一点累积起来的。第一天觉得你笑得好看，第二天觉得你说话好听，第三天觉得你做事用心⋯⋯一千零一天之后，我才发现——我整个人，已经在你身上了。',
+        '这种喜欢是稳固的，是不会一夜之间倒塌的。它经过了时间检验，所以我可以放心地交付。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我用一千零一天才认定，<br/>又用一辈子继续喜欢下去的那个人吗？',
+      whisper: '从此每一天，<br/>我都比昨天更喜欢你一点。' },
+
+    { title: 'Rendez-vous', subtitle: '— 致 · 命运早就预约好的那个人 —',
+      paragraphs: [
+        '我相信这一切是有安排的——我所有走过的弯路、错过的人、犹豫的瞬间，都只是为了在那一天，准时与你相遇。',
+        '你不是偶然出现的，你是命运早就替我留好的那一席。它等了我那么多年，终于把你交到我手里。'
+      ], bridge: '所以——亲爱的，',
+      question: '既然是命运的预约，<br/>你愿意，让我从此再也不爽约吗？',
+      whisper: '我们这一生的每一次见面，<br/>都是命运在反复确认。' },
+
+    { title: 'Senza Parole', subtitle: '— 致 · 不必说话也懂我的人 —',
+      paragraphs: [
+        '我喜欢和你坐在一起，什么都不说。喜欢沉默时你的呼吸，喜欢风里你的发，喜欢两个人都不必填补空气的那种安然。',
+        '不是所有沉默都尴尬。和你的沉默，是温柔的，是稳的，是相互理解的——它比千言万语都更亲密。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生这么多个不必说话的瞬间，<br/>你愿意，都和我一起度过吗？',
+      whisper: '我们什么都不说，<br/>可什么都懂。' },
+
+    { title: 'La Vita', subtitle: '— 致 · 让我"想活下去"的那个人 —',
+      paragraphs: [
+        '这世上让人疲倦的事太多——失败、误解、长长的工作日。可只要想到下班回家有你，所有这一切就都变得可以忍受。',
+        '你不只是我喜欢的人，你是我生活里那道光——是我每天早起的理由，是我熬夜后回家的方向，是我所有疲惫之后的"值得"。'
+      ], bridge: '所以——亲爱的，',
+      question: '你愿意，做我余生里<br/>那个让我每天都想活下去的人吗？',
+      whisper: '我也会成为你生活里，<br/>同样的那道光。' },
+
+    { title: 'Étincelle', subtitle: '— 致 · 让我心里再次燃起来的人 —',
+      paragraphs: [
+        '我曾以为热情是年轻时的事，长大了人就慢慢变冷了。直到你出现——我才发现，原来心里那一簇火，从未熄灭，它只是在等一个值得的人。',
+        '你来的那一刻，火光重新被点燃。它不是少年时的冲动，是经过岁月之后更稳定、更温暖的那一种。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一团火，你愿意，<br/>让它终生为你燃烧吗？',
+      whisper: '它不会熄。<br/>我保证。' },
+
+    { title: "L'Aube", subtitle: '— 致 · 每一个黎明我都要重新爱一次的人 —',
+      paragraphs: [
+        '我希望每一个黎明醒来，第一件事就是重新认真地爱你一次——不是因为习惯，而是因为有意识，每一天都重新选择你。',
+        '爱不该是惯性，爱是每天的决定。我愿意每天都做一次同样的决定——选你，选你，选你。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生有那么多个黎明，<br/>你愿意，让我每一天都选你一次吗？',
+      whisper: '直到老去，<br/>也不停歇。' },
+
+    { title: 'Nous', subtitle: '— 致 · "我们"这两个字最美的那一面 —',
+      paragraphs: [
+        '没有你之前我是"我"。和你在一起以后，"我"消失了，"我们"出现了。这两个字看似简单，可里面藏着我和你日日夜夜的温柔，藏着所有早安和晚安。',
+        '我希望多年之后，"我们"这两个字依然在我们彼此口中——不是义务，而是骄傲；不是习惯，而是选择。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生，你愿意，让"我们"，<br/>始终是我们最骄傲的那两个字吗？',
+      whisper: '"我们"——<br/>我用一辈子来守护这两个字。' },
+
+    { title: 'Lumière', subtitle: '— 致 · 让我从此不怕黑的人 —',
+      paragraphs: [
+        '我以前怕黑——怕未知，怕一个人，怕走不出来的死巷。可遇见你以后，我心里有了一盏永远不会灭的灯——你不必特意为我照亮，只要你在，我就不怕黑了。',
+        '你是我的光。不耀眼，但永远在；不张扬，但够暖。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生这么多个长夜，<br/>你愿意，做我那盏不灭的灯吗？',
+      whisper: '黑夜再长，<br/>我也不怕了。' },
+
+    { title: 'Pour Toi', subtitle: '— 致 · 我愿意为之放弃所有"自由"的人 —',
+      paragraphs: [
+        '以前我以为最珍贵的是自由——一个人来去，一个人决定，一个人冷暖自知。可遇见你之后，我才发现，比自由更珍贵的是——自愿地，把一部分自由交给一个人。',
+        '我愿意每天等你下班；愿意为你改变路线；愿意把"我"的所有计划，改成"我们"的。这不是失去，这是更深的拥有。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一份自愿，你愿意，<br/>让我此生只对你一个人付出吗？',
+      whisper: '我把自由交给你，<br/>请你也把你的，交给我。' },
+
+    { title: 'Adagio', subtitle: '— 致 · 让我学会慢下来的人 —',
+      paragraphs: [
+        '我曾经匆忙地走，匆忙地选，匆忙地度过每一个明天。可遇见你之后，我学会了慢——慢慢吃饭，慢慢说话，慢慢爱一个人。',
+        '慢，不是浪费时间，是把时间都用来感受。我希望每一个慢下来的瞬间里，都是你和我。'
+      ], bridge: '所以——亲爱的，',
+      question: '这一生那么长，你愿意，<br/>和我慢慢地走，慢慢地老吗？',
+      whisper: '不必赶，不必急，<br/>让我们一起把日子过成诗。' }
+  ],
+  en: [
+    { title: 'Solo per te', subtitle: '— To the only answer of my life —',
+      paragraphs: [
+        'There are many kinds of liking in this world — a passing breeze, a quiet rain, a "goodnight" said in passing. But the way I like you is different: I want to quietly write your name onto every morning and every dusk that follows.',
+        'When you smile, I finally understand what it means for a heart to skip a beat. When you fall silent, I learn what tenderness really is. Mountains, seas, the changing of the seasons — none of them move me the way the curve of your eyes does. After walking a thousand miles, I still want, more than anything, to stop here, beside you.'
+      ], bridge: 'So — my dearest,',
+      question: 'In this long life ahead,<br/>will you be the longest chapter of my story?',
+      whisper: 'You only need to nod, ever so gently —<br/>and I will spend the rest of my days making you the happiest person in our story.' },
+
+    { title: 'La Vie en Rose', subtitle: '— To the whole spring inside your eyes —',
+      paragraphs: [
+        'Before I met you, the world was black and white, and the years slid by like a quiet river. Then, one day, you smiled — and color, all of it, came home to me through your eyes.',
+        'It is not just the spring that I love. It is the way you stand inside it: the wind lifting your hair, all of April softening around you, the clouds reluctant to move on.'
+      ], bridge: 'So — my dearest,',
+      question: 'From now on, every spring,<br/>will you let me bloom alongside you?',
+      whisper: 'Just stay where you are,<br/>and the flower in my heart will keep on blooming — for you, only for you.' },
+
+    { title: 'Mon Étoile', subtitle: '— To the brightest star in my sky —',
+      paragraphs: [
+        'The night is vast and the stars are many, but whenever I look up, there is only one in my eyes. It is not the brightest one — it is the one that shines only for me. That one is you.',
+        'I want to tuck you into my pocket, into my heartbeat, into every breath I take — so that even when the night is darkest, I will not be afraid.'
+      ], bridge: 'So — my dearest,',
+      question: 'Through all the long nights ahead,<br/>will you be the star I lift my eyes to find?',
+      whisper: 'Just stay where you are,<br/>and I will keep looking up — always.' },
+
+    { title: 'For Always', subtitle: '— To the one inside every "someday" of mine —',
+      paragraphs: [
+        '"Someday" used to be a hollow word for me — drifting, weightless, with no ending in sight. Then I met you, and "someday" finally took a shape. That shape, it turns out, was always you.',
+        'I do not just want to spend today with you. I want every morning that follows, every dusk, every passing rain, every gust of wind. The plain ones, the long ones, the ones that need no words.'
+      ], bridge: 'So — my dearest,',
+      question: 'All my "somedays" from here on —<br/>will you let me speak them aloud to you?',
+      whisper: 'Even if it is only "good morning"<br/>said again and again, I would like to say it — to you.' },
+
+    { title: 'Toi et Moi', subtitle: '— To the loveliest "us" of this whole life —',
+      paragraphs: [
+        'The world has many pronouns — I, you, they. But the one I love most has always been "us." Half of you, half of me, no seam between.',
+        'I love the meals "we" share, the films "we" sit through, the songs "we" hum along to. I love it most when "we" do nothing at all — just sitting, breathing the same room\'s quiet air.'
+      ], bridge: 'So — my dearest,',
+      question: 'For the long years ahead,<br/>will you let "us" stay "us"?',
+      whisper: 'Nothing needs to be grand;<br/>every plain day, just as long as it is ours, is enough.' },
+
+    { title: 'Cuore Mio', subtitle: '— To the reason my heart still beats —',
+      paragraphs: [
+        'I only know now that "a heartbeat" is not an ordinary thing — it has to meet the right person before it learns to become a song. You are the song on repeat in mine.',
+        'I love the way your eyes curve when you laugh, the way your voice trails off at the end of a sentence, the way the smallest thing you do can fill my whole day.'
+      ], bridge: 'So — my dearest,',
+      question: 'The song inside my chest —<br/>will you let it loop, from now on, only for you?',
+      whisper: 'For all the years to come,<br/>let my heart keep time using your name.' },
+
+    { title: 'Du Bist Mein Zuhause', subtitle: '— To the only place I ever call home —',
+      paragraphs: [
+        'I have walked many streets and lived in many rooms, but none of them ever felt like "home" — until I met you. Then I understood: "home" was never a house. Home was always a person.',
+        'Your smile is the most familiar window I know. Your gentle gaze is the lamp I want to come back to every night.'
+      ], bridge: 'So — my dearest,',
+      question: 'For all this long life,<br/>will you stay as the home I come back to?',
+      whisper: 'I will be right beside you —<br/>making every tomorrow feel as warm as today.' },
+
+    { title: 'Toujours', subtitle: '— To the one I want a lifetime to say "I love you" to —',
+      paragraphs: [
+        'I used to think love had to be grand — fireworks, declarations, the whole world told. After meeting you, I learned something quieter: love is the daily, willing yes.',
+        'It is wanting to see your face first in the morning. It is saving the last words of the day for you. It is any ordinary little thing made sacred — because you are in it.'
+      ], bridge: 'So — my dearest,',
+      question: 'Will you let me spend a whole lifetime<br/>saying "I love you" — slowly, again and again?',
+      whisper: 'I will say it one sentence at a time,<br/>until I am too old to speak it aloud.' },
+
+    { title: 'Coup de Foudre', subtitle: '— To the one whose single glance fixed my life —',
+      paragraphs: [
+        'I used to think "love at first sight" was something only poems were brave enough to say. Then I saw you. My heart truly fell — and it has never quite stood back up.',
+        'The way you turned, the way you spoke, the light in your eyes the moment they met mine — like being gently struck, and at the same time, like finally coming back to where I belonged.'
+      ], bridge: 'So — my dearest,',
+      question: 'That quiet thunder in my chest —<br/>will you let me hear it again, ten thousand times?',
+      whisper: 'You only need to appear before me once,<br/>and my heart will go on stirring for the rest of my life.' },
+
+    { title: 'Carpe Diem', subtitle: '— To every today I want to live carefully with you —',
+      paragraphs: [
+        'Time has always been quick. But since meeting you, I have wanted it to slow down — slower, just a little slower — so that I can study every look in your eyes, so that I can remember every one of your mornings.',
+        'I want to live each day with care. Tomorrow is uncertain, but as long as you are in today, I am the most fortunate person in the world.'
+      ], bridge: 'So — from today on,',
+      question: 'Every "today" of ours —<br/>will you let it belong to us, together?',
+      whisper: 'One "today" at a time, added together,<br/>is what we will call a whole life.' },
+
+    { title: 'Mille Étoiles', subtitle: '— To all the countless stars in my sky —',
+      paragraphs: [
+        'For a long time, I would look up at the night sky alone. There were so many stars, but not one of them seemed lit for me. Then I met you — and discovered that the whole galaxy had been a gift, waiting in your hands.',
+        'You do not need to shine; you are the light itself. Every time I felt lost, every hesitation, every uncertainty — when you appeared, they were quietly lit up.'
+      ], bridge: 'So — my dearest,',
+      question: 'Across this enormous night,<br/>will you let me read every star by your side?',
+      whisper: 'Even if the sky turns dark again,<br/>I have you — and that is already a galaxy.' },
+
+    { title: 'Adagio', subtitle: '— To the one who taught me how to slow down —',
+      paragraphs: [
+        'I used to walk in a hurry, choose in a hurry, pass through every tomorrow in a hurry. After meeting you, I learned a softer pace — eating slowly, speaking slowly, loving someone slowly.',
+        'Slowness is not lost time; slowness is time used to feel. I hope every slow moment of mine, from here on, holds both you and me.'
+      ], bridge: 'So — my dearest,',
+      question: 'For this long life ahead,<br/>will you walk slowly with me, and grow old with me, slowly?',
+      whisper: 'No need to rush, no need to hurry —<br/>let us turn every day into a quiet poem.' }
+  ]
+  };
+  let LETTERS = LETTERS_BY_LANG[lang];
+
+  /* ===== ?content=... parser — replaces LETTERS entirely if provided =========
+     Format mirrors mama.html so the same builder shape works here too. */
+  (function applyUserContent() {
+    const raw = urlParams.get('content');
+    if (!raw) return;
+    const decoded = raw; // URLSearchParams already decodes
+    const parseParagraphs = s => (s || '')
+      .split(/\r?\n|\|\|/).map(t => t.trim()).filter(Boolean);
+
+    let parsed;
+    if (decoded.indexOf('::') === -1) {
+      // Shortcut: whole value is a single letter's paragraphs
+      parsed = [{
+        title: '', subtitle: '',
+        paragraphs: parseParagraphs(decoded),
+        bridge: '', question: '', whisper: ''
+      }];
+    } else {
+      parsed = decoded.split('~~~').map(chunk => {
+        const f = chunk.split('::');
+        return {
+          title:      (f[0] || '').trim(),
+          subtitle:   (f[1] || '').trim(),
+          paragraphs: parseParagraphs(f[2] || ''),
+          bridge:     (f[3] || '').trim(),
+          question:   (f[4] || '').trim(),
+          whisper:    (f[5] || '').trim()
+        };
+      }).filter(L =>
+        L.title || L.subtitle || L.paragraphs.length ||
+        L.bridge || L.question || L.whisper
+      );
+    }
+    if (parsed.length) LETTERS = parsed;
+  })();
+
+  // URL ?title=... overrides letter 0's fancy title only
+  if (userTitle && LETTERS[0]) LETTERS[0].title = userTitle.trim();
+
+  /* ===== Letter renderer + click-to-flip ===== */
+  // Clamp single-letter index to a valid range now that LETTERS is finalized.
+  const lockedIndex = (singleLetterIndex !== null)
+    ? Math.min(singleLetterIndex, LETTERS.length - 1)
+    : null;
+  let currentLetterIdx = lockedIndex !== null ? lockedIndex : 0;
+  const pad2 = n => String(n).padStart(2, '0');
+
+  function renderLetter(idx) {
+    const L = LETTERS[idx];
+    document.getElementById('fancyTitle').textContent = L.title;
+    document.getElementById('letterSubtitle').textContent = L.subtitle;
+
+    const body = document.getElementById('letterBody');
+    body.innerHTML = '';
+    L.paragraphs.forEach(t => {
+      const p = document.createElement('p');
+      p.textContent = t;
+      body.appendChild(p);
+    });
+    if (L.bridge) {
+      const p = document.createElement('p');
+      p.className = 'no-indent';
+      p.textContent = L.bridge;
+      body.appendChild(p);
+    }
+    document.getElementById('letterQuestion').innerHTML = L.question;
+    document.getElementById('letterWhisper').innerHTML = L.whisper;
+    document.getElementById('letterIndex').textContent = `${pad2(idx + 1)} / ${pad2(LETTERS.length)}`;
+    document.title = T.docTitle(L.title || '', toName);
+  }
+
+  // In single-letter mode hide the counter and disable the click-to-flip role.
+  // (The "tap to turn" hint is already swapped out via T.metaLeftSingle above.)
+  if (lockedIndex !== null) {
+    const counter = document.getElementById('letterIndex');
+    if (counter) counter.style.display = 'none';
+    const card = document.getElementById('letterCard');
+    if (card) {
+      card.removeAttribute('role');
+      card.removeAttribute('tabindex');
+      card.setAttribute('aria-label', 'A letter');
+    }
+  }
+
+  renderLetter(currentLetterIdx);
+
+  const letterCard = document.getElementById('letterCard');
+  let flipping = false;
+  function flipLetter(direction = 1) {
+    if (flipping || lockedIndex !== null || LETTERS.length <= 1) return;
+    flipping = true;
+    letterCard.classList.add('flipping');
+    setTimeout(() => {
+      currentLetterIdx = (currentLetterIdx + direction + LETTERS.length) % LETTERS.length;
+      renderLetter(currentLetterIdx);
+      letterCard.classList.remove('flipping');
+      flipping = false;
+    }, 320);
+  }
+
+  if (lockedIndex === null && LETTERS.length > 1) {
+    letterCard.addEventListener('click', (e) => {
+      if (e.target.closest('button, a, input, textarea, .music-slot, .music-controls, meting-js, .aplayer')) return;
+      flipLetter(1);
+    });
+    letterCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipLetter(1); }
+    });
+  }
+
+  /* ===== Build the music player (just the player, no surrounding text) ===== */
+  let metingEl = null;
+  function buildMusicPlayer() {
+    const slot = document.getElementById('musicSlot');
+    if (!slot) return;
+    // Remove only existing meting-js elements; keep the right-side next-arrow button alive.
+    slot.querySelectorAll('meting-js').forEach(el => el.remove());
+
+    const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#b8546a';
+
+    metingEl = document.createElement('meting-js');
+    metingEl.setAttribute('id', musicId);
+    metingEl.setAttribute('server', musicApp);
+    metingEl.setAttribute('type', musicType);
+    if (autoplay) metingEl.setAttribute('autoplay', 'true');
+    metingEl.setAttribute('fixed', 'false');
+    metingEl.setAttribute('mini', 'false');
+    metingEl.setAttribute('loop', 'all');
+    metingEl.setAttribute('order', 'list');
+    metingEl.setAttribute('preload', 'auto');
+    metingEl.setAttribute('theme', accent);
+    // Treat playlists like a single-song display; we expose a custom "next" arrow instead.
+    metingEl.setAttribute('list-folded', 'true');
+    metingEl.setAttribute('list-max-height', '0');
+    // Insert the player as the first child so the absolutely-positioned button overlays it on the right.
+    slot.insertBefore(metingEl, slot.firstChild);
+
+    // Reveal the next-arrow only when the source is a multi-track type.
+    const isMulti = /^(playlist|album|artist|search)$/i.test(musicType);
+    const nextBtn = document.getElementById('nextSongBtn');
+    if (nextBtn && isMulti) nextBtn.hidden = false;
+  }
+
+  /* ===== Custom "next song" button ===== */
+  const nextSongBtn = document.getElementById('nextSongBtn');
+  if (nextSongBtn) {
+    nextSongBtn.addEventListener('click', () => {
+      const ap = metingEl && metingEl.aplayer;
+      if (ap && typeof ap.skipForward === 'function') {
+        ap.skipForward();
+        if (ap.audio && ap.audio.paused && typeof ap.play === 'function') {
+          ap.play();
+        }
+      }
+    });
+  }
+
+  /* ===== Theme switching ===== */
+  const THEMES = {
+    rose:     { name: "Rose & Honey"      },
+    lavender: { name: "Lavender Dusk"     },
+    sakura:   { name: "Sakura Mist"       },
+    midnight: { name: "Midnight Garden"   },
+    sage:     { name: "Morning Sage"      }
+  };
+
+  const SEASONS = {
+    spring: { particle: "blossom", grassDensity: 1.0, name: "Spring" },
+    summer: { particle: "rain",    grassDensity: 1.2, name: "Summer" },
+    autumn: { particle: "leaf",    grassDensity: 0.7, name: "Autumn" },
+    winter: { particle: "snow",    grassDensity: 0.4, name: "Winter" }
+  };
+  function currentSeason() { return body.getAttribute('data-season') || 'spring'; }
+  function currentParticleKind() { return SEASONS[currentSeason()].particle; }
+
+  const body = document.body;
+  const swatches = document.querySelectorAll('.swatch');
+  const themeNameEl = document.getElementById('themeName');
+
+  function setTheme(name) {
+    body.setAttribute('data-theme', name);
+    swatches.forEach(s => s.classList.toggle('active', s.dataset.theme === name));
+    themeNameEl.textContent = THEMES[name].name;
+    rebuildParticles();
+    try { localStorage.setItem('letter-theme', name); } catch(e){}
+  }
+  swatches.forEach(s => s.addEventListener('click', () => setTheme(s.dataset.theme)));
+
+  try {
+    const saved = localStorage.getItem('letter-theme');
+    if (saved && THEMES[saved]) setTheme(saved);
+  } catch(e){}
+
+  /* ===== Envelope opening ===== */
+  const envelope = document.getElementById('envelope');
+  const letterWrap = document.getElementById('letterWrap');
+  const closeBtn = document.getElementById('closeBtn');
+
+  let playerBuilt = false;
+  function openEnvelope() {
+    if (envelope.classList.contains('opening')) return;
+    envelope.classList.add('opening');
+    setTimeout(() => {
+      envelope.classList.add('hidden');
+      letterWrap.classList.add('visible');
+      letterWrap.setAttribute('aria-hidden','false');
+      if (!playerBuilt) {
+        buildMusicPlayer();
+        playerBuilt = true;
+      }
+    }, 900);
+  }
+  envelope.addEventListener('click', openEnvelope);
+  envelope.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    letterWrap.classList.remove('visible');
+    letterWrap.setAttribute('aria-hidden','true');
+    setTimeout(() => {
+      envelope.classList.remove('hidden','opening');
+    }, 600);
+  });
+
+  /* ===== Particles ===== */
+  const particlesEl = document.getElementById('particles');
+  const petalsBtn = document.getElementById('petalsBtn');
+  let particlesOn = true;
+  petalsBtn.classList.remove('off');
+
+  function blossomSVG(color) {
+    return `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <g transform="translate(12 12)">
+        ${[0,72,144,216,288].map(a => `<ellipse cx="0" cy="-6" rx="3.4" ry="5.2" fill="${color}" opacity="0.92" transform="rotate(${a})"/>`).join('')}
+        <circle r="1.6" fill="#fff3a8" opacity="0.95"/>
+      </g>
+    </svg>`;
+  }
+  // Real 6-fold snowflakes — three variants (detailed dendrite, simple star, tiny crystal)
+  function snowSVG(color, variant) {
+    const v = (variant == null) ? Math.floor(Math.random() * 3) : variant;
+    if (v === 0) {
+      // detailed dendrite: 6 main arms + side branches at 1/3 and 2/3
+      const arms = [0, 60, 120].map(a => `
+        <g transform="rotate(${a})">
+          <line x1="-10" y1="0" x2="10" y2="0"/>
+          <line x1="-7" y1="0" x2="-8.5" y2="-2.6"/>
+          <line x1="-7" y1="0" x2="-8.5" y2="2.6"/>
+          <line x1="7"  y1="0" x2="8.5"  y2="-2.6"/>
+          <line x1="7"  y1="0" x2="8.5"  y2="2.6"/>
+          <line x1="-3.5" y1="0" x2="-4.8" y2="-1.6"/>
+          <line x1="-3.5" y1="0" x2="-4.8" y2="1.6"/>
+          <line x1="3.5"  y1="0" x2="4.8"  y2="-1.6"/>
+          <line x1="3.5"  y1="0" x2="4.8"  y2="1.6"/>
+        </g>`).join('');
+      return `<svg viewBox="-12 -12 24 24" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <g stroke="${color}" stroke-width="1.1" fill="none" stroke-linecap="round" opacity="0.95">
+          ${arms}
+          <circle r="0.9" fill="${color}" stroke="none"/>
+        </g>
+      </svg>`;
+    } else if (v === 1) {
+      // simple stellar: 6 arms with arrowhead tips
+      const arms = [0, 60, 120].map(a => `
+        <g transform="rotate(${a})">
+          <line x1="-9" y1="0" x2="9" y2="0"/>
+          <line x1="-9" y1="0" x2="-7" y2="-2"/>
+          <line x1="-9" y1="0" x2="-7" y2="2"/>
+          <line x1="9"  y1="0" x2="7"  y2="-2"/>
+          <line x1="9"  y1="0" x2="7"  y2="2"/>
+        </g>`).join('');
+      return `<svg viewBox="-12 -12 24 24" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <g stroke="${color}" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0.9">
+          ${arms}
+        </g>
+      </svg>`;
+    } else {
+      // distant crystal — tiny soft point
+      return `<svg viewBox="-6 -6 12 12" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <circle r="2" fill="${color}" opacity="0.85"/>
+        <circle r="3.5" fill="${color}" opacity="0.18"/>
+      </svg>`;
+    }
+  }
+  function leafSVG(color) {
+    return `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <path d="M3 21 C 8 6, 18 4, 22 3 C 21 11, 17 19, 4 22 Z" fill="${color}" opacity="0.85"/>
+      <path d="M5 20 C 10 12, 16 7, 21 4" stroke="${color}" stroke-width="0.7" fill="none" opacity="0.5"/>
+    </svg>`;
+  }
+  // Soft romantic drizzle: thin, fading streaks with a glowing droplet at the tip
+  function rainSVG(color) {
+    const gid = 'rg' + Math.random().toString(36).slice(2, 8);
+    return `<svg viewBox="0 0 6 30" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${color}" stop-opacity="0"/>
+          <stop offset="55%" stop-color="${color}" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="${color}" stop-opacity="0.7"/>
+        </linearGradient>
+      </defs>
+      <line x1="3" y1="0" x2="3" y2="26" stroke="url(#${gid})" stroke-width="0.9" stroke-linecap="round"/>
+      <circle cx="3" cy="27" r="1.1" fill="${color}" opacity="0.7"/>
+    </svg>`;
+  }
+
+  function getThemeColors() {
+    const cs = getComputedStyle(document.body);
+    return [
+      cs.getPropertyValue('--particle-1').trim(),
+      cs.getPropertyValue('--particle-2').trim(),
+      cs.getPropertyValue('--particle-3').trim()
+    ];
+  }
+
+  let spawnTimer = null;
+  function rebuildParticles() {
+    particlesEl.innerHTML = '';
+    if (spawnTimer) { clearInterval(spawnTimer); spawnTimer = null; }
+    if (!particlesOn) return;
+
+    const kind = currentParticleKind();
+    const seasonPalettes = {
+      spring: ['#f7c5d3','#fde0ea','#ffd9e4','#f4a3b6','#ffe7c2'],
+      summer: ['#e9eef7','#dbe6f2','#f4d7dc','#f6c7d0','#fce4d6','#e8d4e0','#cfe0ef'],
+      autumn: ['#c8602e','#e08a3a','#a84a22','#d97a2e','#e8a84a'],
+      winter: ['#ffffff','#fafafa','#ffffff','#fcfcfc','#ffffff']
+    };
+    const summerPetalPalette = ['#f4a3b6','#f6c7d0','#fde0ea','#f7c5d3','#fce4d6'];
+    const palette = seasonPalettes[currentSeason()] || getThemeColors();
+
+    function makeOne(initial) {
+      const el = document.createElement('div');
+      el.className = 'particle';
+
+      const isPetalInRain = (kind === 'rain') && (Math.random() < 0.12);
+      let snowVariant = null;
+      if (kind === 'snow') {
+        const r = Math.random();
+        snowVariant = r < 0.45 ? 0 : r < 0.8 ? 1 : 2;
+      }
+
+      const w = (kind === 'rain' && !isPetalInRain) ? 1.6 + Math.random() * 1.0 : 0;
+      const h = (kind === 'rain' && !isPetalInRain) ? 22 + Math.random() * 24 : 0;
+      const size = isPetalInRain      ? 10 + Math.random() * 8
+                  : kind === 'rain'   ? 0
+                  : kind === 'snow'   ? (snowVariant === 2 ? 5 + Math.random() * 4
+                                       : snowVariant === 1 ? 9 + Math.random() * 6
+                                       :                     12 + Math.random() * 8)
+                  : kind === 'leaf'   ? 18 + Math.random() * 22
+                  :                     14 + Math.random() * 18;
+
+      const color = isPetalInRain
+        ? summerPetalPalette[Math.floor(Math.random() * summerPetalPalette.length)]
+        : palette[Math.floor(Math.random() * palette.length)];
+
+      const svg = isPetalInRain    ? blossomSVG(color)
+                : kind === 'leaf'  ? leafSVG(color)
+                : kind === 'snow'  ? snowSVG(color, snowVariant)
+                : kind === 'rain'  ? null  // rain rendered via gradient div, no SVG
+                :                    blossomSVG(color);
+      if (svg) el.innerHTML = svg;
+
+      const left = Math.random() * 100;
+      const landYPx = 4 + Math.random() * 52;
+      const landY = `calc(100vh - ${landYPx.toFixed(1)}px)`;
+
+      const dur = isPetalInRain    ? 13 + Math.random() * 8
+                : kind === 'rain'  ? 3.6 + Math.random() * 2.4
+                : kind === 'leaf'  ? 14 + Math.random() * 10
+                : kind === 'snow'  ? (snowVariant === 0 ? 22 + Math.random() * 12
+                                    : snowVariant === 1 ? 18 + Math.random() * 10
+                                    :                     14 + Math.random() * 8)
+                :                    12 + Math.random() * 10;
+
+      // For initial burst, randomize delay across [-2*dur, 0] so the box opens
+      // already populated with both landed and in-flight particles. For ongoing
+      // spawns, start fresh from the top.
+      const startDelay = initial ? -Math.random() * dur * 2 : 0;
+
+      const sway = (kind === 'rain' && !isPetalInRain) ? '40px'
+                 : kind === 'snow'                     ? (Math.random() * 320 - 160) + 'px'
+                 :                                       (Math.random() * 240 - 120) + 'px';
+      const opacity = isPetalInRain    ? 0.6 + Math.random() * 0.3
+                    : kind === 'rain'  ? 0.55 + Math.random() * 0.35
+                    : kind === 'snow'  ? (snowVariant === 2 ? 0.5 + Math.random() * 0.3
+                                                            : 0.7 + Math.random() * 0.3)
+                    :                    0.55 + Math.random() * 0.4;
+
+      if (kind === 'rain' && !isPetalInRain) {
+        el.style.cssText = `
+          left:${left}vw;
+          top:0;
+          width:${w}px;
+          height:${h}px;
+          animation-name:rainfall;
+          animation-duration:${dur}s;
+          animation-delay:${startDelay}s;
+          animation-timing-function:linear;
+          animation-iteration-count:1;
+          animation-fill-mode:forwards;
+          --landY:${landY};
+          opacity:${opacity};
+          background: linear-gradient(180deg, transparent 0%, ${color} 70%, ${color} 100%);
+          border-radius: ${w}px;
+          box-shadow: 0 0 3px ${color};
+          transform: rotate(6deg);
+          filter: blur(0.25px);
+        `;
+      } else {
+        el.style.cssText = `
+          left:${left}vw;
+          top:0;
+          width:${size}px;
+          height:${size}px;
+          animation-duration:${dur}s;
+          animation-delay:${startDelay}s;
+          animation-iteration-count:1;
+          animation-fill-mode:forwards;
+          --sway:${sway};
+          --dx0:0px;
+          --landY:${landY};
+          --maxop:${opacity};
+        `;
+      }
+
+      // No eviction — landed particles stay forever. The spawner stops once the cap is hit.
+      particlesEl.appendChild(el);
+    }
+
+    // 1) Initial burst — opens with some landed and some still falling
+    const initialN = kind === 'rain' ? 70 : 40;
+    for (let i = 0; i < initialN; i++) makeOne(true);
+
+    // 2) Continuous spawn — keeps falling forever, particles pile up without limit.
+    const interval = kind === 'rain' ? 220 : 850;
+    spawnTimer = setInterval(() => makeOne(false), interval);
+  }
+
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+    @keyframes rainfall {
+      /* drops fall, then settle at a random landing Y inside the grass-strip box and stay there */
+      0%   { transform: translate(0, -10vh) rotate(6deg); opacity: 0; }
+      15%  { opacity: 1; }
+      100% { transform: translate(-4vw, var(--landY, 98vh)) rotate(6deg); opacity: 1; }
+    }
+  `;
+  document.head.appendChild(styleSheet);
+
+  petalsBtn.addEventListener('click', () => {
+    particlesOn = !particlesOn;
+    petalsBtn.classList.toggle('off', !particlesOn);
+    petalsBtn.setAttribute('aria-pressed', String(particlesOn));
+    rebuildParticles();
+  });
+
+  rebuildParticles();
+
+  /* ===== Grass blades + seasonal piles ===== */
+  const grassEl = document.getElementById('grassStrip');
+  const leafPileEl = document.getElementById('leafPile');
+  const petalPileEl = document.getElementById('petalPile');
+  const puddlePileEl = document.getElementById('puddlePile');
+  const snowPileEl  = document.getElementById('snowPile');
+
+  // Smoothly varying density profile across width — gives natural "this side is more piled than that"
+  function makeProfile(W) {
+    const peaks = 5 + Math.floor(Math.random() * 4);
+    const profile = [];
+    for (let i = 0; i < peaks; i++) {
+      profile.push({
+        x: (i + 0.4 + Math.random() * 0.4) * W / peaks,
+        h: 0.45 + Math.random() * 0.7
+      });
+    }
+    return profile;
+  }
+  function densityAt(profile, x) {
+    let w = 0, sum = 0;
+    for (const p of profile) {
+      const wi = 1 / (1 + Math.pow((x - p.x) / 100, 2));
+      w += wi;
+      sum += p.h * wi;
+    }
+    return sum / w;
+  }
+
+  function buildGrass() {
+    if (!grassEl) return;
+    const density = SEASONS[currentSeason()].grassDensity;
+    const W = window.innerWidth;
+    const N = Math.floor(W / 9 * density);
+    const cs = getComputedStyle(document.body);
+    const g1 = cs.getPropertyValue('--ground-1').trim() || '#7ba869';
+    const g2 = cs.getPropertyValue('--ground-2').trim() || '#3e6b32';
+    const tip = cs.getPropertyValue('--grass-tip').trim() || g1;
+    const bloom = cs.getPropertyValue('--bloom').trim() || '#ec8aa8';
+    const season = currentSeason();
+
+    let svg = `<svg viewBox="0 0 ${W} 70" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">`;
+    for (let i = 0; i < N; i++) {
+      const x = Math.random() * W;
+      const h = 18 + Math.random() * 34;
+      const lean = (Math.random() - 0.5) * 12;
+      const fill = Math.random() < 0.4 ? g1 : g2;
+      svg += `<path d="M ${x} 70 Q ${x + lean*0.5} ${70-h*0.6} ${x + lean} ${70-h} Q ${x + lean - 1} ${70-h*0.6} ${x-1.6} 70 Z" fill="${fill}"/>`;
+      if (Math.random() < 0.35) {
+        svg += `<path d="M ${x + lean*0.7} ${70-h*0.7} L ${x+lean} ${70-h}" stroke="${tip}" stroke-width="0.8" fill="none" opacity="0.6"/>`;
+      }
+      if ((season === 'spring' || season === 'summer') && Math.random() < 0.04) {
+        const fy = 70 - h - 2;
+        svg += `<g transform="translate(${x+lean} ${fy})">`;
+        for (let p = 0; p < 5; p++) {
+          svg += `<circle cx="${Math.cos(p*1.2566)*2.2}" cy="${Math.sin(p*1.2566)*2.2}" r="1.6" fill="${bloom}" opacity="0.95"/>`;
+        }
+        svg += `<circle r="1" fill="#fff3a8"/></g>`;
+      }
+    }
+    svg += `</svg>`;
+    grassEl.innerHTML = svg;
+  }
+
+  function buildLeafPile() {
+    if (!leafPileEl) return;
+    const W = window.innerWidth;
+    const colors = ['#c8602e','#e08a3a','#a84a22','#d97a2e','#8a4520','#e8a84a'];
+    const profile = makeProfile(W);
+    let svg = `<svg viewBox="0 0 ${W} 60" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">`;
+
+    // 1) Pre-piled base — leaves carpet the bottom
+    for (let i = 0; i < W / 6; i++) {
+      const x = Math.random() * W;
+      const y = 50 + Math.random() * 8;
+      const r = 5 + Math.random() * 8;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<g transform="translate(${x} ${y}) rotate(${rot})"><ellipse cx="0" cy="0" rx="${r*1.3}" ry="${r*0.65}" fill="${c}"/><line x1="${-r*1.2}" y1="0" x2="${r*1.2}" y2="0" stroke="rgba(0,0,0,0.25)" stroke-width="0.7"/></g>`;
+    }
+    // 2) Accumulated layer — heavier where the profile peaks
+    for (let i = 0; i < W / 10; i++) {
+      const x = Math.random() * W;
+      const dens = densityAt(profile, x);
+      if (Math.random() > dens) continue;
+      const y = 44 - 12 * dens + Math.random() * 6;
+      const r = 5 + Math.random() * 7;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<g transform="translate(${x} ${y}) rotate(${rot})"><ellipse cx="0" cy="0" rx="${r*1.3}" ry="${r*0.6}" fill="${c}" opacity="0.9"/><line x1="${-r*1.2}" y1="0" x2="${r*1.2}" y2="0" stroke="rgba(0,0,0,0.2)" stroke-width="0.6"/></g>`;
+    }
+    // 3) Random leaves caught on grass blades
+    for (let i = 0; i < W / 26; i++) {
+      const x = Math.random() * W;
+      const y = 10 + Math.random() * 24;
+      const r = 4 + Math.random() * 5;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<g transform="translate(${x} ${y}) rotate(${rot})"><ellipse cx="0" cy="0" rx="${r*1.3}" ry="${r*0.55}" fill="${c}" opacity="0.85"/><line x1="${-r*1.2}" y1="0" x2="${r*1.2}" y2="0" stroke="rgba(0,0,0,0.2)" stroke-width="0.5"/></g>`;
+    }
+
+    svg += `</svg>`;
+    leafPileEl.innerHTML = svg;
+  }
+
+  function buildPetalPile() {
+    if (!petalPileEl) return;
+    const W = window.innerWidth;
+    const colors = ['#f7c5d3','#fde0ea','#ffd9e4','#f4a3b6','#e88aa6','#ffe0e8','#ffc0cb'];
+    const profile = makeProfile(W);
+    let svg = `<svg viewBox="0 0 ${W} 60" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">`;
+
+    // 1) Pre-piled base — always present at the very bottom
+    for (let i = 0; i < W / 5; i++) {
+      const x = Math.random() * W;
+      const y = 50 + Math.random() * 8;
+      const r = 2.5 + Math.random() * 3;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<ellipse cx="${x}" cy="${y}" rx="${r * 1.6}" ry="${r * 0.55}" fill="${c}" opacity="${0.8 + Math.random() * 0.2}" transform="rotate(${rot} ${x} ${y})"/>`;
+    }
+    // 2) Accumulated layer — drifts higher where the profile peaks (looks like falls piled there)
+    for (let i = 0; i < W / 8; i++) {
+      const x = Math.random() * W;
+      const dens = densityAt(profile, x);
+      if (Math.random() > dens) continue;
+      const y = 44 - 12 * dens + Math.random() * 6;
+      const r = 3 + Math.random() * 3;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<ellipse cx="${x}" cy="${y}" rx="${r * 1.5}" ry="${r * 0.55}" fill="${c}" opacity="${0.75 + Math.random() * 0.2}" transform="rotate(${rot} ${x} ${y})"/>`;
+    }
+    // 3) Hanging on grass — random petals stuck mid-grass
+    for (let i = 0; i < W / 26; i++) {
+      const x = Math.random() * W;
+      const y = 10 + Math.random() * 22;
+      const r = 2 + Math.random() * 2;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<ellipse cx="${x}" cy="${y}" rx="${r * 1.4}" ry="${r * 0.5}" fill="${c}" opacity="${0.7 + Math.random() * 0.25}" transform="rotate(${rot} ${x} ${y})"/>`;
+    }
+    // 4) A few intact 5-petal blossoms scattered on top
+    for (let i = 0; i < W / 40; i++) {
+      const cx = Math.random() * W;
+      const cy = 32 + Math.random() * 18;
+      const rot = Math.random() * 360;
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      svg += `<g transform="translate(${cx} ${cy}) rotate(${rot})">`;
+      for (let p = 0; p < 5; p++) {
+        svg += `<ellipse cx="0" cy="-2.6" rx="1.9" ry="2.9" fill="${c}" opacity="0.95" transform="rotate(${p * 72})"/>`;
+      }
+      svg += `<circle r="0.9" fill="#fff3a8"/></g>`;
+    }
+
+    svg += `</svg>`;
+    petalPileEl.innerHTML = svg;
+  }
+
+  function buildPuddlePile() {
+    if (!puddlePileEl) return;
+    const W = window.innerWidth;
+    let svg = `<svg viewBox="0 0 ${W} 60" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="puddle-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="#a8c8e8" stop-opacity="0"/>
+          <stop offset="55%" stop-color="#7ba2c4" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#4f7ea0" stop-opacity="0.85"/>
+        </linearGradient>
+      </defs>`;
+    // Pre-piled wet sheen across the whole strip
+    svg += `<rect x="0" y="42" width="${W}" height="18" fill="url(#puddle-grad)" opacity="0.35"/>`;
+    // Naturally spaced puddles where rain has collected
+    const N = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < N; i++) {
+      const cx = (i + 0.5) * W / N + (Math.random() - 0.5) * (W / N) * 0.4;
+      const cy = 44 + Math.random() * 10;
+      const rx = 70 + Math.random() * 110;
+      const ry = 5 + Math.random() * 4;
+      svg += `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#puddle-grad)" opacity="0.9"/>`;
+      svg += `<ellipse cx="${cx - rx * 0.3}" cy="${cy - ry * 0.4}" rx="${rx * 0.4}" ry="${ry * 0.25}" fill="#ffffff" opacity="0.55"/>`;
+      svg += `<ellipse cx="${cx + rx * 0.18}" cy="${cy}" rx="${rx * 0.65}" ry="${ry * 0.7}" fill="none" stroke="#ffffff" stroke-width="0.6" opacity="0.35"/>`;
+    }
+    // Droplets clinging to grass blades — random "hanging" rain
+    for (let i = 0; i < W / 16; i++) {
+      const x = Math.random() * W;
+      const y = 12 + Math.random() * 26;
+      const r = 1.4 + Math.random() * 1.6;
+      svg += `<circle cx="${x}" cy="${y}" r="${r}" fill="#7ba2c4" opacity="0.72"/>`;
+      svg += `<circle cx="${x - r * 0.3}" cy="${y - r * 0.3}" r="${r * 0.4}" fill="#ffffff" opacity="0.9"/>`;
+    }
+    svg += `</svg>`;
+    puddlePileEl.innerHTML = svg;
+  }
+
+  function buildSnowPile() {
+    if (!snowPileEl) return;
+    const W = window.innerWidth;
+    let svg = `<svg viewBox="0 0 ${W} 60" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">`;
+
+    // Just snow caps clinging to grass blades — no bulk drift, so the warm earth shows through
+    for (let i = 0; i < W / 12; i++) {
+      const x = Math.random() * W;
+      const y = 6 + Math.random() * 28;
+      const r = 1.6 + Math.random() * 2.2;
+      svg += `<ellipse cx="${x}" cy="${y}" rx="${r * 1.3}" ry="${r * 0.7}" fill="#ffffff" opacity="${0.7 + Math.random() * 0.3}"/>`;
+    }
+
+    svg += `</svg>`;
+    snowPileEl.innerHTML = svg;
+  }
+
+  buildGrass();
+  buildLeafPile();
+  buildPetalPile();
+  buildPuddlePile();
+  buildSnowPile();
+  let _resizeTO;
+  window.addEventListener('resize', () => {
+    clearTimeout(_resizeTO);
+    _resizeTO = setTimeout(() => {
+      buildGrass();
+      buildLeafPile();
+      buildPetalPile();
+      buildPuddlePile();
+      buildSnowPile();
+    }, 200);
+  });
+
+  /* ===== Season switching ===== */
+  const seasonBtns = document.querySelectorAll('.season-btn');
+  function setSeason(s) {
+    if (!SEASONS[s]) return;
+    body.setAttribute('data-season', s);
+    seasonBtns.forEach(b => b.classList.toggle('active', b.dataset.season === s));
+    rebuildParticles();
+    requestAnimationFrame(() => buildGrass());
+    try { localStorage.setItem('letter-season', s); } catch(e){}
+  }
+  seasonBtns.forEach(b => b.addEventListener('click', () => setSeason(b.dataset.season)));
+  try {
+    const savedS = localStorage.getItem('letter-season');
+    if (savedS && SEASONS[savedS]) setSeason(savedS);
+    else setSeason('spring');
+  } catch(e){ setSeason('spring'); }
+
+  /* ===== Ambient hum ===== */
+  const muteBtn = document.getElementById('muteBtn');
+  let audioCtx = null;
+  let masterGain = null;
+  let humOn = false;
+  let oscNodes = [];
+
+  function startHum() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0;
+      masterGain.connect(audioCtx.destination);
+      const freqs = [110, 164.81, 220];
+      oscNodes = freqs.map((f, i) => {
+        const o = audioCtx.createOscillator();
+        o.type = 'sine';
+        o.frequency.value = f;
+        const g = audioCtx.createGain();
+        g.gain.value = 0.06 - i * 0.015;
+        o.connect(g).connect(masterGain);
+        const lfo = audioCtx.createOscillator();
+        lfo.frequency.value = 0.05 + i * 0.03;
+        const lfoG = audioCtx.createGain();
+        lfoG.gain.value = 1.2;
+        lfo.connect(lfoG).connect(o.frequency);
+        o.start(); lfo.start();
+        return { o, lfo, g };
+      });
+      masterGain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 2.2);
+      humOn = true;
+    } catch(e) { console.warn('audio failed', e); }
+  }
+
+  function stopHum() {
+    if (!audioCtx || !humOn) return;
+    masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+    setTimeout(() => {
+      oscNodes.forEach(n => { try{ n.o.stop(); n.lfo.stop(); }catch(e){} });
+      oscNodes = [];
+      humOn = false;
+    }, 850);
+  }
+
+  muteBtn.addEventListener('click', () => {
+    if (humOn) {
+      stopHum();
+      muteBtn.classList.add('off');
+      muteBtn.setAttribute('aria-pressed','false');
+    } else {
+      startHum();
+      muteBtn.classList.remove('off');
+      muteBtn.setAttribute('aria-pressed','true');
+    }
+  });
+
+  /* ===== Heart burst ===== */
+  const burstEl = document.getElementById('burst');
+  function heartBurst() {
+    const SHAPES = ['♡','✦','❀','❤'];
+    for (let i = 0; i < 32; i++) {
+      const s = document.createElement('span');
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 140 + Math.random() * 320;
+      s.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
+      s.style.setProperty('--by', Math.sin(angle) * dist + 'px');
+      s.style.setProperty('--br', (Math.random() * 360) + 'deg');
+      s.style.fontSize = (16 + Math.random() * 24) + 'px';
+      s.style.color = getThemeColors()[Math.floor(Math.random()*3)] || 'currentColor';
+      s.textContent = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+      burstEl.appendChild(s);
+      setTimeout(() => s.remove(), 1700);
+    }
+  }
+
+  /* ===== "Yes" overlay ===== */
+  const yesBtn = document.getElementById('yesBtn');
+  const yesOverlay = document.getElementById('yesOverlay');
+  const yesClose = document.getElementById('yesClose');
+  yesBtn.addEventListener('click', () => {
+    heartBurst();
+    yesOverlay.classList.add('visible');
+    yesOverlay.setAttribute('aria-hidden', 'false');
+    setTimeout(heartBurst, 600);
+    setTimeout(heartBurst, 1200);
+  });
+  function closeYes() {
+    yesOverlay.classList.remove('visible');
+    yesOverlay.setAttribute('aria-hidden', 'true');
+  }
+  yesOverlay.addEventListener('click', closeYes);
+  yesClose.addEventListener('click', (e) => { e.stopPropagation(); closeYes(); });
+
+  /* ===== Keyboard: arrow keys cycle themes ===== */
+  const order = ['rose','lavender','sakura','midnight','sage'];
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'Escape' && yesOverlay.classList.contains('visible')) { closeYes(); return; }
+    const cur = body.getAttribute('data-theme');
+    const idx = order.indexOf(cur);
+    if (e.key === 'ArrowRight') setTheme(order[(idx+1) % order.length]);
+    else if (e.key === 'ArrowLeft') setTheme(order[(idx-1+order.length) % order.length]);
+  });
+</script>
+</body>
+</html>
