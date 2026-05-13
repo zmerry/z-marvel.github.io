@@ -434,6 +434,14 @@ var _hmt = _hmt || [];
   // Number of built-in letters in love.html — keyed by lang.
   const DEFAULT_LETTER_COUNT = { zh: 67, en: 12 };
 
+  // JSONBin v3 — auto-shorten path. When the user has typed any custom letter
+  // content, update() debounces an upload here and swaps the long #c= URL for
+  // a short ?b=<binId>. Silent: no spinner, no toast. Access key (not master
+  // key) so worst case is bin-scoped abuse rather than account takeover.
+  const JSONBIN_API           = 'https://api.jsonbin.io/v3/b';
+  const JSONBIN_ACCESS        = '$2a$10$5yl85nP5AEyPOB6jZEZOb.BiCqCaNJOpG3b7BPmWSzq5pMVZ0BDWG';
+  const SHORTEN_DEBOUNCE_MS   = 800;
+
   /* ===== DOM refs ===== */
   const $ = id => document.getElementById(id);
   const langEl = $('lang');
@@ -558,51 +566,95 @@ var _hmt = _hmt || [];
     return letters;
   }
 
+  // Collect every field the user has set into a single payload object,
+  // dropping empties/defaults. Shared by build() (#c= fragment) and
+  // uploadToJsonBin() (bin body).
+  function buildPayload() {
+    const payload = {};
+
+    if (langEl.value && langEl.value !== 'zh') payload.lang = langEl.value;
+
+    const to = toEl.value.trim();          if (to)    payload.to    = to;
+    const from = fromEl.value.trim();      if (from)  payload.from  = from;
+    const title = titleEl.value.trim();    if (title) payload.title = title;
+    const letterN = letterEl.value.trim(); if (letterN) payload.letter = letterN;
+
+    if (musicAppEl.value)        payload.musicapp  = musicAppEl.value;
+    if (musicTypeEl.value)       payload.musictype = musicTypeEl.value;
+    if (musicIdEl.value.trim())  payload.musicid   = musicIdEl.value.trim();
+    if (!autoplayEl.checked)     payload.autoplay  = 'false';
+
+    const letters = collectLetters();
+    if (letters.length) payload.letters = letters;
+
+    return payload;
+  }
+
+  // Encode letters into love.html's legacy `~~~`/`::` `?content=` format.
+  //   title :: subtitle :: paragraphs(\n-joined) :: bridge :: question :: whisper
+  //   letter1 ~~~ letter2 ~~~ ...
   function encodeLetters(letters) {
-    // Field order MUST match love.html parser:
-    //   title :: subtitle :: paragraphs :: bridge :: question :: whisper
-    // Paragraphs are joined with \n (encoded as %0A in the URL).
-    // Letters are joined with ~~~.
-    const parts = letters.map(L => [
+    return letters.map(L => [
       L.title, L.subtitle, L.paragraphs.join('\n'),
       L.bridge, L.question, L.whisper
-    ].join('::'));
-    return parts.join('~~~');
+    ].join('::')).join('~~~');
   }
 
   function build() {
-    const base = BASE_URL;
-    const params = new URLSearchParams();
+    // Long URL: a plain query string love.html already understands. Always
+    // shown first by update(); if custom letters are present, it gets quietly
+    // replaced by a ?b=<binId> short URL once the debounced upload returns.
+    // This URL also serves as a working fallback if JSONBin is unreachable.
+    const p = buildPayload();
+    const qs = new URLSearchParams();
 
-    // lang — only add if not default zh
-    if (langEl.value && langEl.value !== 'zh') params.set('lang', langEl.value);
+    if (p.lang)      qs.set('lang',      p.lang);
+    if (p.to)        qs.set('to',        p.to);
+    if (p.from)      qs.set('from',      p.from);
+    if (p.title)     qs.set('title',     p.title);
+    if (p.letter)    qs.set('letter',    p.letter);
+    if (p.musicapp)  qs.set('musicapp',  p.musicapp);
+    if (p.musictype) qs.set('musictype', p.musictype);
+    if (p.musicid)   qs.set('musicid',   p.musicid);
+    if (p.autoplay)  qs.set('autoplay',  p.autoplay);
+    if (p.letters && p.letters.length) qs.set('content', encodeLetters(p.letters));
 
-    const to = toEl.value.trim();
-    const from = fromEl.value.trim();
-    const title = titleEl.value.trim();
-    const letterN = letterEl.value.trim();
-    if (to) params.set('to', to);
-    if (from) params.set('from', from);
-    if (title) params.set('title', title);
-    if (letterN) params.set('letter', letterN);
+    const q = qs.toString();
+    return q ? `${BASE_URL}?${q}` : BASE_URL;
+  }
 
-    if (musicAppEl.value)  params.set('musicapp',  musicAppEl.value);
-    if (musicTypeEl.value) params.set('musictype', musicTypeEl.value);
-    if (musicIdEl.value.trim()) params.set('musicid', musicIdEl.value.trim());
-    if (!autoplayEl.checked) params.set('autoplay', 'false');
+  /* ===== Auto-shorten (silent, debounced) =====
+     When the user has written custom letter content, swap the long #c= URL
+     for a short ?b=<binId> URL via JSONBin — without any UI feedback. The
+     long URL is always shown first so the textarea never goes blank.
+     A monotonic sequence id guards against races: if the user edits again
+     while an upload is in flight, the stale response is ignored. */
+  let _shortenSeq = 0;
+  let _shortenTimer = null;
 
-    const letters = collectLetters();
-    if (letters.length) {
-      params.set('content', encodeLetters(letters));
-    }
+  function scheduleShorten() {
+    clearTimeout(_shortenTimer);
+    const mySeq = ++_shortenSeq;
+    _shortenTimer = setTimeout(async () => {
+      try {
+        const url = await uploadToJsonBin();
+        if (mySeq === _shortenSeq) outEl.value = url;
+      } catch (e) {
+        console.warn('silent shorten failed:', e);
+      }
+    }, SHORTEN_DEBOUNCE_MS);
+  }
 
-    const q = params.toString();
-    return q ? `${base}?${q}` : base;
+  function cancelShorten() {
+    clearTimeout(_shortenTimer);
+    _shortenSeq++; // invalidates any in-flight response
   }
 
   function update() {
     refreshLetterOptions();
     outEl.value = build();
+    if (collectLetters().length > 0) scheduleShorten();
+    else cancelShorten();
   }
 
   /* ===== Buttons ===== */
@@ -666,6 +718,35 @@ var _hmt = _hmt || [];
     (SAMPLES[langEl.value] || SAMPLES.zh).forEach(s => addLetter(s));
     update();
   });
+
+  /* ===== Upload payload to JSONBin =====
+     POST the current payload as a public bin; return the love.html?b=<id>
+     short URL. Public so love.html can GET it with no key. */
+  async function uploadToJsonBin() {
+    const payload = buildPayload();
+    if (!payload || Object.keys(payload).length === 0) {
+      throw new Error('Nothing to shorten yet');
+    }
+    const res = await fetch(JSONBIN_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Key': JSONBIN_ACCESS,
+        // Public so love.html can GET without any key on the recipient side.
+        'X-Bin-Private': 'false',
+        'X-Bin-Name': 'love-letter'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      const txt = await res.text().catch(() => '');
+      throw new Error(`JSONBin ${res.status}: ${txt || res.statusText}`);
+    }
+    const json = await res.json();
+    const id = json && json.metadata && json.metadata.id;
+    if (!id) throw new Error('JSONBin returned no bin id');
+    return `${BASE_URL}?b=${id}`;
+  }
 
   $('copyBtn').addEventListener('click', async () => {
     const v = outEl.value;
