@@ -291,17 +291,6 @@
     .letter-card { padding: 14px 14px 10px; }
   }
 </style>
-
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?b1e00bd32078b754d24b0bb5547eabdc";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-  
 </head>
 <body>
 
@@ -351,7 +340,7 @@ var _hmt = _hmt || [];
   <!-- Music -->
   <section class="card">
     <h2>音乐 · Music</h2>
-    <div class="meta">Powered by MetingJS · netease / tencent / kugou / xiami / baidu</div>
+    <div class="meta">Powered by MetingJS · 默认网易云<strong>歌单</strong> 2795657629</div>
     <div class="grid">
       <div class="field">
         <label>Server · 平台</label>
@@ -367,7 +356,7 @@ var _hmt = _hmt || [];
       <div class="field">
         <label>Type · 类型</label>
         <select id="musictype">
-          <option value="" selected>默认 (playlist)</option>
+          <option value="" selected>默认 (playlist · 歌单)</option>
           <option value="song">song · 单曲</option>
           <option value="playlist">playlist · 歌单</option>
           <option value="album">album · 专辑</option>
@@ -377,7 +366,8 @@ var _hmt = _hmt || [];
       </div>
       <div class="field">
         <label>ID · 歌曲/歌单/关键字</label>
-        <input type="text" id="musicid" placeholder="(可选, 留空用默认歌单)" />
+        <input type="text" id="musicid" placeholder="粘贴链接或填写 ID · 默认歌单 2795657629" />
+        <div class="desc">粘贴网易云 / QQ 链接会自动识别单曲或歌单；只填数字时请手动选对类型</div>
       </div>
       <div class="field">
         <label style="visibility:hidden">_</label>
@@ -445,6 +435,61 @@ var _hmt = _hmt || [];
   const musicTypeEl = $('musictype');
   const musicIdEl = $('musicid');
   const autoplayEl = $('autoplay');
+  const DEFAULT_MUSIC_TYPE = 'playlist';
+
+  function parseMusicLink(raw) {
+    const text = String(raw || '').trim();
+    if (!text) return null;
+    const src = text.replace(/&amp;/g, '&');
+
+    if (/(?:music\.163\.com|y\.music\.163\.com)/i.test(src)) {
+      const typeMatch = src.match(/\/(?:#\/)?(?:m\/)?(song|playlist|album|artist)(?:[/?#]|$)/i);
+      const idMatch = src.match(/[?&]id=(\d+)/i) || src.match(/\/(?:song|playlist|album|artist)\/(\d+)/i);
+      if (typeMatch && idMatch) {
+        return { server: 'netease', type: typeMatch[1].toLowerCase(), id: idMatch[1] };
+      }
+      if (idMatch) return { server: 'netease', id: idMatch[1] };
+    }
+
+    if (/(?:y\.qq\.com|i\.y\.qq\.com)/i.test(src)) {
+      const song = src.match(/songDetail\/([A-Za-z0-9]+)/i) || src.match(/[?&]song(?:id|mid)=([A-Za-z0-9]+)/i);
+      if (song) return { server: 'tencent', type: 'song', id: song[1] };
+      const pl = src.match(/\/playlist\/(\d+)/i);
+      if (pl) return { server: 'tencent', type: 'playlist', id: pl[1] };
+      const al = src.match(/albumDetail\/([A-Za-z0-9]+)/i);
+      if (al) return { server: 'tencent', type: 'album', id: al[1] };
+    }
+
+    return { id: text };
+  }
+
+  function resolveMusic() {
+    const parsed = parseMusicLink(musicIdEl.value);
+    return {
+      server: musicAppEl.value || (parsed && parsed.server) || '',
+      type: musicTypeEl.value || (parsed && parsed.type) || '',
+      id: (parsed && parsed.id) || musicIdEl.value.trim()
+    };
+  }
+
+  function applyMusicLink() {
+    const parsed = parseMusicLink(musicIdEl.value);
+    if (!parsed || !parsed.type) return false;
+    let changed = false;
+    if (parsed.id && musicIdEl.value.trim() !== parsed.id) {
+      musicIdEl.value = parsed.id;
+      changed = true;
+    }
+    if (parsed.type && [...musicTypeEl.options].some(o => o.value === parsed.type) && musicTypeEl.value !== parsed.type) {
+      musicTypeEl.value = parsed.type;
+      changed = true;
+    }
+    if (parsed.server && [...musicAppEl.options].some(o => o.value === parsed.server) && musicAppEl.value !== parsed.server) {
+      musicAppEl.value = parsed.server;
+      changed = true;
+    }
+    return changed;
+  }
   const lettersWrap = $('letters');
   const outEl = $('out');
   const toastEl = $('toast');
@@ -587,9 +632,12 @@ var _hmt = _hmt || [];
     if (title) params.set('title', title);
     if (letterN) params.set('letter', letterN);
 
-    if (musicAppEl.value)  params.set('musicapp',  musicAppEl.value);
-    if (musicTypeEl.value) params.set('musictype', musicTypeEl.value);
-    if (musicIdEl.value.trim()) params.set('musicid', musicIdEl.value.trim());
+    const music = resolveMusic();
+    if (music.server) params.set('musicapp', music.server);
+    if (music.id) {
+      params.set('musicid', music.id);
+      params.set('musictype', music.type || DEFAULT_MUSIC_TYPE);
+    }
     if (!autoplayEl.checked) params.set('autoplay', 'false');
 
     const letters = collectLetters();
@@ -677,6 +725,12 @@ var _hmt = _hmt || [];
    musicAppEl, musicTypeEl, musicIdEl, autoplayEl].forEach(el => {
     el.addEventListener('input', update);
     el.addEventListener('change', update);
+  });
+  musicIdEl.addEventListener('paste', () => {
+    setTimeout(() => { applyMusicLink(); update(); }, 0);
+  });
+  musicIdEl.addEventListener('blur', () => {
+    if (applyMusicLink()) update();
   });
 
   addLetter({});
