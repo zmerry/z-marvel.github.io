@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>致恩师 · 链接生成器</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Mono:wght@400;500&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500;600&family=Liu+Jian+Mao+Cao&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg-1: #e8eadd;
+    --bg-2: #d9dfc8;
+    --paper: #f7f5e7;
+    --paper-edge: #d7d4b6;
+    --ink: #344735;
+    --ink-soft: #63715a;
+    --accent: #6b8056;
+    --accent-soft: #a3b48a;
+    --shadow: 35, 50, 30;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; min-height: 100%; }
+  body {
+    font-family: 'Noto Serif SC', 'Cormorant Garamond', serif;
+    color: var(--ink);
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 20%, var(--bg-2) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  header h1 {
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    color: var(--accent);
+    margin: 0 0 6px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+  header .sub {
+    font-family: 'Liu Jian Mao Cao', 'Cormorant Garamond', cursive;
+    font-size: 18px;
+    color: var(--ink-soft);
+  }
+  header .hint {
+    display: block;
+    margin-top: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.7;
+  }
+
+  section.card {
+    background:
+      repeating-linear-gradient(0deg, transparent 0 30px, rgba(var(--shadow),0.04) 30px 31px),
+      linear-gradient(180deg, var(--paper) 0%, color-mix(in oklab, var(--paper), var(--paper-edge) 35%) 100%);
+    border-radius: 4px;
+    padding: 22px 26px 18px;
+    margin-bottom: 22px;
+    box-shadow:
+      0 24px 50px -25px rgba(var(--shadow), 0.45),
+      0 10px 24px -12px rgba(var(--shadow), 0.3),
+      inset 0 0 0 1px color-mix(in oklab, var(--paper-edge), var(--ink) 12%);
+  }
+  section.card h2 {
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: 20px;
+    color: var(--accent);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    margin: 0 0 4px;
+  }
+  section.card .meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.7;
+    margin-bottom: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px 16px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .field label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .field .desc {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    opacity: 0.72;
+    margin-top: -2px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    font-family: 'Noto Serif SC', 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: rgba(255,255,255,0.55);
+    border: 1px solid color-mix(in oklab, var(--paper-edge), var(--ink) 18%);
+    border-radius: 6px;
+    padding: 8px 10px;
+    width: 100%;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(107, 128, 86, 0.22);
+    background: #fff;
+  }
+  textarea {
+    min-height: 96px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+  .check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-family: 'Noto Serif SC', serif;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .check input { width: auto; }
+
+  .letter-card {
+    position: relative;
+    border: 1px dashed color-mix(in oklab, var(--paper-edge), var(--ink) 22%);
+    border-radius: 6px;
+    padding: 16px 18px 12px;
+    margin-bottom: 14px;
+    background: rgba(255,255,255,0.3);
+  }
+  .letter-card .idx {
+    position: absolute;
+    top: -10px;
+    left: 14px;
+    background: var(--paper);
+    padding: 0 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .letter-card .remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.7;
+    transition: color 0.2s ease;
+  }
+  .letter-card .remove:hover { color: var(--accent); opacity: 1; }
+
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: rgba(255,255,255,0.55);
+    border: 1px solid color-mix(in oklab, var(--paper-edge), var(--ink) 22%);
+    padding: 10px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .btn:hover { color: var(--accent); border-color: var(--accent); }
+  .btn.primary {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+  }
+  .btn.primary:hover {
+    background: color-mix(in oklab, var(--accent), white 15%);
+    color: var(--paper);
+  }
+
+  .url-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .url-box textarea {
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    min-height: 110px;
+    word-break: break-all;
+  }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--accent);
+    color: var(--paper);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    box-shadow: 0 10px 28px rgba(var(--shadow), 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 50;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .note {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    background: rgba(255,255,255,0.4);
+    border-left: 2px solid var(--accent-soft);
+    padding: 10px 14px;
+    border-radius: 2px;
+    margin-top: 12px;
+  }
+  .note code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    background: rgba(var(--shadow), 0.08);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  @media (max-width: 560px) {
+    body { padding: 24px 12px 60px; }
+    section.card { padding: 18px 16px 14px; }
+    .letter-card { padding: 24px 14px 10px; }
+    .letter-card .grid { grid-template-columns: minmax(0, 1fr) !important; }
+    .grid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <h1>致恩师 · 链接生成器</h1>
+    <span class="sub">教师节 · Teachers’ Day Link Builder</span>
+    <span class="hint">填写字段 · 自动生成链接 · 一键复制</span>
+  </header>
+
+  <!-- Base options -->
+  <section class="card">
+    <h2>基础 · Basics</h2>
+    <div class="meta">language · names · single-letter mode</div>
+    <div class="grid">
+      <div class="field">
+        <label>Language</label>
+        <select id="lang">
+          <option value="zh" selected>zh · 中文</option>
+          <option value="en">en · English</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>To · 收信人</label>
+        <input type="text" id="to" placeholder="老师 / Teacher" />
+      </div>
+      <div class="field">
+        <label>From · 署名</label>
+        <input type="text" id="from" placeholder="我 / Me" />
+      </div>
+      <div class="field">
+        <label>Title · 首封标题</label>
+        <input type="text" id="title" placeholder="(可选, 覆盖第 1 封标题)" />
+        <div class="desc">只改默认首封的标题；若使用下方自定义内容，此项会作用于第 1 封</div>
+      </div>
+      <div class="field">
+        <label>Single letter · 只显示第 N 封</label>
+        <select id="letter">
+          <option value="" selected>All letters · 多封翻页</option>
+        </select>
+        <div class="desc">选择某一封 = 锁定单封 · 默认多封可翻页</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Music -->
+  <section class="card">
+    <h2>音乐 · Music</h2>
+    <div class="meta">Powered by MetingJS · netease / tencent / kugou / xiami / baidu</div>
+    <div class="grid">
+      <div class="field">
+        <label>Server · 平台</label>
+        <select id="musicapp">
+          <option value="" selected>默认 (netease)</option>
+          <option value="netease">netease · 网易云</option>
+          <option value="tencent">tencent · QQ 音乐</option>
+          <option value="kugou">kugou · 酷狗</option>
+          <option value="xiami">xiami</option>
+          <option value="baidu">baidu</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Type · 类型</label>
+        <select id="musictype">
+          <option value="" selected>默认 (playlist)</option>
+          <option value="song">song · 单曲</option>
+          <option value="playlist">playlist · 歌单</option>
+          <option value="album">album · 专辑</option>
+          <option value="artist">artist · 歌手</option>
+          <option value="search">search · 搜索</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>ID · 歌曲/歌单/关键字</label>
+        <input type="text" id="musicid" placeholder="(留空用网易云歌单 3429274338)" />
+      </div>
+      <div class="field">
+        <label style="visibility:hidden">_</label>
+        <label class="check">
+          <input type="checkbox" id="autoplay" checked />
+          <span>Autoplay · 自动播放</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Letters -->
+  <section class="card">
+    <h2>信件内容 · Letters</h2>
+    <div class="meta">一封或多封 · 留空则使用内置的 6 封教师节书信</div>
+    <div id="letters"></div>
+    <div class="btn-row">
+      <button class="btn" type="button" id="addLetter">+ 添加一封 · Add letter</button>
+      <button class="btn" type="button" id="loadSample">载入示例 · Load sample</button>
+      <button class="btn" type="button" id="clearLetters">清空 · Clear</button>
+    </div>
+    <div class="note">
+      每封信包含 6 个字段：<code>title</code> · <code>subtitle</code> · <code>paragraphs（一段一行）</code> · <code>bridge（过渡句）</code> · <code>question（核心祝福）</code> · <code>whisper（寄语小字）</code>。任意字段可留空。<br/>
+      <code>question</code> 和 <code>whisper</code> 支持 <code>&lt;br/&gt;</code> 换行。
+    </div>
+  </section>
+
+  <!-- Output -->
+  <section class="card">
+    <h2>生成的链接 · Your Link</h2>
+    <div class="meta">实时更新 · 点复制或预览</div>
+    <div class="url-box">
+      <textarea id="out" aria-label="生成的教师节贺卡链接" readonly spellcheck="false"></textarea>
+      <div class="btn-row">
+        <button class="btn primary" type="button" id="copyBtn">📋 复制链接 · Copy</button>
+        <button class="btn" type="button" id="openBtn">↗ 预览 · Preview</button>
+        <button class="btn" type="button" id="resetBtn">重置全部 · Reset all</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>with gratitude · for the teachers who light our way</footer>
+
+</div>
+
+<div class="toast" id="toast">已复制 · Copied</div>
+
+<script>
+  /* ===== Config ===== */
+  // Fixed target page — intentionally not exposed in the UI so it can't be
+  // accidentally edited. Update this constant if the page ever moves.
+  const BASE_URL = 'https://www.flyhi.top/teacher.html';
+  // Number of built-in letters in teacher.html (used for the letter dropdown
+  // when the user hasn't supplied any custom content).
+  const DEFAULT_LETTER_COUNT = 6;
+
+  const SAMPLES = {
+  "zh": [
+    {
+      "title": "致恩师",
+      "subtitle": "— 九月来信 · 见字如晤 —",
+      "paragraphs": "九月的风翻开新的一页，也把我的思绪带回您的课堂。今天是教师节，想借这一纸书信，把平日里没来得及说的感谢，认真写给您。\n谢谢您把知识讲得明白，也把寻常的日子教得有光。那些耐心的讲解、及时的提醒和真诚的鼓励，我一直记得。",
+      "bridge": "老师，今天想对您说：",
+      "question": "教师节快乐，<br/>感谢成长路上，有您同行。",
+      "whisper": "一纸很轻，谢意很长。"
+    },
+    {
+      "title": "愿您常乐",
+      "subtitle": "— 致 · 今天最想祝福的人 —",
+      "paragraphs": "老师，辛苦了。愿忙碌的日子里，您也有从容喝茶、散步、读一本闲书的时间；愿认真付出的心意，都能收到温暖的回应。\n愿您身体康健，心有欢喜；愿课堂里有新的惊喜，生活里有自己的热爱。今天的祝福，属于老师，也属于讲台之外那个丰富而可爱的您。",
+      "bridge": "最后，再郑重地说一遍：",
+      "question": "老师，教师节快乐！<br/>愿您所行皆坦途，所遇皆温暖。",
+      "whisper": "不止今天，愿您日日安好。"
+    }
+  ],
+  "en": [
+    {
+      "title": "Dear Teacher",
+      "subtitle": "— A September letter, with gratitude —",
+      "paragraphs": "September brings a new page and memories of your classroom. On Teachers’ Day, I want to put into words the thanks I too often leave unspoken.\nThank you for your patient explanations, thoughtful guidance, and honest encouragement. You made room for questions and helped learning feel possible.",
+      "bridge": "Today, this is for you:",
+      "question": "Happy Teachers’ Day.<br/>Thank you for being part of my journey.",
+      "whisper": "A small letter, with lasting gratitude."
+    },
+    {
+      "title": "Wishing You Joy",
+      "subtitle": "— A wish for the person behind the lessons —",
+      "paragraphs": "I hope your busy days leave room for tea, a quiet walk, and a book chosen simply for pleasure. May the care you give return to you in warm and unexpected ways.\nMay you enjoy good health, fresh discoveries in your classroom, and time for the things you love beyond it. This wish is for every part of who you are.",
+      "bridge": "Once more, with gratitude:",
+      "question": "Happy Teachers’ Day!<br/>May the days ahead be kind to you.",
+      "whisper": "Wishing you well, today and always."
+    }
+  ]
+};
+
+  /* ===== DOM refs ===== */
+  const $ = id => document.getElementById(id);
+  const langEl = $('lang');
+  const toEl   = $('to');
+  const fromEl = $('from');
+  const titleEl = $('title');
+  const letterEl = $('letter');
+  const musicAppEl = $('musicapp');
+  const musicTypeEl = $('musictype');
+  const musicIdEl = $('musicid');
+  const autoplayEl = $('autoplay');
+  const lettersWrap = $('letters');
+  const outEl = $('out');
+  const toastEl = $('toast');
+
+  /* ===== Letter card template ===== */
+  function makeLetterCard(data = {}) {
+    const card = document.createElement('div');
+    card.className = 'letter-card';
+    card.innerHTML = `
+      <span class="idx"></span>
+      <button type="button" class="remove" title="Remove">× 删除</button>
+      <div class="grid" style="grid-template-columns:1fr 1fr">
+        <div class="field">
+          <label>Title · 标题</label>
+          <input type="text" data-k="title" placeholder="例如 · 致恩师" />
+        </div>
+        <div class="field">
+          <label>Subtitle · 副标题</label>
+          <input type="text" data-k="subtitle" placeholder="例如 · — 九月来信 · 见字如晤 —" />
+        </div>
+      </div>
+      <div class="field" style="margin-top:10px">
+        <label>Paragraphs · 段落（一段一行）</label>
+        <textarea data-k="paragraphs" placeholder="第一段...&#10;第二段...&#10;第三段..."></textarea>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr; margin-top:10px">
+        <div class="field">
+          <label>Bridge · 过渡</label>
+          <input type="text" data-k="bridge" placeholder="例如 · 老师，今天想对您说：" />
+        </div>
+        <div class="field">
+          <label>Question · 核心祝福 (支持 &lt;br/&gt;)</label>
+          <input type="text" data-k="question" placeholder="例如 · 教师节快乐，<br/>感谢成长路上，有您同行。" />
+        </div>
+      </div>
+      <div class="field" style="margin-top:10px">
+        <label>Whisper · 寄语小字 (支持 &lt;br/&gt;)</label>
+        <input type="text" data-k="whisper" placeholder="例如 · 一纸很轻，谢意很长。" />
+      </div>
+    `;
+    // Prefill
+    card.querySelectorAll('[data-k]').forEach(el => {
+      const k = el.dataset.k;
+      if (data[k] != null) el.value = data[k];
+      el.addEventListener('input', update);
+    });
+    card.querySelector('.remove').addEventListener('click', () => {
+      card.remove();
+      renumber();
+      update();
+    });
+    return card;
+  }
+
+  function renumber() {
+    const cards = lettersWrap.querySelectorAll('.letter-card');
+    cards.forEach((c, i) => {
+      c.querySelector('.idx').textContent = `Letter ${String(i + 1).padStart(2,'0')}`;
+      const rm = c.querySelector('.remove');
+      rm.style.display = cards.length > 1 ? '' : 'none';
+    });
+    refreshLetterOptions();
+  }
+
+  // Rebuild the "Single letter" dropdown based on how many letters exist.
+  // If the user hasn't written any custom content, fall back to the built-in
+  // set count so they can still target one of the default 6 letters.
+  function refreshLetterOptions() {
+    const customCount = collectLetters().length;
+    const n = customCount > 0 ? customCount : DEFAULT_LETTER_COUNT;
+    const prev = letterEl.value;
+    letterEl.innerHTML = '';
+    const allOpt = document.createElement('option');
+    allOpt.value = '';
+    allOpt.textContent = 'All letters · 多封翻页';
+    letterEl.appendChild(allOpt);
+    for (let i = 1; i <= n; i++) {
+      const o = document.createElement('option');
+      o.value = String(i);
+      o.textContent = `Letter ${String(i).padStart(2, '0')}`;
+      letterEl.appendChild(o);
+    }
+    // Preserve previous selection if still valid.
+    if (prev && Number(prev) <= n) letterEl.value = prev;
+    else letterEl.value = '';
+  }
+
+  function addLetter(data) {
+    lettersWrap.appendChild(makeLetterCard(data));
+    renumber();
+  }
+
+  /* ===== Build URL ===== */
+  function collectLetters() {
+    const letters = [];
+    lettersWrap.querySelectorAll('.letter-card').forEach(card => {
+      const get = k => (card.querySelector(`[data-k="${k}"]`)?.value || '').trim();
+      const paragraphs = (card.querySelector('[data-k="paragraphs"]')?.value || '')
+        .split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      const letter = {
+        title: get('title'),
+        subtitle: get('subtitle'),
+        paragraphs,
+        bridge: get('bridge'),
+        question: get('question'),
+        whisper: get('whisper'),
+      };
+      const anyContent = letter.title || letter.subtitle || paragraphs.length ||
+                         letter.bridge || letter.question || letter.whisper;
+      if (anyContent) letters.push(letter);
+    });
+    return letters;
+  }
+
+  function encodeLetters(letters) {
+    // Field order MUST match teacher.html parser:
+    //   title :: subtitle :: paragraphs :: bridge :: question :: whisper
+    // Paragraphs are joined with \n (encoded as %0A in the URL).
+    // Letters are joined with ~~~.
+    const parts = letters.map(L => [
+      L.title, L.subtitle, L.paragraphs.join('\n'),
+      L.bridge, L.question, L.whisper
+    ].join('::'));
+    return parts.join('~~~');
+  }
+
+  function build() {
+    const base = BASE_URL;
+    const params = new URLSearchParams();
+
+    // lang — only add if not default zh
+    if (langEl.value && langEl.value !== 'zh') params.set('lang', langEl.value);
+
+    const to = toEl.value.trim();
+    const from = fromEl.value.trim();
+    const title = titleEl.value.trim();
+    const letterN = letterEl.value.trim();
+    if (to) params.set('to', to);
+    if (from) params.set('from', from);
+    if (title) params.set('title', title);
+    if (letterN) params.set('letter', letterN);
+
+    if (musicAppEl.value)  params.set('musicapp',  musicAppEl.value);
+    if (musicTypeEl.value) params.set('musictype', musicTypeEl.value);
+    if (musicIdEl.value.trim()) params.set('musicid', musicIdEl.value.trim());
+    if (!autoplayEl.checked) params.set('autoplay', 'false');
+
+    const letters = collectLetters();
+    if (letters.length) {
+      if (title) letters[0].title = title;
+      params.set('content', encodeLetters(letters));
+    }
+
+    const q = params.toString();
+    return q ? `${base}?${q}` : base;
+  }
+
+  function update() {
+    refreshLetterOptions();
+    outEl.value = build();
+  }
+
+  /* ===== Buttons ===== */
+  $('addLetter').addEventListener('click', () => { addLetter({}); update(); });
+
+  $('clearLetters').addEventListener('click', () => {
+    lettersWrap.innerHTML = '';
+    addLetter({});
+    update();
+  });
+
+  $('loadSample').addEventListener('click', () => {
+    lettersWrap.innerHTML = '';
+    SAMPLES[langEl.value].forEach(sample => addLetter(sample));
+    update();
+  });
+
+  $('copyBtn').addEventListener('click', async () => {
+    const v = outEl.value;
+    try {
+      await navigator.clipboard.writeText(v);
+    } catch (e) {
+      outEl.select(); document.execCommand('copy');
+    }
+    toastEl.classList.add('show');
+    setTimeout(() => toastEl.classList.remove('show'), 1400);
+  });
+
+  $('openBtn').addEventListener('click', () => {
+    const shareUrl = new URL(build());
+    const url = new URL('teacher.html' + shareUrl.search, window.location.href).href;
+    window.open(url, '_blank', 'noopener');
+  });
+
+  $('resetBtn').addEventListener('click', () => {
+    if (!confirm('确定要重置所有字段吗？')) return;
+    langEl.value = 'zh';
+    toEl.value = '';
+    fromEl.value = '';
+    titleEl.value = '';
+    letterEl.value = '';
+    musicAppEl.value = '';
+    musicTypeEl.value = '';
+    musicIdEl.value = '';
+    autoplayEl.checked = true;
+    lettersWrap.innerHTML = '';
+    addLetter({});
+    update();
+  });
+
+  /* ===== Init ===== */
+  [langEl, toEl, fromEl, titleEl, letterEl,
+   musicAppEl, musicTypeEl, musicIdEl, autoplayEl].forEach(el => {
+    el.addEventListener('input', update);
+    el.addEventListener('change', update);
+  });
+
+  document.querySelectorAll('.field').forEach(field => {
+    const control = field.querySelector('input[id], select[id]');
+    const label = field.querySelector('label');
+    if (control && label) label.htmlFor = control.id;
+  });
+  addLetter({});
+  update();
+</script>
+</body>
+</html>
