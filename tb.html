@@ -342,7 +342,7 @@
   <!-- Music -->
   <section class="card">
     <h2>音乐 · Music</h2>
-    <div class="meta">Powered by MetingJS · netease / tencent / kugou / xiami / baidu</div>
+    <div class="meta">Powered by MetingJS · 默认网易云<strong>单曲</strong> 3429274338《教师节》</div>
     <div class="grid">
       <div class="field">
         <label>Server · 平台</label>
@@ -358,7 +358,7 @@
       <div class="field">
         <label>Type · 类型</label>
         <select id="musictype">
-          <option value="" selected>默认 (playlist)</option>
+          <option value="" selected>默认 (song)</option>
           <option value="song">song · 单曲</option>
           <option value="playlist">playlist · 歌单</option>
           <option value="album">album · 专辑</option>
@@ -368,7 +368,8 @@
       </div>
       <div class="field">
         <label>ID · 歌曲/歌单/关键字</label>
-        <input type="text" id="musicid" placeholder="(留空用网易云歌单 3429274338)" />
+        <input type="text" id="musicid" placeholder="粘贴链接或填写 ID · 默认单曲 3429274338" />
+        <div class="desc">粘贴网易云 / QQ 链接会自动识别单曲或歌单；只填数字时请手动选对类型</div>
       </div>
       <div class="field">
         <label style="visibility:hidden">_</label>
@@ -383,7 +384,7 @@
   <!-- Letters -->
   <section class="card">
     <h2>信件内容 · Letters</h2>
-    <div class="meta">一封或多封 · 留空则使用内置的 6 封教师节书信</div>
+    <div class="meta">一封或多封 · 留空则使用内置的 15 封教师节书信</div>
     <div id="letters"></div>
     <div class="btn-row">
       <button class="btn" type="button" id="addLetter">+ 添加一封 · Add letter</button>
@@ -423,22 +424,22 @@
   const BASE_URL = 'https://www.flyhi.top/teacher.html';
   // Number of built-in letters in teacher.html (used for the letter dropdown
   // when the user hasn't supplied any custom content).
-  const DEFAULT_LETTER_COUNT = 6;
+  const DEFAULT_LETTER_COUNT = 15;
 
   const SAMPLES = {
   "zh": [
     {
       "title": "致恩师",
       "subtitle": "— 九月来信 · 见字如晤 —",
-      "paragraphs": "九月的风翻开新的一页，也把我的思绪带回您的课堂。今天是教师节，想借这一纸书信，把平日里没来得及说的感谢，认真写给您。\n谢谢您把知识讲得明白，也把寻常的日子教得有光。那些耐心的讲解、及时的提醒和真诚的鼓励，我一直记得。",
+      "paragraphs": "九月一到，空气里便有新学期的味道。今天是教师节，我不想只发一句现成的祝福，而想把平日里没来得及说的话，认认真真写给您。\n谢谢您把难的地方讲明白，也把寻常的日子教得有光。那些耐心的停顿、及时的提醒、课后多留的几分钟，我一直记得。",
       "bridge": "老师，今天想对您说：",
-      "question": "教师节快乐，<br/>感谢成长路上，有您同行。",
+      "question": "教师节快乐。<br/>感谢成长路上，有您同行。",
       "whisper": "一纸很轻，谢意很长。"
     },
     {
       "title": "愿您常乐",
       "subtitle": "— 致 · 今天最想祝福的人 —",
-      "paragraphs": "老师，辛苦了。愿忙碌的日子里，您也有从容喝茶、散步、读一本闲书的时间；愿认真付出的心意，都能收到温暖的回应。\n愿您身体康健，心有欢喜；愿课堂里有新的惊喜，生活里有自己的热爱。今天的祝福，属于老师，也属于讲台之外那个丰富而可爱的您。",
+      "paragraphs": "老师，辛苦了。愿忙碌里仍有喝茶、散步、读一本闲书的空隙；愿您付出的心意，都能得到温暖的回应。\n愿您身体康健，心有欢喜；课堂里有新的惊喜，生活里有自己的热爱。教师节快乐，也愿此后每一天，都从容一些。",
       "bridge": "最后，再郑重地说一遍：",
       "question": "老师，教师节快乐！<br/>愿您所行皆坦途，所遇皆温暖。",
       "whisper": "不止今天，愿您日日安好。"
@@ -448,17 +449,17 @@
     {
       "title": "Dear Teacher",
       "subtitle": "— A September letter, with gratitude —",
-      "paragraphs": "September brings a new page and memories of your classroom. On Teachers’ Day, I want to put into words the thanks I too often leave unspoken.\nThank you for your patient explanations, thoughtful guidance, and honest encouragement. You made room for questions and helped learning feel possible.",
+      "paragraphs": "September smells like a new term. On Teachers’ Day I do not want a ready-made greeting. I want to write, carefully, the thanks I too often leave unsaid.\nThank you for making hard things clearer, and ordinary days brighter. I still remember your patient pauses, your timely reminders, and the extra minutes you stayed after class.",
       "bridge": "Today, this is for you:",
-      "question": "Happy Teachers’ Day.<br/>Thank you for being part of my journey.",
+      "question": "Happy Teachers’ Day.<br/>Thank you for walking part of the way with me.",
       "whisper": "A small letter, with lasting gratitude."
     },
     {
       "title": "Wishing You Joy",
-      "subtitle": "— A wish for the person behind the lessons —",
-      "paragraphs": "I hope your busy days leave room for tea, a quiet walk, and a book chosen simply for pleasure. May the care you give return to you in warm and unexpected ways.\nMay you enjoy good health, fresh discoveries in your classroom, and time for the things you love beyond it. This wish is for every part of who you are.",
+      "subtitle": "— A wish for the person we bless today —",
+      "paragraphs": "Thank you for your hard work. I hope your busy days still leave room for tea, a walk, and a book chosen only for pleasure. May the care you give return to you warmly.\nMay you have good health and a glad heart; new surprises in class, and a life of your own beyond it. Happy Teachers’ Day — and may the days after it be kinder, too.",
       "bridge": "Once more, with gratitude:",
-      "question": "Happy Teachers’ Day!<br/>May the days ahead be kind to you.",
+      "question": "Happy Teachers’ Day!<br/>May the path ahead be gentle with you.",
       "whisper": "Wishing you well, today and always."
     }
   ]
@@ -475,6 +476,61 @@
   const musicTypeEl = $('musictype');
   const musicIdEl = $('musicid');
   const autoplayEl = $('autoplay');
+  const DEFAULT_MUSIC_TYPE = 'song';
+
+  function parseMusicLink(raw) {
+    const text = String(raw || '').trim();
+    if (!text) return null;
+    const src = text.replace(/&amp;/g, '&');
+
+    if (/(?:music\.163\.com|y\.music\.163\.com)/i.test(src)) {
+      const typeMatch = src.match(/\/(?:#\/)?(?:m\/)?(song|playlist|album|artist)(?:[/?#]|$)/i);
+      const idMatch = src.match(/[?&]id=(\d+)/i) || src.match(/\/(?:song|playlist|album|artist)\/(\d+)/i);
+      if (typeMatch && idMatch) {
+        return { server: 'netease', type: typeMatch[1].toLowerCase(), id: idMatch[1] };
+      }
+      if (idMatch) return { server: 'netease', id: idMatch[1] };
+    }
+
+    if (/(?:y\.qq\.com|i\.y\.qq\.com)/i.test(src)) {
+      const song = src.match(/songDetail\/([A-Za-z0-9]+)/i) || src.match(/[?&]song(?:id|mid)=([A-Za-z0-9]+)/i);
+      if (song) return { server: 'tencent', type: 'song', id: song[1] };
+      const pl = src.match(/\/playlist\/(\d+)/i);
+      if (pl) return { server: 'tencent', type: 'playlist', id: pl[1] };
+      const al = src.match(/albumDetail\/([A-Za-z0-9]+)/i);
+      if (al) return { server: 'tencent', type: 'album', id: al[1] };
+    }
+
+    return { id: text };
+  }
+
+  function resolveMusic() {
+    const parsed = parseMusicLink(musicIdEl.value);
+    return {
+      server: musicAppEl.value || (parsed && parsed.server) || '',
+      type: musicTypeEl.value || (parsed && parsed.type) || '',
+      id: (parsed && parsed.id) || musicIdEl.value.trim()
+    };
+  }
+
+  function applyMusicLink() {
+    const parsed = parseMusicLink(musicIdEl.value);
+    if (!parsed || !parsed.type) return false;
+    let changed = false;
+    if (parsed.id && musicIdEl.value.trim() !== parsed.id) {
+      musicIdEl.value = parsed.id;
+      changed = true;
+    }
+    if (parsed.type && [...musicTypeEl.options].some(o => o.value === parsed.type) && musicTypeEl.value !== parsed.type) {
+      musicTypeEl.value = parsed.type;
+      changed = true;
+    }
+    if (parsed.server && [...musicAppEl.options].some(o => o.value === parsed.server) && musicAppEl.value !== parsed.server) {
+      musicAppEl.value = parsed.server;
+      changed = true;
+    }
+    return changed;
+  }
   const lettersWrap = $('letters');
   const outEl = $('out');
   const toastEl = $('toast');
@@ -541,7 +597,7 @@
 
   // Rebuild the "Single letter" dropdown based on how many letters exist.
   // If the user hasn't written any custom content, fall back to the built-in
-  // set count so they can still target one of the default 6 letters.
+  // set count so they can still target one of the default 15 letters.
   function refreshLetterOptions() {
     const customCount = collectLetters().length;
     const n = customCount > 0 ? customCount : DEFAULT_LETTER_COUNT;
@@ -617,9 +673,12 @@
     if (title) params.set('title', title);
     if (letterN) params.set('letter', letterN);
 
-    if (musicAppEl.value)  params.set('musicapp',  musicAppEl.value);
-    if (musicTypeEl.value) params.set('musictype', musicTypeEl.value);
-    if (musicIdEl.value.trim()) params.set('musicid', musicIdEl.value.trim());
+    const music = resolveMusic();
+    if (music.server) params.set('musicapp', music.server);
+    if (music.id) {
+      params.set('musicid', music.id);
+      params.set('musictype', music.type || DEFAULT_MUSIC_TYPE);
+    }
     if (!autoplayEl.checked) params.set('autoplay', 'false');
 
     const letters = collectLetters();
@@ -690,6 +749,12 @@
    musicAppEl, musicTypeEl, musicIdEl, autoplayEl].forEach(el => {
     el.addEventListener('input', update);
     el.addEventListener('change', update);
+  });
+  musicIdEl.addEventListener('paste', () => {
+    setTimeout(() => { applyMusicLink(); update(); }, 0);
+  });
+  musicIdEl.addEventListener('blur', () => {
+    if (applyMusicLink()) update();
   });
 
   document.querySelectorAll('.field').forEach(field => {

@@ -1120,8 +1120,9 @@
   .seal { font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif; }
   .env-text { top: 66%; text-align: center; }
   .letter-wrap:not(.visible) { display: none; }
-  .letter-wrap { min-height: 0; }
-  .letter { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  .letter-wrap { min-height: 0; overflow: visible; }
+  .letter { min-height: 0; overflow: visible; }
+  .letter-text { overflow: visible; }
   .letter-actions { flex-shrink: 0; }
   .letter h1 { font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
@@ -1194,7 +1195,7 @@ var _hmt = _hmt || [];
         <div class="letter-text" id="letterText">
           <div class="meta">
             <span id="metaLeft">写于教师节这一天 · 轻触翻页</span>
-            <span class="letter-counter" id="letterIndex">01 / 06</span>
+            <span class="letter-counter" id="letterIndex">01 / 15</span>
             <span class="from-tag"><span id="fromTagPrefix">From</span> <span id="fromNameTag">我</span></span>
           </div>
           <h1>
@@ -1322,8 +1323,8 @@ var _hmt = _hmt || [];
                      Example (one letter, title + 2 paragraphs + question):
                        ?content=My%20Title::::First%20para.||Second%20para.::::Will%20you%3F
      ?musicapp=... — meting server (default: netease)
-     ?musicid=...  — meting id (default: 3429274338, a netease playlist)
-     ?musictype=...— meting type (default: playlist)
+     ?musicid=...  — meting id (default: 3429274338, netease song「教师节」)
+     ?musictype=...— meting type (default: song)
      ?autoplay=false to disable autoplay
   ============================================================================ */
   const urlParams = new URLSearchParams(window.location.search);
@@ -1386,7 +1387,7 @@ var _hmt = _hmt || [];
   const userTitle = urlParams.get('title');
   const musicApp = (urlParams.get('musicapp') || urlParams.get('server') || 'netease').trim();
   const musicId  = (urlParams.get('musicid')  || urlParams.get('id')     || '3429274338').trim();
-  const musicType = (urlParams.get('musictype') || urlParams.get('type') || 'playlist').trim();
+  const musicType = (urlParams.get('musictype') || urlParams.get('type') || 'song').trim();
   const autoplay = urlParams.get('autoplay') !== 'false';
 
   // Single-letter mode: ?letter=N or ?only=N (1-based)
@@ -1426,19 +1427,19 @@ var _hmt = _hmt || [];
       "title": "致恩师",
       "subtitle": "— 九月来信 · 见字如晤 —",
       "paragraphs": [
-        "九月的风翻开新的一页，也把我的思绪带回您的课堂。今天是教师节，想借这一纸书信，把平日里没来得及说的感谢，认真写给您。",
-        "谢谢您把知识讲得明白，也把寻常的日子教得有光。那些耐心的讲解、及时的提醒和真诚的鼓励，我一直记得。"
+        "九月一到，空气里便有新学期的味道。今天是教师节，我不想只发一句现成的祝福，而想把平日里没来得及说的话，认认真真写给您。",
+        "谢谢您把难的地方讲明白，也把寻常的日子教得有光。那些耐心的停顿、及时的提醒、课后多留的几分钟，我一直记得。"
       ],
       "bridge": "老师，今天想对您说：",
-      "question": "教师节快乐，<br/>感谢成长路上，有您同行。",
+      "question": "教师节快乐。<br/>感谢成长路上，有您同行。",
       "whisper": "一纸很轻，谢意很长。"
     },
     {
       "title": "一方黑板",
       "subtitle": "— 致 · 为我们打开世界的人 —",
       "paragraphs": [
-        "一方黑板，写得下公式与诗句，也装得下我们对世界最初的好奇。您把复杂的问题拆成一步一步，让原本遥远的答案慢慢清晰。",
-        "后来才懂，您教给我们的不只是如何答题，还有如何提问、如何思考，如何在不知道的时候，依然愿意再试一遍。"
+        "一方黑板，写得下公式与诗句，也装得下我们对世界最初的好奇。您从不嫌问题笨，只把复杂的一步拆成更小的一步，让远处的答案慢慢靠近。",
+        "后来才懂，您教的不只是如何答题，还有如何提问、如何停下来想一想，以及在还不会的时候，仍然愿意再试一遍。"
       ],
       "bridge": "那些课堂里的光，",
       "question": "落在书页上，<br/>也照亮了更远的地方。",
@@ -1448,41 +1449,140 @@ var _hmt = _hmt || [];
       "title": "一句鼓励",
       "subtitle": "— 致 · 看见每一份努力的人 —",
       "paragraphs": [
-        "有时，让人重新鼓起勇气的，只是一句“再试试，你可以”。谢谢您在我迟疑的时候耐心等待，在我进步的时候认真肯定。",
-        "您让我明白，暂时不会并不可怕，走得慢也可以继续向前。比起一个漂亮的分数，那份被相信的力量，陪伴我走了更久。"
+        "有时候，让人重新站起来的，不过是一句“再试试，你可以”。谢谢您在我迟疑时不催，在我进步时认真点头，不像走过场。",
+        "您让我明白：暂时不会并不可怕，走得慢也可以继续向前。比起一个漂亮的分数，那份被相信的力气，陪伴我走了更久。"
       ],
       "bridge": "想把这句感谢送给您：",
       "question": "谢谢您看见我的努力，<br/>也让我学会相信自己。",
       "whisper": "您的一句话，成为我许多次出发的勇气。"
     },
     {
+      "title": "那次严格",
+      "subtitle": "— 致 · 不肯轻易放过我的人 —",
+      "paragraphs": [
+        "当年被您批评，心里是不服的。作业重写、字写端正、把过程写完整——那时只觉得您严，后来才知道，那是不肯看着我随便过关。",
+        "真正珍惜人的，不会只用好听的话。您用规矩托住我，用标准提醒我：可以失败，但不可以对自己含糊。"
+      ],
+      "bridge": "现在才想明白：",
+      "question": "谢谢您当时的严格，<br/>那是另一种温柔。",
+      "whisper": "被认真对待过的人，才敢也认真起来。"
+    },
+    {
+      "title": "点名册",
+      "subtitle": "— 致 · 记得我名字的人 —",
+      "paragraphs": [
+        "教室很大，人很多。可您叫到我的名字时，总像真的看见了我，而不只是点过一个格子。",
+        "被记得，是一件很小、却很暖的事。它让一个容易害羞的人，觉得自己在这里是有位置的。"
+      ],
+      "bridge": "所以想对您说：",
+      "question": "谢谢您看见过我，<br/>也让我开始看见自己。",
+      "whisper": "名字被认真叫过，人就会更愿意抬头。"
+    },
+    {
+      "title": "放学以后",
+      "subtitle": "— 致 · 办公室里那盏还亮着的灯 —",
+      "paragraphs": [
+        "放学铃响过很久，您的桌上还摊着本子。红笔走得很慢，像生怕漏掉哪一句写对了的话。",
+        "我们看见的是课堂上的您，很少看见课后那些无声的时间。今天想把这一声“辛苦了”，专门送给那盏灯。"
+      ],
+      "bridge": "老师，请您也歇一歇：",
+      "question": "批改过那么多人的夜晚，<br/>也请把温柔留给自己。",
+      "whisper": "讲台下的您，同样值得被照顾。"
+    },
+    {
       "title": "书页之外",
       "subtitle": "— 致 · 教会我们认真生活的人 —",
       "paragraphs": [
-        "课本有最后一页，您的教诲却延伸到生活里。认真对待承诺，尊重不同的想法，遇到问题先想办法——这些小事，我都在慢慢学着做好。",
-        "成长也许就是在某个平常的瞬间，忽然读懂当年那句话。然后带着您教过的诚恳与善意，去面对眼前的人和事。"
+        "课本有最后一页，您的话却常常走到生活里。按时赴约，把事情做完，尊重和自己不一样的人——这些小事，我都在慢慢学着做。",
+        "成长也许就是某个平常的下午，忽然听懂当年那一句。然后带着您教过的诚恳，去面对眼前的人和事。"
       ],
       "bridge": "有些课，散了很久才懂；",
-      "question": "有些话，记在心里，<br/>便能受用很久。",
+      "question": "有些话记在心里，<br/>便能受用很久。",
       "whisper": "把学到的温柔，再传给身边的人。"
+    },
+    {
+      "title": "窗边的绿",
+      "subtitle": "— 致 · 那些普通而明亮的日子 —",
+      "paragraphs": [
+        "我想起的常常不是考试，而是窗边的一点绿、下午斜进来的光、您随手在黑板上画的那个小图。",
+        "原来最好的教育，有时只是把一个日子过得安稳、清楚。您让教室像一个可以安心出错的地方。"
+      ],
+      "bridge": "这些细碎的记得，",
+      "question": "比任何奖状都更长久，<br/>也更像家。",
+      "whisper": "普通的一天，因为您，变得值得回想。"
+    },
+    {
+      "title": "最后一课",
+      "subtitle": "— 致 · 目送我们离开的人 —",
+      "paragraphs": [
+        "最后一节课结束时，走廊里很热闹，心里却忽然空了一块。我们急着走向下一个地方，您站在原地，把教室还给下一批人。",
+        "离开之后才发现，有些声音会跟着走：您读课文的节奏，您说“再想一想”时的停顿。"
+      ],
+      "bridge": "走得再远，也想回头说：",
+      "question": "那一课没有真正结束，<br/>它还在我们身上继续。",
+      "whisper": "毕业不是散场，是把您教过的带着走。"
+    },
+    {
+      "title": "迟到的谢谢",
+      "subtitle": "— 致 · 我终于学会开口的人 —",
+      "paragraphs": [
+        "有些感谢是迟到的。当时年纪小，只会说“老师好”，不会说“您改变过我”。",
+        "现在终于会把话说完整了。就算隔了很久，我也希望这句谢谢能准时到达。"
+      ],
+      "bridge": "虽然晚了一步，",
+      "question": "请您仍然收下：<br/>谢谢您，一直都是。",
+      "whisper": "晚到的心意，也是真的。"
     },
     {
       "title": "桃李有信",
       "subtitle": "— 致 · 陪伴一程，惦念长久的人 —",
       "paragraphs": [
-        "校园里的树又长高了一些，教室里也会迎来新的面孔。无论此刻我们是否还在同一间课堂，那些一起走过的日子，都值得珍藏。",
-        "愿将来的某一天，能带着新的成长与您重逢，说说最近读过的书、走过的路，也告诉您：您曾播下的种子，正在慢慢发芽。"
+        "校园里的树又高了一些，教室里也会换新的面孔。无论我们是否还在同一间课堂，一起走过的日子，都值得收好。",
+        "希望将来某一天，能带着新的故事与您重逢：读过的书、走过的路，还有那句——您播下的，正在发芽。"
       ],
       "bridge": "把这份惦念，托付给九月：",
       "question": "桃李各自向远方，<br/>不忘来时一程光。",
       "whisper": "每一点成长，都是写给您的回信。"
     },
     {
+      "title": "春风化雨",
+      "subtitle": "— 致 · 不声张、却改变了许多人的人 —",
+      "paragraphs": [
+        "您很少把自己说得很了不起。可许多年后，我仍会在某个决定里，忽然遇见当年的您。",
+        "好的老师像天气：不必每天被提起，却一直在人的骨子里，让人更清朗一点。"
+      ],
+      "bridge": "这份影响很安静，",
+      "question": "也正因为安静，<br/>才走得那样远。",
+      "whisper": "您不求被铭记，我们却记得。"
+    },
+    {
+      "title": "把光传下去",
+      "subtitle": "— 致 · 让我学会照亮别人的人 —",
+      "paragraphs": [
+        "您教我的，不只是知识，还有看见别人、把话说明白、在别人慌张时不先责备。",
+        "如果有一天我也去帮助别人，那份耐心的源头，有一处一定在您那里。"
+      ],
+      "bridge": "所以想告诉您：",
+      "question": "您给过的光，<br/>我会小心地传下去。",
+      "whisper": "这大概是对老师最好的回报。"
+    },
+    {
+      "title": "您也要好好的",
+      "subtitle": "— 致 · 讲台之外那个真实的人 —",
+      "paragraphs": [
+        "我们习惯叫您老师，有时忘了，您也有疲惫，也有想看的书、想走的路、想过的清静日子。",
+        "今天的祝福，不只送给讲台上的您，也送给讲台下那个需要被关心的人。"
+      ],
+      "bridge": "请您答应我：",
+      "question": "也把“自己”放进日程里，<br/>好好吃饭，好好休息。",
+      "whisper": "您值得被世界温柔以待。"
+    },
+    {
       "title": "愿您常乐",
       "subtitle": "— 致 · 今天最想祝福的人 —",
       "paragraphs": [
-        "老师，辛苦了。愿忙碌的日子里，您也有从容喝茶、散步、读一本闲书的时间；愿认真付出的心意，都能收到温暖的回应。",
-        "愿您身体康健，心有欢喜；愿课堂里有新的惊喜，生活里有自己的热爱。今天的祝福，属于老师，也属于讲台之外那个丰富而可爱的您。"
+        "老师，辛苦了。愿忙碌里仍有喝茶、散步、读一本闲书的空隙；愿您付出的心意，都能得到温暖的回应。",
+        "愿您身体康健，心有欢喜；课堂里有新的惊喜，生活里有自己的热爱。教师节快乐，也愿此后每一天，都从容一些。"
       ],
       "bridge": "最后，再郑重地说一遍：",
       "question": "老师，教师节快乐！<br/>愿您所行皆坦途，所遇皆温暖。",
@@ -1494,19 +1594,19 @@ var _hmt = _hmt || [];
       "title": "Dear Teacher",
       "subtitle": "— A September letter, with gratitude —",
       "paragraphs": [
-        "September brings a new page and memories of your classroom. On Teachers’ Day, I want to put into words the thanks I too often leave unspoken.",
-        "Thank you for your patient explanations, thoughtful guidance, and honest encouragement. You made room for questions and helped learning feel possible."
+        "September smells like a new term. On Teachers’ Day I do not want a ready-made greeting. I want to write, carefully, the thanks I too often leave unsaid.",
+        "Thank you for making hard things clearer, and ordinary days brighter. I still remember your patient pauses, your timely reminders, and the extra minutes you stayed after class."
       ],
       "bridge": "Today, this is for you:",
-      "question": "Happy Teachers’ Day.<br/>Thank you for being part of my journey.",
+      "question": "Happy Teachers’ Day.<br/>Thank you for walking part of the way with me.",
       "whisper": "A small letter, with lasting gratitude."
     },
     {
-      "title": "Beyond the Blackboard",
+      "title": "The Blackboard",
       "subtitle": "— To the one who opened our world —",
       "paragraphs": [
-        "Your blackboard held equations, poems, and our first questions about the world. You made difficult ideas clearer, one patient step at a time.",
-        "You taught us more than how to answer. You taught us to ask, to think, and to try again when we did not yet understand."
+        "Your blackboard held equations, poems, and our first questions about the world. You never treated a question as foolish. You simply made the next step smaller, until a distant answer came nearer.",
+        "You taught us more than how to answer. You taught us to ask, to pause and think, and to try again when we did not yet understand."
       ],
       "bridge": "The light from those lessons",
       "question": "still falls across our pages,<br/>and reaches far beyond them.",
@@ -1516,44 +1616,143 @@ var _hmt = _hmt || [];
       "title": "A Little Courage",
       "subtitle": "— To the one who noticed the effort —",
       "paragraphs": [
-        "Sometimes a simple “try again” is enough to help someone begin. Thank you for waiting when I hesitated and noticing when I made progress.",
+        "Sometimes a simple “try again” is enough to help someone stand up. Thank you for not rushing me when I hesitated, and for noticing when I made progress.",
         "You showed me that not knowing yet is nothing to fear. The confidence you gave me has stayed longer than any mark on a page."
       ],
       "bridge": "I want you to know:",
       "question": "Thank you for believing in me,<br/>and helping me believe in myself.",
-      "whisper": "Your encouragement travels with me."
+      "whisper": "Your encouragement still travels with me."
     },
     {
-      "title": "Lessons for Life",
-      "subtitle": "— To the teacher beyond the textbook —",
+      "title": "The Kind Strictness",
+      "subtitle": "— To the one who would not let me slip by —",
       "paragraphs": [
-        "Textbooks have a final page, but your lessons continue into daily life: keep a promise, respect another point of view, and look for a way forward.",
-        "Growing up sometimes means finally understanding something you once said. I try to carry that honesty and kindness into the things I do."
+        "I did not like being corrected. Rewrite the work. Make the writing clear. Show the steps. I thought you were only strict. Later I understood: you refused to watch me pass through carelessly.",
+        "The people who truly care do not use only gentle words. You held me to a standard, and taught me I could fail without being vague with myself."
+      ],
+      "bridge": "I see it now:",
+      "question": "Thank you for that strictness.<br/>It was another kind of kindness.",
+      "whisper": "To be taken seriously is to learn seriousness."
+    },
+    {
+      "title": "When You Called My Name",
+      "subtitle": "— To the one who remembered me —",
+      "paragraphs": [
+        "The room was large, and there were many of us. When you said my name, it felt as if you had truly seen me, not merely ticked a box.",
+        "Being remembered is a small warmth. It tells a shy person that they have a place in the room."
+      ],
+      "bridge": "So I want to say:",
+      "question": "Thank you for seeing me,<br/>and helping me begin to see myself.",
+      "whisper": "A name spoken with care can lift a face."
+    },
+    {
+      "title": "The Light After Class",
+      "subtitle": "— To the lamp still on in your office —",
+      "paragraphs": [
+        "Long after the bell, your desk was still covered in books. The red pen moved slowly, as if it were afraid to miss a sentence that had finally gone right.",
+        "We saw you in the classroom. We rarely saw those quiet hours afterwards. Today this “thank you for your hard work” is for that lamp."
+      ],
+      "bridge": "Please rest a little, too:",
+      "question": "After so many nights spent on our pages,<br/>keep a little gentleness for yourself.",
+      "whisper": "The person beyond the podium deserves care as well."
+    },
+    {
+      "title": "Beyond the Textbook",
+      "subtitle": "— To the teacher of ordinary life —",
+      "paragraphs": [
+        "Textbooks have a last page. Your words kept walking into daily life: keep a promise, finish what you start, respect a mind unlike your own.",
+        "Growing up is sometimes an ordinary afternoon when a sentence from years ago finally makes sense. I try to carry that honesty into the people I meet."
       ],
       "bridge": "Some lessons take time to understand.",
-      "question": "Some words stay with us,<br/>long after the classroom empties.",
+      "question": "Some words stay with us<br/>long after the classroom empties.",
       "whisper": "May the kindness you taught keep traveling."
+    },
+    {
+      "title": "The Plant by the Window",
+      "subtitle": "— To the ordinary, luminous days —",
+      "paragraphs": [
+        "What I remember is rarely an exam. It is the green by the window, the afternoon light, the small drawing you made on the board without thinking.",
+        "The best teaching is sometimes simply making a day feel steady and clear. You made the classroom a place where it was safe to be wrong."
+      ],
+      "bridge": "These small memories",
+      "question": "last longer than any certificate,<br/>and feel more like home.",
+      "whisper": "An ordinary day became worth returning to."
+    },
+    {
+      "title": "The Last Lesson",
+      "subtitle": "— To the one who watched us leave —",
+      "paragraphs": [
+        "When the last class ended, the corridor was loud and my chest felt suddenly empty. We hurried on. You stayed, and gave the room to the next faces.",
+        "Only later did I notice which voices had come with me: the rhythm of you reading, the pause when you said, “Think again.”"
+      ],
+      "bridge": "However far I go, I want to turn and say:",
+      "question": "That lesson never truly ended.<br/>It continues in us.",
+      "whisper": "Leaving was not goodbye. It was taking you with us."
+    },
+    {
+      "title": "A Late Thank You",
+      "subtitle": "— To the one I finally learned to thank —",
+      "paragraphs": [
+        "Some thanks arrive late. I was young enough to say “good morning,” and not yet able to say “you changed me.”",
+        "I can finish the sentence now. Even after all this time, I hope this thank-you still finds you on time."
+      ],
+      "bridge": "It is late, and still sincere:",
+      "question": "Please take it anyway:<br/>thank you. It has always been thank you.",
+      "whisper": "A delayed gratitude is still true."
     },
     {
       "title": "Still Growing",
       "subtitle": "— A shared chapter, a lasting memory —",
       "paragraphs": [
-        "The trees on campus keep growing, and new faces arrive in the classroom. Wherever we are today, I treasure the days we shared.",
-        "I hope we meet again with new stories to tell: books read, paths explored, and small signs that the seeds you planted are taking root."
+        "The trees on campus are taller, and new faces fill the room. Whether or not we share a classroom now, the days we had are worth keeping.",
+        "I hope we meet again with new stories: books read, roads taken, and this one line — what you planted is beginning to grow."
       ],
       "bridge": "A thought to send this September:",
       "question": "As we find our own paths,<br/>we remember where the light began.",
-      "whisper": "Every step forward carries a little of your care."
+      "whisper": "Every step forward is a letter back to you."
+    },
+    {
+      "title": "Quiet Weather",
+      "subtitle": "— To the one who changed us without display —",
+      "paragraphs": [
+        "You rarely spoke of yourself as remarkable. Years later I still meet you inside a decision, as if you had quietly walked in.",
+        "A good teacher is like weather: not mentioned every day, yet present in the bone, leaving a person a little clearer."
+      ],
+      "bridge": "The influence was quiet.",
+      "question": "And because it was quiet,<br/>it traveled so far.",
+      "whisper": "You did not ask to be remembered. We remember."
+    },
+    {
+      "title": "Passing On the Light",
+      "subtitle": "— To the one who taught me to light others —",
+      "paragraphs": [
+        "You taught more than a subject. You taught how to notice someone, how to make a sentence clear, how not to begin with blame when another person is afraid.",
+        "If I ever help someone well, part of that patience will have begun with you."
+      ],
+      "bridge": "So I want you to know:",
+      "question": "The light you gave<br/>I will carry forward with care.",
+      "whisper": "That may be the best thanks a teacher can receive."
+    },
+    {
+      "title": "You, Beyond the Role",
+      "subtitle": "— To the person behind the title —",
+      "paragraphs": [
+        "We are used to calling you teacher, and we forget that you also grow tired, and have books you want, walks you want, quiet days you want.",
+        "Today’s wish is not only for the person at the podium. It is for the person who needs care when the room is empty."
+      ],
+      "bridge": "Please promise me this:",
+      "question": "Put yourself on the list as well.<br/>Eat well. Rest well.",
+      "whisper": "You deserve a gentle world, too."
     },
     {
       "title": "Wishing You Joy",
-      "subtitle": "— A wish for the person behind the lessons —",
+      "subtitle": "— A wish for the person we bless today —",
       "paragraphs": [
-        "I hope your busy days leave room for tea, a quiet walk, and a book chosen simply for pleasure. May the care you give return to you in warm and unexpected ways.",
-        "May you enjoy good health, fresh discoveries in your classroom, and time for the things you love beyond it. This wish is for every part of who you are."
+        "Thank you for your hard work. I hope your busy days still leave room for tea, a walk, and a book chosen only for pleasure. May the care you give return to you warmly.",
+        "May you have good health and a glad heart; new surprises in class, and a life of your own beyond it. Happy Teachers’ Day — and may the days after it be kinder, too."
       ],
       "bridge": "Once more, with gratitude:",
-      "question": "Happy Teachers’ Day!<br/>May the days ahead be kind to you.",
+      "question": "Happy Teachers’ Day!<br/>May the path ahead be gentle with you.",
       "whisper": "Wishing you well, today and always."
     }
   ]
